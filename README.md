@@ -1,29 +1,44 @@
 # OlaRPG
 
-Sistema próprio de RPG em HTML interativo, com ficha de personagem, livro de regras e bestiário.
+Projeto de RPG de mesa com sistema proprietário, contendo fichas de personagem interativas, livro de regras com magias e técnicas, e um bestiário completo.
 
-## Visão Geral
+## Estrutura de Arquivos
 
-Projeto composto por páginas HTML estáticas que funcionam como ferramentas de consulta e criação de personagens para um sistema customizado de RPG.
+### Páginas Principais
 
-### Conteúdo
+- **`Ficha final.html`** — Ficha de personagem interativa para preenchimento e gerenciamento de stats, habilidades, relíquias e inventário.
+- **`Livro base.html`** — Referência completa do sistema contendo:
+  - 📜 **Magias gerais**: Destruição, Proteção, Ilusão e outras escolas de magia
+  - 🥋 **Técnicas gerais**: divididas por estilos de combate:
+    - **Ofensivo**: Golpe Carregado, Ataque Duplo, Romper Defesa, Golpe Decisivo
+    - **Defensivo**: Postura Defensiva, Desviar, Recuar Tático, Adrenalina de Combate
+    - **Controle**: Derrubar, Empurrão, Desarmar, Marcar
+    - **Mobilidade**: Salto Tático, Correr, Flanquear
+    - **Híbrido**: Lâmina de Vácuo, Sobrecarga Nervosa, Pulso Gravitacional
+  - 🔮 **Relíquias**: organizadas por raridade (Comum, Incomum, Raro, Épico e Lendário)
+  - 🗡️ **Armaduras e armas mágicas** para equipamentos
+- **`bestiario.html`** — Referência de criaturas e monstros do sistema.
 
-- **Livro base.html** — Referência completa do sistema:
-  - Magias gerais e especializadas (Destruição, Proteção, Ilusão, Controle, etc.)
-  - Técnicas gerais divididas por estilo de combate (Ofensivo, Defensivo, Controle, Mobilidade, Híbrido)
-  - Técnicas exclusivas por especialização de classe
-  - Relíquias organizadas por raridade (Comum, Incomum, Raro, Épico, Lendário)
-  - Armaduras e armas mágicas
+### Backups
 
-- **Ficha final.html** — Ficha de personagem interativa para preenchimento.
+- **`Versões estaveis/`** — Backups estáveis dos arquivos principais (Livro base, Ficha final e Bestiário).
 
-- **bestiario.html** — Referência de criaturas e inimigos do sistema.
+## Sistema de Jogo
 
-- **Versões estaveis/** — Backups estáveis dos arquivos principais.
+### Recursos
 
-### Sistema
+- **HP** — Pontos de vida
+- **ST (🟡)** — Stamina, usado para técnicas
+- **FO (🔵)** — Força espiritual / Mana, usado para magias
 
-- Combate baseado em grid com áreas de efeito e posicionamento tático
-- Recursos: **HP** (vida), **ST** (Stamina — 🟡) e **FO** (Força espiritual/Mana — 🔵)
-- Estilos de combate: Ofensivo, Defensivo, Controle, Mobilidade e Híbrido
-- Relíquias equipáveis com efeitos passivos e ativos
+### Estilos de Combate
+
+- **Ofensivo** — Foco em dano e pressão
+- **Defensivo** — Proteção e sobrevivência
+- **Controle** — Manipulação de campo e desarmamento
+- **Mobilidade** — Movimento e posicionamento tático
+- **Híbrido** — Combina ST + FO para habilidades poderosas
+
+### Combate
+
+Baseado em grid com áreas de efeito (blocos 1x3, 3x3, etc.) e posicionamento tático.
