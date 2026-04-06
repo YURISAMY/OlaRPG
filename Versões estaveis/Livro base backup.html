@@ -2058,15 +2058,7 @@
       font-style: normal;
     }
 
-    .tab-btn.criaturas.active {
-      color: #c94040;
-      border-bottom-color: #c94040;
-    }
 
-    .criatura-filter-btn.active {
-      background: rgba(201, 64, 64, 0.15) !important;
-      border-color: rgba(201, 64, 64, 0.4) !important;
-      color: #c94040 !important;
     }
 
     .criatura-card.hidden {
@@ -2110,7 +2102,6 @@
     <button class="tab-btn feiticos" onclick="showTab(&#39;feiticos&#39;)">📖 MAGIAS &amp; TÉCNICAS</button>
     <button class="tab-btn reliquias" onclick="showTab(&#39;reliquias&#39;)">🔮 RELÍQUIAS</button>
     <button class="tab-btn itens" onclick="showTab(&#39;itens&#39;)">⚔️ ITENS</button>
-    <button class="tab-btn criaturas" onclick="window.open('bestiario.html', '_top')">🐉 BESTIARIO</button>
   </div>
 
   <!-- ═══════════════════════════════════════ BASE ═══════════════════════════════════════ -->
@@ -2153,7 +2144,7 @@
           <li>Ações rápidas</li>
         </ul>
         <div class="warn-text">⚠ Zerar a stamina tem consequências terríveis.<br><span
-            style="font-weight:400;font-size:12px;color:rgba(245,234,214,0.6);">Ao zerar a stamina você não pode se mover no seu proximo turno. além disso você perde 5 de CA (min de 10) durante a até seu proximo turno.</span></div>
+            style="font-weight:400;font-size:12px;color:rgba(245,234,214,0.6);">Ao zerar a stamina você não pode se mover no seu proximo turno. além disso você perde 5 de CA (min de 10) até seu proximo turno.</span></div>
       </div>
 
       <!-- FOCO -->
@@ -4798,8 +4789,8 @@
               class="spell-tag tipo-magica">Magia Geral</span></div>
         </div>
         <div class="spell-card-body">
-          <div class="spell-desc">Feixe de energia contínuo em linha reta que atravessa tudo no caminho. Cada alvo
-            recebe 1d6. Pode atingir múltiplos inimigos em sequência.</div>
+          <div class="spell-desc">Splash em cone que atravessa tudo no caminho fazendo 1->3->5 nos blocos a frente. Cada alvo
+            recebe 2d6. Pode atingir múltiplos inimigos em sequência.</div>
         </div>
       </div>
 
@@ -5955,6 +5946,45 @@
       </div>
     </div>
 
+    <div class="spell-section-header escola" style="margin-bottom:16px;">
+      <h3>Estilo Híbrido</h3>
+    </div>
+    <div class="spell-grid">
+      <div class="spell-card tecnica geral" data-type="tecnica" data-scope="geral">
+        <div class="spell-card-top">
+          <div class="spell-name-row"><span class="spell-name">Lâmina de Vácuo</span><span
+              class="spell-cost-badge">4🟡 + 2🔵</span></div>
+          <div class="spell-tags"><span class="spell-tag escola">Híbrido</span><span
+              class="spell-tag tipo-tecnica">Técnica Geral</span></div>
+        </div>
+        <div class="spell-card-body">
+          <div class="spell-desc">Você corta o ar, lançando uma onda de choque que inicia longa (3x1 blocos horizontais a você) e afunila (1x3 blocos retos a sua frente). Causa 3d6 +3 de dano de corte.</div>
+        </div>
+      </div>
+      <div class="spell-card tecnica geral" data-type="tecnica" data-scope="geral">
+        <div class="spell-card-top">
+          <div class="spell-name-row"><span class="spell-name">Sobrecarga Nervosa</span><span
+              class="spell-cost-badge">6🟡 + 4🔵</span></div>
+          <div class="spell-tags"><span class="spell-tag escola">Híbrido</span><span
+              class="spell-tag tipo-tecnica">Técnica Geral</span><span class="spell-tag limitada">1x por Combate</span></div>
+        </div>
+        <div class="spell-card-body">
+          <div class="spell-desc">Seus músculos são levados ao limite. Por 2 turnos, sua Recuperação de ST dobra, mas no 3º turno você perde 10 HP e entra em exaustão.</div>
+        </div>
+      </div>
+      <div class="spell-card tecnica geral" data-type="tecnica" data-scope="geral">
+        <div class="spell-card-top">
+          <div class="spell-name-row"><span class="spell-name">Pulso Gravitacional</span><span
+              class="spell-cost-badge">3🟡 + 3🔵</span></div>
+          <div class="spell-tags"><span class="spell-tag escola">Híbrido</span><span
+              class="spell-tag tipo-tecnica">Técnica Geral</span></div>
+        </div>
+        <div class="spell-card-body">
+          <div class="spell-desc">Até 3 inimigos em uma área de 3x3 a sua frente são puxados para blocos adjacentes a você. O próximo ataque de dano contra eles custa -1 ST.</div>
+        </div>
+      </div>
+    </div>
+
     <!-- ── TÉCNICAS EXCLUSIVAS ── -->
     <div class="spell-section-header tecnica">
       <h3>🟡 TÉCNICAS EXCLUSIVAS — por Especialização</h3>
@@ -6077,7 +6107,7 @@
         </div>
         <div class="spell-card-body">
           <div class="spell-desc">Você se fere voluntariamente perdendo 1d6 HP. O próximo ataque causa +3 dados de dano
-            extra e ignora qualquer redução.</div>
+            extra e ignora qualquer redução. Uma vez por turno. Não acumula.</div>
         </div>
       </div>
 
@@ -6462,7 +6492,7 @@
       <button class="relic-filter-btn active" onclick="filterRelics(&#39;all&#39;,this)">TODAS</button>
       <button class="relic-filter-btn comum" onclick="filterRelics(&#39;comum&#39;,this)">⚪ COMUM (20)</button>
       <button class="relic-filter-btn incomum" onclick="filterRelics(&#39;incomum&#39;,this)">🟢 INCOMUM (20)</button>
-      <button class="relic-filter-btn raro" onclick="filterRelics(&#39;raro&#39;,this)">🔵 RARO (20)</button>
+      <button class="relic-filter-btn raro" onclick="filterRelics(&#39;raro&#39;,this)">🔵 RARO (21)</button>
       <button class="relic-filter-btn epico" onclick="filterRelics(&#39;epico&#39;,this)">🟣 ÉPICO (20)</button>
       <button class="relic-filter-btn lendario" onclick="filterRelics(&#39;lendario&#39;,this)">🏅 LENDÁRIO
         (21)</button>
@@ -6946,7 +6976,7 @@
     </div>
 
     <div class="relic-section-header raro">
-      <h3>🔵 Raro<span class="relic-count">(20)</span></h3>
+      <h3>🔵 Raro<span class="relic-count">(21)</span></h3>
     </div>
     <div class="relic-grid">
       <div class="relic-card raro" data-tier="raro">
@@ -7187,6 +7217,17 @@
         <div class="relic-body">
           <div class="relic-desc">Ao gastar mais 🔵 do que o necessário em uma magia, cada ponto extra adiciona +1 de
             dano fixo ao efeito.</div>
+        </div>
+      </div>
+      <div class="relic-card raro" data-tier="raro">
+        <div class="relic-top">
+          <div class="relic-name-row">
+            <span class="relic-name">Pedra de Sangue de Ceará</span>
+            <span class="relic-tier-badge">🔵 Raro</span>
+          </div>
+        </div>
+        <div class="relic-body">
+          <div class="relic-desc">Diminui o custo de todas as técnicas de Estilo Ofensivo em -1 ST (mínimo 1). Em troca, você perde 2 HP toda vez que usar uma técnica.</div>
         </div>
       </div>
     </div>
