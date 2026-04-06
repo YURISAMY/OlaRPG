@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OlaRPG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d0d;
+      background-image:
+        radial-gradient(ellipse at 15% 10%, rgba(201,146,26,0.04) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 90%, rgba(64,96,201,0.04) 0%, transparent 45%);
+      min-height: 100vh;
+      font-family: 'Crimson Pro', serif;
+      color: rgba(245,234,214,0.85);
+      padding: 40px 20px 80px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .header::before, .header::after {
+      content: '';
+      display: block;
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold, #c9921a), transparent);
+      margin: 0 auto;
+    }
+    .header::after {
+      width: 20px;
+      height: 0;
+      background: none;
+      margin-top: 16px;
+    }
+    .header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      color: #e8b84b;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 30px rgba(201,146,26,0.35);
+      margin: 20px 0 8px;
+    }
+    .header p {
+      font-size: 16px;
+      color: rgba(245,234,214,0.45);
+      font-style: italic;
+      letter-spacing: 0.05em;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .menu-card {
+      display: block;
+      text-decoration: none;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 4px;
+      padding: 24px 28px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #c9921a, transparent);
+      opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+    .menu-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(201,146,26,0.2);
+    }
+    .menu-card:hover::before { opacity: 0.8; }
+
+    .menu-card h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #e8b84b;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .menu-card p {
+      font-size: 14px;
+      color: rgba(245,234,214,0.5);
+      line-height: 1.5;
+    }
+    .menu-card .icon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(245,234,214,0.25);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .ornament {
+      text-align: center;
+      color: #7a5510;
+      font-size: 12px;
+      margin-top: 50px;
+      letter-spacing: 0.4em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>OLARPG</h1>
+    <p>Sistema Homebrew de Mesa</p>
+  </div>
+
+  <div class="menu">
+    <a href="Ficha final.html" class="menu-card">
+      <div class="icon">Ficha de Personagem</div>
+      <h2>FICHA DE PERSONAGEM</h2>
+      <p>Crie e gerencie personagens com atributos, pericias, habilidades, artefatos e inventario.</p>
+    </a>
+
+    <a href="Livro base.html" class="menu-card">
+      <div class="icon">Referencia do Sistema</div>
+      <h2>LIVRO DE REGRAS</h2>
+      <p>Magias, tecnicas, habilidades por classe, reliquias e regras completas do sistema.</p>
+    </a>
+
+    <a href="bestiario.html" class="menu-card">
+      <div class="icon">Criaturas</div>
+      <h2>BESTIARIO</h2>
+      <p>Criaturas e monstros para usar nas suas sessoes.</p>
+    </a>
+  </div>
+
+  <div class="ornament">✦</div>
+</body>
+</html>
