@@ -3,7 +3,11 @@
     "allow": [
       "Bash(gh api:*)",
       "Bash(echo \"ALREADY_EXISTS or $?\")",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(cp \"Ficha final.html\" \"Versões estaveis/Ficha final Backup.html\")",
+      "Bash(cp \"Livro base.html\" \"Versões estaveis/Livro base Backup.html\")",
+      "Bash(cp \"bestiario.html\" \"Versões estaveis/bestiario Backup.html\")",
+      "Bash(git push:*)"
     ]
   }
 }
