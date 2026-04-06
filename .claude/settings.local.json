@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(gh api:*)",
-      "Bash(echo \"ALREADY_EXISTS or $?\")"
+      "Bash(echo \"ALREADY_EXISTS or $?\")",
+      "Bash(node:*)"
     ]
   }
 }
