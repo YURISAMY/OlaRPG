@@ -660,6 +660,41 @@
     background: rgba(180,40,40,0.2);
     border-color: rgba(180,40,40,0.5);
   }
+  .status-btn {
+    position: relative;
+  }
+  .status-btn:hover .status-tooltip {
+    display: block;
+  }
+  .status-btn .status-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a20;
+    border: 1px solid rgba(201,146,26,0.3);
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 11px;
+    color: rgba(245,234,214,0.85);
+    line-height: 1.5;
+    white-space: normal;
+    width: 220px;
+    z-index: 9999;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  }
+  .status-btn .status-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1a20;
+  }
+  #panel-status { overflow: visible !important; }
 
   /* ── SAVE/LOAD ── */
   .actions-bar {
@@ -1258,25 +1293,30 @@
       <label for="pcheck-manipresto" class="pericia-nome">Manipresto</label>
       <span class="pericia-atributo">DES</span>
       <span class="pericia-total" id="ptotal-manipresto">+0</span>
+    </div><div class="pericia-row" id="pericia-row-determinacao">
+      <input type="checkbox" class="pericia-check" id="pcheck-determinacao" onchange="togglePericia(&#39;determinacao&#39;)">
+      <label for="pcheck-determinacao" class="pericia-nome">Determinação</label>
+      <span class="pericia-atributo">SAB</span>
+      <span class="pericia-total" id="ptotal-determinacao">+0</span>
     </div></div>
     </div>
 
     <!-- STATUS -->
-    <div class="panel">
+    <div class="panel" id="panel-status">
       <div class="panel-title">Status Ativos</div>
       <div class="status-grid">
-        <button class="status-btn" onclick="toggleStatus(this)">Lento</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Cego</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Tonto</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Silenciado</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Derrubado</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Enfraquecido</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Enraivecido</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Suprimido</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Sangramento</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Exausto</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Abalado</button>
-        <button class="status-btn" onclick="toggleStatus(this)">Acelerado</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Lento<span class="status-tooltip">Deslocamento reduzido à metade. Reações de movimentação custam +1🟡 ou +1🔵 adicional.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Cego<span class="status-tooltip">Falha em testes de visão. Desvantagem em ataques. Só usa reações contra inimigos adjacentes.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Tonto<span class="status-tooltip">Penalidade de -1 em todos os testes. Se receber dano, perde 1🔵 pela desorientação.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Silenciado<span class="status-tooltip">Impossibilitado de falar ou usar habilidades com palavras de poder. Custo de FO🔵 dobrado.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Derrubado<span class="status-tooltip">No chão. Precisa de Ação Padrão (ou 4🟡) para levantar. Atq corpo a corpo: +2 contra você.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Enfraquecido<span class="status-tooltip">Músculos falham. Dano físico reduzido à metade. Estilo Ofensivo custa +2🟡.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Enraivecido<span class="status-tooltip">Perde o controle. Deve atacar a criatura mais próxima. +2 dano, -3 CA.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Suprimido<span class="status-tooltip">Não pode se aproximar de inimigos. Recuperação de 🟡 reduzida em -2 por turno.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Sangramento<span class="status-tooltip">Perde 1d6 HP no início de cada turno (2 turnos padrão ou por efeito da skill).</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Exausto<span class="status-tooltip">Perde -5 CA. Não pode se mover até o final do próximo turno (ST em 0 ou menor).</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Abalado<span class="status-tooltip">Não pode aprimorar ataques/magias. -2 em testes de Vontade com ST+FO extra.</span></button>
+        <button class="status-btn" onclick="toggleStatus(this)">Acelerado<span class="status-tooltip">+4 blocos de movimento. Recuperação de 🟡 aumenta +1 por turno.</span></button>
       </div>
     </div>
 
@@ -1619,7 +1659,8 @@ const PERICIAS_LIST = [
   { id:'percepcao',   nome:'Percepção',   attr:'sab' },
   { id:'investigacao',nome:'Investigação',attr:'int' },
   { id:'tecnologia',  nome:'Tecnologia',  attr:'int' },
-  { id:'manipresto',  nome:'Manipresto',  attr:'des' }
+  { id:'manipresto',  nome:'Manipresto',  attr:'des' },
+  { id:'determinacao',nome:'Determinação',attr:'sab' }
 ];
 
 // ─── PROFICIENCY BONUS TABLE ──────────────────────────────────────────
@@ -1887,7 +1928,7 @@ function updatePericiasSlotsLabel() {
   document.getElementById('pericias-usadas').textContent = used;
   const bonus = getProfBonus(state.level);
   document.getElementById('pericias-slots-label').textContent =
-    `4 · Prof +${bonus}`;
+    `Prof atual => +${bonus}`;
 }
 
 function renderPericias() {
