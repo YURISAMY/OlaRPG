@@ -443,7 +443,21 @@
   .tag.assinatura { background: rgba(255,215,0,0.12); color: #ffd700; border: 1px solid rgba(255,215,0,0.25); }
   .tag.equipamento { background: rgba(64,192,192,0.15); color: #40c0c0; border: 1px solid rgba(64,192,192,0.2); }
   .tag.consumivel { background: rgba(80,144,232,0.15); color: #5090e8; border: 1px solid rgba(80,144,232,0.2); }
-  .list-remove {
+  .list-edit-btn {
+    background: rgba(201,146,26,0.08);
+    border: 1px solid rgba(201,146,26,0.15);
+    border-radius: 2px;
+    color: var(--gold-dim);
+    cursor: pointer;
+    font-size: 11px;
+    padding: 0 4px;
+    transition: all 0.2s;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .list-edit-btn:hover { background: rgba(201,146,26,0.2); color: var(--gold-light); border-color: rgba(201,146,26,0.4); }
+
+    .list-remove {
     background: none;
     border: none;
     color: rgba(255,255,255,0.15);
@@ -719,6 +733,52 @@
   .action-btn:hover { background: rgba(201,146,26,0.2); }
   .action-btn.secondary { background: rgba(255,255,255,0.04); border-color: var(--border); color: var(--text-dim); }
   .action-btn.secondary:hover { background: rgba(255,255,255,0.08); }
+
+  /* ── EDIT MODAL ── */
+  .edit-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+  }
+  .edit-modal-overlay.open { display: flex; }
+  .edit-modal {
+    background: var(--surface);
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    padding: 24px;
+    width: 420px;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+  .edit-modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .edit-modal .field { margin-bottom: 12px; }
+  .edit-modal input[type="text"], .edit-modal input[type="number"],
+  .edit-modal textarea, .edit-modal select {
+    font-size: 13px;
+  }
+  .edit-modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 700px) {
@@ -997,7 +1057,7 @@
       <div class="panel-title">Identidade</div>
       <input class="identity-name" type="text" id="char-name" placeholder="Nome do personagem" oninput="save()">
 
-      <div class="identity-row">
+      <div class="identity-row three">
         <div class="field">
           <label>Iniciativa</label>
           <input type="number" id="char-iniciativa" placeholder="+0" oninput="save()">
@@ -1006,9 +1066,10 @@
           <label>CA</label>
           <input type="number" id="char-ca" placeholder="10" oninput="save()">
         </div>
-      </div>
-
-      <div class="identity-row">
+        <div class="field">
+          <label>CD</label>
+          <input type="number" id="char-cd" placeholder="" oninput="save()">
+        </div>
         <div class="field">
           <label>Arquétipo</label>
           <select id="char-arquetipo" onchange="onArquetipoChange(); save()">
@@ -1471,6 +1532,10 @@
     <!-- ITENS -->
     <div class="panel">
       <div class="panel-title">Itens &amp; Equipamento</div>
+      <div class="field" style="margin-bottom:14px;">
+        <label>💰 Ouro</label>
+        <input type="number" id="char-ouro" placeholder="0" oninput="save()">
+      </div>
       <div class="list-area" id="list-itens"><div class="empty-state">Nenhum item adicionado.</div></div>
       <div class="add-form">
         <div class="add-form-row">
@@ -2084,6 +2149,7 @@ function _renderSkillsWithBtns(listId, items, removeCallback, listKey) {
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <button class="list-edit-btn" onclick="editGenericSkill('${listKey}', ${i})" title="Editar">✎</button>
         ${useBtn}
         <button class="list-remove" onclick="${removeCallback}(${i})">x</button>
       </div>
@@ -2152,6 +2218,7 @@ function _renderPassivaWithBtns() {
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <button class="list-edit-btn" onclick="editPassiva(${i})" title="Editar">✎</button>
         ${useBtn}
         <button class="list-remove" onclick="removePassiva(${i})">x</button>
       </div>
@@ -2222,6 +2289,7 @@ function _renderItensWithBtns() {
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <button class="list-edit-btn" onclick="editItem(${i})" title="Editar">✎</button>
         ${useBtn}
         <button class="list-remove" onclick="removeItem(${i})">x</button>
       </div>
@@ -2346,6 +2414,7 @@ function _renderMagiaWithBtns(listId, items, removeCallback, listKey) {
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <button class="list-edit-btn" onclick="editGenericSkill('${listKey}', ${i})" title="Editar">✎</button>
         ${useBtn}
         <button class="list-remove" onclick="${removeCallback}(${i})">x</button>
       </div>
@@ -2365,6 +2434,8 @@ function collectState() {
     name: document.getElementById('char-name').value,
     iniciativa: document.getElementById('char-iniciativa').value,
     ca: document.getElementById('char-ca').value,
+    cd: document.getElementById('char-cd').value,
+    ouro: document.getElementById('char-ouro').value,
     arquetipo: document.getElementById('char-arquetipo').value,
     subclasse: document.getElementById('char-subclasse').value,
     especializacao: document.getElementById('char-especializacao').value,
@@ -2494,6 +2565,140 @@ function importJSON(event) {
   event.target.value = '';
 }
 
+
+
+// ─── GENERIC EDIT FUNCTIONS ──────────────────────────────────────────
+function editGenericSkill(listKey, idx) {
+  const list = getListByType(listKey);
+  if (!list || idx >= list.length) return;
+  const item = list[idx];
+  const fields = [
+    {key:'name', label:'Nome', type:'text', placeholder:'Nome'},
+    {key:'desc', label:'Descrição', type:'textarea', placeholder:'Descrição (opcional)'},
+    {key:'tipo', label:'Tipo', type:'select', options:['passiva','rapida','padrao','assinatura']},
+    {key:'custo', label:'Custo', type:'text', placeholder:'Ex: 3🟡'},
+  ];
+  if (listKey !== 'itens') {
+    fields.push({key:'recurso', label:'Recurso', type:'select', options:['','st','fo']});
+  }
+  openEditModal('Editar: ' + (item.name || 'Item'), item, fields, listKey, idx);
+}
+
+function editPassiva(idx) {
+  const item = state.passivas[idx];
+  if (!item) return;
+  const fields = [
+    {key:'name', label:'Nome', type:'text', placeholder:'Nome'},
+    {key:'desc', label:'Descrição', type:'textarea', placeholder:'Descrição (opcional)'},
+    {key:'origem', label:'Origem', type:'text', placeholder:'Ex: Marcial'},
+    {key:'custo', label:'Custo', type:'text', placeholder:'Ex: 2🟡'},
+    {key:'recurso', label:'Recurso', type:'select', options:['st','fo','']},
+  ];
+  openEditModal('Editar: ' + (item.name || 'Passiva'), item, fields, 'passivas', idx);
+}
+
+function editItem(idx) {
+  const item = state.itens[idx];
+  if (!item) return;
+  const fields = [
+    {key:'name', label:'Nome', type:'text', placeholder:'Nome do item'},
+    {key:'desc', label:'Descrição', type:'textarea', placeholder:'Descrição (opcional)'},
+    {key:'categoria', label:'Categoria', type:'select', options:['equipamento','consumivel','outro']},
+    {key:'quantidade', label:'Quantidade', type:'number', placeholder:'1'},
+  ];
+  openEditModal('Editar: ' + (item.name || 'Item'), item, fields, 'itens', idx);
+}
+
+// ─── EDIT MODAL ──────────────────────────────────────────────────────
+let _editState = { listKey: '', index: -1 };
+
+function openEditModal(title, item, fields, listKey, index) {
+  _editState = { listKey, index, item: {...item} };
+  document.getElementById('edit-modal-title').textContent = title || 'Editar';
+  const container = document.getElementById('edit-modal-fields');
+  container.innerHTML = fields.map(f => {
+    const val = typeof item[f.key] !== 'undefined' ? item[f.key] : '';
+    let input;
+    if (f.type === 'textarea') {
+      input = `<textarea id="edit-field-${f.key}" rows="3"${f.placeholder ? ' placeholder="'+f.placeholder+'"' : ''}>${val}</textarea>`;
+    } else if (f.type === 'select') {
+      input = `<select id="edit-field-${f.key}">${f.options.map(o =>
+        `<option value="${o}"${val==o?' selected':''}>${o}</option>`
+      ).join('')}</select>`;
+    } else {
+      input = `<input type="${f.type||'text'}" id="edit-field-${f.key}" value="${val}"${f.placeholder ? ' placeholder="'+f.placeholder+'"' : ''}>`;
+    }
+    return `<div class="field"><label>${f.label}</label>${input}</div>`;
+  }).join('');
+  document.getElementById('edit-modal-overlay').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-modal-overlay').classList.remove('open');
+  _editState = { listKey:'', index:-1 };
+}
+
+function saveEditModal() {
+  const e2 = _editState;
+  if (!e2.listKey || e2.index === -1) return;
+  const keys = Object.keys(e2.item);
+  keys.forEach(f => {
+    const el = document.getElementById('edit-field-' + f);
+    if (el) e2.item[f] = (f === 'quantidade') ? (parseInt(el.value) || 0) : el.value;
+  });
+  const list = getListByType(e2.listKey);
+  if (list && e2.index < list.length) {
+    Object.assign(list[e2.index], e2.item);
+    renderAll();
+    save();
+  }
+  closeEditModal();
+}
+
+function getListByType(listKey) {
+  const map = {
+    skillsBase: 'skillsBase', skillsSpec: 'skillsSpec',
+    passivas: 'passivas', itens: 'itens',
+    magiasGerais: 'magiasGerais', tecnicasGerais: 'tecnicasGerais', exclusivas: 'exclusivas'
+  };
+  return state[map[listKey]] || null;
+}
+
+function renderAll() {
+  renderSkills();
+  renderPassivas();
+  renderItens();
+  renderMagias();
+}
+
+function openSkillEdit(listKey, idx) {
+  const list = getListByType(listKey);
+  if (!list || idx >= list.length) return;
+  const item = list[idx];
+  const hasResource = (listKey === 'skillsBase' || listKey === 'skillsSpec' || listKey === 'passivas' || listKey === 'magiasGerais' || listKey === 'tecnicasGerais' || listKey === 'exclusivas');
+  let fields = [{key:'name', label:'Nome', type:'text', placeholder:'Nome'}];
+  fields.push({key:'descricao', label:'Descrição', type:'textarea', placeholder:'Descrição'});
+  const fullItem = { name: item.name, descricao: item.desc||'', tipo: item.tipo||'padrao', custo: item.custo||'', recurso: item.recurso||'' };
+  fields.push({key:'tipo', label:'Tipo', type:'select', options:['passiva','rapida','padrao','assinatura']});
+  fields.push({key:'custo', label:'Custo', type:'text', placeholder:'Ex: 3🟡'});
+  if (hasResource) fields.push({key:'recurso', label:'Recurso', type:'select', options:['','st','fo']});
+  const labels = {passiva:'Passiva',rapida:'Rápida',padrao:'Padrão',assinatura:'⭐ Assinatura'};
+  openEditModal('Editar: ' + item.name, fullItem, fields, listKey, idx);
+}
+
+function openItemEdit(idx) {
+  const item = state.itens[idx];
+  if (!item) return;
+  const fullItem = { name: item.name||'', desc: item.desc||'', categoria: item.categoria||'outro', quantidade: item.quantidade||1 };
+  const fields = [
+    {key:'name', label:'Nome', type:'text', placeholder:'Nome'},
+    {key:'desc', label:'Descrição', type:'textarea', placeholder:'Descrição'},
+    {key:'categoria', label:'Categoria', type:'select', options:['equipamento','consumivel','outro']},
+    {key:'quantidade', label:'Quantidade', type:'number', placeholder:'1'}
+  ];
+  openEditModal('Editar: ' + item.name, fullItem, fields, 'itens', idx);
+}
+
 function clearAll() {
   if (!confirm('Limpar todos os dados da ficha?')) return;
   localStorage.removeItem('rpg-ficha');
@@ -2501,5 +2706,18 @@ function clearAll() {
 }
 </script>
 
+
+
+<!-- EDIT MODAL -->
+<div class="edit-modal-overlay" id="edit-modal-overlay" onclick="closeEditModal(event)">
+  <div class="edit-modal" onclick="event.stopPropagation()">
+    <div class="edit-modal-title" id="edit-modal-title">Editar</div>
+    <div id="edit-modal-fields"></div>
+    <div class="edit-modal-actions">
+      <button class="add-btn danger" onclick="closeEditModal(true)">Cancelar</button>
+      <button class="add-btn" onclick="saveEditModal()">Salvar</button>
+    </div>
+  </div>
+</div>
 
 </body></html>
