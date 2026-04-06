@@ -1,0 +1,2460 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)file:///C:/Users/yuri/Downloads/bestiario-v2.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bestiário — Sistema RPG</title>
+  <link href="file:///C:/Users/yuri/Downloads/Fichas%20de%20Classe%20%E2%80%94%20Sistema%20RPG%202.0_files/css2" rel="stylesheet">
+  <style>
+    :root {
+      --parchment: #f5ead6;
+      --gold: #c9921a;
+      --gold-light: #e8b84b;
+      --gold-dim: #7a5510;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0d0d0d;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(139, 32, 32, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(26, 40, 96, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(26, 64, 32, 0.06) 0%, transparent 60%);
+      min-height: 100vh;
+      font-family: 'Crimson Pro', serif;
+      color: var(--parchment);
+      padding: 40px 20px 80px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .header::before {
+      content: '';
+      display: block;
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 0 auto 24px;
+    }
+
+    .header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: var(--gold-light);
+      text-shadow: 0 0 40px rgba(201, 146, 26, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8);
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 16px;
+      color: rgba(245, 234, 214, 0.5);
+      font-style: italic;
+    }
+
+    .header::after {
+      content: '\2694 \2726 \2694';
+      display: block;
+      margin-top: 16px;
+      color: var(--gold-dim);
+      font-size: 14px;
+      letter-spacing: 0.3em;
+    }
+
+    .base-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .base-card {
+      background: #0d0d10;
+      border: 1px solid rgba(201, 146, 26, 0.15);
+      border-radius: 4px;
+      padding: 20px 22px;
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .base-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .base-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    }
+
+    .base-card.medium {
+      width: min(340px, 100%);
+    }
+
+    .base-card-title {
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .base-card p {
+      font-size: 13px;
+      color: rgba(245, 234, 214, 0.65);
+      line-height: 1.65;
+      margin-bottom: 8px;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .stat-pill {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .stat-pill.hp {
+      background: rgba(180, 40, 40, 0.12);
+      color: #e07070;
+      border-color: rgba(180, 40, 40, 0.25);
+    }
+
+    .stat-pill.st {
+      background: rgba(201, 146, 26, 0.12);
+      color: var(--gold-light);
+      border-color: rgba(201, 146, 26, 0.25);
+    }
+
+    .stat-pill.fo {
+      background: rgba(64, 96, 201, 0.12);
+      color: #8aa0e8;
+      border-color: rgba(64, 96, 201, 0.25);
+    }
+
+    .stat-pill.rec {
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(245, 234, 214, 0.5);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .skill-base-row {
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+      margin-bottom: 8px;
+    }
+
+    .skill-base-row .skname {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      color: rgba(245, 234, 214, 0.9);
+      letter-spacing: 0.04em;
+    }
+
+    .skill-base-row .skcost {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--gold-dim);
+      margin-left: 6px;
+    }
+
+    .skill-base-row .skdesc {
+      font-size: 12px;
+      color: rgba(245, 234, 214, 0.55);
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+
+    .criatura-filter-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .criatura-filter-btn {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 3px;
+      color: rgba(245, 234, 214, 0.5);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .criatura-filter-btn:hover {
+      color: rgba(245, 234, 214, 0.9);
+    }
+
+    .criatura-filter-btn.active {
+      background: rgba(201, 64, 64, 0.15) !important;
+      border-color: rgba(201, 64, 64, 0.4) !important;
+      color: #c94040 !important;
+    }
+
+    .criatura-card.hidden {
+      display: none !important;
+    }
+
+    /* TABS */
+    .main-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 32px;
+      border-bottom: 1px solid rgba(201, 146, 26, 0.2);
+    }
+
+    .main-tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: rgba(245, 234, 214, 0.4);
+      font-family: 'Cinzel', serif;
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      padding: 12px 32px;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      top: 1px;
+    }
+
+    .main-tab-btn:hover {
+      color: rgba(245, 234, 214, 0.8);
+    }
+
+    .main-tab-btn.active {
+      color: var(--gold-light);
+      border-bottom-color: var(--gold);
+    }
+
+    .main-tab-btn.battle.active {
+      color: #c94040;
+      border-bottom-color: #c94040;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ADD BUTTON on bestiary cards */
+    .add-battle-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(201, 64, 64, 0.15);
+      border: 1px solid rgba(201, 64, 64, 0.4);
+      color: #c94040;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 10;
+      opacity: 0;
+    }
+
+    .base-card:hover .add-battle-btn {
+      opacity: 1;
+    }
+
+    .add-battle-btn:hover {
+      background: rgba(201, 64, 64, 0.3);
+    }
+
+    /* BATTLE TAB */
+    .battle-empty {
+      text-align: center;
+      padding: 80px 20px;
+      color: rgba(245, 234, 214, 0.3);
+      font-style: italic;
+      font-size: 16px;
+    }
+
+    .battle-monster {
+      background: #0d0d10;
+      border: 1px solid rgba(201, 64, 64, 0.2);
+      border-radius: 6px;
+      padding: 24px;
+      margin-bottom: 24px;
+      position: relative;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .battle-monster::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #c94040, transparent);
+    }
+
+    .battle-monster-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .battle-monster-name {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #c94040;
+      text-shadow: 0 0 16px rgba(201, 64, 64, 0.3);
+      letter-spacing: 0.08em;
+    }
+
+    .battle-monster-subtitle {
+      font-size: 12px;
+      color: rgba(245, 234, 214, 0.4);
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    .remove-monster-btn {
+      background: rgba(180, 40, 40, 0.15);
+      border: 1px solid rgba(180, 40, 40, 0.3);
+      color: #e07070;
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .remove-monster-btn:hover {
+      background: rgba(180, 40, 40, 0.3);
+    }
+
+    .battle-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .battle-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .battle-stat-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(245, 234, 214, 0.4);
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .battle-stat-bar {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .battle-stat-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(245, 234, 214, 0.7);
+      width: 24px;
+      height: 24px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .battle-stat-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .battle-stat-value {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      width: 45px;
+      padding: 2px 0;
+      border: none;
+      background: rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      outline: none;
+      color: inherit;
+      -moz-appearance: textfield;
+    }
+
+    .battle-stat-value::-webkit-inner-spin-button,
+    .battle-stat-value::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+
+    /* TOAST NOTIFICATION */
+    .battle-toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: rgba(13, 13, 16, 0.95);
+      border: 1px solid rgba(201, 64, 64, 0.5);
+      border-radius: 6px;
+      padding: 14px 24px;
+      color: var(--parchment);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px;
+      z-index: 9999;
+      animation: toastIn 0.3s ease, toastOut 0.3s ease 2s forwards;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .battle-toast .toast-name {
+      color: #c94040;
+      font-weight: 700;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastOut {
+      from { opacity: 1; }
+      to { opacity: 0; transform: translateY(-10px); }
+    }
+
+    .battle-stat-value.hp-color {
+      color: #e07070;
+    }
+
+    .battle-stat-value.st-color {
+      color: var(--gold-light);
+    }
+
+    .battle-stat-value.fo-color {
+      color: #8aa0e8;
+    }
+
+    .battle-stat-max {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(245, 234, 214, 0.3);
+    }
+
+    .battle-bar-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 2px;
+      margin-top: 4px;
+      overflow: hidden;
+    }
+
+    .battle-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+
+    .battle-bar-fill.hp {
+      background: linear-gradient(90deg, #900, #c44);
+    }
+
+    .battle-bar-fill.st {
+      background: linear-gradient(90deg, #7a5510, #e8b84b);
+    }
+
+    .battle-bar-fill.fo {
+      background: linear-gradient(90deg, #0d1430, #4060c9);
+    }
+
+    .battle-meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 16px;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    .battle-meta-ca {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold-light);
+      white-space: nowrap;
+      padding-right: 12px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .battle-meta-attr {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .battle-meta-attr span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(245, 234, 214, 0.55);
+    }
+
+    .battle-meta-attr .attr-val {
+      font-weight: 700;
+      color: rgba(245, 234, 214, 0.85);
+    }
+
+    .battle-skills-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(245, 234, 214, 0.4);
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .battle-skill-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .battle-skill-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .battle-skill-name {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      color: rgba(245, 234, 214, 0.9);
+      letter-spacing: 0.04em;
+      flex: 1;
+    }
+
+    .battle-skill-cost {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: var(--gold-dim);
+      white-space: nowrap;
+    }
+
+    .battle-skill-use-btn {
+      background: rgba(201, 64, 64, 0.12);
+      border: 1px solid rgba(201, 64, 64, 0.3);
+      color: #c94040;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      padding: 4px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .battle-skill-use-btn:hover:not(:disabled) {
+      background: rgba(201, 64, 64, 0.25);
+      color: #e06060;
+    }
+
+    .battle-skill-use-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .battle-skill-desc {
+      font-size: 11px;
+      color: rgba(245, 234, 214, 0.5);
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    .battle-skill-no-cost {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      color: rgba(245, 234, 214, 0.3);
+    }
+
+    .battle-log {
+      max-width: 720px;
+      margin: 24px auto 0;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      padding: 16px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .battle-log-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(245, 234, 214, 0.4);
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+
+    .battle-log-entry {
+      font-size: 11px;
+      color: rgba(245, 234, 214, 0.5);
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .battle-log-entry .log-monor {
+      color: #c94040;
+    }
+
+    .battle-log-entry .log-skill-name {
+      color: rgba(245, 234, 214, 0.8);
+    }
+
+    .battle-log-entry .log-cost-st {
+      color: #e8b84b;
+    }
+
+    .battle-log-entry .log-cost-fo {
+      color: #8aa0e8;
+    }
+
+    .battle-actions {
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .clear-battle-btn {
+      background: rgba(180, 40, 40, 0.1);
+      border: 1px solid rgba(180, 40, 40, 0.25);
+      color: rgba(224, 112, 112, 0.7);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      padding: 8px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .clear-battle-btn:hover {
+      background: rgba(180, 40, 40, 0.2);
+      color: #e07070;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 80px;
+      color: rgba(245, 234, 214, 0.2);
+      font-size: 12px;
+      font-style: italic;
+      letter-spacing: 0.1em;
+    }
+
+    .footer::before {
+      content: '';
+      display: block;
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+      margin: 0 auto 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Bestiário</h1>
+    <p>Inimigos catalogados por espécie e escala de ameaça</p>
+  </div>
+
+  <div class="main-tabs">
+    <button class="main-tab-btn" onclick="switchTab(&#39;bestiary&#39;)">📖 Bestiário</button>
+    <button class="main-tab-btn battle active" onclick="switchTab(&#39;battle&#39;)">⚔️ Batalha</button>
+  </div>
+
+  <div class="tab-content" id="tab-bestiary">
+  <div class="criatura-filter-bar">
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;all&#39;,this)">TODAS</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;besta&#39;,this)">🐸 Bestas</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;humanoide&#39;,this)">👤 Humanoides</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;morto-vivo&#39;,this)">💀 Mortos-Vivos</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;sobrenatural&#39;,this)">🌑 Sobrenaturais</button>
+    <button class="criatura-filter-btn active" onclick="filterCriaturas(&#39;celestial&#39;,this)">✨ Celestiais</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;monstruosidade&#39;,this)">🦕 Monstruosidades</button>
+  </div>
+
+  <div class="base-grid" id="criaturas-container">
+
+      <div class="base-card medium criatura-card hidden" data-cat="besta" style="overflow: visible;">
+        <div class="base-card-title" style="color:#3a9050; margin-bottom:4px;">Lobo</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Besta Média —
+          Matilha</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Predadores
+          cooperativos. Sozinhos são ameaça menor; em matilha, flanqueiam com precisão assustadora.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 18</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +3</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +2 | DES: +2 | CON: +1 | INT: -4 | CAR: -2 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Bote de Matilha - Passiva</span>
+          <div class="skdesc">Se dois aliados estiverem adjacentes ao alvo, ataque causa +1d4 extra. Alvo rola CON 12 ou
+            cai.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida - Padrão</span><span class="skcost">2🟡</span>
+          <div class="skdesc">1d6+2 perfurante. Alvo rola CON 12 ou fica Lento por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Farejar - Rápida</span>
+          <div class="skdesc">Detecta criaturas em furtividade num raio de 6 blocos.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="besta" style="overflow: visible;">
+        <div class="base-card-title" style="color:#3a9050; margin-bottom:4px;">Urso Pardo</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Besta Grande</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Territorial e
+          implacável. Mães com filhotes são ainda mais perigosas.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 52</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +4 | DES: +0 | CON: +3 | INT: -4 | CAR: -2 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Garras e Dentes - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Dois ataques: 1d8+4 contundente e 1d6+4 perfurante. Podem mirar alvos diferentes.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Abraço do Urso - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Agarra um alvo adjacente. Enquanto agarrado: 2d6+4 contundente por turno. O Urso pode se
+            mover carregando o alvo.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Fúria Ferida - Passiva</span>
+          <div class="skdesc">Abaixo de 50% HP: ataques causam +1d6 extra e o Urso nunca recua.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="besta" style="overflow: visible;">
+        <div class="base-card-title" style="color:#3a9050; margin-bottom:4px;">Leão</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Besta Grande</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Apex predador. Caça em
+          grupos mas ataca solo quando confiante.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 45</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +3 | DES: +2 | CON: +2 | INT: -4 | CAR: -1 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Salto Predatório - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Move até 4 blocos e ataca. Se percorreu 3+, causa 2d6+3 e derruba (FOR 14). Mordida
+            gratuita no alvo caído.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Rugido - Rápida</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Inimigos em 3 blocos rolam SAB 13 ou -1 dado de dano por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Jugular - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">1d8+5 perfurante. Alvo derrubado recebe o dobro do dano.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="besta" style="overflow: visible;">
+        <div class="base-card-title" style="color:#3a9050; margin-bottom:4px;">Águia Gigante</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Besta Média —
+          Voadora</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Planadores silenciosos
+          que atacam com velocidade devastadora de cima.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 38</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +4</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +1 | DES: +3 | CON: +1 | INT: -1 | CAR: +0 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mergulho em Picada - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">De 5+ blocos acima: 2d6+3 cortante e derruba (FOR 13). Não funciona no chão.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Arrastar - Rápida</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Agarra alvo Pequeno ou menor e sobe até 4 blocos. Soltar causa queda (1d6 por bloco).
+          </div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Visão Aguçada - Passiva</span>
+          <div class="skdesc">Nunca sofre penalidade por distância. Detecta furtivos a mais de 4 blocos de altitude.
+          </div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="besta" style="overflow: visible;">
+        <div class="base-card-title" style="color:#3a9050; margin-bottom:4px;">Crocodilo</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Besta Grande —
+          Anfíbio</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Emboscadores
+          aquáticos. Em terra são lentos; na água, letais.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 48</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 12 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +4 | DES: -1 | CON: +3 | INT: -4 | CAR: -3 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Travada - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d10+4 perfurante. Se acertar, alvo fica Agarrado — dano automático a cada turno sem nova
+            ação.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Girar - Rápida</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Com alvo agarrado: 2d6+4 e alvo perde ação rápida. Só em água ou superfície molhada.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Imóvel - Passiva</span>
+          <div class="skdesc">Não pode ser empurrado ou derrubado com os quatro membros no chão.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="besta" style="overflow: visible;">
+        <div class="base-card-title" style="color:#3a9050; margin-bottom:4px;">Manada de Ratos</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Enxame de Bestas
+          Minúsculas</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Individualmente
+          insignificantes. Juntos, capazes de derrubar um cavaleiro pela exaustão.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 22</span>
+          <span class="stat-pill st">🟡 ST: 6</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 10 | Atq: +3</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            -2 | DES: +2 | CON: +0 | INT: -4 | CAR: -3 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Roer - Padrão</span><span class="skcost">1🟡</span>
+          <div class="skdesc">1d4 perfurante + Sangramento (1 HP/turno, 2 turnos). Não pode ser bloqueado por escudos.
+          </div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Enxame Disperso - Passiva</span>
+          <div class="skdesc">Resistência a dano de armas. Vulnerável a dano em área.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Infestação - Passiva</span>
+          <div class="skdesc">Alvos atingidos rolam CON 12 ou ficam Tontos por 1 turno de repulsa.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="besta" style="overflow: visible;">
+        <div class="base-card-title" style="color:#3a9050; margin-bottom:4px;">Tubarão-Martelo</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Besta Grande —
+          Elite</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Na água não há
+          adversários — há presas.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 65</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +6</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +5 | DES: +1 | CON: +4 | INT: -4 | CAR: -3 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Sentido Eletromagnético - Passiva</span>
+          <div class="skdesc">Detecta criaturas em água num raio de 20 blocos, mesmo invisíveis.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Impacto de Cabeça - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Avança 6 blocos e golpeia: 2d8+5 contundente e derruba (FOR 15). Parede: +1d6 extra.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Frenesim de Sangue - Passiva</span>
+          <div class="skdesc">Vantagem em ataques contra criaturas abaixo de 50% HP na água.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Bandido</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Criminosos comuns.
+          Perigosos em grupo, covardes quando isolados.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 18</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 12 | Atq: +3</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +0 | DES: +1 | CON: +1 | INT: -1 | CAR: +0 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Ataque Rápido - Padrão</span><span class="skcost">2🟡</span>
+          <div class="skdesc">1d6+2 cortante. Age primeiro no combate se não foi surpreendido.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Recuar - Rápida</span><span class="skcost">1🟡</span>
+          <div class="skdesc">Move 3 blocos sem provocar reações ao perceber desvantagem.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Em Bando - Passiva</span>
+          <div class="skdesc">Com 3+ bandidos vivos: todos têm +1 dano e não fogem.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Guarda da Cidade</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Disciplinados e leais.
+          Raramente se aventuram em heroísmo sozinhos.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 24</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +4</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +1 | DES: +0 | CON: +1 | INT: +0 | CAR: +0 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Lança e Escudo - Padrão</span><span class="skcost">2🟡</span>
+          <div class="skdesc">1d6+2 perfurante. Alcance 2 blocos. Com escudo: +1 CA até o próximo turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Chamado de Reforço - Rápida</span>
+          <div class="skdesc">1x por combate — 1d4 guardas chegam em 3 turnos se estiver numa cidade.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Formação - Passiva</span>
+          <div class="skdesc">Adjacente a outro Guarda: ambos têm CA+1 e redução de 1 em todo dano.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Mago Inimigo</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio —
+          Arcano</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Estudiosos de artes
+          proibidas. Evitam contato físico a todo custo.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 28</span>
+          <span class="stat-pill st">🟡 ST: 6</span>
+          <span class="stat-pill fo">🔵 FO: 12</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 5🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 12 | Atq: +3</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            -1 | DES: +1 | CON: +0 | INT: +3 | CAR: +0 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Projétil Arcano - Padrão</span><span class="skcost">3🔵</span>
+          <div class="skdesc">1d8+3 arcano. Alcance 8 blocos. Ignora armaduras físicas.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Escudo Arcano - Rápida</span><span class="skcost">2🔵</span>
+          <div class="skdesc">Reduz próximo dano em 1d6. Usável fora do turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Relâmpago - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">2d6 raio em linha reta por 8 blocos. DES 14 reduz à metade.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Posição Estratégica - Passiva</span>
+          <div class="skdesc">Mantém 4+ blocos de distância. Se adjacente, usa Escudo Arcano gratuitamente 1x.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Elfo Arqueiro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Graciosos e letais à
+          distância. Raramente se engajam corpo a corpo por escolha.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 30</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 6</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 3🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +0 | DES: +3 | CON: +1 | INT: +2 | CAR: +1 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Chuva de Flechas - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Dois ataques de 1d8+4. Alcance 12 blocos. Sem penalidade por distância.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Passo Feérico - Rápida</span><span class="skcost">2🔵</span>
+          <div class="skdesc">Teleporta até 4 blocos para espaço visível.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Flecha Sibilante - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d10+4 e aplica Silenciado por 2 turnos. SAB 14 anula o silêncio.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Visão no Escuro - Passiva</span>
+          <div class="skdesc">Sem penalidades por escuridão.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Anão Clã-Pedra</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Guerreiros de pedra e
+          orgulho. Nunca recuam de uma batalha justa.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 40</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 3</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 2🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +3 | DES: +0 | CON: +4 | INT: +0 | CAR: +0 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Machado de Guerra - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d12+3 cortante. Ignora 2 pontos de CA de armaduras pesadas.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Postura Inabalável - Passiva</span>
+          <div class="skdesc">Não pode ser empurrado ou derrubado com pelo menos 4🟡.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Resistência Anã - Passiva</span>
+          <div class="skdesc">Vantagem em resistência a veneno. Redução de 2 em dano de veneno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Contra-Ataque - Rápida</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Reação a ataque corpo a corpo — ataca de volta: 1d8+3 contundente.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Cavaleiro Negro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio —
+          Elite</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Servos de causas
+          corrompidas. A armadura esconde um coração que escolheu a escuridão.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 65</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 4</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 4🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 18 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +4 | DES: +1 | CON: +3 | INT: +1 | CAR: +1 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Lança de Carga - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Requer 4+ blocos de movimento antes. 2d10+5 e derruba (FOR 16). Desmonta montados.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Juramento Sombrio - Passiva</span>
+          <div class="skdesc">Atacar o mesmo alvo por 2 turnos consecutivos: +1d6 de dano sombrio extra.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Escudo do Tirano - Rápida</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Anula completamente o próximo ataque. Usável fora do turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Aura de Medo - Passiva</span>
+          <div class="skdesc">Inimigos em 3 blocos rolam SAB 14 ou -1 dado de dano por 1 turno.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Assassino da Guilda</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio —
+          Furtivo</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Profissionais da
+          morte. Raramente erram; quando erram, recalculam.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 48</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 6</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 3🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 15 | Atq: +6</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +1 | DES: +4 | CON: +2 | INT: +2 | CAR: +1 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Das Sombras - Passiva</span>
+          <div class="skdesc">Ataques de furtividade: +2d6 extra e aplica status livre (Cego, Tonto ou Lento, 1 turno).
+          </div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Veneno Raro - Passiva</span>
+          <div class="skdesc">Todo ataque físico aplica veneno: 1d4/turno por 3 turnos. CON 15 anula.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Desaparecer - Rápida</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Some e reposiciona até 5 blocos. 1x por turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Golpe de Execução - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Apenas alvos abaixo de 30% HP — dano fixo 4x arma, ignora todas as reduções.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Necromante Renegado</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio —
+          Chefe</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Obsessão com
+          imortalidade corrupta. Nunca entra no campo — deixa os mortos fazerem o trabalho.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 55</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 18</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 / 7🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +4</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            -1 | DES: +1 | CON: +1 | INT: +4 | CAR: +0 | SAB: +3</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Raio Necrótico - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">2d8+4 necrótico. Alcance 8 blocos. Cura o Necromante em metade do dano.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Animar Morto - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Reanima um inimigo morto como servo com 50% HP. Age no turno do Necromante.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Escudo dos Mortos - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Sacrifica um servo para anular completamente o próximo ataque recebido.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Vínculo Necrótico - Passiva</span>
+          <div class="skdesc">Com ao menos um servo ativo: RD 2 e recupera 2🔵 por turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Onda de Morte - Padrão</span><span class="skcost">7🔵</span>
+          <div class="skdesc">3d6 necrótico em 3 blocos ao redor — servos curam em vez de sofrer dano. 1x por combate.
+          </div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="morto-vivo" style="overflow: visible;">
+        <div class="base-card-title" style="color:#7060a0; margin-bottom:4px;">Zumbi</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Morto-Vivo Médio
+        </p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Corpos reanimados por
+          necromancia bruta. Lentos, mas incansáveis e insensíveis à dor.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 24</span>
+          <span class="stat-pill st">🟡 ST: 0</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: sem recuperação</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 8 | Atq: +3</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +1 | DES: -2 | CON: +3 | INT: -4 | CAR: -3 | SAB: -2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Podre - Padrão</span><span class="skcost">0🟡</span>
+          <div class="skdesc">1d6+1 contundente+perfurante. Aplica Doença: alvo perde 1 HP máximo por hora até curado.
+          </div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Implacável - Passiva</span>
+          <div class="skdesc">1x por combate: ao reduzir a 0 HP, fica com 1 HP em vez disso.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Insensível - Passiva</span>
+          <div class="skdesc">Imune a veneno, medo e status mentais. Dano cortante reduzido à metade.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="morto-vivo" style="overflow: visible;">
+        <div class="base-card-title" style="color:#7060a0; margin-bottom:4px;">Esqueleto Guerreiro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Morto-Vivo Médio
+        </p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Restos reanimados de
+          guerreiros. Sem vontade própria, seguem ordens com eficiência mecânica.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 18</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +3</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +1 | DES: +2 | CON: +0 | INT: -2 | CAR: -2 | SAB: -1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Espada Enferrujada - Padrão</span><span class="skcost">2🟡</span>
+          <div class="skdesc">1d6+2 cortante. Se o alvo tiver armadura de couro ou menor: +1d4 perfurante.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Ossos Frágeis - Passiva</span>
+          <div class="skdesc">Dobro de dano de ataques contundentes. Redução de 3 em dano perfurante.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Não-Morto - Passiva</span>
+          <div class="skdesc">Imune a veneno, sono, encantamento e medo. Não precisa respirar ou dormir.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="morto-vivo" style="overflow: visible;">
+        <div class="base-card-title" style="color:#7060a0; margin-bottom:4px;">Carniçal</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Morto-Vivo Médio —
+          Veterinário</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Predadores noturnos. O
+          cheiro de medo e sangue os atrai irresistivelmente.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 36</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +4</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +2 | DES: +2 | CON: +2 | INT: -2 | CAR: -1 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Garras Paralisantes - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d6+3 cortante. CON 13 ou fica Paralisado por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Festim - Padrão</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Morde alvo Paralisado: 2d6+3 e cura o Carniçal em metade do dano.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Faro de Cadáver - Passiva</span>
+          <div class="skdesc">Detecta criaturas mortas ou abaixo de 30% HP em até 10 blocos, mesmo por paredes.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="morto-vivo" style="overflow: visible;">
+        <div class="base-card-title" style="color:#7060a0; margin-bottom:4px;">Espectro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Morto-Vivo Médio —
+          Incorpóreo</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Almas presas ao plano
+          material por ódio ou propósito não cumprido.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 40</span>
+          <span class="stat-pill st">🟡 ST: 6</span>
+          <span class="stat-pill fo">🔵 FO: 12</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 6🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            -2 | DES: +3 | CON: +0 | INT: +1 | CAR: +0 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Toque Drenador - Padrão</span><span class="skcost">3🔵</span>
+          <div class="skdesc">1d8+3 necrótico. Reduz HP máximo do alvo em metade do dano. CON 14 ou Enfraquecido por 1
+            turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Forma Etérea - Rápida</span><span class="skcost">2🔵</span>
+          <div class="skdesc">Atravessa paredes. Ataques físicos erram automaticamente nesse turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Gritar do Além - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Todos os vivos em 3 blocos: SAB 14 ou Abalados por 2 turnos. 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Incorpóreo - Passiva</span>
+          <div class="skdesc">Resistência a dano físico não-mágico. Vulnerável a dano radiante.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="morto-vivo" style="overflow: visible;">
+        <div class="base-card-title" style="color:#7060a0; margin-bottom:4px;">Lich</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Morto-Vivo Médio —
+          Lendário</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">O pináculo da
+          necromancia. Um mago que sacrificou sua humanidade pela imortalidade.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 80</span>
+          <span class="stat-pill st">🟡 ST: 6</span>
+          <span class="stat-pill fo">🔵 FO: 25</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 9🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 17 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +0 | DES: +2 | CON: +2 | INT: +5 | CAR: +3 | SAB: +3</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Raio de Desintegração - Padrão</span><span class="skcost">6🔵</span>
+          <div class="skdesc">3d10+6 necrótico. Se matar, corpo é desintegrado — impossível reanimar sem magia superior.
+          </div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Escudo Antimagia - Rápida</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Por 1 turno: qualquer magia direcionada ao Lich falha automaticamente.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Convocar Mortos - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Conjura 1d4+1 Esqueletos ou 1d4 Carniçais adjacentes. 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Núcleo Vital - Passiva</span>
+          <div class="skdesc">Ao chegar em 0 HP, ressurge em 24h no seu Lich Jar. Destruir o Jar é a única forma de
+            matar permanentemente.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pulso Necrótico - Rápida</span><span class="skcost">8🔵</span>
+          <div class="skdesc">Reação ao dano fatal: 3d8 necrótico em 4 blocos — mortos-vivos curam 2d8. 1x por combate.
+          </div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="sobrenatural" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c040c0; margin-bottom:4px;">Vampiro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Sobrenatural Médio
+          — Elite</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Mortos imortais de
+          elegância predatória. Cada Vampiro carrega séculos de poder e paranoia.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 70</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 14</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 5🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +4 | DES: +3 | CON: +4 | INT: +3 | CAR: +2 | SAB: +3</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida do Predador - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">1d8+5 perfurante+necrótico. Cura o Vampiro igual ao dano. CON 15 ou Seduzido por 1 turno.
+          </div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Névoa de Morcegos - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Transforma-se em enxame por até 2 turnos — imune a dano físico. Reverte ao sofrer dano
+            radiante.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Hipnose - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">SAB 15 ou Enfeitiçado por 3 turnos, obedecendo ordens simples.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Regeneração - Passiva</span>
+          <div class="skdesc">Recupera 5 HP no início de cada turno, exceto após dano radiante ou água benta.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Fraqueza ao Sol - Passiva</span>
+          <div class="skdesc">-2 em todos os ataques e sem regeneração em luz solar direta. Dano radiante causa o dobro.
+          </div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="sobrenatural" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c040c0; margin-bottom:4px;">Lobisomem</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Sobrenatural Médio
+        </p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Entre o humano e a
+          besta, o Lobisomem habita a fronteira do controle e do instinto.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 68</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 6</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 3🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +5 | DES: +3 | CON: +4 | INT: -1 | CAR: +0 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Garras da Besta - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d8+6 cortante. CON 14 ou contrai Maldição do Lobisomem (crises nas próximas 3 luas
+            cheias).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Faro Apurado - Passiva</span>
+          <div class="skdesc">Nunca surpreendido. Detecta furtivos em 8 blocos pelo olfato.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Uivo da Matilha - Rápida</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Convoca 1d3 Lobos em 2 turnos. 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Resistência Licantrópica - Passiva</span>
+          <div class="skdesc">Resistência a dano não-mágico e não-prateado. Armas prateadas: +1d6 extra.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="sobrenatural" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c040c0; margin-bottom:4px;">Fantasma</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Sobrenatural Médio
+        </p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Ecos de emoções
+          intensas presos no mundo material por tragédia ou ódio.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 30</span>
+          <span class="stat-pill st">🟡 ST: 6</span>
+          <span class="stat-pill fo">🔵 FO: 10</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 5🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 12 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            -2 | DES: +2 | CON: +0 | INT: +0 | CAR: -1 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Possessão - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">SAB 14 ou controlado por 2 turnos (age contra aliados). 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Toque Gélido - Padrão</span><span class="skcost">2🔵</span>
+          <div class="skdesc">1d6 frio+necrótico. CON 12 ou -1 dado de dano por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Atravessar Matéria - Passiva</span>
+          <div class="skdesc">Move-se através de paredes, portas e objetos sólidos livremente.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Aparição Aterrorizante - Rápida</span><span class="skcost">2🔵</span>
+          <div class="skdesc">SAB 13 ou alvos em 2 blocos recuam 2 blocos imediatamente.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="sobrenatural" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c040c0; margin-bottom:4px;">Banshee</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Sobrenatural Médio
+        </p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">O choro de uma Banshee
+          precede a morte.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 45</span>
+          <span class="stat-pill st">🟡 ST: 6</span>
+          <span class="stat-pill fo">🔵 FO: 14</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 7🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            -2 | DES: +2 | CON: +1 | INT: +1 | CAR: +0 | SAB: +3</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Uivo da Morte - Padrão</span><span class="skcost">6🔵</span>
+          <div class="skdesc">Todos os vivos em 5 blocos: CON 15 ou caem para 0 HP inconscientes. Sucesso: 3d6 sônico.
+            1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Lamento - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">SAB 13 ou Abalados por 2 turnos. Usável fora do turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Insubstancial - Passiva</span>
+          <div class="skdesc">Imune a dano físico não-mágico. Vulnerável a dano radiante e sagrado.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+        <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Anjo Guardião</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Médio</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Enviados dos planos
+          superiores. Sua presença ilumina os corações e cega os corruptos.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 60</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 16</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 7🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 18 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +3 | DES: +4 | CON: +3 | INT: +3 | CAR: +2 | SAB: +5</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Espada de Luz - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">2d8+5 radiante. Criaturas das trevas e mortos-vivos: +1d6 extra.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Cura Divina - Rápida</span><span class="skcost">4🔵</span>
+          <div class="skdesc">3d8+4 HP e remove um status negativo. Alcance 4 blocos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Aura Sagrada - Passiva</span>
+          <div class="skdesc">Inimigos em 2 blocos: 1d6 radiante automático por turno. Aliados adjacentes: +2 CA.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Voo Divino - Passiva</span>
+          <div class="skdesc">Move-se em 3D. Ataques à distância têm desvantagem a 3+ blocos de altitude.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Intercessão - Rápida</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Reação a aliado ser golpeado fatalmente — absorve o excesso, aliado fica com 1 HP. 1x por
+            combate.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+        <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Arqueiro Arconte</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Médio</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Sentinelas de
+          fronteiras entre planos. Atiram antes de perguntar quando a ameaça é clara.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 45</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 10</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 5🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +6</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +1 | DES: +4 | CON: +2 | INT: +2 | CAR: +1 | SAB: +3</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Flecha de Julgamento - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">1d10+5 radiante. Alcance 15 blocos. Criaturas malignas: SAB 14 ou Marcadas.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Chuva Sagrada - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">3 flechas em alvos à escolha — cada uma causa 1d8+3 radiante.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Benção do Plano Superior - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Um aliado tem vantagem em todos os testes de resistência por 2 turnos.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+        <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Pegaso</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Grande
+        </p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Corcéis alados dos
+          planos superiores. Escolhem seus cavaleiros — nunca são domados pela força.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 50</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 8</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 3🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +3 | DES: +2 | CON: +2 | INT: +0 | CAR: +1 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Cascos Divinos - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">2d6+4 contundente. Se voar antes de atacar: +1d6 extra e derruba (FOR 14).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Investida Celeste - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Mergulha em linha reta de 6+ blocos: 3d8+4 contundente em todos no caminho. DES 13 reduz.
+          </div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Aura de Pureza - Passiva</span>
+          <div class="skdesc">Criaturas das trevas: -1 dado de dano. Cavaleiro montado: +2 em resistências.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Montaria Sagrada - Passiva</span>
+          <div class="skdesc">Com cavaleiro de alinhamento bom: ambos têm RD 2.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+        <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Guardião do Limiar</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Grande —
+          Lendário</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Entidade de poder
+          incompreensível. Sua missão supera qualquer noção de misericórdia.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 90</span>
+          <span class="stat-pill st">🟡 ST: 16</span>
+          <span class="stat-pill fo">🔵 FO: 18</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 / 8🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 20 | Atq: +8</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +5 | DES: +3 | CON: +4 | INT: +4 | CAR: +3 | SAB: +6</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Chamas da Redenção - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">3d8+6 radiante em 2 blocos. DES 16 reduz à metade. Aliados curam 1d8.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Decreto Divino - Padrão</span><span class="skcost">6🔵</span>
+          <div class="skdesc">Inimigo: SAB 17 ou -2 em testes e +2d6 radiante de toda fonte por 3 turnos. 1x por
+            combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Barreira Sagrada - Rápida</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Parede de luz em 4 blocos. Criaturas malignas sofrem 2d6 ao atravessar.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Forma Verdadeira - Passiva</span>
+          <div class="skdesc">A 50% HP: CA+2, ataques causam +1d6 radiante extra, recupera 20 HP.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Julgamento Final - Rápida</span><span class="skcost">10🔵</span>
+          <div class="skdesc">6d10 radiante. Alvo maligno abaixo de 30% HP: morre instantaneamente. 1x por sessão.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c94040; margin-bottom:4px;">Ogro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade
+          Grande</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Brutos do tamanho de
+          dois homens. Pouca inteligência, muito problema.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 65</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 11 | Atq: +6</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +4 | DES: -1 | CON: +3 | INT: -3 | CAR: -2 | SAB: -2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Porretada - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">2d8+6 contundente. FOR 15 ou jogado 2 blocos e cai.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Arremessar Pedra - Padrão</span><span class="skcost">2🟡</span>
+          <div class="skdesc">1d10+4 contundente. Alcance 8 blocos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Braço Varredor - Rápida</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Todos em arco de 2 blocos à frente: 1d8+5 contundente. FOR 13 ou empurrado 1 bloco.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c94040; margin-bottom:4px;">Manticora</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade
+          Grande</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Leão, asas de morcego,
+          cauda pontiaguda e um rosto vagamente humano. Aterrorizante por design.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 72</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +4 | DES: +2 | CON: +3 | INT: -2 | CAR: -1 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Espinhos da Cauda - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Atira 3 espinhos (3d6+3 perfurante no total). Alcance 10 blocos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Garras Rasgantes - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Dois ataques, 1d8+4 cada. Alvo sangra (1 HP/turno) se ambos acertarem.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Voo Territorial - Passiva</span>
+          <div class="skdesc">Pode focar e atacar melhor alvos aéreos, ganhando +2 em jogadas de ataque no ar.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+    </div>
+  </div>
+  <!-- end tab-bestiary -->
+
+  <div class="tab-content active" id="tab-battle">
+    <div id="battle-container"><div class="battle-monster"><div class="battle-monster-header"><div><div class="battle-monster-name" style="color:rgb(201, 146, 26);">Mago Inimigo</div><div class="battle-monster-subtitle">Humanoide Médio —
+          Arcano</div></div><button class="remove-monster-btn" onclick="removeFromBattle(&#39;1775480532759_h8ombv&#39;)" title="Remover">✕</button></div><div class="battle-stats"><div class="battle-stat"><span class="battle-stat-label">HP</span><div class="battle-stat-bar"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480532759_h8ombv&#39;,&#39;hp&#39;,-1)">−</button><input class="battle-stat-value hp-color" type="number" value="28" onchange="manualStat(&#39;1775480532759_h8ombv&#39;,&#39;hp&#39;,this.value)"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480532759_h8ombv&#39;,&#39;hp&#39;,1)">+</button></div><span class="battle-stat-max">28 / 28</span><div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill hp" style="width:100%"></div></div></div></div><div class="battle-stat"><span class="battle-stat-label">ST</span><div class="battle-stat-bar"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480532759_h8ombv&#39;,&#39;st&#39;,-1)">−</button><input class="battle-stat-value st-color" type="number" value="6" onchange="manualStat(&#39;1775480532759_h8ombv&#39;,&#39;st&#39;,this.value)"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480532759_h8ombv&#39;,&#39;st&#39;,1)">+</button></div><span class="battle-stat-max">6 / 6</span><div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill st" style="width:100%"></div></div></div></div><div class="battle-stat"><span class="battle-stat-label">FO</span><div class="battle-stat-bar"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480532759_h8ombv&#39;,&#39;fo&#39;,-1)">−</button><input class="battle-stat-value fo-color" type="number" value="18" onchange="manualStat(&#39;1775480532759_h8ombv&#39;,&#39;fo&#39;,this.value)"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480532759_h8ombv&#39;,&#39;fo&#39;,1)">+</button></div><span class="battle-stat-max">18 / 18</span><div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill fo" style="width:100%"></div></div></div></div></div><div class="battle-meta"><span class="battle-meta-ca">CA: 12</span><span class="battle-meta-ca" style="color:rgba(245,234,214,0.4);font-size:10px;">🔄 1🟡/4🔵/turno</span><div class="battle-meta-attr"><span>FOR: <span class="attr-val">-1</span></span><span>DES: <span class="attr-val">+1</span></span><span>CON: <span class="attr-val">0</span></span><span>INT: <span class="attr-val">+3</span></span><span>CAR: <span class="attr-val">0</span></span><span>SAB: <span class="attr-val">+2</span></span></div></div><div class="battle-skills-title">HABILIDADES</div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Projétil Arcano - Padrão</span><span class="battle-skill-cost">3🔵</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480532759_h8ombv&#39;,0)">USAR</button></div><div class="battle-skill-desc">1d8+3 arcano. Alcance 8 blocos. Ignora armaduras físicas.</div></div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Escudo Arcano - Rápida</span><span class="battle-skill-cost">2🔵</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480532759_h8ombv&#39;,1)">USAR</button></div><div class="battle-skill-desc">Reduz próximo dano em 1d6. Usável fora do turno.</div></div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Relâmpago - Padrão</span><span class="battle-skill-cost">5🔵</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480532759_h8ombv&#39;,2)">USAR</button></div><div class="battle-skill-desc">2d6 raio em linha reta por 8 blocos. DES 14 reduz à metade.</div></div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Posição Estratégica - Passiva</span><span class="battle-skill-no-cost">sem custo</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480532759_h8ombv&#39;,3)">USAR</button></div><div class="battle-skill-desc">Mantém 4+ blocos de distância. Se adjacente, usa Escudo Arcano gratuitamente 1x.</div></div></div><div class="battle-monster"><div class="battle-monster-header"><div><div class="battle-monster-name" style="color:rgb(232, 184, 75);">Guardião do Limiar</div><div class="battle-monster-subtitle">Celestial Grande —
+          Lendário</div></div><button class="remove-monster-btn" onclick="removeFromBattle(&#39;1775480587910_q2evgo&#39;)" title="Remover">✕</button></div><div class="battle-stats"><div class="battle-stat"><span class="battle-stat-label">HP</span><div class="battle-stat-bar"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480587910_q2evgo&#39;,&#39;hp&#39;,-1)">−</button><input class="battle-stat-value hp-color" type="number" value="90" onchange="manualStat(&#39;1775480587910_q2evgo&#39;,&#39;hp&#39;,this.value)"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480587910_q2evgo&#39;,&#39;hp&#39;,1)">+</button></div><span class="battle-stat-max">90 / 90</span><div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill hp" style="width:100%"></div></div></div></div><div class="battle-stat"><span class="battle-stat-label">ST</span><div class="battle-stat-bar"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480587910_q2evgo&#39;,&#39;st&#39;,-1)">−</button><input class="battle-stat-value st-color" type="number" value="5" onchange="manualStat(&#39;1775480587910_q2evgo&#39;,&#39;st&#39;,this.value)"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480587910_q2evgo&#39;,&#39;st&#39;,1)">+</button></div><span class="battle-stat-max">5 / 16</span><div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill st" style="width:31.25%"></div></div></div></div><div class="battle-stat"><span class="battle-stat-label">FO</span><div class="battle-stat-bar"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480587910_q2evgo&#39;,&#39;fo&#39;,-1)">−</button><input class="battle-stat-value fo-color" type="number" value="21" onchange="manualStat(&#39;1775480587910_q2evgo&#39;,&#39;fo&#39;,this.value)"><button class="battle-stat-btn" onclick="updateStat(&#39;1775480587910_q2evgo&#39;,&#39;fo&#39;,1)">+</button></div><span class="battle-stat-max">21 / 35</span><div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill fo" style="width:60%"></div></div></div></div></div><div class="battle-meta"><span class="battle-meta-ca">CA: 20</span><span class="battle-meta-ca" style="color:rgba(245,234,214,0.4);font-size:10px;">🔄 4🟡/7🔵/turno</span><div class="battle-meta-attr"><span>FOR: <span class="attr-val">+5</span></span><span>DES: <span class="attr-val">+3</span></span><span>CON: <span class="attr-val">+4</span></span><span>INT: <span class="attr-val">+4</span></span><span>CAR: <span class="attr-val">+3</span></span><span>SAB: <span class="attr-val">+6</span></span></div></div><div class="battle-skills-title">HABILIDADES</div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Chamas da Redenção - Padrão</span><span class="battle-skill-cost">5🟡</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480587910_q2evgo&#39;,0)">USAR</button></div><div class="battle-skill-desc">3d8+6 radiante em 2 blocos. DES 16 reduz à metade. Aliados curam 1d8.</div></div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Decreto Divino - Padrão</span><span class="battle-skill-cost">6🔵</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480587910_q2evgo&#39;,1)">USAR</button></div><div class="battle-skill-desc">Inimigo: SAB 17 ou -2 em testes e +2d6 radiante de toda fonte por 3 turnos. 1x por
+            combate.</div></div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Barreira Sagrada - Rápida</span><span class="battle-skill-cost">5🔵</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480587910_q2evgo&#39;,2)">USAR</button></div><div class="battle-skill-desc">Parede de luz em 4 blocos. Criaturas malignas sofrem 2d6 ao atravessar.</div></div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Forma Verdadeira - Passiva</span><span class="battle-skill-no-cost">sem custo</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480587910_q2evgo&#39;,3)">USAR</button></div><div class="battle-skill-desc">A 50% HP: CA+2, ataques causam +1d6 radiante extra, recupera 20 HP.</div></div><div class="battle-skill-row"><div class="battle-skill-header"><span class="battle-skill-name">⚪ Julgamento Final - Rápida</span><span class="battle-skill-cost">10🔵</span><button class="battle-skill-use-btn" onclick="useSkill(&#39;1775480587910_q2evgo&#39;,4)">USAR</button></div><div class="battle-skill-desc">6d10 radiante. Alvo maligno abaixo de 30% HP: morre instantaneamente. 1x por sessão.</div></div></div></div>
+    <div class="battle-actions" id="battle-actions" style="display: block;">
+      <button onclick="nextTurn()" style="background:rgba(64,96,201,0.15);border:1px solid rgba(64,96,201,0.35);border-radius:3px;color:#8aA8e8;font-family:&#39;Cinzel&#39;,serif;font-size:11px;letter-spacing:0.08em;padding:8px 18px;cursor:pointer;margin-right:8px;">🔄 Próximo Turno</button><button class="clear-battle-btn" onclick="clearBattle()">🗑️ Limpar Batalha</button>
+    </div>
+    <div class="battle-log" id="battle-log" style="display: block;">
+      <div class="battle-log-title">REGISTRO</div>
+      <div id="battle-log-entries"><div class="battle-log-entry"><span class="log-monor">Mago Inimigo</span> usou <span class="log-skill-name">⚪ Escudo Arcano - Rápida</span> -2🔵</div><div class="battle-log-entry"><span class="log-monor">Mago Inimigo</span> usou <span class="log-skill-name">⚪ Projétil Arcano - Padrão</span> -3🔵</div><div class="battle-log-entry"><span class="log-monor">Mago Inimigo</span> usou <span class="log-skill-name">⚪ Relâmpago - Padrão</span> -5🔵</div><div class="battle-log-entry"><span class="log-monor">Mago Inimigo</span> usou <span class="log-skill-name">⚪ Posição Estratégica - Passiva</span></div><div class="battle-log-entry"><span class="log-monor">🔄 Turno</span> Mago Inimigo: +1🟡 / +4🔵</div><div class="battle-log-entry"><span class="log-monor">Mago Inimigo</span> usou <span class="log-skill-name">⚪ Relâmpago - Padrão</span> -5🔵</div><div class="battle-log-entry"><span class="log-monor">Mago Inimigo</span> usou <span class="log-skill-name">⚪ Projétil Arcano - Padrão</span> -3🔵</div><div class="battle-log-entry"><span class="log-monor">🔄 Turno</span> Mago Inimigo: +1🟡 / +4🔵</div><div class="battle-log-entry"><span class="log-monor">🔄 Turno</span> Mago Inimigo: +1🟡 / +4🔵</div><div class="battle-log-entry"><span class="log-monor">🔄 Turno</span> Mago Inimigo: +4🔵</div><div class="battle-log-entry"><span class="log-monor">🔄 Turno</span> Mago Inimigo: +2🔵</div><div class="battle-log-entry"><span class="log-monor">🔄 Turno</span> recursos já no máximo — nada recuperado.</div><div class="battle-log-entry"><span class="log-monor">Guardião do Limiar</span> usou <span class="log-skill-name">⚪ Chamas da Redenção - Padrão</span> -5🟡</div><div class="battle-log-entry"><span class="log-monor">Guardião do Limiar</span> usou <span class="log-skill-name">⚪ Chamas da Redenção - Padrão</span> -5🟡</div><div class="battle-log-entry"><span class="log-monor">Guardião do Limiar</span> usou <span class="log-skill-name">⚪ Decreto Divino - Padrão</span> -6🔵</div><div class="battle-log-entry"><span class="log-monor">Guardião do Limiar</span> usou <span class="log-skill-name">⚪ Barreira Sagrada - Rápida</span> -5🔵</div><div class="battle-log-entry"><span class="log-monor">Guardião do Limiar</span> usou <span class="log-skill-name">⚪ Julgamento Final - Rápida</span> -10🔵</div><div class="battle-log-entry"><span class="log-monor">🔄 Turno</span> Guardião do Limiar: +4🟡 / +7🔵</div><div class="battle-log-entry"><span class="log-monor">Guardião do Limiar</span> usou <span class="log-skill-name">⚪ Chamas da Redenção - Padrão</span> -5🟡</div></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Compêndio de Classes — Sistema Homebrew de Mesa
+  </div>
+
+  <script>
+    /* ── TAB SWITCHING ── */
+    function switchTab(tab) {
+      document.querySelectorAll('.main-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-bestiary').classList.toggle('active', tab === 'bestiary');
+      document.getElementById('tab-battle').classList.toggle('active', tab === 'battle');
+      if (tab === 'battle') {
+        document.querySelector('.main-tab-btn.battle').classList.add('active');
+      } else {
+        document.querySelectorAll('.main-tab-btn')[0].classList.add('active');
+      }
+      if (tab === 'battle') renderBattle();
+    }
+
+    /* ── FILTER ── */
+    function filterCriaturas(filter, btn) {
+      document.querySelectorAll('.criatura-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cards = document.querySelectorAll('#criaturas-container .criatura-card');
+      cards.forEach(card => {
+        if (filter === 'all') {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.toggle('hidden', card.dataset.cat !== filter);
+        }
+      });
+    }
+
+    /* ── TOAST NOTIFICATION ── */
+    function showToast(message) {
+      const existing = document.querySelectorAll('.battle-toast');
+      existing.forEach(e => e.remove());
+      const toast = document.createElement('div');
+      toast.className = 'battle-toast';
+      toast.innerHTML = message;
+      document.body.appendChild(toast);
+      setTimeout(function() {
+        if (toast.parentNode) toast.remove();
+      }, 2500);
+    }
+
+    /* ── BATTLE STATE ── */
+    // Version key ensures old cached data is cleared when stats change
+    var BATTLE_VERSION = 'v4';
+    let battleMonsters = [];
+
+    function saveBattleState() {
+      localStorage.setItem('rpg-battle-version', BATTLE_VERSION);
+      localStorage.setItem('rpg-battle-state', JSON.stringify(battleMonsters));
+    }
+
+    function loadBattleState() {
+      try {
+        const version = localStorage.getItem('rpg-battle-version');
+        if (version !== BATTLE_VERSION) {
+          // Stats have been updated — clear old cache
+          localStorage.removeItem('rpg-battle-state');
+          localStorage.setItem('rpg-battle-version', BATTLE_VERSION);
+          battleMonsters = [];
+          return;
+        }
+        const data = localStorage.getItem('rpg-battle-state');
+        if (data) battleMonsters = JSON.parse(data);
+      } catch(e) { battleMonsters = []; }
+    }
+
+    /* ── PARSE SKILL COST ── */
+    function parseCost(costStr) {
+      var st = 0, fo = 0;
+      if (!costStr) return { st: 0, fo: 0 };
+      // Direct split on emoji characters (literal in source)
+      if (costStr.indexOf('🟡') !== -1) {
+        var parts = costStr.split('🟡');
+        var before = parts[0].replace(/[^0-9]/g, '');
+        if (before) st = parseInt(before);
+      }
+      if (costStr.indexOf('🔵') !== -1) {
+        var bparts = costStr.split('🔵');
+        var bbefore = bparts[0].replace(/[^0-9]/g, '');
+        if (bbefore) fo = parseInt(bbefore);
+      }
+      return { st: st, fo: fo };
+    }
+
+    /* ── ADD TO BATTLE ── */
+    function addToBattle(cardEl) {
+      let parent = cardEl;
+      while (parent && !parent.classList.contains('base-card')) {
+        parent = parent.parentElement;
+      }
+      if (!parent) return;
+
+      const titleEl = parent.querySelector('.base-card-title');
+      const subtitleEl = titleEl ? titleEl.nextElementSibling : null;
+      const statRow = parent.querySelector('.stat-row');
+
+      // Check if already in battle
+      if (battleMonsters.find(m => m.name === (titleEl ? titleEl.textContent.trim() : ''))) {
+        showToast('<span class="toast-name">' + (titleEl.textContent.trim()) + '</span> já está na batalha!');
+        return;
+      }
+
+      const name = titleEl ? titleEl.textContent.trim() : 'Monstro';
+      const subtitle = subtitleEl ? subtitleEl.textContent : '';
+      const titleColor = titleEl ? (titleEl.style.color || '') : '';
+
+      // Parse HP/ST/FO from stat pills
+      let hp = 0, st = 0, fo = 0, ca = 0;
+      if (statRow) {
+        const pills = statRow.querySelectorAll('.stat-pill');
+        pills.forEach(pill => {
+          const text = pill.textContent;
+          const hpMatch = text.match(/HP:\s*(\d+)/);
+          const stMatch = text.match(/ST:\s*(\d+)/);
+          const foMatch = text.match(/FO:\s*(\d+)/);
+          const caMatch = text.match(/CA:\s*(\d+)/);
+          if (hpMatch) hp = parseInt(hpMatch[1]);
+          if (stMatch) st = parseInt(stMatch[1]);
+          if (foMatch) fo = parseInt(foMatch[1]);
+          if (caMatch) ca = parseInt(caMatch[1]);
+        });
+      }
+
+      // Parse recovery from Rec pill
+      let recSt = 0, recFo = 0;
+      if (statRow) {
+        statRow.querySelectorAll('.stat-pill').forEach(pill => {
+          const t = pill.textContent;
+          if (t.includes('Rec:')) {
+            const stRec = t.match(/(\d+)🟡/);
+            const foRec = t.match(/(\d+)🔵/);
+            if (stRec) recSt = parseInt(stRec[1]);
+            if (foRec) recFo = parseInt(foRec[1]);
+          }
+        });
+      }
+
+      // Parse attributes (FOR/DES/CON/INT/CAR/SAB) from the inline-style span
+      const attributes = {};
+      parent.querySelectorAll('.skill-base-row span').forEach(el => {
+        const text = el.textContent.trim();
+        if (text.includes('FOR:')) {
+          const attrRegex = /([A-ZÁÀÂÃÉÈÊÔÕÍÓÚÛÇÜ]+):\s*([+-]?\d+)/g;
+          let match;
+          while ((match = attrRegex.exec(text)) !== null) {
+            attributes[match[1]] = parseInt(match[2]);
+          }
+        }
+      });
+
+      // Parse skills
+      const skills = [];
+      parent.querySelectorAll('.skill-base-row').forEach(row => {
+        const skName = row.querySelector('.skname');
+        const skCost = row.querySelector('.skcost');
+        const skDesc = row.querySelector('.skdesc');
+        if (skName) {
+          skills.push({
+            name: skName.textContent.trim(),
+            cost: skCost ? skCost.textContent.trim() : '',
+            desc: skDesc ? skDesc.textContent.trim() : ''
+          });
+        }
+      });
+
+      const id = Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+      battleMonsters.push({
+        id, name, subtitle, titleColor,
+        hp, maxHp: hp,
+        st, maxSt: st,
+        fo, maxFo: fo,
+        ca,
+        recSt, recFo,
+        attributes,
+        skills
+      });
+      saveBattleState();
+      renderBattle();
+      showToast('<span class="toast-name">' + name + '</span> adicionado à batalha!');
+    }
+
+    /* ── REMOVE FROM BATTLE ── */
+    function removeFromBattle(id) {
+      const m = battleMonsters.find(x => x.id === id);
+      if (m) {
+        showToast('<span class="toast-name">' + m.name + '</span> removido da batalha.');
+      }
+      battleMonsters = battleMonsters.filter(x => x.id !== id);
+      saveBattleState();
+      renderBattle();
+    }
+
+    /* ── UPDATE STAT (step of 1) ── */
+    function updateStat(id, stat, delta) {
+      const m = battleMonsters.find(x => x.id === id);
+      if (!m) return;
+      const maxKey = 'max' + stat.charAt(0).toUpperCase() + stat.slice(1);
+      m[stat] = Math.max(0, Math.min(m[maxKey], m[stat] + delta));
+      saveBattleState();
+      renderBattle();
+    }
+
+    /* ── USE SKILL ── */
+    function useSkill(monsterId, skillIndex) {
+      const m = battleMonsters.find(x => x.id === monsterId);
+      if (!m || !m.skills[skillIndex]) return;
+      const skill = m.skills[skillIndex];
+
+      const costs = parseCost(skill.cost);
+      let stCost = costs.st;
+      const foCost = costs.fo;
+
+      // Magic uses stamina = ceil(FO / 3)
+      const isMagic = foCost > 0;
+      if (isMagic) stCost += Math.ceil(foCost / 3);
+
+      if (stCost > 0 && m.st < stCost) {
+        showToast(m.name + ': sem stamina suficiente para <span class="toast-name">' + skill.name + '</span>');
+        return;
+      }
+      if (foCost > 0 && m.fo < foCost) {
+        showToast(m.name + ': sem foco suficiente para <span class="toast-name">' + skill.name + '</span>');
+        return;
+      }
+
+      if (stCost > 0) m.st -= stCost;
+      if (foCost > 0) m.fo -= foCost;
+
+      saveBattleState();
+      renderBattle();
+
+      let costStr = '';
+      if (stCost > 0) costStr = '-' + stCost + '🟡';
+      if (foCost > 0) costStr += (costStr ? ' / -' + foCost + '🔵' : '-' + foCost + '🔵');
+      var stExtra = costs.fo > 0 ? Math.ceil(costs.fo / 3) : 0;
+      if (isMagic) costStr += ' <span style="font-size:9px;opacity:0.5;">(+' + stExtra + '🟡 magia)</span>';
+
+      addBattleLog(m.name, 'usou <span class="log-skill-name">' + skill.name + '</span>' + (costStr ? ' ' + costStr : ''));
+    }
+
+    /* ── RENDER BATTLE ── */
+    function renderBattle() {
+      const container = document.getElementById('battle-container');
+      const actionsEl = document.getElementById('battle-actions');
+      const logEl = document.getElementById('battle-log');
+
+      if (battleMonsters.length === 0) {
+        container.innerHTML = '<div class="battle-empty"><p>Nenhum monstro em batalha.</p><p style="font-size:14px;margin-top:12px;">Vá ao Bestiário e clique em <strong>"Adicionar ➕"</strong> nos monstros para incluí-los aqui.</p></div>';
+        actionsEl.style.display = 'none';
+        logEl.style.display = 'none';
+        return;
+      }
+
+      actionsEl.style.display = 'block';
+      logEl.style.display = 'block';
+
+      let html = '';
+      battleMonsters.forEach(m => {
+        m.ca = m.ca || 0;
+        m.attributes = m.attributes || {};
+        const hpPct = m.maxHp > 0 ? (m.hp / m.maxHp * 100) : 0;
+        const stPct = m.maxSt > 0 ? (m.st / m.maxSt * 100) : 0;
+        const foPct = m.maxFo > 0 ? (m.fo / m.maxFo * 100) : 0;
+
+        html += '<div class="battle-monster">';
+        html += '<div class="battle-monster-header">';
+        html += '<div><div class="battle-monster-name" style="' + (m.titleColor ? 'color:' + m.titleColor + ';' : '') + '">' + m.name + '</div>';
+        html += '<div class="battle-monster-subtitle">' + m.subtitle + '</div></div>';
+        html += '<button class="remove-monster-btn" onclick="removeFromBattle(\'' + m.id + '\')" title="Remover">✕</button>';
+        html += '</div>';
+
+        html += '<div class="battle-stats">';
+        html += renderBattleStat(m.id, 'hp', 'HP', m.hp, m.maxHp, hpPct);
+        html += renderBattleStat(m.id, 'st', 'ST', m.st, m.maxSt, stPct);
+        html += renderBattleStat(m.id, 'fo', 'FO', m.fo, m.maxFo, foPct);
+        html += '</div>';
+
+        // CA and attributes
+        html += '<div class="battle-meta">';
+        html += '<span class="battle-meta-ca">CA: ' + m.ca + '</span>';
+        // Recovery display
+        let recParts = [];
+        if (m.recSt > 0) recParts.push(m.recSt + '🟡');
+        if (m.recFo > 0) recParts.push(m.recFo + '🔵');
+        if (recParts.length > 0) {
+          html += '<span class="battle-meta-ca" style="color:rgba(245,234,214,0.4);font-size:10px;">🔄 ' + recParts.join('/') + '/turno</span>';
+        }
+        html += '<div class="battle-meta-attr">';
+        const attrOrder = ['FOR', 'DES', 'CON', 'INT', 'CAR', 'SAB'];
+        attrOrder.forEach(function(attr) {
+          if (m.attributes[attr] !== undefined) {
+            const v = m.attributes[attr];
+            const sign = v > 0 ? '+ ' : '− ';
+            html += '<span>' + attr + ': <span class="attr-val">' + (v > 0 ? '+' : '') + v + '</span></span>';
+          }
+        });
+        html += '</div></div>';
+
+        if (m.skills.length > 0) {
+          html += '<div class="battle-skills-title">HABILIDADES</div>';
+          m.skills.forEach((sk, i) => {
+            const c = parseCost(sk.cost);
+            const totalSt = c.st + (c.fo > 0 ? Math.ceil(c.fo / 3) : 0);
+            const canUse = (totalSt === 0 || m.st >= totalSt) && (c.fo === 0 || m.fo >= c.fo);
+
+            html += '<div class="battle-skill-row">';
+            html += '<div class="battle-skill-header">';
+            html += '<span class="battle-skill-name">' + sk.name + '</span>';
+            if (sk.cost) {
+              html += '<span class="battle-skill-cost">' + sk.cost + '</span>';
+            } else {
+              html += '<span class="battle-skill-no-cost">sem custo</span>';
+            }
+            html += '<button class="battle-skill-use-btn" onclick="useSkill(\'' + m.id + '\',' + i + ')"' + (canUse ? '' : ' disabled') + '>USAR</button>';
+            html += '</div>';
+            if (sk.desc) {
+              html += '<div class="battle-skill-desc">' + sk.desc + '</div>';
+            }
+            html += '</div>';
+          });
+        }
+
+        html += '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    function renderBattleStat(id, stat, label, val, maxVal, pct) {
+      let html = '<div class="battle-stat">';
+      html += '<span class="battle-stat-label">' + label + '</span>';
+      html += '<div class="battle-stat-bar">';
+      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',-1)">−</button>';
+      html += '<input class="battle-stat-value ' + stat + '-color" type="number" value="' + val + '" onchange="manualStat(\'' + id + '\',\'' + stat + '\',this.value)" />';
+      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',1)">+</button>';
+      html += '</div>';
+      html += '<span class="battle-stat-max">' + val + ' / ' + maxVal + '</span>';
+      html += '<div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill ' + stat + '" style="width:' + pct + '%"></div></div></div>';
+      html += '</div>';
+      return html;
+    }
+
+    function manualStat(id, stat, val) {
+      const m = battleMonsters.find(x => x.id === id);
+      if (!m) return;
+      const maxKey = 'max' + stat.charAt(0).toUpperCase() + stat.slice(1);
+      m[stat] = Math.max(0, Math.min(m[maxKey], parseInt(val) || 0));
+      saveBattleState();
+      renderBattle();
+    }
+
+    /* ── BATTLE LOG ── */
+    function addBattleLog(monsterName, message) {
+      const entries = document.getElementById('battle-log-entries');
+      const entry = document.createElement('div');
+      entry.className = 'battle-log-entry';
+      entry.innerHTML = '<span class="log-monor">' + monsterName + '</span> ' + message;
+      entries.appendChild(entry);
+      entries.parentElement.scrollTop = entries.parentElement.scrollHeight;
+    }
+
+    /* ── NEXT TURN ── */
+    function nextTurn() {
+      if (battleMonsters.length === 0) return;
+      let log = [];
+      battleMonsters.forEach(m => {
+        const recSt = m.recSt || 0;
+        const recFo = m.recFo || 0;
+        let parts = [];
+
+        // Sync max values from HTML in case card was changed
+        const htmlMaxSt = findHtmlMax(m.name, 'st');
+        const htmlMaxFo = findHtmlMax(m.name, 'fo');
+        if (htmlMaxSt > 0 && m.maxSt !== htmlMaxSt) m.maxSt = htmlMaxSt;
+        if (htmlMaxFo > 0 && m.maxFo !== htmlMaxFo) m.maxFo = htmlMaxFo;
+
+        if (recSt > 0 && m.st < m.maxSt) {
+          const gained = Math.min(recSt, m.maxSt - m.st);
+          m.st += gained;
+          parts.push('+' + gained + '🟡');
+        }
+        if (recFo > 0 && m.fo < m.maxFo) {
+          const gained = Math.min(recFo, m.maxFo - m.fo);
+          m.fo += gained;
+          parts.push('+' + gained + '🔵');
+        }
+        if (parts.length > 0) log.push(m.name + ': ' + parts.join(' / '));
+      });
+      saveBattleState();
+      renderBattle();
+      if (log.length > 0) {
+        addBattleLog('🔄 Turno', log.join(' &nbsp;|&nbsp; '));
+      } else {
+        addBattleLog('🔄 Turno', 'recursos já no máximo — nada recuperado.');
+      }
+    }
+
+    /* ── FIND CURRENT MAX FROM HTML CARDS ── */
+    function findHtmlMax(monsterName, resource) {
+      var cards = document.querySelectorAll('.criatura-card');
+      for (var i = 0; i < cards.length; i++) {
+        var title = cards[i].querySelector('.base-card-title');
+        if (title && title.textContent.trim() === monsterName) {
+          var pills = cards[i].querySelectorAll('.stat-pill');
+          for (var j = 0; j < pills.length; j++) {
+            var t = pills[j].textContent;
+            var label = resource === 'st' ? 'ST:' : resource === 'fo' ? 'FO:' : null;
+            if (label && t.indexOf(label) !== -1) {
+              var nums = t.split(':')[1].replace(/[^0-9]/g, '');
+              if (nums) return parseInt(nums);
+            }
+          }
+          break;
+        }
+      }
+      return 0;
+    }
+
+    /* ── CLEAR BATTLE ── */
+    function clearBattle() {
+      if (!confirm('Limpar todos os monstros da batalha?')) return;
+      battleMonsters = [];
+      saveBattleState();
+      renderBattle();
+      document.getElementById('battle-log-entries').innerHTML = '';
+    }
+
+    /* ── ADD BATTLE BUTTONS TO CARDS ── */
+    function initBattleButtons() {
+      document.querySelectorAll('.add-battle-btn').forEach(btn => {
+        // Ensure overflow visible on parent card
+        if (btn.parentElement && !btn.parentElement.style.overflow) {
+          btn.parentElement.style.overflow = 'visible';
+        }
+        // Remove old listeners by cloning
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        newBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          addToBattle(this);
+        });
+      });
+    }
+
+    /* ── INIT ── */
+    loadBattleState();
+    initBattleButtons();
+  </script>
+
+
+
+
+</body></html>

@@ -1,0 +1,2464 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/yuri/Downloads/Ficha_de_Personagem_v3_1.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de Personagem — Sistema RPG</title>
+<link href="file:///C:/Users/yuri/Downloads/Ficha%20de%20Personagem%20%E2%80%94%20Sistema%20RPG_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #f5ead6;
+    --gold: #c9921a;
+    --gold-light: #e8b84b;
+    --gold-dim: #7a5510;
+    --bg: #0d0d0d;
+    --surface: #111114;
+    --surface2: #18181c;
+    --border: rgba(255,255,255,0.06);
+    --border-gold: rgba(201,146,26,0.2);
+    --text: rgba(245,234,214,0.85);
+    --text-dim: rgba(245,234,214,0.45);
+    --text-faint: rgba(245,234,214,0.25);
+
+    --hp-color: #c94040;
+    --st-color: #c9921a;
+    --fo-color: #4060c9;
+
+    --marcial: #c94040;
+    --arcano: #4060c9;
+    --agil: #3a9050;
+    --semblante: #c06de0;
+    --estranho: #c040c0;
+
+    --accent: var(--gold);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% 10%, rgba(201,146,26,0.04) 0%, transparent 45%),
+      radial-gradient(ellipse at 85% 90%, rgba(64,96,201,0.04) 0%, transparent 45%);
+    min-height: 100vh;
+    font-family: 'Crimson Pro', serif;
+    color: var(--text);
+    padding: 32px 20px 80px;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .page-header::before {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 20px;
+  }
+  .page-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(22px, 4vw, 40px);
+    font-weight: 900;
+    color: var(--gold-light);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 30px rgba(201,146,26,0.35);
+  }
+  .page-header p {
+    font-size: 13px;
+    color: var(--text-faint);
+    font-style: italic;
+    margin-top: 6px;
+    letter-spacing: 0.05em;
+  }
+  .page-header::after {
+    content: '✦';
+    display: block;
+    margin-top: 14px;
+    color: var(--gold-dim);
+    font-size: 12px;
+    letter-spacing: 0.4em;
+  }
+
+  /* ── GRID LAYOUT ── */
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto;
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .col-left { display: flex; flex-direction: column; gap: 16px; }
+  .col-right { display: flex; flex-direction: column; gap: 16px; }
+  .col-full { grid-column: 1 / -1; }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.4;
+  }
+  .panel-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── INPUTS ── */
+  input[type="text"], input[type="number"], textarea, select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+    padding: 6px 10px;
+    width: 100%;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    border-color: rgba(201,146,26,0.4);
+  }
+  input[type="number"] { text-align: center; }
+  textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+  select option { background: #1a1a1a; }
+  label {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .field { margin-bottom: 12px; }
+  .field:last-child { margin-bottom: 0; }
+
+  /* ── IDENTITY PANEL ── */
+  .identity-name {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-gold);
+    border-radius: 0;
+    padding: 4px 0;
+    color: var(--gold-light);
+    width: 100%;
+    letter-spacing: 0.06em;
+  }
+  .identity-name::placeholder { color: var(--text-faint); font-style: italic; }
+  .identity-name:focus { border-bottom-color: var(--gold); outline: none; }
+
+  .identity-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .identity-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  /* LEVEL DISPLAY */
+  .level-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+  }
+  .level-number {
+    font-family: 'Cinzel', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--gold-light);
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(201,146,26,0.4);
+    min-width: 50px;
+    text-align: center;
+  }
+  .level-info { flex: 1; }
+  .level-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .level-btn-row { display: flex; gap: 6px; margin-top: 6px; }
+  .level-btn {
+    background: rgba(201,146,26,0.1);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    cursor: pointer;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .level-btn:hover { background: rgba(201,146,26,0.2); }
+
+  /* ARQUETYPE BADGE */
+  .archetype-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-top: 10px;
+    border: 1px solid;
+    transition: all 0.3s;
+  }
+  .archetype-badge.marcial { color: var(--marcial); border-color: rgba(201,64,64,0.3); background: rgba(201,64,64,0.08); }
+  .archetype-badge.arcano { color: var(--arcano); border-color: rgba(64,96,201,0.3); background: rgba(64,96,201,0.08); }
+  .archetype-badge.agil { color: var(--agil); border-color: rgba(58,144,80,0.3); background: rgba(58,144,80,0.08); }
+  .archetype-badge.semblante { color: var(--semblante); border-color: rgba(192,109,224,0.3); background: rgba(192,109,224,0.08); }
+  .archetype-badge.estranho { color: var(--estranho); border-color: rgba(192,64,192,0.3); background: rgba(192,64,192,0.08); }
+
+  /* ── RESOURCES ── */
+  .resource-block { margin-bottom: 14px; }
+  .resource-block:last-child { margin-bottom: 0; }
+  .resource-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .resource-name {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .resource-values {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .resource-current {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid;
+    padding: 2px 4px;
+    width: 52px;
+    text-align: center;
+    outline: none;
+  }
+  .resource-sep {
+    font-size: 14px;
+    color: var(--text-faint);
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .resource-max {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed;
+    padding: 2px 4px;
+    width: 52px;
+    text-align: center;
+    outline: none;
+    opacity: 0.6;
+  }
+  .resource-bar-bg {
+    height: 6px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .resource-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .resource-block.hp .resource-name { color: var(--hp-color); }
+  .resource-block.hp .resource-current { color: var(--hp-color); border-color: var(--hp-color); }
+  .resource-block.hp .resource-max { color: var(--hp-color); border-color: var(--hp-color); }
+  .resource-block.hp .resource-bar-fill { background: var(--hp-color); }
+
+  .resource-block.st .resource-name { color: var(--st-color); }
+  .resource-block.st .resource-current { color: var(--st-color); border-color: var(--st-color); }
+  .resource-block.st .resource-max { color: var(--st-color); border-color: var(--st-color); }
+  .resource-block.st .resource-bar-fill { background: var(--st-color); }
+
+  .resource-block.fo .resource-name { color: var(--fo-color); }
+  .resource-block.fo .resource-current { color: var(--fo-color); border-color: var(--fo-color); }
+  .resource-block.fo .resource-max { color: var(--fo-color); border-color: var(--fo-color); }
+  .resource-block.fo .resource-bar-fill { background: var(--fo-color); }
+
+  .rec-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .rec-item {
+    flex: 1;
+    text-align: center;
+    padding: 6px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+  .rec-item label { margin-bottom: 4px; font-size: 9px; }
+  .rec-item input { font-size: 16px; background: transparent; border: none; width: 100%; text-align: center; font-family: 'Share Tech Mono', monospace; color: var(--text); outline: none; }
+
+  /* ── ATTRIBUTES ── */
+  .attr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .attr-box {
+    text-align: center;
+    padding: 10px 6px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .attr-box:hover { border-color: var(--border-gold); }
+  .attr-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .attr-value {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    line-height: 1;
+  }
+  .attr-mod {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--gold-dim);
+    margin-top: 2px;
+    min-height: 16px;
+  }
+
+  /* ── SKILLS LIST ── */
+  .list-area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .list-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 8px 10px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .list-item:hover { border-color: var(--border-gold); }
+  .list-item-content { flex: 1; min-width: 0; }
+  .list-item-name {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+  }
+  .list-item-detail {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  .list-item-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .tag.passiva { background: rgba(136,136,136,0.15); color: #999; border: 1px solid rgba(136,136,136,0.2); }
+  .tag.rapida { background: rgba(76,175,144,0.15); color: #4caf90; border: 1px solid rgba(76,175,144,0.2); }
+  .tag.padrao { background: rgba(201,146,26,0.15); color: var(--gold-light); border: 1px solid rgba(201,146,26,0.2); }
+  .tag.custo { background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--border); }
+  .tag.assinatura { background: rgba(255,215,0,0.12); color: #ffd700; border: 1px solid rgba(255,215,0,0.25); }
+  .tag.equipamento { background: rgba(64,192,192,0.15); color: #40c0c0; border: 1px solid rgba(64,192,192,0.2); }
+  .tag.consumivel { background: rgba(80,144,232,0.15); color: #5090e8; border: 1px solid rgba(80,144,232,0.2); }
+  .list-remove {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.15);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 2px;
+    transition: color 0.2s;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .list-remove:hover { color: var(--hp-color); }
+  .list-use-btn {
+    background: rgba(201,146,26,0.1);
+    border: 1px solid rgba(201,146,26,0.2);
+    border-radius: 2px;
+    color: var(--gold-dim);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .list-use-btn:hover { background: rgba(201,146,26,0.25); color: var(--gold-light); border-color: rgba(201,146,26,0.5); }
+  .list-use-btn:active { transform: scale(0.95); }
+  .list-use-btn.insufficient { background: rgba(180,40,40,0.15); color: #c06060; border-color: rgba(180,40,40,0.2); }
+  .list-use-btn.flash-success { animation: useFlashSuccess 0.4s ease-out; }
+  .list-use-btn.flash-fail { animation: useFlashFail 0.4s ease-out; }
+  @keyframes useFlashSuccess { 0% { background: rgba(76,175,80,0.4); color: #fff; } 100% { background: rgba(201,146,26,0.1); color: var(--gold-dim); } }
+  @keyframes useFlashFail { 0% { background: rgba(180,40,40,0.5); color: #fff; } 100% { background: rgba(180,40,40,0.15); color: #c06060; } }
+
+  /* ADD FORM */
+  .add-form {
+    margin-top: 10px;
+    padding: 12px;
+    background: rgba(0,0,0,0.2);
+    border: 1px dashed rgba(255,255,255,0.08);
+    border-radius: 3px;
+  }
+  .add-form-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .add-form-row:last-child { margin-bottom: 0; }
+  .add-form input, .add-form select, .add-form textarea {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+  .add-form .flex1 { flex: 1; min-width: 120px; }
+  .add-form .flex2 { flex: 2; min-width: 180px; }
+  .add-btn {
+    background: rgba(201,146,26,0.12);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .add-btn:hover { background: rgba(201,146,26,0.22); }
+  .add-btn.danger { background: rgba(180,40,40,0.1); border-color: rgba(180,40,40,0.2); color: #e08080; }
+  .add-btn.danger:hover { background: rgba(180,40,40,0.2); }
+
+  /* ── ARTEFATOS ── */
+  .artefato-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .artefato-slot {
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    position: relative;
+  }
+  .artefato-slot.locked {
+    opacity: 0.3;
+    border-style: dashed;
+    pointer-events: none;
+  }
+  .artefato-slot-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--gold-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .artefato-slot .field { margin-bottom: 8px; }
+  .artefato-slot .field:last-child { margin-bottom: 0; }
+  .artefato-raridade {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .raridade-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    border: 1px solid;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    letter-spacing: 0.08em;
+  }
+  .raridade-btn.comum { color: #aaa; border-color: rgba(170,170,170,0.25); }
+  .raridade-btn.incomum { color: #56c456; border-color: rgba(86,196,86,0.25); }
+  .raridade-btn.raro { color: #5090e8; border-color: rgba(80,144,232,0.25); }
+  .raridade-btn.epico {color: #8705a1; border-color: rgba(80,144,232,0.25); }
+  .raridade-btn.lendario { color: #c00d2b; border-color: rgba(192,96,232,0.25); }
+  .raridade-btn.active { filter: brightness(1.4); }
+  .raridade-btn.comum.active { background: rgba(170,170,170,0.12); }
+  .raridade-btn.incomum.active { background: rgba(86,196,86,0.12); }
+  .raridade-btn.raro.active { background: rgba(80,144,232,0.12); }
+  .raridade-btn.epico.active { background: rgb(43, 5, 51); }
+  .raridade-btn.lendario.active { background: rgba(53, 2, 2, 0.568); }
+
+  /* ── LEVEL TRACKER ── */
+  .level-track {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .lvl-pip {
+    width: 36px;
+    height: 36px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--text-faint);
+    background: rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .lvl-pip.done {
+    background: rgba(201,146,26,0.12);
+    border-color: var(--border-gold);
+    color: var(--gold-light);
+  }
+  .lvl-pip.current {
+    background: rgba(201,146,26,0.25);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    box-shadow: 0 0 10px rgba(201,146,26,0.25);
+    font-weight: 700;
+  }
+  .lvl-pip.milestone { border-color: rgba(201,146,26,0.3); }
+  .lvl-pip.milestone.done { border-color: var(--gold); }
+  .lvl-pip-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a20;
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .lvl-pip:hover .lvl-pip-tooltip { display: block; }
+
+  /* ── NOTES ── */
+  .notes-area textarea {
+    min-height: 120px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  /* ── STATUS BADGES ── */
+  .status-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .status-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    color: rgba(255,255,255,0.35);
+    background: transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .status-btn.active {
+    color: #fff;
+    background: rgba(180,40,40,0.2);
+    border-color: rgba(180,40,40,0.5);
+  }
+
+  /* ── SAVE/LOAD ── */
+  .actions-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    background: rgba(201,146,26,0.1);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .action-btn:hover { background: rgba(201,146,26,0.2); }
+  .action-btn.secondary { background: rgba(255,255,255,0.04); border-color: var(--border); color: var(--text-dim); }
+  .action-btn.secondary:hover { background: rgba(255,255,255,0.08); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .sheet-grid { grid-template-columns: 1fr; }
+    .col-full { grid-column: 1; }
+  }
+
+  /* corner ornaments on panels */
+  .panel::after {
+    content: '';
+    position: absolute;
+    bottom: 6px; right: 6px;
+    width: 10px; height: 10px;
+    border-right: 1px solid rgba(201,146,26,0.15);
+    border-bottom: 1px solid rgba(201,146,26,0.15);
+  }
+
+  /* divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 12px 0;
+  }
+
+  /* inline row */
+  .inline-row { display: flex; gap: 10px; align-items: flex-start; }
+  .inline-row > * { flex: 1; }
+
+  /* subsection label */
+  .sub-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin: 10px 0 6px;
+  }
+  .sub-label:first-child { margin-top: 0; }
+
+  /* empty state */
+  .empty-state {
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 12px;
+    font-style: italic;
+    padding: 16px 0;
+  }
+
+  /* ── PROF ATTR CHECKBOXES ── */
+  .prof-attr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .prof-attr-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 9px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .prof-attr-item:hover { border-color: var(--border-gold); }
+  .prof-attr-item.active {
+    background: rgba(201,146,26,0.1);
+    border-color: rgba(201,146,26,0.4);
+  }
+  .prof-attr-item input[type="checkbox"] {
+    width: 13px; height: 13px;
+    accent-color: var(--gold);
+    cursor: pointer;
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .prof-attr-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    flex: 1;
+  }
+  .prof-attr-item.active .prof-attr-label { color: var(--gold-light); }
+  .prof-attr-value {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-faint);
+    min-width: 22px;
+    text-align: right;
+  }
+  .prof-attr-item.active .prof-attr-value { color: var(--gold-light); }
+  .prof-hint {
+    font-size: 10px;
+    color: var(--text-faint);
+    font-style: italic;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* ── PROFICIENCY BONUS ── */
+  .proficiency-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    margin-bottom: 14px;
+  }
+  .prof-bonus-box {
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--gold-light);
+    text-shadow: 0 0 14px rgba(201,146,26,0.4);
+    min-width: 44px;
+    text-align: center;
+    line-height: 1;
+  }
+  .prof-bonus-info { flex: 1; }
+  .prof-bonus-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .prof-bonus-attrs {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  /* ── RECOVERY BUTTON ── */
+  .rec-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 9px 0;
+    background: rgba(201,146,26,0.08);
+    border: 1px solid rgba(201,146,26,0.25);
+    border-radius: 3px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .rec-btn:hover {
+    background: rgba(201,146,26,0.18);
+    border-color: rgba(201,146,26,0.5);
+    box-shadow: 0 0 14px rgba(201,146,26,0.15);
+  }
+  .rec-btn:active { transform: scale(0.98); }
+  .rec-btn-flash {
+    animation: recFlash 0.45s ease-out;
+  }
+  @keyframes recFlash {
+    0%   { background: rgba(201,146,26,0.35); box-shadow: 0 0 20px rgba(201,146,26,0.4); }
+    100% { background: rgba(201,146,26,0.08); box-shadow: none; }
+  }
+  .rec-preview {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-top: 5px;
+  }
+  .rec-preview span { color: var(--gold-dim); }
+  .pericias-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .pericias-slots {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--gold-dim);
+    letter-spacing: 0.08em;
+    background: rgba(201,146,26,0.08);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    padding: 3px 9px;
+    white-space: nowrap;
+  }
+  .pericias-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .pericia-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    background: rgba(0,0,0,0.18);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+  .pericia-row:hover { border-color: var(--border-gold); }
+  .pericia-row.proficiente {
+    background: rgba(201,146,26,0.06);
+    border-color: rgba(201,146,26,0.22);
+  }
+  .pericia-check {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--gold);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .pericia-nome {
+    font-family: 'Crimson Pro', serif;
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+  }
+  .pericia-atributo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1px 5px;
+  }
+  .pericia-total {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 28px;
+    text-align: right;
+    color: var(--gold-dim);
+  }
+  .pericia-row.proficiente .pericia-total { color: var(--gold-light); }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>FICHA DE PERSONAGEM</h1>
+  <p>Sistema Homebrew de Mesa</p>
+</div>
+
+<div class="sheet-grid">
+
+  <!-- ═══ COL LEFT ═══ -->
+  <div class="col-left">
+
+    <!-- IDENTIDADE -->
+    <div class="panel" id="panel-identity">
+      <div class="panel-title">Identidade</div>
+      <input class="identity-name" type="text" id="char-name" placeholder="Nome do personagem" oninput="save()">
+
+      <div class="identity-row">
+        <div class="field">
+          <label>Iniciativa</label>
+          <input type="number" id="char-iniciativa" placeholder="+0" oninput="save()">
+        </div>
+        <div class="field">
+          <label>CA</label>
+          <input type="number" id="char-ca" placeholder="10" oninput="save()">
+        </div>
+      </div>
+
+      <div class="identity-row">
+        <div class="field">
+          <label>Arquétipo</label>
+          <select id="char-arquetipo" onchange="onArquetipoChange(); save()">
+            <option value="">—</option>
+            <option value="marcial">⚔️ Marcial</option>
+            <option value="arcano">🧙 Arcano</option>
+            <option value="agil">🪃 Ágil (Astuto)</option>
+            <option value="semblante">✨ Bom Semblante</option>
+            <option value="estranho">🎭 O Estranho</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Subclasse</label>
+          <input type="text" id="char-subclasse" placeholder="Ex: Cavaleiro" oninput="save()">
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:8px;">
+        <label>Especialização</label>
+        <input type="text" id="char-especializacao" placeholder="Ex: Paladino" oninput="save()">
+      </div>
+
+      <div class="field">
+        <label>Multiclasse (se houver)</label>
+        <input type="text" id="char-multi" placeholder="Ex: Arcano (nível 13)" oninput="save()">
+      </div>
+
+      <div id="archetype-badge-container"><div class="archetype-badge marcial">⚔️ Marcial</div></div>
+
+      <!-- NÍVEL -->
+      <div class="level-display">
+        <div class="level-number" id="level-display">17</div>
+        <div class="level-info">
+          <div class="level-label">Nível atual</div>
+          <div class="level-btn-row">
+            <button class="level-btn" onclick="changeLevel(-1)">−</button>
+            <button class="level-btn" onclick="changeLevel(1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Jogador</label>
+        <input type="text" id="char-jogador" placeholder="Seu nome" oninput="save()">
+      </div>
+      <div class="field">
+        <label>Histórico / Origem</label>
+        <input type="text" id="char-origem" placeholder="Ex: Mercenário, Nobre, Órfão..." oninput="save()">
+      </div>
+    </div>
+
+    <!-- RECURSOS -->
+    <div class="panel" id="panel-recursos">
+      <div class="panel-title">Recursos</div>
+
+      <div class="resource-block hp">
+        <div class="resource-header">
+          <div class="resource-name">❤️ HP — Vida</div>
+          <div class="resource-values">
+            <input class="resource-current" type="number" id="hp-cur" value="20" min="0" oninput="updateBar(&#39;hp&#39;); save()">
+            <span class="resource-sep">/</span>
+            <input class="resource-max" type="number" id="hp-max" value="20" min="1" oninput="updateBar(&#39;hp&#39;); save()">
+          </div>
+        </div>
+        <div class="resource-bar-bg"><div class="resource-bar-fill" id="hp-bar" style="width:100%;background:var(--hp-color)"></div></div>
+      </div>
+
+      <div class="resource-block st" style="margin-top:14px;">
+        <div class="resource-header">
+          <div class="resource-name">🟡 Stamina</div>
+          <div class="resource-values">
+            <input class="resource-current" type="number" id="st-cur" value="12" min="0" oninput="updateBar(&#39;st&#39;); save(); refreshUseButtons()">
+            <span class="resource-sep">/</span>
+            <input class="resource-max" type="number" id="st-max" value="12" min="1" oninput="updateBar(&#39;st&#39;); save(); refreshUseButtons()">
+          </div>
+        </div>
+        <div class="resource-bar-bg"><div class="resource-bar-fill" id="st-bar" style="width:100%;background:var(--st-color)"></div></div>
+      </div>
+
+      <div class="resource-block fo" style="margin-top:14px;">
+        <div class="resource-header">
+          <div class="resource-name">🔵 Foco</div>
+          <div class="resource-values">
+            <input class="resource-current" type="number" id="fo-cur" value="10" min="0" oninput="updateBar(&#39;fo&#39;); save(); refreshUseButtons()">
+            <span class="resource-sep">/</span>
+            <input class="resource-max" type="number" id="fo-max" value="10" min="1" oninput="updateBar(&#39;fo&#39;); save(); refreshUseButtons()">
+          </div>
+        </div>
+        <div class="resource-bar-bg"><div class="resource-bar-fill" id="fo-bar" style="width:100%;background:var(--fo-color)"></div></div>
+      </div>
+
+      <div class="rec-row">
+        <div class="rec-item">
+          <label>Rec 🟡/turno</label>
+          <input type="number" id="rec-st" value="2" min="0" oninput="updateRecPreview(); save()">
+        </div>
+        <div class="rec-item">
+          <label>Rec 🔵/turno</label>
+          <input type="number" id="rec-fo" value="2" min="0" oninput="updateRecPreview(); save()">
+        </div>
+      </div>
+
+      <button class="rec-btn" id="rec-btn" onclick="recoverTurn()">
+        ↺ RECUPERAÇÃO DE TURNO
+      </button>
+      <div class="rec-preview" id="rec-preview">+<span id="rec-preview-st">4</span> 🟡 &nbsp;·&nbsp; +<span id="rec-preview-fo">5</span> 🔵</div>
+    </div>
+
+    <!-- ATRIBUTOS -->
+    <div class="panel" id="panel-attrs">
+      <div class="panel-title">Atributos</div>
+      <div class="attr-grid">
+        <div class="attr-box" style="border-color: rgba(201, 146, 26, 0.45);">
+          <div class="attr-name">Força</div>
+          <input class="attr-value" type="number" id="attr-for" value="10" min="1" max="30" oninput="updateMod(&#39;for&#39;); save()">
+          <div class="attr-mod" id="mod-for" style="color: var(--gold-dim);">+0</div>
+        </div>
+        <div class="attr-box">
+          <div class="attr-name">Destreza</div>
+          <input class="attr-value" type="number" id="attr-des" value="10" min="1" max="30" oninput="updateMod(&#39;des&#39;); save()">
+          <div class="attr-mod" id="mod-des" style="color: var(--gold-dim);">+0</div>
+        </div>
+        <div class="attr-box" style="border-color: rgba(201, 146, 26, 0.45);">
+          <div class="attr-name">Constituição</div>
+          <input class="attr-value" type="number" id="attr-con" value="10" min="1" max="30" oninput="updateMod(&#39;con&#39;); save()">
+          <div class="attr-mod" id="mod-con" style="color: var(--gold-dim);">+0</div>
+        </div>
+        <div class="attr-box">
+          <div class="attr-name">Inteligência</div>
+          <input class="attr-value" type="number" id="attr-int" value="10" min="1" max="30" oninput="updateMod(&#39;int&#39;); save()">
+          <div class="attr-mod" id="mod-int" style="color: var(--gold-dim);">+0</div>
+        </div>
+        <div class="attr-box">
+          <div class="attr-name">Carisma</div>
+          <input class="attr-value" type="number" id="attr-car" value="10" min="1" max="30" oninput="updateMod(&#39;car&#39;); save()">
+          <div class="attr-mod" id="mod-car" style="color: rgb(106, 176, 106);">+3</div>
+        </div>
+        <div class="attr-box">
+          <div class="attr-name">Sabedoria</div>
+          <input class="attr-value" type="number" id="attr-sab" value="10" min="1" max="30" oninput="updateMod(&#39;sab&#39;); save()">
+          <div class="attr-mod" id="mod-sab" style="color: rgb(106, 176, 106);">+6</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BÔNUS DE PROFICIÊNCIA -->
+    <div class="panel" id="panel-proficiencia">
+      <div class="panel-title">Bônus de Proficiência</div>
+      <div class="proficiency-banner">
+        <div class="prof-bonus-box" id="prof-bonus-display">+6</div>
+        <div class="prof-bonus-info">
+          <div class="prof-bonus-label">Bônus atual (nível <span id="prof-nivel-display">17</span>)</div>
+          <div class="prof-bonus-attrs" id="prof-bonus-attrs">Nenhum atributo selecionado</div>
+        </div>
+      </div>
+
+      <div class="sub-label">Atributos que recebem o bônus</div>
+      <div class="prof-attr-grid" id="prof-attr-grid">
+        <label class="prof-attr-item" id="prof-item-for">
+          <input type="checkbox" id="prof-check-for" onchange="toggleProfAttr(&#39;for&#39;)">
+          <span class="prof-attr-label">FOR</span>
+          <span class="prof-attr-value" id="prof-val-for">+0</span>
+        </label>
+        <label class="prof-attr-item" id="prof-item-des">
+          <input type="checkbox" id="prof-check-des" onchange="toggleProfAttr(&#39;des&#39;)">
+          <span class="prof-attr-label">DES</span>
+          <span class="prof-attr-value" id="prof-val-des">+0</span>
+        </label>
+        <label class="prof-attr-item" id="prof-item-con">
+          <input type="checkbox" id="prof-check-con" onchange="toggleProfAttr(&#39;con&#39;)">
+          <span class="prof-attr-label">CON</span>
+          <span class="prof-attr-value" id="prof-val-con">+0</span>
+        </label>
+        <label class="prof-attr-item" id="prof-item-int">
+          <input type="checkbox" id="prof-check-int" onchange="toggleProfAttr(&#39;int&#39;)">
+          <span class="prof-attr-label">INT</span>
+          <span class="prof-attr-value" id="prof-val-int">+0</span>
+        </label>
+        <label class="prof-attr-item" id="prof-item-car">
+          <input type="checkbox" id="prof-check-car" onchange="toggleProfAttr(&#39;car&#39;)">
+          <span class="prof-attr-label">CAR</span>
+          <span class="prof-attr-value" id="prof-val-car">+3</span>
+        </label>
+        <label class="prof-attr-item" id="prof-item-sab">
+          <input type="checkbox" id="prof-check-sab" onchange="toggleProfAttr(&#39;sab&#39;)">
+          <span class="prof-attr-label">SAB</span>
+          <span class="prof-attr-value" id="prof-val-sab">+6</span>
+        </label>
+      </div>
+      <div class="prof-hint">Marque livremente. Relíquias e subclasses podem ampliar quais atributos recebem o bônus.</div>
+    </div>
+
+    <!-- PERÍCIAS -->
+    <div class="panel" id="panel-pericias">
+      <div class="panel-title">Perícias</div>
+      <div class="pericias-header">
+        <span style="font-size:11px;color:var(--text-dim);">Proficiências: <span id="pericias-usadas" style="color:var(--gold-light);font-weight:700;">0</span> / <span id="pericias-max" style="color:var(--gold-light);">4</span></span>
+        <span class="pericias-slots" id="pericias-slots-label">4 · Prof +6</span>
+      </div>
+      <div class="pericias-list" id="pericias-list"><div class="pericia-row" id="pericia-row-acrobacia">
+      <input type="checkbox" class="pericia-check" id="pcheck-acrobacia" onchange="togglePericia(&#39;acrobacia&#39;)">
+      <label for="pcheck-acrobacia" class="pericia-nome">Acrobacia</label>
+      <span class="pericia-atributo">DES</span>
+      <span class="pericia-total" id="ptotal-acrobacia">+0</span>
+    </div><div class="pericia-row" id="pericia-row-atletismo">
+      <input type="checkbox" class="pericia-check" id="pcheck-atletismo" onchange="togglePericia(&#39;atletismo&#39;)">
+      <label for="pcheck-atletismo" class="pericia-nome">Atletismo</label>
+      <span class="pericia-atributo">FOR</span>
+      <span class="pericia-total" id="ptotal-atletismo">+0</span>
+    </div><div class="pericia-row" id="pericia-row-arcanismo">
+      <input type="checkbox" class="pericia-check" id="pcheck-arcanismo" onchange="togglePericia(&#39;arcanismo&#39;)">
+      <label for="pcheck-arcanismo" class="pericia-nome">Arcanismo</label>
+      <span class="pericia-atributo">INT</span>
+      <span class="pericia-total" id="ptotal-arcanismo">+0</span>
+    </div><div class="pericia-row" id="pericia-row-apresentacao">
+      <input type="checkbox" class="pericia-check" id="pcheck-apresentacao" onchange="togglePericia(&#39;apresentacao&#39;)">
+      <label for="pcheck-apresentacao" class="pericia-nome">Apresentação</label>
+      <span class="pericia-atributo">CAR</span>
+      <span class="pericia-total" id="ptotal-apresentacao">+3</span>
+    </div><div class="pericia-row" id="pericia-row-intimidacao">
+      <input type="checkbox" class="pericia-check" id="pcheck-intimidacao" onchange="togglePericia(&#39;intimidacao&#39;)">
+      <label for="pcheck-intimidacao" class="pericia-nome">Intimidação</label>
+      <span class="pericia-atributo">CAR</span>
+      <span class="pericia-total" id="ptotal-intimidacao">+3</span>
+    </div><div class="pericia-row" id="pericia-row-enganacao">
+      <input type="checkbox" class="pericia-check" id="pcheck-enganacao" onchange="togglePericia(&#39;enganacao&#39;)">
+      <label for="pcheck-enganacao" class="pericia-nome">Enganação</label>
+      <span class="pericia-atributo">CAR</span>
+      <span class="pericia-total" id="ptotal-enganacao">+3</span>
+    </div><div class="pericia-row" id="pericia-row-persuasao">
+      <input type="checkbox" class="pericia-check" id="pcheck-persuasao" onchange="togglePericia(&#39;persuasao&#39;)">
+      <label for="pcheck-persuasao" class="pericia-nome">Persuasão</label>
+      <span class="pericia-atributo">CAR</span>
+      <span class="pericia-total" id="ptotal-persuasao">+3</span>
+    </div><div class="pericia-row" id="pericia-row-furtividade">
+      <input type="checkbox" class="pericia-check" id="pcheck-furtividade" onchange="togglePericia(&#39;furtividade&#39;)">
+      <label for="pcheck-furtividade" class="pericia-nome">Furtividade</label>
+      <span class="pericia-atributo">DES</span>
+      <span class="pericia-total" id="ptotal-furtividade">+0</span>
+    </div><div class="pericia-row" id="pericia-row-conhecimento">
+      <input type="checkbox" class="pericia-check" id="pcheck-conhecimento" onchange="togglePericia(&#39;conhecimento&#39;)">
+      <label for="pcheck-conhecimento" class="pericia-nome">Conhecimento</label>
+      <span class="pericia-atributo">SAB</span>
+      <span class="pericia-total" id="ptotal-conhecimento">+6</span>
+    </div><div class="pericia-row" id="pericia-row-religiao">
+      <input type="checkbox" class="pericia-check" id="pcheck-religiao" onchange="togglePericia(&#39;religiao&#39;)">
+      <label for="pcheck-religiao" class="pericia-nome">Religião</label>
+      <span class="pericia-atributo">SAB</span>
+      <span class="pericia-total" id="ptotal-religiao">+6</span>
+    </div><div class="pericia-row" id="pericia-row-medicina">
+      <input type="checkbox" class="pericia-check" id="pcheck-medicina" onchange="togglePericia(&#39;medicina&#39;)">
+      <label for="pcheck-medicina" class="pericia-nome">Medicina</label>
+      <span class="pericia-atributo">INT</span>
+      <span class="pericia-total" id="ptotal-medicina">+0</span>
+    </div><div class="pericia-row" id="pericia-row-sobrevivencia">
+      <input type="checkbox" class="pericia-check" id="pcheck-sobrevivencia" onchange="togglePericia(&#39;sobrevivencia&#39;)">
+      <label for="pcheck-sobrevivencia" class="pericia-nome">Sobrevivência</label>
+      <span class="pericia-atributo">SAB</span>
+      <span class="pericia-total" id="ptotal-sobrevivencia">+6</span>
+    </div><div class="pericia-row" id="pericia-row-percepcao">
+      <input type="checkbox" class="pericia-check" id="pcheck-percepcao" onchange="togglePericia(&#39;percepcao&#39;)">
+      <label for="pcheck-percepcao" class="pericia-nome">Percepção</label>
+      <span class="pericia-atributo">SAB</span>
+      <span class="pericia-total" id="ptotal-percepcao">+6</span>
+
+    </div><div class="pericia-row" id="pericia-row-investigacao">
+      <input type="checkbox" class="pericia-check" id="pcheck-investigacao" onchange="togglePericia(&#39;investigacao&#39;)">
+      <label for="pcheck-investigacao" class="pericia-nome">Investigação</label>
+      <span class="pericia-atributo">INT</span>
+      <span class="pericia-total" id="ptotal-investigacao">+0</span>
+
+    </div><div class="pericia-row" id="pericia-row-tecnologia">
+      <input type="checkbox" class="pericia-check" id="pcheck-tecnologia" onchange="togglePericia(&#39;tecnologia&#39;)">
+      <label for="pcheck-tecnologia" class="pericia-nome">Tecnologia</label>
+      <span class="pericia-atributo">INT</span>
+      <span class="pericia-total" id="ptotal-tecnologia">+0</span>
+
+    </div><div class="pericia-row" id="pericia-row-manipresto">
+      <input type="checkbox" class="pericia-check" id="pcheck-manipresto" onchange="togglePericia(&#39;manipresto&#39;)">
+      <label for="pcheck-manipresto" class="pericia-nome">Manipresto</label>
+      <span class="pericia-atributo">DES</span>
+      <span class="pericia-total" id="ptotal-manipresto">+0</span>
+    </div></div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="panel">
+      <div class="panel-title">Status Ativos</div>
+      <div class="status-grid">
+        <button class="status-btn" onclick="toggleStatus(this)">Lento</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Cego</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Tonto</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Silenciado</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Derrubado</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Enfraquecido</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Enraivecido</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Suprimido</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Sangramento</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Exausto</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Abalado</button>
+        <button class="status-btn" onclick="toggleStatus(this)">Acelerado</button>
+      </div>
+    </div>
+
+  </div><!-- end col-left -->
+
+  <!-- ═══ COL RIGHT ═══ -->
+  <div class="col-right">
+
+    <!-- HABILIDADES DA CLASSE -->
+    <div class="panel">
+      <div class="panel-title">Habilidades da Classe</div>
+
+      <div class="sub-label">Skills Base</div>
+      <div class="list-area" id="list-skills-base"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-skill-name" placeholder="Nome da habilidade">
+          <select id="new-skill-tipo" class="flex1">
+            <option value="passiva">Passiva</option>
+            <option value="rapida">Rápida</option>
+            <option value="padrao">Padrão</option>
+          </select>
+          <input class="flex1" type="text" id="new-skill-custo" placeholder="Custo">
+        </div>
+        <div class="add-form-row">
+          <select id="new-skill-recurso" class="flex1" style="max-width:140px;">
+            <option value="">Nenhum</option>
+            <option value="st">🟡 Stamina</option>
+            <option value="fo">🔵 Foco</option>
+          </select>
+          <textarea class="flex2" id="new-skill-desc" placeholder="Descrição (opcional)" rows="2"></textarea>
+          <button class="add-btn" onclick="addSkill(&#39;base&#39;)">+ Adicionar</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="sub-label">Habilidades da Especialização</div>
+      <div class="list-area" id="list-skills-spec"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-specskill-name" placeholder="Nome da habilidade">
+          <select id="new-specskill-tipo" class="flex1">
+            <option value="passiva">Passiva</option>
+            <option value="rapida">Rápida</option>
+            <option value="padrao">Padrão</option>
+            <option value="assinatura">⭐ Assinatura</option>
+          </select>
+          <input class="flex1" type="text" id="new-specskill-custo" placeholder="Custo">
+        </div>
+        <div class="add-form-row">
+          <select id="new-specskill-recurso" class="flex1" style="max-width:140px;">
+            <option value="">Nenhum</option>
+            <option value="st">🟡 Stamina</option>
+            <option value="fo">🔵 Foco</option>
+          </select>
+          <textarea class="flex2" id="new-specskill-desc" placeholder="Descrição (opcional)" rows="2"></textarea>
+          <button class="add-btn" onclick="addSkill(&#39;spec&#39;)">+ Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSIVAS -->
+    <div class="panel">
+      <div class="panel-title">Passivas Escolhidas</div>
+      <div class="list-area" id="list-passivas"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-passiva-name" placeholder="Nome da passiva">
+          <input class="flex1" type="text" id="new-passiva-origem" placeholder="Origem (ex: Marcial)">
+        </div>
+        <div class="add-form-row">
+          <input class="flex1" type="text" id="new-passiva-custo" placeholder="Custo (ex: 1🟡)">
+          <select id="new-passiva-recurso" class="flex1" style="max-width:140px;">
+            <option value="st">🟡 Stamina</option>
+            <option value="fo">🔵 Foco</option>
+            <option value="">Sem recurso</option>
+          </select>
+        </div>
+        <div class="add-form-row">
+          <textarea class="flex2" id="new-passiva-desc" placeholder="Descrição (opcional)" rows="2"></textarea>
+          <button class="add-btn" onclick="addPassiva()">+ Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAGIAS E TÉCNICAS -->
+    <div class="panel">
+      <div class="panel-title">Magias &amp; Técnicas Conhecidas</div>
+
+      <div class="sub-label">Magias Gerais</div>
+      <div class="list-area" id="list-magias-gerais"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-magia-g-name" placeholder="Nome da magia">
+          <select id="new-magia-g-tipo" class="flex1">
+            <option value="padrao">Padrão</option>
+            <option value="rapida">Rápida</option>
+          </select>
+          <input class="flex1" type="text" id="new-magia-g-custo" placeholder="Custo">
+        </div>
+        <div class="add-form-row">
+          <textarea class="flex1" id="new-magia-g-desc" placeholder="Escola / Descrição" rows="2"></textarea>
+          <button class="add-btn" onclick="addMagia(&#39;gerais&#39;)">+ Adicionar</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="sub-label">Técnicas Gerais</div>
+      <div class="list-area" id="list-tecnicas-gerais"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-tec-g-name" placeholder="Nome da técnica">
+          <select id="new-tec-g-tipo" class="flex1">
+            <option value="padrao">Padrão</option>
+            <option value="rapida">Rápida</option>
+          </select>
+          <input class="flex1" type="text" id="new-tec-g-custo" placeholder="Custo">
+        </div>
+        <div class="add-form-row">
+          <textarea class="flex1" id="new-tec-g-desc" placeholder="Estilo / Descrição" rows="2"></textarea>
+          <button class="add-btn" onclick="addMagia(&#39;tecnicas&#39;)">+ Adicionar</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="sub-label">Exclusivas da Especialização</div>
+      <div class="list-area" id="list-exclusivas"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-excl-name" placeholder="Nome">
+          <select id="new-excl-tipo" class="flex1">
+            <option value="padrao">Padrão</option>
+            <option value="rapida">Rápida</option>
+            <option value="assinatura">⭐ Assinatura</option>
+          </select>
+          <input class="flex1" type="text" id="new-excl-custo" placeholder="Custo">
+        </div>
+        <div class="add-form-row">
+          <textarea class="flex1" id="new-excl-desc" placeholder="Descrição" rows="2"></textarea>
+          <select id="new-excl-recurso" class="flex1" style="max-width:140px;">
+            <option value="fo">🔵 Foco</option>
+            <option value="st">🟡 Stamina</option>
+          </select>
+          <button class="add-btn" onclick="addMagia(&#39;exclusivas&#39;)">+ Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ITENS -->
+    <div class="panel">
+      <div class="panel-title">Itens &amp; Equipamento</div>
+      <div class="list-area" id="list-itens"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-item-name" placeholder="Nome do item">
+          <select id="new-item-categoria" class="flex1">
+            <option value="equipamento">Equipamento</option>
+            <option value="consumivel">Consumível</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="add-form-row">
+          <input class="flex1" type="text" id="new-item-qtd" placeholder="Qtd." value="1" style="max-width:70px;">
+          <textarea class="flex2" id="new-item-desc" rows="2" placeholder="Descrição (opcional)"></textarea>
+          <button class="add-btn" onclick="addItem()">+ Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTEFATOS -->
+    <div class="panel" id="panel-artefatos">
+      <div class="panel-title">Artefatos</div>
+      <div class="artefato-slots" id="artefato-slots">
+
+        <div class="artefato-slot" id="artefato-1">
+          <div class="artefato-slot-label">🔮 Artefato I</div>
+          <div class="field">
+            <label>Nome</label>
+            <input type="text" id="art1-name" placeholder="Nome do artefato" oninput="save()">
+          </div>
+          <div class="field">
+            <label>Efeito</label>
+            <textarea id="art1-effect" rows="2" placeholder="Descreva o efeito..." oninput="save()"></textarea>
+          </div>
+          <div class="field">
+            <label>Raridade</label>
+            <div class="artefato-raridade">
+              <button class="raridade-btn comum" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
+              <button class="raridade-btn incomum" onclick="setRaridade(1, &#39;incomum&#39;, this)">🟢 Incomum</button>
+              <button class="raridade-btn raro" onclick="setRaridade(1, &#39;raro&#39;, this)">🔵 Raro</button>
+              <button class="raridade-btn epico" onclick="setRaridade(1, &#39;epico&#39;, this)">🟣 Épico</button>
+              <button class="raridade-btn lendario active" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="artefato-slot" id="artefato-1">
+          <div class="artefato-slot-label">🔮 Artefato II</div>
+          <div class="field">
+            <label>Nome</label>
+            <input type="text" id="art1-name" placeholder="Nome do artefato" oninput="save()">
+          </div>
+          <div class="field">
+            <label>Efeito</label>
+            <textarea id="art1-effect" rows="2" placeholder="Descreva o efeito..." oninput="save()"></textarea>
+          </div>
+          <div class="field">
+            <label>Raridade</label>
+            <div class="artefato-raridade">
+              <button class="raridade-btn comum" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
+              <button class="raridade-btn incomum" onclick="setRaridade(1, &#39;incomum&#39;, this)">🟢 Incomum</button>
+              <button class="raridade-btn raro" onclick="setRaridade(1, &#39;raro&#39;, this)">🔵 Raro</button>
+                <button class="raridade-btn epico" onclick="setRaridade(1, &#39;epico&#39;, this)">🟣 Épico</button>
+              <button class="raridade-btn lendario active" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="artefato-slot" id="artefato-2">
+          <div class="artefato-slot-label">🔮 Artefato III — Desbloqueado no Nível 8</div>
+          <div class="field">
+            <label>Nome</label>
+            <input type="text" id="art2-name" placeholder="Nome do artefato" oninput="save()">
+          </div>
+          <div class="field">
+            <label>Efeito</label>
+            <textarea id="art2-effect" rows="2" placeholder="Descreva o efeito..." oninput="save()"></textarea>
+          </div>
+          <div class="field">
+            <label>Raridade</label>
+            <div class="artefato-raridade">
+              <button class="raridade-btn comum" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
+              <button class="raridade-btn incomum" onclick="setRaridade(1, &#39;incomum&#39;, this)">🟢 Incomum</button>
+              <button class="raridade-btn raro" onclick="setRaridade(1, &#39;raro&#39;, this)">🔵 Raro</button>
+                <button class="raridade-btn epico" onclick="setRaridade(1, &#39;epico&#39;, this)">🟣 Épico</button>
+              <button class="raridade-btn lendario active" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="artefato-slot locked" id="artefato-3">
+          <div class="artefato-slot-label">🔮 Artefato IV — Desbloqueado no Nível 19</div>
+          <div class="field">
+            <label>Nome</label>
+            <input type="text" id="art3-name" placeholder="Nome do artefato" oninput="save()">
+          </div>
+          <div class="field">
+            <label>Efeito</label>
+            <textarea id="art3-effect" rows="2" placeholder="Descreva o efeito..." oninput="save()"></textarea>
+          </div>
+          <div class="field">
+            <label>Raridade</label>
+            <div class="artefato-raridade">
+              <button class="raridade-btn comum" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
+              <button class="raridade-btn incomum" onclick="setRaridade(1, &#39;incomum&#39;, this)">🟢 Incomum</button>
+              <button class="raridade-btn raro" onclick="setRaridade(1, &#39;raro&#39;, this)">🔵 Raro</button>
+              <button class="raridade-btn epico" onclick="setRaridade(1, &#39;epico&#39;, this)">🟣 Épico</button>
+              <button class="raridade-btn lendario active" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- end col-right -->
+
+  <!-- ═══ FULL WIDTH ═══ -->
+
+  <!-- PROGRESSÃO -->
+  <div class="panel col-full">
+    <div class="panel-title">Progressão de Nível</div>
+    <div class="level-track" id="level-track"><div class="lvl-pip milestone done" id="lvl-pip-1">1<div class="lvl-pip-tooltip">Arquétipo + Passiva + Skills Base | 🎯 Prof: +2</div></div><div class="lvl-pip done" id="lvl-pip-2">2<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +2</div></div><div class="lvl-pip done" id="lvl-pip-3">3<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +2</div></div><div class="lvl-pip milestone done" id="lvl-pip-4">4<div class="lvl-pip-tooltip">Ponto de Atributo + Passiva | 🎯 Prof: +2</div></div><div class="lvl-pip done" id="lvl-pip-5">5<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +3</div></div><div class="lvl-pip milestone done" id="lvl-pip-6">6<div class="lvl-pip-tooltip">Especialização + Ponto de Classe | 🎯 Prof: +3</div></div><div class="lvl-pip done" id="lvl-pip-7">7<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +3</div></div><div class="lvl-pip milestone done" id="lvl-pip-8">8<div class="lvl-pip-tooltip">🔮 2º Slot de Artefato | 🎯 Prof: +3</div></div><div class="lvl-pip done" id="lvl-pip-9">9<div class="lvl-pip-tooltip">Ponto de Classe + Atributo | 🎯 Prof: +4</div></div><div class="lvl-pip milestone done" id="lvl-pip-10">10<div class="lvl-pip-tooltip">⭐ Magia Assinatura | 🎯 Prof: +4</div></div><div class="lvl-pip milestone done" id="lvl-pip-11">11<div class="lvl-pip-tooltip">Passiva + Recuperação +1 | 🎯 Prof: +4</div></div><div class="lvl-pip done" id="lvl-pip-12">12<div class="lvl-pip-tooltip">Ponto de Classe + Atributo | 🎯 Prof: +4</div></div><div class="lvl-pip milestone done" id="lvl-pip-13">13<div class="lvl-pip-tooltip">🔀 Multiclasse + Passiva | 🎯 Prof: +5</div></div><div class="lvl-pip done" id="lvl-pip-14">14<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +5</div></div><div class="lvl-pip done" id="lvl-pip-15">15<div class="lvl-pip-tooltip">Ponto de Classe + Passiva | 🎯 Prof: +5</div></div><div class="lvl-pip done" id="lvl-pip-16">16<div class="lvl-pip-tooltip">Atributo + Ponto de Classe | 🎯 Prof: +5</div></div><div class="lvl-pip current" id="lvl-pip-17">17<div class="lvl-pip-tooltip">Passiva + Recuperação +1 | 🎯 Prof: +6</div></div><div class="lvl-pip" id="lvl-pip-18">18<div class="lvl-pip-tooltip">Ponto de Classe + Atributo | 🎯 Prof: +6</div></div><div class="lvl-pip milestone" id="lvl-pip-19">19<div class="lvl-pip-tooltip">🔮 3º Slot de Artefato + Ponto de Classe | 🎯 Prof: +6</div></div><div class="lvl-pip milestone" id="lvl-pip-20">20<div class="lvl-pip-tooltip">✦ Habilidade Lendária | 🎯 Prof: +6</div></div></div>
+  </div>
+
+  <!-- NOTAS -->
+  <div class="panel col-full notes-area">
+    <div class="panel-title">Notas &amp; Anotações de Sessão</div>
+    <textarea id="char-notes" placeholder="Anotações livres, objetivos, NPCs conhecidos, itens importantes, dívidas pendentes..." oninput="save()"></textarea>
+  </div>
+
+  <!-- HISTÓRIA -->
+  <div class="panel col-full notes-area">
+    <div class="panel-title">História do Personagem</div>
+    <textarea id="char-historia" placeholder="Background, motivações, segredos, vínculos com outros personagens..." oninput="save()" style="min-height:100px;"></textarea>
+  </div>
+
+</div><!-- end sheet-grid -->
+
+<div class="actions-bar">
+  <button class="action-btn" onclick="exportJSON()">⬇ Exportar Ficha</button>
+  <button class="action-btn secondary" onclick="document.getElementById(&#39;import-file&#39;).click()">⬆ Importar Ficha</button>
+  <button class="action-btn secondary" onclick="clearAll()">🗑 Limpar Tudo</button>
+  <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────
+let state = {
+  level: 1,
+  char: {},
+  attrs: { for:10, des:10, con:10, int:10, car:10, sab:10 },
+  profAttrs: [],   // atributos que recebem bônus de proficiência
+  resources: { hpCur:20, hpMax:20, stCur:12, stMax:12, foCur:10, foMax:10, recSt:2, recFo:2 },
+  skillsBase: [],
+  skillsSpec: [],
+  itens: [],
+  passivas: [],
+  magiasGerais: [],
+  tecnicasGerais: [],
+  exclusivas: [],
+  artefatos: [
+    { name:'', effect:'', raridade:'comum' },
+    { name:'', effect:'', raridade:'comum' },
+    { name:'', effect:'', raridade:'comum' }
+  ],
+  statuses: [],
+  notes: '',
+  historia: '',
+  pericias: {}  // key: pericia id, value: true/false
+};
+
+// ─── PERÍCIAS DATA ────────────────────────────────────────────────────
+const PERICIAS_LIST = [
+  { id:'acrobacia',   nome:'Acrobacia',   attr:'des' },
+  { id:'atletismo',   nome:'Atletismo',   attr:'for' },
+  { id:'arcanismo',   nome:'Arcanismo',   attr:'int' },
+  { id:'apresentacao',nome:'Apresentação',attr:'car' },
+  { id:'intimidacao', nome:'Intimidação', attr:'car' },
+  { id:'enganacao',   nome:'Enganação',   attr:'car' },
+  { id:'persuasao',   nome:'Persuasão',   attr:'car' },
+  { id:'furtividade', nome:'Furtividade', attr:'des' },
+  { id:'conhecimento',nome:'Conhecimento',attr:'sab' },
+  { id:'religiao',    nome:'Religião',    attr:'sab' },
+  { id:'medicina',    nome:'Medicina',    attr:'int' },
+  { id:'sobrevivencia',nome:'Sobrevivência',attr:'sab' },
+  { id:'percepcao',   nome:'Percepção',   attr:'sab' },
+  { id:'investigacao',nome:'Investigação',attr:'int' },
+  { id:'tecnologia',  nome:'Tecnologia',  attr:'int' },
+  { id:'manipresto',  nome:'Manipresto',  attr:'des' }
+];
+
+// ─── PROFICIENCY BONUS TABLE ──────────────────────────────────────────
+function getProfBonus(level) {
+  if (level >= 19) return 6;
+  if (level >= 17) return 6;
+  if (level >= 13) return 5;
+  if (level >= 9)  return 4;
+  if (level >= 5)  return 3;
+  return 2;
+}
+
+// ─── PROFICIENCY ──────────────────────────────────────────────────────
+function updateProfBonus() {
+  const bonus = getProfBonus(state.level);
+  document.getElementById('prof-bonus-display').textContent = '+' + bonus;
+  document.getElementById('prof-nivel-display').textContent = state.level;
+
+  // update active label
+  const active = state.profAttrs || [];
+  const LABELS = { for:'Força', des:'Destreza', con:'Constituição', int:'Inteligência', car:'Carisma', sab:'Sabedoria' };
+  const names = active.map(a => LABELS[a]);
+  document.getElementById('prof-bonus-attrs').textContent =
+    names.length ? '🎯 ' + names.join(' · ') : 'Nenhum atributo selecionado';
+
+  // refresh checkbox states and values
+  updateProfAttrValues();
+  renderPericias();
+}
+
+function toggleProfAttr(attr) {
+  const cb = document.getElementById('prof-check-' + attr);
+  if (!state.profAttrs) state.profAttrs = [];
+  if (cb.checked) {
+    if (!state.profAttrs.includes(attr)) state.profAttrs.push(attr);
+  } else {
+    state.profAttrs = state.profAttrs.filter(a => a !== attr);
+  }
+  document.getElementById('prof-item-' + attr).classList.toggle('active', cb.checked);
+  updateProfBonus();
+  updateMod(attr);
+  save();
+}
+
+function updateProfAttrValues() {
+  const bonus = getProfBonus(state.level);
+  const active = state.profAttrs || [];
+  ['for','des','con','int','car','sab'].forEach(a => {
+    const isActive = active.includes(a);
+    const rawVal = parseInt(document.getElementById('attr-' + a).value) || 10;
+    const mod = Math.floor((rawVal - 10) / 2);
+    const total = isActive ? mod + bonus : mod;
+    document.getElementById('prof-val-' + a).textContent = (total >= 0 ? '+' : '') + total;
+    document.getElementById('prof-item-' + a).classList.toggle('active', isActive);
+    document.getElementById('prof-check-' + a).checked = isActive;
+  });
+}
+
+function applyProfAttrs() {
+  const active = state.profAttrs || [];
+  ['for','des','con','int','car','sab'].forEach(a => {
+    const checked = active.includes(a);
+    document.getElementById('prof-check-' + a).checked = checked;
+    document.getElementById('prof-item-' + a).classList.toggle('active', checked);
+  });
+  updateProfAttrValues();
+}
+
+const LEVEL_LABELS = {
+  1:'Arquétipo + Passiva + Skills Base | 🎯 Prof: +2',
+  2:'Ponto de Classe | 🎯 Prof: +2',
+  3:'Ponto de Classe | 🎯 Prof: +2',
+  4:'Ponto de Atributo + Passiva | 🎯 Prof: +2',
+  5:'Ponto de Classe | 🎯 Prof: +3',
+  6:'Especialização + Ponto de Classe | 🎯 Prof: +3',
+  7:'Ponto de Classe | 🎯 Prof: +3',
+  8:'🔮 2º Slot de Artefato | 🎯 Prof: +3',
+  9:'Ponto de Classe + Atributo | 🎯 Prof: +4',
+  10:'⭐ Magia Assinatura | 🎯 Prof: +4',
+  11:'Passiva + Recuperação +1 | 🎯 Prof: +4',
+  12:'Ponto de Classe + Atributo | 🎯 Prof: +4',
+  13:'🔀 Multiclasse + Passiva | 🎯 Prof: +5',
+  14:'Ponto de Classe | 🎯 Prof: +5',
+  15:'Ponto de Classe + Passiva | 🎯 Prof: +5',
+  16:'Atributo + Ponto de Classe | 🎯 Prof: +5',
+  17:'Passiva + Recuperação +1 | 🎯 Prof: +6',
+  18:'Ponto de Classe + Atributo | 🎯 Prof: +6',
+  19:'🔮 3º Slot de Artefato + Ponto de Classe | 🎯 Prof: +6',
+  20:'✦ Habilidade Lendária | 🎯 Prof: +6'
+};
+const MILESTONES = [1,4,6,8,10,11,13,19,20];
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  buildLevelTrack();
+  buildPericias();
+  loadFromStorage();
+  ['for','des','con','int','car','sab'].forEach(updateMod);
+  ['hp','st','fo'].forEach(updateBar);
+  updateArtefatoLocks();
+  updateProfBonus();
+  renderPericias();
+  updateRecPreview();
+});
+
+// ─── LEVEL ────────────────────────────────────────────────────────────
+function changeLevel(delta) {
+  state.level = Math.min(20, Math.max(1, state.level + delta));
+  document.getElementById('level-display').textContent = state.level;
+  updateLevelTrack();
+  updateArtefatoLocks();
+  updateProfBonus();
+  renderPericias();
+  save();
+}
+
+function buildLevelTrack() {
+  const track = document.getElementById('level-track');
+  track.innerHTML = '';
+  for (let i = 1; i <= 20; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'lvl-pip' + (MILESTONES.includes(i) ? ' milestone' : '');
+    pip.id = 'lvl-pip-' + i;
+    pip.onclick = () => { state.level = i; document.getElementById('level-display').textContent = i; updateLevelTrack(); updateArtefatoLocks(); updateProfBonus(); renderPericias(); save(); };
+    pip.innerHTML = `${i}<div class="lvl-pip-tooltip">${LEVEL_LABELS[i]}</div>`;
+    track.appendChild(pip);
+  }
+  updateLevelTrack();
+}
+
+function updateLevelTrack() {
+  for (let i = 1; i <= 20; i++) {
+    const pip = document.getElementById('lvl-pip-' + i);
+    pip.classList.remove('done', 'current');
+    if (i < state.level) pip.classList.add('done');
+    if (i === state.level) pip.classList.add('current');
+  }
+}
+
+// ─── ARTEFATOS ────────────────────────────────────────────────────────
+function updateArtefatoLocks() {
+  const lvl = state.level;
+  document.getElementById('artefato-2').classList.toggle('locked', lvl < 8);
+  document.getElementById('artefato-3').classList.toggle('locked', lvl < 19);
+}
+
+function setRaridade(slot, raridade, btn) {
+  state.artefatos[slot-1].raridade = raridade;
+  const container = btn.closest('.artefato-raridade');
+  container.querySelectorAll('.raridade-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  save();
+}
+
+// ─── ATTRIBUTES ───────────────────────────────────────────────────────
+function updateMod(attr) {
+  const val = parseInt(document.getElementById('attr-' + attr).value) || 10;
+  const mod = Math.floor((val - 10) / 2);
+  const el = document.getElementById('mod-' + attr);
+  el.textContent = (mod >= 0 ? '+' : '') + mod;
+  el.style.color = mod > 0 ? '#6ab06a' : mod < 0 ? '#c06060' : 'var(--gold-dim)';
+  state.attrs[attr] = val;
+  updateProfAttrValues();
+  renderPericias();
+  updatePericiasSlotsLabel();
+}
+
+// ─── RECOVERY ─────────────────────────────────────────────────────────
+function refreshUseButtons() {
+  renderSkills();
+  renderPassivas();
+  renderMagias();
+}
+
+function recoverTurn() {
+  const recSt = parseInt(document.getElementById('rec-st').value) || 0;
+  const recFo = parseInt(document.getElementById('rec-fo').value) || 0;
+
+  const stCur = parseFloat(document.getElementById('st-cur').value) || 0;
+  const stMax = parseFloat(document.getElementById('st-max').value) || 0;
+  const foCur = parseFloat(document.getElementById('fo-cur').value) || 0;
+  const foMax = parseFloat(document.getElementById('fo-max').value) || 0;
+
+  const newSt = Math.min(stMax, stCur + recSt);
+  const newFo = Math.min(foMax, foCur + recFo);
+
+  document.getElementById('st-cur').value = newSt;
+  document.getElementById('fo-cur').value = newFo;
+  updateBar('st');
+  updateBar('fo');
+
+  // flash animation
+  const btn = document.getElementById('rec-btn');
+  btn.classList.remove('rec-btn-flash');
+  void btn.offsetWidth; // reflow to restart animation
+  btn.classList.add('rec-btn-flash');
+
+  save();
+  // refresh use buttons to reflect new resource values
+  renderSkills();
+  renderPassivas();
+  renderMagias();
+}
+
+function updateRecPreview() {
+  const st = parseInt(document.getElementById('rec-st').value) || 0;
+  const fo = parseInt(document.getElementById('rec-fo').value) || 0;
+  document.getElementById('rec-preview-st').textContent = st;
+  document.getElementById('rec-preview-fo').textContent = fo;
+}
+
+
+function updateBar(type) {
+  const cur = parseFloat(document.getElementById(type+'-cur').value) || 0;
+  const max = parseFloat(document.getElementById(type+'-max').value) || 1;
+  const pct = Math.min(100, Math.max(0, (cur / max) * 100));
+  document.getElementById(type+'-bar').style.width = pct + '%';
+}
+
+// ─── ARQUETIPO ────────────────────────────────────────────────────────
+function onArquetipoChange() {
+  const val = document.getElementById('char-arquetipo').value;
+  const badge = document.getElementById('archetype-badge-container');
+  const labels = {
+    marcial:'⚔️ Marcial', arcano:'🧙 Arcano', agil:'🪃 Ágil (Astuto)',
+    semblante:'✨ Bom Semblante', estranho:'🎭 O Estranho'
+  };
+  badge.innerHTML = val ? `<div class="archetype-badge ${val}">${labels[val]}</div>` : '';
+  updateProfBonus();
+  renderPericias();
+}
+
+// ─── PERÍCIAS ─────────────────────────────────────────────────────────
+function buildPericias() {
+  const list = document.getElementById('pericias-list');
+  list.innerHTML = '';
+  PERICIAS_LIST.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'pericia-row';
+    row.id = 'pericia-row-' + p.id;
+    row.innerHTML = `
+      <input type="checkbox" class="pericia-check" id="pcheck-${p.id}"
+        onchange="togglePericia('${p.id}')">
+      <label for="pcheck-${p.id}" class="pericia-nome">${p.nome}</label>
+      <span class="pericia-atributo">${p.attr.toUpperCase()}</span>
+      <span class="pericia-total" id="ptotal-${p.id}">+0</span>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function getModValue(attr) {
+  const val = parseInt(document.getElementById('attr-' + attr)?.value) || 10;
+  return Math.floor((val - 10) / 2);
+}
+
+function getMaxPericias() {
+  return 4;
+}
+
+function updatePericiasSlotsLabel() {
+  const max = getMaxPericias();
+  const used = Object.values(state.pericias || {}).filter(Boolean).length;
+  document.getElementById('pericias-max').textContent = max;
+  document.getElementById('pericias-usadas').textContent = used;
+  const bonus = getProfBonus(state.level);
+  document.getElementById('pericias-slots-label').textContent =
+    `4 · Prof +${bonus}`;
+}
+
+function renderPericias() {
+  if (!document.getElementById('pericias-list')) return;
+  const profBonus = getProfBonus(state.level);
+  const used = Object.values(state.pericias || {}).filter(Boolean).length;
+
+  PERICIAS_LIST.forEach(p => {
+    const isProficiente = !!(state.pericias && state.pericias[p.id]);
+    const modVal = getModValue(p.attr);
+    const total = modVal + (isProficiente ? profBonus : 0);
+
+    const row = document.getElementById('pericia-row-' + p.id);
+    const check = document.getElementById('pcheck-' + p.id);
+    const totalEl = document.getElementById('ptotal-' + p.id);
+
+    if (row) row.classList.toggle('proficiente', isProficiente);
+    if (check) check.checked = isProficiente;
+    if (totalEl) totalEl.textContent = (total >= 0 ? '+' : '') + total;
+  });
+
+  document.getElementById('pericias-usadas').textContent = used;
+  document.getElementById('pericias-max').textContent = getMaxPericias();
+  updatePericiasSlotsLabel();
+}
+
+function togglePericia(id) {
+  const check = document.getElementById('pcheck-' + id);
+  const max = getMaxPericias();
+  const used = Object.values(state.pericias || {}).filter(Boolean).length;
+
+  if (check.checked && used >= max) {
+    // Já atingiu o limite — desfaz
+    check.checked = false;
+    const row = document.getElementById('pericia-row-' + id);
+    if (row) {
+      row.style.outline = '1px solid var(--hp-color)';
+      setTimeout(() => { row.style.outline = ''; }, 800);
+    }
+    return;
+  }
+  if (!state.pericias) state.pericias = {};
+  state.pericias[id] = check.checked;
+  renderPericias();
+  save();
+}
+
+// ─── STATUS ───────────────────────────────────────────────────────
+function toggleStatus(btn) {
+  btn.classList.toggle('active');
+  save();
+}
+
+// ─── LISTS ────────────────────────────────────────────────────────────
+function renderList(listId, items, removeCallback) {
+  const el = document.getElementById(listId);
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
+    return;
+  }
+  el.innerHTML = items.map((item, i) => {
+    const tipo = item.tipo || 'passiva';
+    const tagClass = tipo === 'assinatura' ? 'assinatura' : tipo;
+    const tipoLabel = { passiva:'Passiva', rapida:'Rápida', padrao:'Padrão', assinatura:'⭐ Assinatura' }[tipo] || tipo;
+    return `<div class="list-item">
+      <div class="list-item-content">
+        <div class="list-item-name">${item.name}</div>
+        ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
+        <div class="list-item-tags">
+          <span class="tag ${tagClass}">${tipoLabel}</span>
+          ${item.custo ? `<span class="tag custo">${item.custo}</span>` : ''}
+          ${item.origem ? `<span class="tag passiva">${item.origem}</span>` : ''}
+        </div>
+      </div>
+      <button class="list-remove" onclick="${removeCallback}(${i})" title="Remover">×</button>
+    </div>`;
+  }).join('');
+}
+
+function addSkill(type) {
+  const prefix = type === 'base' ? 'new-skill' : 'new-specskill';
+  const name = document.getElementById(prefix + '-name').value.trim();
+  if (!name) return;
+  const item = {
+    name,
+    tipo: document.getElementById(prefix + '-tipo').value,
+    custo: document.getElementById(prefix + '-custo').value.trim(),
+    recurso: document.getElementById(prefix + '-recurso').value,
+    desc: document.getElementById(prefix + '-desc').value.trim()
+  };
+  if (type === 'base') state.skillsBase.push(item);
+  else state.skillsSpec.push(item);
+  document.getElementById(prefix + '-name').value = '';
+  document.getElementById(prefix + '-custo').value = '';
+  document.getElementById(prefix + '-recurso').value = '';
+  document.getElementById(prefix + '-desc').value = '';
+  renderSkills();
+  save();
+}
+
+function removeSkillBase(i) { state.skillsBase.splice(i, 1); renderSkills(); save(); }
+function removeSkillSpec(i) { state.skillsSpec.splice(i, 1); renderSkills(); save(); }
+
+function useSkill(listKey, index) {
+  const map = { skillsBase:'skillsBase', skillsSpec:'skillsSpec' };
+  const items = state[map[listKey]];
+  const item = items[index];
+  if (!item || !item.recurso || !item.custo) return;
+  const resIcon = item.recurso === 'st' ? '🟡' : '🔵';
+  const cost = parseCost(item.custo, resIcon);
+  const { cur } = getCurAndMaxByResource(item.recurso);
+  const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+  const { cur: stCur } = getCurAndMaxByResource('st');
+  if (cost !== null && cur >= cost && stCur >= foTax) {
+    spendResource(item.recurso, cost);
+    if (foTax > 0) spendResource('st', foTax);
+    refreshUseButtons();
+  }
+}
+
+function _renderSkillsWithBtns(listId, items, removeCallback, listKey) {
+  const el = document.getElementById(listId);
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
+    return;
+  }
+  const resIconMap = { st:'🟡', fo:'🔵' };
+  el.innerHTML = items.map((item, i) => {
+    const tipo = item.tipo || 'passiva';
+    const tagClass = tipo === 'assinatura' ? 'assinatura' : tipo;
+    const tipoLabel = { passiva:'Passiva', rapida:'Rápida', padrao:'Padrão', assinatura:'⭐ Assinatura' }[tipo] || tipo;
+    let useBtn = '';
+    if (item.custo && item.recurso && tipo !== 'passiva') {
+      const resIcon = resIconMap[item.recurso] || '🔵';
+      const cost = parseCost(item.custo, resIcon);
+      const { cur } = getCurAndMaxByResource(item.recurso);
+      const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+      const { cur: stCur } = getCurAndMaxByResource('st');
+      const canUse = cost !== null && cur >= cost && stCur >= foTax;
+      useBtn = `<button class="list-use-btn ${canUse ? '' : 'insufficient'}"
+        onclick="useSkill('${listKey}', ${i})"
+        title="${canUse ? 'Usar (-' + cost + resIcon + (foTax ? ' / -' + foTax + '🟡' : '') + ')' : 'Recurso insuficiente'}">
+        Usar
+      </button>`;
+    }
+    return `<div class="list-item">
+      <div class="list-item-content">
+        <div class="list-item-name">${item.name}</div>
+        ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
+        <div class="list-item-tags">
+          <span class="tag ${tagClass}">${tipoLabel}</span>
+          ${item.custo ? `<span class="tag custo">${item.custo}</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        ${useBtn}
+        <button class="list-remove" onclick="${removeCallback}(${i})">x</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSkills() {
+  _renderSkillsWithBtns('list-skills-base', state.skillsBase, 'removeSkillBase', 'skillsBase');
+  _renderSkillsWithBtns('list-skills-spec', state.skillsSpec, 'removeSkillSpec', 'skillsSpec');
+}
+
+function addPassiva() {
+  const name = document.getElementById('new-passiva-name').value.trim();
+  if (!name) return;
+  state.passivas.push({
+    name,
+    tipo: 'passiva',
+    origem: document.getElementById('new-passiva-origem').value.trim(),
+    desc: document.getElementById('new-passiva-desc').value.trim(),
+    custo: document.getElementById('new-passiva-custo').value.trim(),
+    recurso: document.getElementById('new-passiva-recurso').value
+  });
+  document.getElementById('new-passiva-name').value = '';
+  document.getElementById('new-passiva-origem').value = '';
+  document.getElementById('new-passiva-desc').value = '';
+  document.getElementById('new-passiva-custo').value = '';
+  document.getElementById('new-passiva-recurso').value = 'st';
+  renderPassivas();
+  save();
+}
+function removePassiva(i) { state.passivas.splice(i, 1); renderPassivas(); save(); }
+
+function _renderPassivaWithBtns() {
+  const el = document.getElementById('list-passivas');
+  const items = state.passivas;
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
+    return;
+  }
+  const resIconMap = { st:'🟡', fo:'🔵' };
+  el.innerHTML = items.map((item, i) => {
+    const tagClass = 'passiva';
+    let useBtn = '';
+    if (item.custo && item.recurso) {
+      const resIcon = resIconMap[item.recurso] || '🔵';
+      const cost = parseCost(item.custo, resIcon);
+      const { cur } = getCurAndMaxByResource(item.recurso);
+      const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+      const { cur: stCur } = getCurAndMaxByResource('st');
+      const canUse = cost !== null && cur >= cost && stCur >= foTax;
+      useBtn = `<button class="list-use-btn ${canUse ? '' : 'insufficient'}"
+        onclick="usePassiva(${i})"
+        title="${canUse ? 'Usar (-' + cost + resIcon + (foTax ? ' / -' + foTax + '🟡' : '') + ')' : 'Recurso insuficiente'}">
+        Usar
+      </button>`;
+    }
+    return `<div class="list-item">
+      <div class="list-item-content">
+        <div class="list-item-name">${item.name}</div>
+        ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
+        <div class="list-item-tags">
+          <span class="tag ${tagClass}">Passiva</span>
+          ${item.custo ? `<span class="tag custo">${item.custo}</span>` : ''}
+          ${item.origem ? `<span class="tag passiva">${item.origem}</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        ${useBtn}
+        <button class="list-remove" onclick="removePassiva(${i})">x</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function usePassiva(index) {
+  const item = state.passivas[index];
+  if (!item || !item.recurso || !item.custo) return;
+  const resIcon = item.recurso === 'st' ? '🟡' : '🔵';
+  const cost = parseCost(item.custo, resIcon);
+  const { cur } = getCurAndMaxByResource(item.recurso);
+  const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+  const { cur: stCur } = getCurAndMaxByResource('st');
+  if (cost !== null && cur >= cost && stCur >= foTax) {
+    spendResource(item.recurso, cost);
+    if (foTax > 0) spendResource('st', foTax);
+    refreshUseButtons();
+  }
+}
+
+function renderPassivas() { _renderPassivaWithBtns(); }
+
+function addItem() {
+  const name = document.getElementById('new-item-name').value.trim();
+  if (!name) return;
+  state.itens.push({
+    name,
+    categoria: document.getElementById('new-item-categoria').value,
+    quantidade: parseInt(document.getElementById('new-item-qtd').value) || 1,
+    desc: document.getElementById('new-item-desc').value.trim()
+  });
+  document.getElementById('new-item-name').value = '';
+  document.getElementById('new-item-qtd').value = '1';
+  document.getElementById('new-item-desc').value = '';
+  renderItens();
+  save();
+}
+function removeItem(i) {
+  state.itens.splice(i, 1);
+  renderItens();
+  save();
+}
+
+function _renderItensWithBtns() {
+  const el = document.getElementById('list-itens');
+  const items = state.itens;
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
+    return;
+  }
+  el.innerHTML = items.map((item, i) => {
+    const cat = item.categoria || 'outro';
+    const tagClass = cat === 'consumivel' ? 'consumivel' : cat === 'equipamento' ? 'equipamento' : 'passiva';
+    const catLabel = { equipamento:'Equipamento', consumivel:'Consumível', outro:'Outro' }[cat] || cat;
+    const qtd = item.quantidade > 1 ? ` <span style="color:var(--gold-dim);font-size:10px;">x${item.quantidade}</span>` : '';
+    let useBtn = '';
+    if (cat === 'consumivel' && item.quantidade > 0) {
+      useBtn = `<button class="list-use-btn" onclick="useItem(${i})" title="Consumir 1 unidade">Usar</button>`;
+    }
+    return `<div class="list-item">
+      <div class="list-item-content">
+        <div class="list-item-name">${item.name}${qtd}</div>
+        ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
+        <div class="list-item-tags">
+          <span class="tag ${tagClass}">${catLabel}</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        ${useBtn}
+        <button class="list-remove" onclick="removeItem(${i})">x</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function useItem(index) {
+  const item = state.itens[index];
+  if (!item || item.quantidade < 1) return;
+  item.quantidade -= 1;
+  if (item.quantidade <= 0) {
+    state.itens.splice(index, 1);
+  }
+  save();
+  renderItens();
+}
+
+function renderItens() { _renderItensWithBtns(); }
+
+function addMagia(type) {
+  const prefixes = { gerais:'new-magia-g', tecnicas:'new-tec-g', exclusivas:'new-excl' };
+  const p = prefixes[type];
+  const name = document.getElementById(p + '-name').value.trim();
+  if (!name) return;
+  // Magias->Foco, Técnicas->Stamina, Exclusivas->selecionado
+  let recurso = 'fo';
+  if (type === 'tecnicas') recurso = 'st';
+  if (type === 'exclusivas') recurso = document.getElementById('new-excl-recurso').value;
+  const item = { name, tipo: document.getElementById(p+'-tipo').value, custo: document.getElementById(p+'-custo').value.trim(), desc: document.getElementById(p+'-desc').value.trim(), recurso };
+  if (type === 'gerais') state.magiasGerais.push(item);
+  else if (type === 'tecnicas') state.tecnicasGerais.push(item);
+  else state.exclusivas.push(item);
+  document.getElementById(p+'-name').value = '';
+  document.getElementById(p+'-custo').value = '';
+  document.getElementById(p+'-desc').value = '';
+  renderMagias();
+  save();
+}
+function removeMagiaGeral(i) { state.magiasGerais.splice(i,1); renderMagias(); save(); }
+function removeTecnicaGeral(i) { state.tecnicasGerais.splice(i,1); renderMagias(); save(); }
+function removeExclusiva(i) { state.exclusivas.splice(i,1); renderMagias(); save(); }
+
+function parseCost(custo, resIcon) {
+  if (!custo) return null;
+  const match = custo.match(/\d+/);
+  return match ? parseInt(match[0]) : null;
+}
+
+function getCurAndMaxByResource(recurso) {
+  if (recurso === 'st') {
+    return { cur: parseFloat(document.getElementById('st-cur').value)||0, max: parseFloat(document.getElementById('st-max').value)||0 };
+  }
+  if (recurso === 'fo') {
+    return { cur: parseFloat(document.getElementById('fo-cur').value)||0, max: parseFloat(document.getElementById('fo-max').value)||0 };
+  }
+  return { cur: 0, max: 0 };
+}
+
+function spendResource(recurso, amount) {
+  if (recurso === 'st') {
+    const el = document.getElementById('st-cur');
+    el.value = Math.max(0, (parseFloat(el.value)||0) - amount);
+    updateBar('st'); save();
+  } else if (recurso === 'fo') {
+    const el = document.getElementById('fo-cur');
+    el.value = Math.max(0, (parseFloat(el.value)||0) - amount);
+    updateBar('fo'); save();
+  }
+}
+
+function useMagia(listKey, index) {
+  const map = { magiasGerais:'magiasGerais', tecnicasGerais:'tecnicasGerais', exclusivas:'exclusivas' };
+  const items = state[map[listKey]];
+  const item = items[index];
+  if (!item || !item.recurso || !item.custo) return;
+  const resIcon = item.recurso === 'st' ? '🟡' : '🔵';
+  const cost = parseCost(item.custo, resIcon);
+  const { cur } = getCurAndMaxByResource(item.recurso);
+  const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+  const { cur: stCur } = getCurAndMaxByResource('st');
+  if (cost !== null && cur >= cost && stCur >= foTax) {
+    spendResource(item.recurso, cost);
+    if (foTax > 0) spendResource('st', foTax);
+    refreshUseButtons();
+  }
+}
+
+function _renderMagiaWithBtns(listId, items, removeCallback, listKey) {
+  const el = document.getElementById(listId);
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
+    return;
+  }
+  const resIconMap = { st:'🟡', fo:'🔵' };
+  el.innerHTML = items.map((item, i) => {
+    const tipo = item.tipo || 'padrao';
+    const tagClass = tipo === 'assinatura' ? 'assinatura' : tipo;
+    const tipoLabel = { passiva:'Passiva', rapida:'Rápida', padrao:'Padrão', assinatura:'⭐ Assinatura' }[tipo] || tipo;
+    const recurso = item.recurso || 'fo';
+    const resIcon = resIconMap[recurso] || '🔵';
+    let useBtn = '';
+    if (item.custo) {
+      const cost = parseCost(item.custo, resIcon);
+      const { cur } = getCurAndMaxByResource(recurso);
+      const foTax = recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+      const { cur: stCur } = getCurAndMaxByResource('st');
+      const canUse = cost !== null && cur >= cost && stCur >= foTax;
+      useBtn = `<button class="list-use-btn ${canUse ? '' : 'insufficient'}"
+        onclick="useMagia('${listKey}', ${i})"
+        title="${canUse ? 'Usar (-' + cost + resIcon + (foTax ? ' / -' + foTax + '🟡' : '') + ')' : 'Recurso insuficiente'}">
+        Usar
+      </button>`;
+    }
+    return `<div class="list-item">
+      <div class="list-item-content">
+        <div class="list-item-name">${item.name}</div>
+        ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
+        <div class="list-item-tags">
+          <span class="tag ${tagClass}">${tipoLabel}</span>
+          ${item.custo ? `<span class="tag custo">${item.custo}</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        ${useBtn}
+        <button class="list-remove" onclick="${removeCallback}(${i})">x</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderMagias() {
+  _renderMagiaWithBtns('list-magias-gerais', state.magiasGerais, 'removeMagiaGeral', 'magiasGerais');
+  _renderMagiaWithBtns('list-tecnicas-gerais', state.tecnicasGerais, 'removeTecnicaGeral', 'tecnicasGerais');
+  _renderMagiaWithBtns('list-exclusivas', state.exclusivas, 'removeExclusiva', 'exclusivas');
+}
+
+// ─── SAVE / LOAD ──────────────────────────────────────────────────────
+function collectState() {
+  state.char = {
+    name: document.getElementById('char-name').value,
+    iniciativa: document.getElementById('char-iniciativa').value,
+    ca: document.getElementById('char-ca').value,
+    arquetipo: document.getElementById('char-arquetipo').value,
+    subclasse: document.getElementById('char-subclasse').value,
+    especializacao: document.getElementById('char-especializacao').value,
+    multi: document.getElementById('char-multi').value,
+    jogador: document.getElementById('char-jogador').value,
+    origem: document.getElementById('char-origem').value
+  };
+  ['for','des','con','int','car','sab'].forEach(a => {
+    state.attrs[a] = parseInt(document.getElementById('attr-'+a).value)||10;
+  });
+  state.resources = {
+    hpCur: document.getElementById('hp-cur').value,
+    hpMax: document.getElementById('hp-max').value,
+    stCur: document.getElementById('st-cur').value,
+    stMax: document.getElementById('st-max').value,
+    foCur: document.getElementById('fo-cur').value,
+    foMax: document.getElementById('fo-max').value,
+    recSt: document.getElementById('rec-st').value,
+    recFo: document.getElementById('rec-fo').value
+  };
+  state.artefatos[0].name = document.getElementById('art1-name').value;
+  state.artefatos[0].effect = document.getElementById('art1-effect').value;
+  state.artefatos[1].name = document.getElementById('art2-name').value;
+  state.artefatos[1].effect = document.getElementById('art2-effect').value;
+  state.artefatos[2].name = document.getElementById('art3-name').value;
+  state.artefatos[2].effect = document.getElementById('art3-effect').value;
+  state.statuses = [...document.querySelectorAll('.status-btn.active')].map(b => b.textContent);
+  state.notes = document.getElementById('char-notes').value;
+  state.historia = document.getElementById('char-historia').value;
+  // pericias already updated via togglePericia
+  // profAttrs already updated via toggleProfAttr
+}
+
+function applyState() {
+  if (state.char) {
+    Object.entries(state.char).forEach(([k,v]) => {
+      const el = document.getElementById('char-'+k);
+      if (el) el.value = v;
+    });
+  }
+  document.getElementById('level-display').textContent = state.level;
+  updateLevelTrack();
+  updateArtefatoLocks();
+  onArquetipoChange();
+
+  ['for','des','con','int','car','sab'].forEach(a => {
+    document.getElementById('attr-'+a).value = state.attrs[a]||10;
+    updateMod(a);
+  });
+
+  const r = state.resources;
+  if (r) {
+    ['hp','st','fo'].forEach(t => {
+      document.getElementById(t+'-cur').value = r[t+'Cur']||0;
+      document.getElementById(t+'-max').value = r[t+'Max']||0;
+      updateBar(t);
+    });
+    document.getElementById('rec-st').value = r.recSt||2;
+    document.getElementById('rec-fo').value = r.recFo||2;
+  }
+
+  if (state.artefatos) {
+    [1,2,3].forEach(i => {
+      const a = state.artefatos[i-1]||{};
+      document.getElementById('art'+i+'-name').value = a.name||'';
+      document.getElementById('art'+i+'-effect').value = a.effect||'';
+      if (a.raridade) {
+        const slot = document.getElementById('artefato-'+i);
+        slot.querySelectorAll('.raridade-btn').forEach(b => {
+          b.classList.toggle('active', b.classList.contains(a.raridade));
+        });
+      }
+    });
+  }
+
+  document.querySelectorAll('.status-btn').forEach(btn => {
+    btn.classList.toggle('active', (state.statuses||[]).includes(btn.textContent));
+  });
+
+  document.getElementById('char-notes').value = state.notes||'';
+  document.getElementById('char-historia').value = state.historia||'';
+
+  renderSkills();
+  renderPassivas();
+  renderItens();
+  renderMagias();
+  updateProfBonus();
+  applyProfAttrs();
+  renderPericias();
+}
+
+function save() {
+  collectState();
+  try { localStorage.setItem('rpg-ficha', JSON.stringify(state)); } catch(e) {}
+}
+
+function loadFromStorage() {
+  try {
+    const raw = localStorage.getItem('rpg-ficha');
+    if (raw) { state = { ...state, ...JSON.parse(raw) }; }
+  } catch(e) {}
+  applyState();
+}
+
+function exportJSON() {
+  collectState();
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const name = document.getElementById('char-name').value.trim() || 'personagem';
+  a.href = url; a.download = name.replace(/\s+/g,'-').toLowerCase() + '-ficha.json';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      state = { ...state, ...JSON.parse(e.target.result) };
+      applyState();
+      save();
+    } catch(err) { alert('Arquivo inválido.'); }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function clearAll() {
+  if (!confirm('Limpar todos os dados da ficha?')) return;
+  localStorage.removeItem('rpg-ficha');
+  location.reload();
+}
+</script>
+
+
+</body></html>
