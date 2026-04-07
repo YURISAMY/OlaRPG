@@ -2092,19 +2092,19 @@
   </div>
 
   <div class="tabs">
-    <button class="tab-btn base" onclick="showTab(&#39;base&#39;)">📜 BASE</button>
+    <button class="tab-btn base active" onclick="showTab(&#39;base&#39;)">📜 BASE</button>
     <button class="tab-btn marcial" onclick="showTab(&#39;marcial&#39;)">⚔️ MARCIAL</button>
     <button class="tab-btn arcano" onclick="showTab(&#39;arcano&#39;)">🧙 ARCANO</button>
     <button class="tab-btn agil" onclick="showTab(&#39;agil&#39;)">🪃 ÁGIL</button>
     <button class="tab-btn semblante" onclick="showTab(&#39;semblante&#39;)">✨ BOM SEMBLANTE</button>
-    <button class="tab-btn estranho active" onclick="showTab(&#39;estranho&#39;)">🎭 ? ? ?</button>
+    <button class="tab-btn estranho" onclick="showTab(&#39;estranho&#39;)">🎭 ? ? ?</button>
     <button class="tab-btn feiticos" onclick="showTab(&#39;feiticos&#39;)">📖 MAGIAS &amp; TÉCNICAS</button>
     <button class="tab-btn reliquias" onclick="showTab(&#39;reliquias&#39;)">🔮 RELÍQUIAS</button>
     <button class="tab-btn itens" onclick="showTab(&#39;itens&#39;)">⚔️ ITENS</button>
   </div>
 
   <!-- ═══════════════════════════════════════ BASE ═══════════════════════════════════════ -->
-  <div class="section" id="tab-base">
+  <div class="section" id="tab-base" class="section active">
     <div class="tree-header" style="margin-bottom:36px;">
       <h2
         style="font-family:&#39;Cinzel&#39;,serif;font-size:28px;font-weight:700;letter-spacing:.15em;color:var(--gold-light);text-shadow:0 0 20px rgba(201,146,26,0.4);">
@@ -7510,8 +7510,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.</div>
           </div>
         </div>
         <div class="relic-body">
-          <div class="relic-desc">Passiva permanente. Quando você usaria sua última ação antes de cair inconsciente,
-            essa ação não gasta nenhum recurso — 🟡, 🔵 e HP são ignorados no custo. Uma despedida digna.</div>
+          <div class="relic-desc">Passiva permanente. Ao zerar o HP, antes de cair inconsciente, você pode realizar uma última ação, essa ação não gasta nenhum recurso — 🟡, 🔵 e HP são ignorados no custo. Uma despedida digna.</div>
         </div>
       </div>
       <div class="relic-card lendario" data-tier="lendario">
@@ -7535,8 +7534,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.</div>
           </div>
         </div>
         <div class="relic-body">
-          <div class="relic-desc">Uma vez por sessão, reverte todas as suas ações do último turno — HP, 🟡, 🔵 e posição
-            voltam ao estado de início do turno. O turno é repetido com o mesmo conhecimento.</div>
+          <div class="relic-desc">Uma vez por sessão, reverte todas as suas ações do último turno ou dos ultimos 6 segundos — HP, 🟡, 🔵 e posição
+            voltam ao estado de início do turno.</div>
           <div class="relic-warn">1x por sessão.</div>
         </div>
       </div>
@@ -7573,7 +7572,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.</div>
         </div>
         <div class="relic-body">
           <div class="relic-desc">Uma vez por sessão, seu próximo ataque causa dano igual ao HP máximo do alvo,
-            independente de qualquer redução, imunidade ou escudo. Não funciona em chefes e criaturas acima de nível 15.
+            independente de qualquer redução, imunidade ou escudo. Não funciona em chefes.
           </div>
           <div class="relic-warn">1x por sessão. Mata instantaneamente criaturas elegíveis.</div>
         </div>
@@ -7599,10 +7598,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.</div>
           </div>
         </div>
         <div class="relic-body">
-          <div class="relic-desc">Você vê o HP exato, todas as habilidades e o próximo movimento de todos os inimigos no
-            campo. Além disso, uma vez por turno, pode copiar e usar gratuitamente qualquer habilidade ativa que tenha
-            visto um inimigo usar neste combate.</div>
-          <div class="relic-warn">1x por turno.</div>
+          <div class="relic-desc">Você enxerga o HP exato de todos os inimigos. Uma vez por turno, você pode escolher um inimigo. Você descobre suas resistências e fraquezas. Quando um inimigo a até 6 blocos usa uma habilidade ativa, você pode usar sua Reação para "copiar" o movimento. Se o fizer, você pode usar essa mesma habilidade no seu próximo turno gastando o custo normal de ST/FO.</div>
+          <div class="relic-warn">1x por turno. A copia 1X por combate </div>
         </div>
       </div>
       <div class="relic-card lendario" data-tier="lendario">
@@ -7655,7 +7652,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.</div>
         <div class="relic-body">
           <div class="relic-desc">Ao matar um inimigo, você absorve parte de sua essência. Escolha um de seus atributos
             e aumente-o em 1 permanentemente, até o máximo de 3 aumentos por sessão.</div>
-          <div class="relic-warn">Máx +3 por sessão.</div>
+          <div class="relic-warn">Máx +3 por sessão. Reseta ao final da sessão.</div>
         </div>
       </div>
       <div class="relic-card lendario" data-tier="lendario">
@@ -7666,9 +7663,9 @@ até o final do turno dele. Não funciona contra inimigos sem mente.</div>
           </div>
         </div>
         <div class="relic-body">
-          <div class="relic-desc">Uma vez por combate, todas as suas magias e técnicas ativas do turno atual são
-            lançadas simultaneamente em um único alvo ou área. O custo total é somado mas reduzido em 30%.</div>
-          <div class="relic-warn">1x por combate.</div>
+          <div class="relic-desc">Uma vez por sessão, todas as suas magias e técnicas ativas nesse turno, são
+            repetidas simultaneamente em um único alvo ou área. O custo total é somado mas reduzido em 50%.</div>
+          <div class="relic-warn">1x por sessão.</div>
         </div>
       </div>
       <div class="relic-card lendario" data-tier="lendario">
@@ -7733,9 +7730,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.</div>
           </div>
         </div>
         <div class="relic-body">
-          <div class="relic-desc">Você e um aliado escolhido compartilham HP máximo — dividem o total entre os dois
-            igualmente. Ao cair, o outro recebe todo o HP que sobrou. Enquanto o vínculo dura, nenhum dos dois pode ser
-            derrubado enquanto o outro estiver de pé.</div>
+          <div class="relic-desc">Você e um aliado escolhido compartilham o mesmo HP máximo —
+            Enquanto o vínculo dura, nenhum dos dois pode ser derrubado enquanto o outro estiver de pé. Para ser derrubado a soma dos dois HP deve ser reduzida a zero, mas os dois caem juntos.</div>
           <div class="relic-warn">Vínculo quebra se afastarem mais de 10 blocos.</div>
         </div>
       </div>
