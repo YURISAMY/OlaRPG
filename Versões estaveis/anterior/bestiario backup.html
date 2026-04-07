@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-
+<!-- saved from url=(0048)file:///C:/Users/yuri/Downloads/bestiario_1.html -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bestiário — Sistema RPG</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="./bestiario_files/css2" rel="stylesheet">
   <style>
     :root {
       --parchment: #f5ead6;
@@ -735,19 +735,20 @@
   </div>
 
   <div class="main-tabs">
-    <button class="main-tab-btn" onclick="switchTab(&#39;bestiary&#39;)">📖 Bestiário</button>
-    <button class="main-tab-btn battle active" onclick="switchTab(&#39;battle&#39;)">⚔️ Batalha</button>
+    <button class="main-tab-btn active" onclick="switchTab(&#39;bestiary&#39;)">📖 Bestiário</button>
+    <button class="main-tab-btn battle" onclick="switchTab(&#39;battle&#39;)">⚔️ Batalha</button>
   </div>
 
-  <div class="tab-content" id="tab-bestiary">
+  <div class="tab-content active" id="tab-bestiary">
   <div class="criatura-filter-bar">
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;all&#39;,this)">TODAS</button>
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;besta&#39;,this)">🐸 Bestas</button>
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;humanoide&#39;,this)">👤 Humanoides</button>
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;morto-vivo&#39;,this)">💀 Mortos-Vivos</button>
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;sobrenatural&#39;,this)">🌑 Sobrenaturais</button>
-    <button class="criatura-filter-btn active" onclick="filterCriaturas(&#39;celestial&#39;,this)">✨ Celestiais</button>
-    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;monstruosidade&#39;,this)">🦕 Monstruosidades</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;celestial&#39;,this)">✨ Celestiais</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;construto&#39;,this)">🗿 Constructos</button>
+    <button class="criatura-filter-btn active" onclick="filterCriaturas(&#39;monstruosidade&#39;,this)">🦕 Monstruosidades</button>
   </div>
 
   <div class="base-grid" id="criaturas-container">
@@ -1733,7 +1734,7 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
-      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+      <div class="base-card medium criatura-card hidden" data-cat="celestial" style="overflow: visible;">
         <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Anjo Guardião</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Médio</p>
 
@@ -1779,7 +1780,7 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
-      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+      <div class="base-card medium criatura-card hidden" data-cat="celestial" style="overflow: visible;">
         <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Arqueiro Arconte</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Médio</p>
 
@@ -1816,7 +1817,7 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
-      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+      <div class="base-card medium criatura-card hidden" data-cat="celestial" style="overflow: visible;">
         <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Pegaso</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Grande
         </p>
@@ -1859,7 +1860,7 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
-      <div class="base-card medium criatura-card" data-cat="celestial" style="overflow: visible;">
+      <div class="base-card medium criatura-card hidden" data-cat="celestial" style="overflow: visible;">
         <div class="base-card-title" style="color:#e8b84b; margin-bottom:4px;">Guardião do Limiar</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Celestial Grande —
           Lendário</p>
@@ -1906,7 +1907,7 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
-      <div class="base-card medium criatura-card hidden" data-cat="monstruosidade" style="overflow: visible;">
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
         <div class="base-card-title" style="color:#c94040; margin-bottom:4px;">Ogro</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade
           Grande</p>
@@ -1944,7 +1945,7 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
-      <div class="base-card medium criatura-card hidden" data-cat="monstruosidade" style="overflow: visible;">
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
         <div class="base-card-title" style="color:#c94040; margin-bottom:4px;">Manticora</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade
           Grande</p>
@@ -1982,14 +1983,472 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#8a7a40; margin-bottom:4px;">Catoblepas</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade Grande — Pestilência</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Besta pesada com escamas de crocodilo, olhos vermelhos injetados e uma cauda que apodrece o ar. Cheira a morte e deixa um rastro de podridão por onde passa.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 85</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 8</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 2🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +4 | DES: +0 | CON: +5 | INT: -3 | CAR: -4 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Bafo Pestilento - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">Nuvem de gás em cone de 4 blocos. CON 14 ou Envenenado (perde 2🟡 por turno, 3 turnos).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Olhar da Morte - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Fixa o alvo em 3 blocos. SAB 15 ou fica Abalado por 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Rastro de Podridão - Passiva</span>
+          <div class="skdesc">Todo bloco por onde passa fica contaminado por 1 turno. Criaturas no rastro rolam CON 10 ou ficam Lentas.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pisada Esmagadora - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Alvo em 2 blocos adjacentes: 2d8+4 contundente. CON 13 ou cai Derrubado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pele Putrefata - Passiva</span>
+          <div class="skdesc">Quem atacar corpo a corpo deve rolar CON 11 ou fica Envenenado por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Investida Mortal - Rápida</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Move 3 blocos em linha reta. Criaturas no caminho: 1d6+3 perfurante + arrastadas 1 bloco.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Aura de Decomposição - Passiva</span>
+          <div class="skdesc">Criaturas a 2 blocos: -1 em testes de Vontade e percepção pelo cheiro insuportável.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#1a6060; margin-bottom:4px;">Serpente Abissal</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade Enorme — Predador Aquático</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Cobra colossal que habita abismos marinhos e lagos profundos. Escamas escuras como o fundo do mar, dentes do tamanho de adagas.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 110</span>
+          <span class="stat-pill st">🟡 ST: 16</span>
+          <span class="stat-pill fo">🔵 FO: 4</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 15 | Atq: +8</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +5 | DES: +3 | CON: +4 | INT: -4 | CAR: -3 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Emboscada Abissal - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Salta da água/escuro com +2d6 de dano. DES 14 ou cai Derrubado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Colossal - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">3d8+5 perfurante. FOR 15 ou é arrastado 2 blocos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Constrição - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Agarra alvo. Alvo perde 1d8+3 por turno até escapar (teste FOR 14).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pele Escorregadia - Passiva</span>
+          <div class="skdesc">+2 em esquiva. Ataques desarmados têm Desvantagem.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Sibilante - Passiva</span>
+          <div class="skdesc">Criaturas a 3 blocos têm Desvantagem em testes de SAB pelo terror.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#604020; margin-bottom:4px;">Hidra</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade Enorme — Regeneradora</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Besta multi-cabeças que regenera o que perde. Cada cabeça pensa sozinha, mas se movem como um enxame de dentes.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 130</span>
+          <span class="stat-pill st">🟡 ST: 18</span>
+          <span class="stat-pill fo">🔵 FO: 6</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +8</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +5 | DES: +1 | CON: +6 | INT: -5 | CAR: -3 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Múltipla - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">3 cabeças atacam: 3x (1d6+5 perfurante). Cada uma pode mirar alvos diferentes.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Regeneração - Passiva</span>
+          <div class="skdesc">Recupera 5 HP no início de cada turno. Se uma cabeça perde 15+ HP, regenera 8 no próximo turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Cauda Varredora - Rápida</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Todos em arco de 3 blocos: 1d10+4 contundente. DES 14 ou cai.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Sibilante - Passiva</span>
+          <div class="skdesc">Criaturas a 3 blocos têm Desvantagem em testes de SAB pelo terror.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Frenesi - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">Abaixo de 50% HP: +2 ataques extras este turno, mas CA-2.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#4a7a30; margin-bottom:4px;">Basilisco</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade Média — Petrificação</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Reptiliano com olhos âmbar que endurecem a carne. Passos lentos, mas quem encara sente o corpo virar pedra.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 65</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 10</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 3🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +6</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +3 | DES: +1 | CON: +3 | INT: -3 | CAR: -2 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Olhar Petrificante - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Alvo em 6 blocos que olhe para ele: CON 14 ou fica Lento (1d3 turnos). Falha crítica: Petrificado por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Tóxica - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d8+3 perfurante + veneno. CON 12 ou -1 dado em testes por 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pele Escamada - Passiva</span>
+          <div class="skdesc">Resiste a +2 em testes de CON e DES. Dano de fogo causa +2 extra.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Investida Lenta - Rápida</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Move 2 blocos sem provocar reações. Próximo ataque neste turno: +1d4.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c94020; margin-bottom:4px;">Elemental do Fogo</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Espírito Médio — Elemental</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Chamas vivas com forma vagamente humanoide. Respirar perto dele já queima; tocar é fatal.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 70</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 16</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 4🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +2 | DES: +3 | CON: +3 | INT: +0 | CAR: +1 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Punho em Chamas - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">2d8+2 fogo. CON 13 ou Enfraquecido por 1 turno (-50% dano físico).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Onda de Calor - Padrão</span><span class="skcost">6🔵</span>
+          <div class="skdesc">Todos em 5 blocos: 2d6 fogo. DES 14 reduz à metade. Inflama objetos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Forma Flamejante - Passiva</span>
+          <div class="skdesc">Quem atacar corpo a corpo recebe 1d6+2 fogo.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Rastro de Cinzas - Passiva</span>
+          <div class="skdesc">Blocos por onde passa ficam com chão quente. Criaturas pisando: 1d4 fogo.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Tempestade de Brasas - Rápida</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Nuvem de faíscas. Criaturas a 4 blocos: DES 12 ou ficam Cegas por 1 turno.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="construto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#808080; margin-bottom:4px;">Golem de Pedra</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Constructo Grande — Guardião</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Amontoado de rochas e runas que se move com peso implacável. Não sente, não dorme, não para até seu mestre ordenar.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 100</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 18 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +6 | DES: -1 | CON: +5 | INT: -5 | CAR: -5 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Punho de Pedra - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">3d6+6 contundente. FOR 14 ou fica Derrubado e Lento por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pele Inquebrantável - Passiva</span>
+          <div class="skdesc">Resistência 5 a todo dano não-mágico. Dano elétrico anula por 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pisada Sísmica - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Todos em 3 blocos ao redor: 2d6 contundente. DES 13 ou cai Derrubado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Marcha Implacável - Passiva</span>
+          <div class="skdesc">Imune a Lentidão, Enfraquecimento e Abalado. Não pode ser empurrado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Investida Rochosa - Rápida</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Move 3 blocos em linha reta. 1d8+4 e empurradas 2 blocos.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="construto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#a0a0a0; margin-bottom:4px;">Golem de Ferro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Constructo Enorme — Sentinela</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Colosso de metal forjado com runas de comando. Mais lento que pedra, mas indestrutível contra ataques comuns.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 140</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 20 | Atq: +8</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +7 | DES: -2 | CON: +6 | INT: -5 | CAR: -5 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Martelo de Ferro - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">4d6+7 contundente. CON 15 ou fica Enfraquecido por 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Armadura Absoluta - Passiva</span>
+          <div class="skdesc">Resistência 8 a dano não-mágico. Imune a veneno, doença e mentais.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Campo Magnético - Rápida</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Armas a 3 blocos: FOR 14 ou caem (presas ao golem por 1 turno).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Rugido Metálico - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Todos em 4 blocos: SAB 13 ou ficam Abalados por 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Autodestruição - Passiva</span>
+          <div class="skdesc">Ao chegar em 0 HP: explode 4d8+5 em 4 blocos. DES 15 reduz à metade.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card hidden" data-cat="construto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#6a5030; margin-bottom:4px;">Golem de Madeira</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Constructo Médio — Guardião Florestal</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Entalhado do tronco de árvores ancestrais. Rápido e silencioso, com garras de espinhos e raízes prensas.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 55</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 6</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 1🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 12 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +3 | DES: +2 | CON: +3 | INT: -4 | CAR: -3 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Garras Espinhosas - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">2d6+3 perfurante. CON 12 ou sangra (1 HP/turno, 2 turnos).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Enraizamento - Rápida</span><span class="skcost">2🔵</span>
+          <div class="skdesc">Raízes prendem alvo a 3 blocos. FOR 13 ou fica Lento por 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Casca Reforçada - Passiva</span>
+          <div class="skdesc">Resistência 3 a dano cortante. Vulnerável a fogo (dano +50%).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Renovação - Passiva</span>
+          <div class="skdesc">Se pisar em terra/grama, recupera 3 HP por turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Camuflagem Natural - Passiva</span>
+          <div class="skdesc">Em floresta: +4 em Furtividade. DES 13 para detectar antes de atacar.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
+        <div class="base-card-title" style="color:#403030; margin-bottom:4px;">Aranha Colossal</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Aberração Grande — Emboscadora</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Aracnídeo do tamanho de uma carroça. Teia gruda como ferro, veneno dissolve carne por dentro.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 60</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 8</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 3🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +6</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +3 | DES: +4 | CON: +2 | INT: -3 | CAR: -4 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Teia Pegajosa - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Alvo a 6 blocos: DES 13 ou fica preso (não pode se mover, CA-2). FOR 14 para escapar.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Venenosa - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d8+3 perfurante + veneno. CON 14 ou perde 1d6🟡 por turno, 3 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Emboscada da Teia - Passiva</span>
+          <div class="skdesc">Se atacar de posição elevada: +2d6 e alvo cai Derrubado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Escalada - Passiva</span>
+          <div class="skdesc">Move em paredes e tetos sem penalidade. +2 em Furtividade em superfícies verticais.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Oito Patas - Passiva</span>
+          <div class="skdesc">Não pode ser Derrubada. Reações contra ela têm Desvantagem.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
+      <!-- ★ CRIATURA ÚNICA — O JACAROÁ ★ -->
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible; border-color: rgba(201, 146, 26, 0.35); position: relative;">
+        <div style="position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#c9921a,#e8b84b,#c9921a,transparent);"></div>
+        <div style="position:absolute;top:8px;right:10px;font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.12em;color:var(--gold-dim);border:1px solid rgba(201,146,26,0.2);padding:2px 7px;border-radius:2px;">★ CRIATURA ÚNICA</div>
+
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">O Jacaroa</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade Enorme — Anfíbia · Lendária</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:6px;line-height:1.6;font-style:italic;border-left:2px solid rgba(201,146,26,0.3);padding-left:10px;">"Cuidado com o Jacaroá... um jacaré do tamanho de uma canoa."<br><span style="font-size:10px;color:rgba(245,234,214,0.35);">— Pescador anônimo, margem do Rio Escuro</span></p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-top:10px;margin-bottom:12px;line-height:1.5;">Ninguém sabe há quanto tempo habita o Rio Escuro. Os avós dos pescadores já avisavam sobre ele — o que ou confirma séculos de vida, ou que o nome virou sinônimo de tudo que é grande demais pra ser explicado. A verdade: existe um Jacaroá. Singular. Real. Do tamanho de uma canoa.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 160</span>
+          <span class="stat-pill st">🟡 ST: 20</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 5🟡 / turno (na água)</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 17 | Atq: +9</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +7 | DES: +1 | CON: +6 | INT: -3 | CAR: -1 | SAB: +3</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+
+        <div class="skill-base-row" style="border-color:rgba(201,146,26,0.15);">
+          <span class="skname">⚪ Lenda que Ninguém Acredita</span><span class="skcost" style="color:rgba(245,234,214,0.3);">Passiva</span>
+          <div class="skdesc">Antes do primeiro encontro, testes de Conhecimento sobre o Jacaroá falham automaticamente — descartados como exagero de pescador. No primeiro turno de combate, quem nunca ouviu o aviso tem Desvantagem em Percepção por incredulidade. Quem ouviu e respeitou o aviso: Vantagem no teste de Presença Abissal.</div>
+        </div>
+        <div class="skill-base-row" style="border-color:rgba(201,146,26,0.15);">
+          <span class="skname">⚪ Imersão Silenciosa</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Ação Rápida, 1x/rodada. Apesar do tamanho absurdo, submerge ou emerge sem nenhum som. Percepção para detectar seu movimento aquático tem +15 de dificuldade. Em água turva: indetectável por meios convencionais.</div>
+        </div>
+        <div class="skill-base-row" style="border-color:rgba(201,146,26,0.15);">
+          <span class="skname">⚪ Presença Abissal</span><span class="skcost" style="color:rgba(245,234,214,0.3);">Passiva · aura 10m</span>
+          <div class="skdesc">Quem avista o Jacaroá pela primeira vez rola SAB 15 ou fica Abalado por 1 rodada (ação padrão recuando ou Desvantagem em ataques). Renova para novos alvos que se aproximem abaixo de 50% HP.</div>
+        </div>
+        <div class="skill-base-row" style="border-color:rgba(201,146,26,0.15);">
+          <span class="skname">⚪ Mordida do Abismo</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Ação Padrão. 4d10+8 perfurante. Acerto 5+ acima da CA: alvo fica Agarrado. Enquanto agarrado: 2d6 de pressão no início de cada turno. Escapar exige Ação Padrão e FOR 20.</div>
+        </div>
+        <div class="skill-base-row" style="border-color:rgba(201,146,26,0.15);">
+          <span class="skname">⚪ Cauda Devastadora</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Ação Padrão. Arco de 4m atrás: 3d8 contundente em todos. FOR 15 ou Derrubado e empurrado 3m.</div>
+        </div>
+        <div class="skill-base-row" style="border-color:rgba(201,146,26,0.15);">
+          <span class="skname">⚪ Regeneração das Margens</span><span class="skcost" style="color:rgba(245,234,214,0.3);">Passiva</span>
+          <div class="skdesc">Em contato com água: recupera 5🟡 no início de cada turno. Em terra seca: regeneração cessa. Dano de fogo ou frio interrompe por 1 rodada mesmo na água.</div>
+        </div>
+        <div class="skill-base-row" style="border-color:rgba(201,146,26,0.15);">
+          <span class="skname">⚪ Brado das Profundezas</span><span class="skcost">6🟡</span>
+          <div class="skdesc">Ação Padrão. Disponível apenas abaixo de 50% HP. O Jacaroá berra — a água treme, o chão vibra. Todos os presentes refazem o teste de Presença Abissal. 1x por combate.</div>
+        </div>
+
+        <div style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
+          <p style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">FASES DE COMBATE</p>
+          <p style="font-size:11px;color:rgba(245,234,214,0.5);line-height:1.6;margin:0;">
+            <span style="color:rgba(245,234,214,0.75);">HP 160–80:</span> Caça Paciente — submerge e reposiciona, Mordida em alvos isolados.<br>
+            <span style="color:rgba(245,234,214,0.75);">HP 79–50:</span> Fúria Territorial — emerge por completo, bloqueia saídas, usa Cauda no grupo.<br>
+            <span style="color:rgba(245,234,214,0.75);">HP abaixo de 50:</span> O Mito Confirmado — Brado das Profundezas, não recua. Nunca recuou.
+          </p>
+        </div>
+
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+      <!-- ★ fim CRIATURA ÚNICA ★ -->
+
     </div>
   </div>
   <!-- end tab-bestiary -->
 
     <div class="tab-content" id="tab-battle">
-    <div id="battle-container"></div>
+    <div id="battle-container"><div class="battle-empty"><p>Nenhum monstro em batalha.</p><p style="font-size:14px;margin-top:12px;">Vá ao Bestiário e clique em <strong>"Adicionar ➕"</strong> nos monstros para incluí-los aqui.</p></div></div>
     <div class="battle-actions" id="battle-actions" style="display: none;">
-      <button onclick="nextTurn()" style="background:rgba(64,96,201,0.15);border:1px solid rgba(64,96,201,0.35);border-radius:3px;color:#8aA8e8;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.08em;padding:8px 18px;cursor:pointer;margin-right:8px;">Proximo Turno</button><button class="clear-battle-btn" onclick="clearBattle()">Limpar Batalha</button>
+      <button onclick="nextTurn()" style="background:rgba(64,96,201,0.15);border:1px solid rgba(64,96,201,0.35);border-radius:3px;color:#8aA8e8;font-family:&#39;Cinzel&#39;,serif;font-size:11px;letter-spacing:0.08em;padding:8px 18px;cursor:pointer;margin-right:8px;">Proximo Turno</button><button class="clear-battle-btn" onclick="clearBattle()">Limpar Batalha</button>
     </div>
     <div class="battle-log" id="battle-log" style="display: none;">
       <div class="battle-log-title">REGISTRO</div>
@@ -2450,7 +2909,6 @@
     loadBattleState();
     initBattleButtons();
   </script>
-
 
 
 
