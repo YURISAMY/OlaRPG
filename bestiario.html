@@ -1354,6 +1354,52 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
+      <div class="base-card medium criatura-card hidden" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Minotauro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Grande</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Sentinela de labirintos e câmaras subterrâneas. Musculoso, implacável, e territorial. Cada investida pode despeda&#231;ar linhas inteiras.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 95</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 6🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 15 | Atq: +7</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +5 | DES: +2 | CON: +4 | INT: +1 | CAR: -1 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Machado de Guerra - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">2d8+5 cortante. Alvo com menos de 50% HP: +1d6 de dano (executar).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Investida Devastadora - Padrão</span><span class="skcost">7🟡</span>
+          <div class="skdesc">Move até 4 blocos em linha reta. Todos no caminho: 1d8+5 perfurante + Derrubados. DES 13 ou sofrem dano dobrado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Pisão - Rápida</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Alvo adjacente: 1d6+3 contundente + Derrubado. Se já Derrubado: +2d6 (pisoteia no chão).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Labirinto Interior - Passiva</span>
+          <div class="skdesc">Em corredores estreitos (1-2 blocos de largura): +2 CA, não pode ser flanqueado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Fúria do Touro - Passiva</span>
+          <div class="skdesc">Quando abaixo de 30% HP: +2 em todos os ataques e +1d8 de dano. Imune a medo.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Chifrada - Reação</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Quando inimigo entra a 1 bloco: 1d8+5 perfurante. Empurra 1 bloco para trás.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+
       <div class="base-card medium criatura-card hidden" data-cat="morto-vivo" style="overflow: visible;">
         <div class="base-card-title" style="color:#7060a0; margin-bottom:4px;">Zumbi</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Morto-Vivo Médio
@@ -2387,9 +2433,9 @@
 
         <div class="stat-row">
           <span class="stat-pill hp">❤️ HP: 160</span>
-          <span class="stat-pill st">🟡 ST: 20</span>
+          <span class="stat-pill st">🟡 ST: 15</span>
           <span class="stat-pill fo">🔵 FO: 0</span>
-          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 5🟡 / turno (na água)</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 8🟡 por turno (na água 10🟡)</span>
           <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 17 | Atq: +9</span>
         </div>
 
@@ -2439,6 +2485,113 @@
 
       <button class="add-battle-btn">Adicionar ➕</button></div>
       <!-- ★ fim CRIATURA ÚNICA ★ -->
+
+      <!-- ★ CRIATURA ÚNICA — TARTARUGA GIGANTE DE TÍBIA ★ -->
+      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible; border-color: rgba(201, 146, 26, 0.35); position: relative;">
+        <div style="position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#c9921a,#e8b84b,#c9921a,transparent);"></div>
+        <div style="position:absolute;top:8px;right:10px;font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.12em;color:var(--gold-dim);border:1px solid rgba(201,146,26,0.2);padding:2px 7px;border-radius:2px;">★ CRIATURA ÚNICA</div>
+
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Tartaruga Gigante de T&#237;bia</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade Colossal — Terra · Lendária</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:6px;line-height:1.6;font-style:italic;border-left:2px solid rgba(201,146,26,0.3);padding-left:10px;">"Dizem que carrega em cima de sua carapa&#231;a uma cidade inteira..."<br><span style="font-size:10px;color:rgba(245,234,214,0.35);">— Cren&#231;a popular, interior de T&#237;bia</span></p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-top:10px;margin-bottom:12px;line-height:1.5;">Ser quase mitol&#243;gico. Carrega uma aldeia de tiberianos isolados em sua carapa&#231;a — uma ra&#231;a que se apartou da sociedade ap&#243;s s&#233;culos de supersti&#231;&#227;o que os atrelou a mau press&#225;gio. A torto ou a direito, a Tartaruga caminha h&#225; s&#233;culos. E n&#227;o para.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 650</span>
+          <span class="stat-pill st">🟡 ST: 9</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 22 | Atq: +9</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +8 | DES: -2 | CON: +9 | INT: +2 | CAR: +0 | SAB: +5</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Passo S&#237;smico - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">2d10+8 contundente em 4 blocos à frente. Todos no impacto: DES 14 ou ficam Derrubados.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mandíbula Ancestral - Padrão</span><span class="skcost">8🟡</span>
+          <div class="skdesc">3d8+8 perfurante. Ignora 5 de RD. Se acertar, alvo fica Agarrado na boca até passar em FOR 15.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Onda de Terra - Padrão</span><span class="skcost">7🟡</span>
+          <div class="skdesc">Bate as patas no chão. Linha de 8 blocos: todos sofrem 2d6+5 contundente e ficam Lentos por 1 turno. TER 12 ou caem em fendas.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Retrair na Carapaça - Rápida</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Até seu próximo turno: RD 10 a dano físico flat e imunidade a todos os status. 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Santuário Vivo - Passiva</span>
+          <div class="skdesc">Criaturas aliadas a 3 blocos ganham +2 CA e curam 2 HP por turno (proteção mística da cidade-costas).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Marcha dos Antigos - Passiva</span>
+          <div class="skdesc">Imune a Empurrão, Desarme e Derrubado. Terreno difícil não a afeta. Ao se mover, deixa o chão arrasado por 1 turno.</div>
+        </div>
+
+        <div style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
+          <p style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">FASES DE COMBATE</p>
+          <p style="font-size:11px;color:rgba(245,234,214,0.5);line-height:1.6;margin:0;">
+            <span style="color:rgba(245,234,214,0.75);">HP 650–400:</span> Caminhada Imparável — Passo Sísmico e Onda de Terra alternados. Santuário Vivo ativo.<br>
+            <span style="color:rgba(245,234,214,0.75);">HP 399–200:</span> Irritação Ancestral — adiciona Mandíbula Ancestral ao ciclo. Marcha dos Antigos intensifica terreno devastado.<br>
+            <span style="color:rgba(245,234,214,0.75);">HP abaixo de 200:</span> Casco Fechado — Retrair na Carapaça torna-se disponível. Usa 1x por combate quando pressionada.
+          </p>
+        </div>
+
+      <button class="add-battle-btn">Adicionar ➕</button></div>
+      <!-- ★ fim CRIATURA ÚNICA ★ -->
+
+      <div class="base-card medium criatura-card hidden" data-cat="construto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#7aa0d0; margin-bottom:4px;">Golem de Cristal</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Constructo Médio — Refrator de Magia</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Formado por cristais translúcidos que refletem e amplificam energia mágica. Seus facetas brilham com runas de poder encantadas.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 72</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 14</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 / 4🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +5</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:'Share Tech Mono'; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +2 | DES: +1 | CON: +4 | INT: +3 | CAR: +0 | SAB: +2</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:'Share Tech Mono',monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Punho de Cristal - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d8+2 perfurante. Se o alvo estiver sob efeito mágico: causa +1d6 extra.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Reflexão Mágica - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Próxima magia direcionada ao Golem é refletida de volta para o lançador. Falha em SAB 12.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Amplificação - Passiva</span>
+          <div class="skdesc">Quando próximo (2 blocos) de outro Constructo, ambos ganham +1 em testes e ataques.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Explosão de Luz - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Todos em 3 blocos: DES 13 ou ficam Cegos por 1 turno. Inimigos cegos causam -2 em ataques.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Estrutura Frágil - Passiva</span>
+          <div class="skdesc">Recebe +50% de dano de impacto (contundente), mas -25% de dano cortante.</div>
+        </div>
+      <button class="add-battle-btn">Adicionar ➕</button></div>
 
     </div>
   </div>

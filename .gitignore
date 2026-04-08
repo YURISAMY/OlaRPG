@@ -1,3 +1,9 @@
 .claude/
 *_files/
 *.js
+.venv
+
+protocolo_bestiario.md
+
+__pycache__/
+*.pyc
