@@ -147,6 +147,16 @@ Foco é usado para conjurar magias e habilidades mágicas.
 >
 > Exemplo: Magia de **9🔵** custa **3🟡** (9 ÷ 3 = 3)
 
+> **Sugestão (Cooldown / TR):** Habilidades de alto impacto (custo elevado em 🟡, efeitos fortes ou controle significativo) podem receber um *Tempo de Recarga (TR)* para limitar uso repetido. Recomendações práticas:
+>
+>- Habilidades de custo 7–9🟡: TR 1–2 turnos
+>- Habilidades de custo 10🟡 ou mais (épicos): TR ≈ 2 turnos (ex.: épico 10🟡 → TR 2)
+>- TR começa a contar no turno seguinte ao uso; enquanto em TR a habilidade não pode ser ativada.
+>
+Use TR quando quiser limitar spam sem forçar dependência exclusiva da acumulação de ST.
+
+> **Regra de Reserva:** uma habilidade não pode ter custo em 🟡 maior do que a reserva máxima de ST da criatura; da mesma forma, uma magia não pode exigir mais 🔵 do que a reserva máxima de FO. Se um efeito parecer exigir mais do que a reserva permite, ajuste: reduza o custo, torne-o multi-turno, aumente o TR, ou transforme-o em custo condicional.
+
 Uma mana pool alta é balanceada pela **falta de stamina** para gastá-la toda.
 
 ---
@@ -265,6 +275,16 @@ Descrição
    - Golpes médios (4-6🟡): dano sólido (1d8+mod ou 2d6+mod), status
    - Golpes caros (7+🟡): dano alto (2d8+mod ou mais), efeitos fortes
    - Boss fights: podem ter ações que quebram as regras para criar tensão
+ 
+4. **Cooldowns / Tempo de Recarga (TR)**
+  - Skills de alto impacto (ex.: custo ≥ 7🟡, grande controle ou área) podem ter TR (1–3 turnos) para evitar spam.
+  - Exemplo prático: habilidade épica de 10🟡 → TR 2.
+  - Prefira TR quando a limitação por acumulação de ST seja pouco elegante para a fantasia.
+
+5. **Esperar / Defender (abrir mão do ataque básico)**
+  - Permitir uma ação custo `0🟡` que representa defender, esperar ou focar em recuperação.
+  - Ao usar essa ação, a criatura (ou jogador) ganha a Recuperação de ST inteira daquele turno (Rec ST), permitindo acelerar cargas épicas.
+  - Observação: esta opção já aparece nos exemplos como "Não agir" (+2🟡); aqui formalizamos a regra como trade-off tático.
 
 3. **Passivas são quase sempre bem-vindas** (não obrigatórias)
 
@@ -397,14 +417,69 @@ Para inserir uma criatura no `bestiario.html`, use este template HTML e insira a
         </div>
 
         <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+              <div class="skill-base-row">
+                <span class="skname">⚪ Nome da Skill - Tipo</span><span class="skcost">X🟡</span>
+                <div class="skdesc">Descrição da habilidade.</div>
+              </div>
 
-        <div class="skill-base-row">
-          <span class="skname">⚪ Nome da Skill - Tipo</span><span class="skcost">X🟡</span>
-          <div class="skdesc">Descrição da habilidade.</div>
-        </div>
+            <button class="add-battle-btn">Adicionar ➕</button></div>
+      ```
 
-      <button class="add-battle-btn">Adicionar ➕</button></div>
-```
+      ---
+
+      ### Exemplos Recalculados (regra 1/3 de ST para conjurar)
+
+      > Nota: valores de **ST acima de 13** são indicativos de criaturas ágeis/experientes (alto nível). Exemplos abaixo respeitam esse limite — um duelista iniciante não teria 18 de ST, mas pode manter recuperação alta.
+
+      #### Guerreiro de Campo
+      ```
+      Nome: Guerreiro de Campo
+      Porte: Médio | Classe: Humanoide
+      HP: 95
+      ST: 12 | FO: 0
+      Rec: 🔄 Rec: 6🟡 / turno
+
+      Ataque básico: 4🟡
+      Golpe Épico: Investida Brutal — 10🟡 (Padrão)
+
+      Cálculo: spare_por_turno = Rec − Custo_básico = 6 − 4 = 2🟡
+      Turns_para_épico = ceil(10 / 2) = 5 turnos (se sempre usar básico).
+      Observação: usar a ação “Não agir” (+2🟡) reduz o tempo de espera; ST máximo limita acúmulo.
+      ```
+
+      #### Lâmina Veloz (Ágil) — duelista iniciante
+      ```
+      Nome: Lâmina Veloz (Ex: Duelista iniciante)
+      Porte: Pequeno | Classe: Humanoide (Ágil)
+      HP: 36
+      ST: 12 | FO: 0
+      Rec: 🔄 Rec: 7🟡 / turno
+
+      Ataque básico: 4🟡
+      Habilidade de Burst: Sequência Mortal — 8🟡 (Padrão)
+
+      Cálculo: spare_por_turno = 7 − 4 = 3🟡
+      Turns_para_burst = ceil(8 / 3) = 3 turnos.
+      Nota: ST = 12 respeita o limite (valores >13 indicam mulltiplos níveis/elite). Recuperação alta permite decidir entre spam de básicos ou guardar por ~3 turnos para burst.
+      ```
+
+      #### Golem de Pedra (Colosso)
+      ```
+      Nome: Golem de Pedra
+      Porte: Colossal | Classe: Construto
+      HP: 140
+      ST: 8 | FO: 0
+      Rec: 🔄 Rec: 3🟡 / turno
+
+      Ataque pesado: Tacada Devastadora — 6🟡 (Padrão)
+      Dano: 3d8 + 7; RD flat: 8
+
+      Comentário prático: spare_por_turno = 3 − 4 = −1 (não sustentável se usar ataque básico de 4🟡). Em vez de frações, aplicar ritmo: "Golem ataca ~2 vezes a cada 3 turnos" (ex.: turno A: Tacada, turno B: pausa/recolhimento, turno C: ataque reduzido). Mantém fantasia de poder alto + lentidão.
+      ```
+
+      ---
+
+      Relembrando a regra de conjuração: conjurar magia exige ter 🔵 suficiente **+** ⌈(custo🔵 / 3)⌉ 🟡 (arredonda para cima). Ex.: magia de 9🔵 → 3🟡.
 
 ### Cores por categoria (data-cat e color)
 
