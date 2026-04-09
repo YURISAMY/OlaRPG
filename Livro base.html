@@ -2520,9 +2520,9 @@
      </p>
      <div class="mechanic-row">
       <strong>
-       ATACAR
+       PADRÃO
       </strong>
-      — Bate com a arma em mão, causando o dano da mesma - 4🟡
+      — uma ação padrão comum custa 4🟡, exemplos são bater com a arma em mão, causando o dano da mesma. Fincar um escudo no chão (caso ele permita). Dentre outras ações que podem ser cobradas em itens. 
      </div>
      <div class="mechanic-row">
       <strong>
@@ -7214,7 +7214,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Entoa canção até fim do combate. Aliados que ouvirem causam +1 dado de dano.
+            Entoa canção até fim do combate. Aliados que ouvirem causam +1 dado de dano. Manter a canção custa 1🔵 + 1🟡 por turno.
                       Você não pode conjurar outras magias enquanto canta.
            </div>
           </div>
@@ -7298,7 +7298,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Entoa melodia por 2 turnos: todos os aliados em 4 blocos ganham +2 blocos de movimento e suas ações rápidas custam 1🟡 a menos.
+            Entoa melodia por 2 turnos: todos os aliados em 4 blocos ganham +2 blocos de movimento e suas ações rápidas custam 1🟡 a menos (minimo de 1).
            </div>
            <span class="skill-req">
             🔒 Req: Nível 8
@@ -7314,7 +7314,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Quando Canção de Guerra chega ao bônus máximo (+3 dados), você também ganha o bônus além dos aliados.
+            Ao atingir o bônus máximo, a manutenção da Canção de Guerra deixa de impedir que você conjure outras magias. Além disso, o custo das suas habilidades Rápidas (Acorde de Cura e Acorde de Batalha) é reduzido em 1 enquanto o bônus de +3 estiver ativo.
            </div>
            <span class="skill-req">
             🔒 Req: Nível 10
@@ -7378,8 +7378,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Declara uma ação futura. Se se cumprir: grupo ganha pode realizar uma ação rapida coletiva
-                      gratuita. Se não: você recupera 2🔵.
+            Declara uma ação futura (coisas que envolvem testes). Se se cumprir: grupo ganha pode realizar uma ação rapida coletiva
+                      gratuita. Se não: você recupera 2🔵 (3 vezes por combate).
            </div>
           </div>
           <div class="skill-divider">
@@ -7427,7 +7427,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Reação a aliado ser atingido: a narrativa muda — o ataque erra. 1x por combate. Diferente de Reescrever o Final (que é por sessão).
+            Reação a aliado ser atingido: a narrativa muda — Na verdade o seu aliado que atacou o inimigo. 1x por combate.
            </div>
            <span class="skill-req">
             🔒 Req: Nível 8
@@ -7443,7 +7443,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Ao final de um combate em que pelo menos 2 Profecias se cumpriram, todos os aliados recuperam 1d6 HP — o grupo descansa na vitória da narrativa.
+            Ao fim do combate, para cada profecia que se cumprir, todos os aliados recuperam 1d6 HP — o grupo descansa na vitória da narrativa.
            </div>
            <span class="skill-req">
             🔒 Req: Nível 7
@@ -9157,6 +9157,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
     <div class="spell-card magica geral" data-scope="geral" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -9184,6 +9185,35 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+    
+    <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">
+        Empenho
+       </span>
+       <span class="spell-cost-badge">
+        3🔵
+       </span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">
+        Suporte
+       </span>
+       <span class="spell-tag tipo-magica">
+        Magia
+              Geral
+       </span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+        O aliado alvo desse buff recebe 1d4 para usar a qualquer momento que queira em testes no geral. O efeito não acumula. No nivel 5 pode gastar 2🔵 extra para aumentar o dado para 1d6. No nivel 11 essa skill pode ser considerada rápida ao gastar + 1🔵 extra. 
+      </div>
+     </div>
+    </div>
+
     <div class="spell-card magica geral" data-scope="geral" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -9259,7 +9289,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <div class="spell-card-body">
       <div class="spell-desc">
        Você enxerga criaturas invisíveis, armadilhas mágicas e ilusões em 5 blocos por 2
-            turnos.
+            turnos ou 10 minutos fora de combate.
       </div>
      </div>
     </div>
@@ -10594,6 +10624,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+   
     <div class="spell-card tecnica geral" data-scope="geral" data-type="tecnica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10620,6 +10651,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+
     <div class="spell-card tecnica geral" data-scope="geral" data-type="tecnica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10816,6 +10849,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
     <div class="spell-card tecnica geral" data-scope="geral" data-type="tecnica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10842,6 +10876,34 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+    <div class="spell-card tecnica geral" data-scope="geral" data-type="tecnica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">
+        Redemoinho de Aço  - Req: Nível 10
+       </span>
+       <span class="spell-cost-badge">
+        8 🟡
+       </span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">
+        Controle
+       </span>
+       <span class="spell-tag tipo-tecnica">
+        Técnica Geral
+       </span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Você gira em um ataque circular. Realiza um ataque básico contra todos os inimigos adjacentes. Reliquias que aumentão a área afetam essa skill
+      </div>
+     </div>
+    </div>
+
+
     <div class="spell-card tecnica geral" data-scope="geral" data-type="tecnica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10863,11 +10925,12 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      </div>
      <div class="spell-card-body">
       <div class="spell-desc">
-       Ataque específico na arma do inimigo. Ele solta a arma — cai a 1 bloco no chão. Sem
-            arma, ataques básicos causam metade do dano.
+       Ataque específico na arma do inimigo. Faz um teste de força contra o alvo, se ele perder ele solta a arma — cai a 1 bloco no chão. Sem
+            arma, ataques básicos causam 1d4 de dano por padrão.
       </div>
      </div>
     </div>
+    
     <div class="spell-card tecnica geral" data-scope="geral" data-type="tecnica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10895,6 +10958,9 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      </div>
     </div>
    </div>
+   
+
+
    <div class="spell-section-header escola" style="margin-bottom:16px;">
     <h3>
      Estilo de Mobilidade
@@ -12078,6 +12144,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
     </div>
    </div>
   </div>
+
+
   <!-- ═══════════════════════════ RELÍQUIAS ═══════════════════════════ -->
   <div class="section" id="tab-reliquias">
    <div class="tree-header" style="margin-bottom:24px;">
