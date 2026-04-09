@@ -163,16 +163,16 @@ Uma mana pool alta é balanceada pela **falta de stamina** para gastá-la toda.
 
 ## 5. DEFINIÇÃO DO TIER DE DIFICULDADE
 
-O tier de dificuldade indica quão letal uma criatura é em combate. Como criaturas variam entre **tanques** (HP alto) e **canhões de vidro** (HP baixo, dano alto), o tier é calculado como o **maior entre**:
+O tier de dificuldade indica quão letal uma criatura é em combate. Como criaturas variam entre **tanques** (HP alto) e **canhões de vidro** (HP baixo, dano alto), o tier é calculado **somando** os fatores abaixo:
 
 | Fator | Pontos |
 |---|---|
 | **HP** | HP ÷ 15 |
 | **Poder de ataque** | Bônus de Ataq × 2 |
 | **Defesa** | CA - 10 |
-| **Dano mínimo estimado** | Bônus de Ataq - 2 (mínimo 1) |
-| **Skills de controle** (Derrubado, Preso, Cego, agarrado, Seduzido, etc) | +1 por skill |
-| **Passivas defensivas** (RD, imunidade, cura, regeneração, escudos) | +1 por passiva |
+| **Poder de Dano** | Média de dano do golpe mais forte ÷ 2 |
+| **Skills de controle** (Derrubado, Preso, Cego, agarrado, Seduzido, etc) | +1 a +3 por skill (dependendo da gravidade e se for em área) |
+| **Passivas defensivas** (RD, imunidade, cura, regeneração, escudos) | +1 a +2 por passiva (dependendo do poder de mitigação) |
 
 ### Tabela de Tiers
 
@@ -186,11 +186,9 @@ O tier de dificuldade indica quão letal uma criatura é em combate. Como criatu
 
 ### Por que Lich é Mortal com pouco HP?
 
-O Lich tem HP 80 (score ~5.3), mas seu Atq +7 dá 14 pontos de ameaça de ataque, CA 17 dá +7, dano ~+5, skills defensivas +2 = score **~33.3** → **🔴 Mortal**.
+O Lich tem HP 80 (score ~5.3), mas seu Atq +7 dá 14 pontos de ameaça de ataque, CA 17 dá +7, dano médio de Raio de Desintegração (~22/2) = 11, skills defensivas/controle ~8 = score **~45.3** → **⚫ Lendário** (ou **🔴 Mortal** se balancearmos os debuffs de controle menores).
 
-Um Lobo com HP 18 (score ~1.2), Atq +3 = 6 pontos, CA 13 = +3, dano ~1 = score **~12.2** → **🔵 Médio**.
-
-O sistema penaliza criaturas **equilibradas** e premia criaturas que são **extremas num eixo** (muito HP **ou** muito ataq **ou** muito controle).
+Um Lobo com HP 18 (score ~1.2), Atq +3 = 6 pontos, CA 13 = +3, dano médio ~3/2 = 1.5 = score **~11.7** → **🔵 Médio**.
 
 ---
 
@@ -506,8 +504,8 @@ Demônios usam `sobrenatural`. Criaturas únicas (Boss Lendário) podem ter o ba
 1. **Acentos em HTML**: use entidades HTML para acentos especiais (`&#231;` = ç, `&#227;` = ã, `&#237;` = í) **ou** escreva sem acento. Emojis (🟡, 🔵, ❤️, ⚪) são usados diretamente.
 2. **`&#39;`** = apóstrofo em strings inline (font-family Share Tech Mono).
 3. **Custos de skill**: sempre no formato `<span class="skcost">X🟡</span>` — sem aspas extras, sem `"/>`.
-4. **Skills com custo 0**: use `0🟡` (ex: ataque básico de zumbi).
+4. **Skills com custo baixo**: use `3🟡` ou mais para ataques básicos (nenhum ataque que causa dano deve custar 0🟡).
 5. **Recuperação dupla** (ST e FO): `<span class="stat-pill rec">🔄 Rec: X🟡 / Y🔵 por turno</span>`
 6. **Recuperação só ST**: `<span class="stat-pill rec">🔄 Rec: X🟡 por turno</span>`
-7. **Sem recuperação**: `<span class="stat-pill rec">🔄 Rec: sem recuperação</span>`
+7. **Sem recuperação**: Apenas em casos de FO = 0. Stamina sempre deve ter alguma recuperação.
 8. **FO = 0**: ainda deve aparecer `<span class="stat-pill fo">🔵 FO: 0</span>` no card.
