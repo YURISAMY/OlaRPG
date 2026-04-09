@@ -503,9 +503,10 @@ Demônios usam `sobrenatural`. Criaturas únicas (Boss Lendário) podem ter o ba
 
 1. **Acentos em HTML**: use entidades HTML para acentos especiais (`&#231;` = ç, `&#227;` = ã, `&#237;` = í) **ou** escreva sem acento. Emojis (🟡, 🔵, ❤️, ⚪) são usados diretamente.
 2. **`&#39;`** = apóstrofo em strings inline (font-family Share Tech Mono).
-3. **Custos de skill**: sempre no formato `<span class="skcost">X🟡</span>` — sem aspas extras, sem `"/>`.
-4. **Skills com custo baixo**: use `3🟡` ou mais para ataques básicos (nenhum ataque que causa dano deve custar 0🟡).
-5. **Recuperação dupla** (ST e FO): `<span class="stat-pill rec">🔄 Rec: X🟡 / Y🔵 por turno</span>`
-6. **Recuperação só ST**: `<span class="stat-pill rec">🔄 Rec: X🟡 por turno</span>`
-7. **Sem recuperação**: Apenas em casos de FO = 0. Stamina sempre deve ter alguma recuperação.
-8. **FO = 0**: ainda deve aparecer `<span class="stat-pill fo">🔵 FO: 0</span>` no card.
+3. **Custos de skill (Físico)**: sempre no formato `<span class="skcost">X🟡</span>` — sem aspas extras, sem `"/>`.
+4. **Custos de skill (Mágico)**: Para magias, coloque **apenas** o custo de Foco no HTML (`<span class="skcost">X🔵</span>`). **NUNCA** adicione o custo de Stamina ao lado. O sistema de batalha calcula e deduz a Stamina automaticamente (1/3 do custo de Foco) no momento do uso.
+5. **Skills com custo baixo**: use `3🟡` ou mais para ataques básicos (nenhum ataque que causa dano deve custar 0🟡).
+6. **Recuperação dupla** (ST e FO): `<span class="stat-pill rec">🔄 Rec: X🟡 / Y🔵 por turno</span>`
+7. **Recuperação só ST**: `<span class="stat-pill rec">🔄 Rec: X🟡 por turno</span>`
+8. **Sem recuperação**: Apenas em casos de FO = 0. Stamina sempre deve ter alguma recuperação.
+9. **FO = 0**: ainda deve aparecer `<span class="stat-pill fo">🔵 FO: 0</span>` no card.
