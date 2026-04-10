@@ -4216,12 +4216,11 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
              Rápida
             </span>
             <span class="skill-cost">
-             1🟡
+             2🟡 
             </span>
            </div>
            <div class="skill-desc">
-            Para qualquer ataque físico, reduzindo dano em 1d6. Se o resultado for ≥
-                      dano total, nega completamente.
+            Deflete um projetil fisico que iria te atingir, reduzindo o dano do projetil em 1d8 + mod de destreza.
            </div>
           </div>
           <div class="skill-divider">
@@ -4266,7 +4265,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Avança 4 blocos em linha reta e ataca um inimigo no final do avanço, para cada inimigo entre você o ultimo da linha, causa 1d4 de dano. O ataque final tem dano normal da arma.
+            Avança 4 blocos em linha reta e ataca um inimigo no final do avanço, para cada inimigo entre você o ultimo da linha, causa 1d4 de dano extra. O ataque final tem dano normal da arma.
            </div>
            <span class="skill-req">
             🔒 Req: Nível 4
@@ -7379,7 +7378,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Declara uma ação futura (coisas que envolvem testes). Se se cumprir: grupo ganha pode realizar uma ação rapida coletiva
+            Declara uma ação futura (coisas que envolvem testes). Se se cumprir: grupo pode realizar uma ação rapida coletiva
                       gratuita. Se não: você recupera 2🔵 (3 vezes por combate).
            </div>
           </div>
@@ -7747,7 +7746,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            2d6 de dano sagrado num inimigo + ele fica Marcado: aliados causam +1 dado
+            2d6 de dano sagrado num inimigo + ele fica Marcado: aliados causam +1 de dano sagrado
                       contra ele até o fim do próximo turno.
            </div>
           </div>
@@ -7766,8 +7765,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Reação a aliado receber dano. O atacante recebe dano sagrado igual à metade
-                      do que causou. Imediato e automático.
+            Reação a aliado receber dano. O atacante recebe 1d8 + mod arc de dano sagrado. Imediato e automático.
            </div>
           </div>
           <div class="skill-divider">
@@ -7795,11 +7793,11 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
              Padrão
             </span>
             <span class="skill-cost">
-             3🔵
+             4🔵
             </span>
            </div>
            <div class="skill-desc">
-            Faz uma pergunta ao alvo — ele deve testar Sabedoria ou ser compelido a responder verdadeiramente. Funciona 1x por alvo por sessão.
+            Faz uma pergunta ao alvo — ele deve testar Sabedoria ou ser compelido a responder verdadeiramente. Caso se negue a falar ou minta, o alvo é stunado e perde seu proximo turno. Não repetivel no mesmo alvo até descansar. Um coração puro reverte a punição para o inquisidor.
            </div>
           </div>
           <div class="skill passive">
@@ -8971,6 +8969,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
     <div class="spell-card magica geral" data-scope="geral" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -8996,6 +8995,33 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+        <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">
+        Marca da verdade - Level 5
+       </span>
+       <span class="spell-cost-badge">
+        3🔵
+       </span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">
+        Controle
+       </span>
+       <span class="spell-tag tipo-magica">
+        Magia Geral
+       </span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Marca uma area de 3x3 blocos por 2 turnos ou 10 min fora de combate. Seres dentro da area não podem mentir.
+      </div>
+     </div>
+    </div>
+
     <div class="spell-card magica geral" data-scope="geral" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10759,7 +10785,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      </div>
      <div class="spell-card-body">
       <div class="spell-desc">
-       Reação a qualquer ataque físico. Reduz o dano em 1d8 + For/Des. Pode ser usado fora do turno.
+       Reação a qualquer ataque físico adjacente. Reduz o dano em 1d8 + For/Des. Pode ser usado fora do turno.
       </div>
      </div>
     </div>
@@ -10882,7 +10908,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <div class="spell-card-top">
       <div class="spell-name-row">
        <span class="spell-name">
-        Redemoinho de Aço  - Req: Nível 10
+        Redemoinho de Aço - Nível 10
        </span>
        <span class="spell-cost-badge">
         8 🟡
@@ -10953,7 +10979,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      </div>
      <div class="spell-card-body">
       <div class="spell-desc">
-       Foca em um inimigo. Todos os aliados que o atacarem neste turno causam +1 de dano
+       Foca em um inimigo. Todos os aliados que o atacarem nesta rodada causam +1 de dano
             fixo. Simples e direto.
       </div>
      </div>
@@ -11069,7 +11095,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
        Requisito: Nível 6 | Custo: 4🟡 (+2🟡 por repetição)
       </div>
       <div class="spell-desc">
-       Você se move 1 bloco e realiza um ataque rápido. Pode repetir até 4 vezes no mesmo turno. A cada repetição, o dano aumenta em +2 (fixo). Se terminar o movimento dando uma volta no inimigo, o último golpe consome todo
+       Você se move 1 bloco e realiza um ataque rápido. Pode repetir até 4 vezes no mesmo turno. A cada repetição, o dano aumenta em +2 (fixo). Se terminar o movimento acertando todos os golpes no mesmo inimigo, o último golpe consome todo
        <b>
         sangramento
        </b>
@@ -11091,7 +11117,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
         Lâmina de Vácuo
        </span>
        <span class="spell-cost-badge">
-        4🟡 + 2🔵
+        6🔵
        </span>
       </div>
       <div class="spell-tags">
@@ -11116,7 +11142,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
         Sobrecarga Nervosa
        </span>
        <span class="spell-cost-badge">
-        6🟡 + 4🔵
+        6🔵
        </span>
       </div>
       <div class="spell-tags">
@@ -11144,7 +11170,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
         Pulso Gravitacional
        </span>
        <span class="spell-cost-badge">
-        3🟡 + 3🔵
+        4🔵
        </span>
       </div>
       <div class="spell-tags">
