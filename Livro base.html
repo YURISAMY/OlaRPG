@@ -3277,7 +3277,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
              Padrão
             </span>
             <span class="skill-cost">
-             4🟡
+             4🔵
             </span>
            </div>
            <div class="skill-desc">
@@ -3298,7 +3298,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
              Rápida
             </span>
             <span class="skill-cost">
-             3🟡
+             3🔵
             </span>
            </div>
            <div class="skill-desc">
@@ -3328,7 +3328,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
              Rápida
             </span>
             <span class="skill-cost">
-             4🟡
+             4🔵
             </span>
            </div>
            <div class="skill-desc">
@@ -3344,7 +3344,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
              Padrão
             </span>
             <span class="skill-cost">
-             5🟡
+             6🟡
             </span>
            </div>
            <div class="skill-desc">
@@ -3363,11 +3363,11 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
              Padrão
             </span>
             <span class="skill-cost">
-             6🟡
+             5🔵
             </span>
            </div>
            <div class="skill-desc">
-            Todos os aliados em 4 blocos recuperam 1d6 HP e ficam imunes a medo por 2 turnos. Pode ser usada 1x por combate.
+            Todos os aliados em 4 blocos de raio recuperam 1d6 HP e ficam imunes a medo por 2 turnos. Pode ser usada 1x por combate.
            </div>
            <span class="skill-req">
             🔒 Req: Nível 10
@@ -3463,7 +3463,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Quando um aliado em até 3 blocos cair a 0 HP, você pode gastar 4🟡 para ele continuar de pé com 1 HP e agir normalmente nesse turno.
+            Quando um aliado em até 3 blocos cair a 0 HP, você pode gastar 4🟡 para ele continuar de pé com 1 HP e agir normalmente nesse turno. O aliado cai assim que terminar seu proximo turno.
            </div>
           </div>
           <div class="skill quick">
@@ -3479,7 +3479,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Ordena 2 aliados se moverem até 2 blocos cada em direção ao mesmo alvo. O próximo ataque deles neste turno tem +1 dado.
+            Ordena 2 aliados se moverem até 2 blocos cada em direção ao mesmo alvo. O próximo ataque deles neste turno tem +1 dado do dano da arma.
            </div>
           </div>
           <div class="skill passive">
@@ -9845,7 +9845,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <div class="spell-card-body">
       <div class="spell-desc">
        Por 2 turnos, inimigos não te veem como ameaça. Você age livremente. Ao acabar, toda
-            dor acumulada é "percebida" de uma vez — pânico coletivo e -1 dado em todos por 1 turno.
+            dor acumulada é "percebida" de uma vez — pânico coletivo (Todos correm aterrorizados pra longe de você).
       </div>
      </div>
     </div>
@@ -10361,7 +10361,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
         ⭐ Execução Divina
        </span>
        <span class="spell-cost-badge">
-        10🔵
+        15🔵
        </span>
       </div>
       <div class="spell-tags">
@@ -10378,7 +10378,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      </div>
      <div class="spell-card-body">
       <div class="spell-desc">
-       Alvo com menos de 40% HP morre instantaneamente. Acima de 40%, recebe 5d10 sagrado. Em
+       Alvo com menos de 30% HP morre instantaneamente. Acima de 30%, recebe 5d10 sagrado. Em
             ambos os casos, aliados em 3 blocos curam HP igual à metade do dano total, dividido entre eles.
       </div>
      </div>
@@ -16446,6 +16446,19 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
         }
       });
     }
+
+    // --- Sistema de Som dos Cards de Classe ---
+    /*
+    const cardHoverSound = new Audio('stone.mp3');
+    // cardHoverSound.volume = 0.5; // Descomente e altere para ajustar o volume se achar muito alto
+
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        cardHoverSound.currentTime = 0; // Reinicia o áudio para tocar desde o início
+        cardHoverSound.play().catch(err => console.log("Erro ao tocar áudio:", err));
+      });
+    });
+    */
   </script>
  </body>
 </html>
