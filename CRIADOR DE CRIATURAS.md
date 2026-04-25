@@ -165,30 +165,46 @@ Uma mana pool alta é balanceada pela **falta de stamina** para gastá-la toda.
 
 O tier de dificuldade indica quão letal uma criatura é em combate. Como criaturas variam entre **tanques** (HP alto) e **canhões de vidro** (HP baixo, dano alto), o tier é calculado **somando** os fatores abaixo:
 
-| Fator | Pontos |
-|---|---|
-| **HP** | HP ÷ 15 |
-| **Poder de ataque** | Bônus de Ataq × 2 |
-| **Defesa** | CA - 10 |
-| **Poder de Dano** | Média de dano do golpe mais forte ÷ 2 |
-| **Skills de controle** (Derrubado, Preso, Cego, agarrado, Seduzido, etc) | +1 a +3 por skill (dependendo da gravidade e se for em área) |
-| **Passivas defensivas** (RD, imunidade, cura, regeneração, escudos) | +1 a +2 por passiva (dependendo do poder de mitigação) |
+| Fator | Pontos | Observação |
+|---|---|---|
+| **HP** | HP ÷ 20 | Divisor maior evita que HP baixo inflacione o score |
+| **Poder de ataque** | Bônus de Ataq × 1 | Peso reduzido — bônus de ataque não sozinho define ameaça |
+| **Defesa** | CA - 10 | Igual ao anterior |
+| **Poder de Dano** | Média de dano do golpe mais forte ÷ 3 | Divisor maior; dano alto já está capturado no bônus de ataque |
+| **Skills de controle** (Derrubado, Preso, Cego, Agarrado, Seduzido, etc) | +1 a +3 por skill (dependendo da gravidade e se for em área) | Leve = +1, Médio = +2, Pesado/Área = +3 |
+| **Passivas defensivas** (RD, imunidade, cura, regeneração, escudos) | +1 a +2 por passiva (dependendo do poder de mitigação) | Leve = +1, Forte = +2 |
 
 ### Tabela de Tiers
 
 | Score | Tier | Nível sugerido dos jogadores |
 |---|---|---|
-| **0–8** | 🟢 Fácil | Nível 1–5 |
-| **9–16** | 🔵 Médio | Nível 6–10 |
-| **17–25** | 🟠 Difícil | Nível 11–15 |
-| **26–40** | 🔴 Mortal | Nível 16–20 |
-| **41+** | ⚫ Lendário | Level 20+ (boss final) |
+| **0–7** | 🟢 Fácil | Nível 1–5 |
+| **8–13** | 🔵 Médio | Nível 6–10 |
+| **14–22** | 🟠 Difícil | Nível 11–15 |
+| **23–37** | 🔴 Mortal | Nível 16–20 |
+| **38+** | ⚫ Lendário | Nível 20+ (boss final) |
 
-### Por que Lich é Mortal com pouco HP?
+### Exemplos calibrados
 
-O Lich tem HP 80 (score ~5.3), mas seu Atq +7 dá 14 pontos de ameaça de ataque, CA 17 dá +7, dano médio de Raio de Desintegração (~22/2) = 11, skills defensivas/controle ~8 = score **~45.3** → **⚫ Lendário** (ou **🔴 Mortal** se balancearmos os debuffs de controle menores).
+**Lobo** — HP 28, Atq +3, CA 13, dano médio 5,5 (1d6+2), Bote de Matilha (controle leve):
+> 28÷20 = 1,4 | +3 | CA 13-10 = 3 | 5,5÷3 = 1,8 | controle +1 = **score ~10,2** → **🔵 Médio**
 
-Um Lobo com HP 18 (score ~1.2), Atq +3 = 6 pontos, CA 13 = +3, dano médio ~3/2 = 1.5 = score **~11.7** → **🔵 Médio**.
+**Kobold Escavador** — HP 18, Atq +4, CA 13, dano médio 4,5 (1d6+1), Armadilha (controle leve 1×combate = +0,5):
+> 18÷20 = 0,9 | +4 | CA 13-10 = 3 | 4,5÷3 = 1,5 | controle +0,5 = **score ~9,9** → **🔵 Médio**
+
+**Goblin / Rato Gigante** — HP 15, Atq +2, CA 12, dano médio 3,5 (1d4+1), sem controle:
+> 15÷20 = 0,75 | +2 | CA 12-10 = 2 | 3,5÷3 = 1,2 = **score ~6** → **🟢 Fácil**
+
+**Lich** — HP 80, Atq +7, CA 17, dano médio ~22 (Raio de Desintegração), controle +6, passivas +4:
+> 80÷20 = 4 | +7 | CA 17-10 = 7 | 22÷3 = 7,3 | +6 | +4 = **score ~35,3** → **🔴 Mortal** (ou ⚫ Lendário se debuffs de área)
+
+### Por que a fórmula foi revisada?
+
+Na versão anterior, o fator **Bônus de Ataq × 2** inflacionava o score de qualquer criatura com Atq +3 ou mais, empurrando bestinhas simples para Médio e impedindo que existissem criaturas 🟢 Fácil no bestiário. Os três ajustes corrigem isso:
+
+- **HP ÷ 20** em vez de ÷15: HP baixo (10–30) pesa menos no score final.
+- **Atq × 1** em vez de ×2: o bônus de ataque não sozinho define a ameaça da criatura.
+- **Dano ÷ 3** em vez de ÷2: dano médio deixa de dominar o score em criaturas de golpe único forte.
 
 ---
 
