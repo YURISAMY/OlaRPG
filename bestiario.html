@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yuri/Downloads/bestiario_3.html -->
+<!-- saved from url=(0048)file:///C:/Users/yuri/Downloads/bestiario_6.html -->
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -749,6 +749,10 @@
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;celestial&#39;,this)">✨ Celestiais</button>
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;construto&#39;,this)">🗿 Constructos</button>
     <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;monstruosidade&#39;,this)">🦕 Monstruosidades</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;demonio&#39;,this)">🔥 Demônios</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;fada&#39;,this)">🌿 Fadas</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;aberracao&#39;,this)">🧠 Aberrações</button>
+    <button class="criatura-filter-btn" onclick="filterCriaturas(&#39;inseto&#39;,this)">🪲 Insetos</button>
   </div>
 
   <div class="base-grid" id="criaturas-container">
@@ -2619,8 +2623,8 @@
         </div>
       <button class="add-battle-btn">Adicionar ➕</button></div>
 
-      <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
-        <div class="base-card-title" style="color:#403030; margin-bottom:4px;">Aranha Colossal</div>
+      <div class="base-card medium criatura-card" data-cat="inseto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#5A7A1A; margin-bottom:4px;">Aranha Colossal</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Aberração Grande — Emboscadora</p>
 
         <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Aracnídeo do tamanho de uma carroça. Teia gruda como ferro, veneno dissolve carne por dentro.</p>
@@ -3119,6 +3123,450 @@
         <button class="add-battle-btn">Adicionar ➕</button>
       </div>
 
+      <!-- ═══════════════════════════════════════════ DEMÔNIOS ═══ -->
+
+      <div class="base-card medium criatura-card" data-cat="demonio" style="overflow: visible;">
+        <div class="base-card-title" style="color:#8B1A1A; margin-bottom:4px;">Quasit</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Demônio Minúsculo</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Espião do Inferno. Sozinho é uma ameaça menor — mas onde há um Quasit, há um mestre das sombras observando.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 22</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 10</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 4🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +4</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟢 Fácil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: -2 | DES: +3 | CON: +1 | INT: +1 | CAR: +2 | SAB: +1</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Garra Envenenada - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d4+2 perfurante. CON 12 ou sofre 1d4 de veneno por turno por 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Invisibilidade - Rápida</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Fica invisível até atacar ou usar outra habilidade. Ataques contra ele têm Desvantagem enquanto invisível. TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Sussurro do Caos - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Alvo em 4 blocos: SAB 12 ou sofre Desvantagem no próximo teste de ataque ou resistência. Não funciona em criaturas com INT menor que -2.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Resistência Infernal - Passiva</span>
+          <div class="skdesc">Resistência a dano de fogo, relâmpago e frio. Imune a veneno.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="demonio" style="overflow: visible;">
+        <div class="base-card-title" style="color:#8B1A1A; margin-bottom:4px;">Diabo de Ferro</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Demônio Grande — Soldado Infernal</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Força bruta do Inferno. Não negocia, não recua, não sente dor. É uma ferramenta de guerra divina corrompida.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 80</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 8</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 6🟡 / 3🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 18 | Atq: +7</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟠 Difícil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +5 | DES: +0 | CON: +4 | INT: +1 | CAR: +2 | SAB: +2</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Lança Flamejante - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">2d6+5 perfurante+fogo. Alcance 2 blocos. Alvos inflamados sofrem 1d4 fogo no início do turno até apagar.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Golpe Esmagador - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">2d8+5 contundente. FOR 15 ou alvo fica Derrubado e perde a próxima ação rápida. TR: 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Aura de Terror - Passiva</span>
+          <div class="skdesc">Criaturas que iniciam o turno a 2 blocos fazem SAB 14 ou ficam Amedrontadas por 1 turno. Imunes após resistir uma vez no combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Armadura Infernal - Passiva</span>
+          <div class="skdesc">RD 4 a todo dano não-mágico. Imune a fogo e veneno. Vulnerável a dano radiante.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="demonio" style="overflow: visible;">
+        <div class="base-card-title" style="color:#8B1A1A; margin-bottom:4px;">Súcubo</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Demônio Médio — Manipulador</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Não mata com garras — mata com palavras. Quando o grupo percebe a ameaça, já estão lutando entre si.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 66</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 22</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 / 8🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 15 | Atq: +7</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🔴 Mortal</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +1 | DES: +3 | CON: +2 | INT: +3 | CAR: +6 | SAB: +4</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Toque Drenador - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">2d6+4 necrótico. O Súcubo cura metade do dano. Alvo perde 1d4 de ST máximo (recupera após descanso longo).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Encantamento Profundo - Padrão</span><span class="skcost">6🔵</span>
+          <div class="skdesc">CAR 16 ou alvo fica Controlado por 2 turnos, protegendo o Súcubo e atacando aliados se ordenado. 1x por combate por alvo.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Forma Sedutora - Rápida</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Assume aparência de alguém querido por um alvo. Esse alvo tem Desvantagem em ataques contra o Súcubo por 2 turnos. SAB 15 anula.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Teleporte das Sombras - Rápida</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Teleporta até 8 blocos para espaço não ocupado. Não provoca ataques de oportunidade. TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Resistência Infernal - Passiva</span>
+          <div class="skdesc">Resistência a dano físico não-mágico, fogo e relâmpago. Imune a veneno e encantamento.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ FADAS ═══ -->
+
+      <div class="base-card medium criatura-card" data-cat="fada" style="overflow: visible;">
+        <div class="base-card-title" style="color:#2E7D4F; margin-bottom:4px;">Pixie</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Fada Minúscula</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Nunca mata. Acha isso grosseiro. Mas não tem nenhum problema em fazer sua vida um pesadelo absoluto por diversão.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 14</span>
+          <span class="stat-pill st">🟡 ST: 4</span>
+          <span class="stat-pill fo">🔵 FO: 16</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 / 6🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 15 | Atq: +4</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟢 Fácil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: -3 | DES: +4 | CON: -1 | INT: +2 | CAR: +3 | SAB: +2</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Poeira de Sonho - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Alvo em 3 blocos: CON 13 ou cai Adormecido por 1 turno. Dano acorda o alvo. Não funciona em mortos-vivos e construtos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Travessura - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Escolha: (a) teleporta item não equipado de alvo em 3 blocos para até 6 blocos de distância; ou (b) faz alvo tropelar — DES 12 ou Derrubado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Invisibilidade Feérica - Passiva</span>
+          <div class="skdesc">Inicia o combate invisível. Fica visível ao atacar ou usar habilidade, mas retorna à invisibilidade no início do próximo turno se não sofreu dano.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Minúscula - Passiva</span>
+          <div class="skdesc">Pode se mover pelo espaço de outras criaturas livremente. Ataques de área causam metade do dano.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="fada" style="overflow: visible;">
+        <div class="base-card-title" style="color:#2E7D4F; margin-bottom:4px;">Dryade</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Fada Média — Espírito da Floresta</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Não ataca por maldade — ataca porque você entrou na floresta dela sem permissão. O que ela considera "dela" é subjetivo.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 52</span>
+          <span class="stat-pill st">🟡 ST: 9</span>
+          <span class="stat-pill fo">🔵 FO: 18</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 / 7🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +5</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟠 Difícil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +1 | DES: +3 | CON: +2 | INT: +2 | CAR: +4 | SAB: +3</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Vinhas Prensoras - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Raízes emergem em raio de 4 blocos centrado na Dryade. Todos no raio: FOR 13 ou ficam Presos (velocidade 0, CA -2) por 2 turnos. TR: 3 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Encantamento Natural - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">CAR 14 ou alvo fica Encantado: não pode atacar a Dryade e obedece comandos simples por 3 turnos. Dano cancela.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Fusão Arbórea - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Funde-se com uma árvore adjacente. Fica imune a dano físico até sair (ação padrão). Pode usar Vinhas Prensoras de dentro da árvore.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Uma com a Floresta - Passiva</span>
+          <div class="skdesc">Em ambiente natural, recupera 4 HP por turno. Ataques de fogo causam +50% de dano e cancelam essa recuperação por 2 turnos.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="fada" style="overflow: visible;">
+        <div class="base-card-title" style="color:#2E7D4F; margin-bottom:4px;">Rainha Feérica</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-stil:italic;">Fada Média — Chefe</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Toda ilusão que o grupo vê é real para eles. Toda aliança que fazem pertence a ela. O problema não é derrotá-la — é lembrar quem são.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 78</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 28</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 / 10🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 17 | Atq: +8</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🔴 Mortal</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +0 | DES: +4 | CON: +2 | INT: +4 | CAR: +7 | SAB: +5</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Ilusão Coletiva - Padrão</span><span class="skcost">7🔵</span>
+          <div class="skdesc">Todos os inimigos visíveis: INT 16 ou enxergam aliados como inimigos por 1 turno. Afetados devem atacar o aliado mais próximo. 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Maldição Feérica - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Alvo: SAB 15 ou fica Amaldiçoado: tem Desvantagem em todos os testes por 3 turnos e não pode se beneficiar de curas. TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Toque do Sono Eterno - Padrão</span><span class="skcost">8🔵</span>
+          <div class="skdesc">Toque corpo a corpo: CON 17 ou alvo adormece por 3 turnos (não pode ser acordado por dano menor que 10 de uma vez). 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Esquiva Feérica - Passiva</span>
+          <div class="skdesc">Uma vez por turno, quando alvo de um ataque, pode gastar 3🔵 como reação para se tornar incorpórea: ataque erra automaticamente.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Soberana do Reino - Passiva</span>
+          <div class="skdesc">Imune a encantamento, sono e medo. Ao entrar em combate, convoca 1d4 Pixies como aliadas (aparecem em espaços adjacentes).</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ ABERRAÇÕES ═══ -->
+
+      <div class="base-card medium criatura-card" data-cat="aberracao" style="overflow: visible;">
+        <div class="base-card-title" style="color:#1A3A5C; margin-bottom:4px;">Olho Flutuante</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Aberração Pequena — Espião</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Não pertence a este plano. O simples ato de olhar para ele provoca náusea — e ele nunca pisca.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 26</span>
+          <span class="stat-pill st">🟡 ST: 4</span>
+          <span class="stat-pill fo">🔵 FO: 18</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 2🟡 / 7🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 14 | Atq: +5</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟢 Fácil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: -2 | DES: +2 | CON: +0 | INT: +3 | CAR: +0 | SAB: +4</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Raio Psíquico - Padrão</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Feixe de 8 blocos: 2d6 psíquico. INT 13 ou alvo fica Atordoado por 1 turno (perde a ação rápida).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Olhar Nauseante - Rápida</span><span class="skcost">3🔵</span>
+          <div class="skdesc">Alvo que possa ver o Olho: CON 12 ou fica Enfraquecido por 2 turnos (Desvantagem em ataques físicos). TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Visão Total - Passiva</span>
+          <div class="skdesc">Não pode ser surpreendido. Vê criaturas invisíveis. Ataques furtivos contra ele não recebem bônus de dano.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Sem Corpo - Passiva</span>
+          <div class="skdesc">Imune a condições físicas: veneno, doença, Derrubado, Agarrado. Voa livremente e passa por espaços estreitos.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="aberracao" style="overflow: visible;">
+        <div class="base-card-title" style="color:#1A3A5C; margin-bottom:4px;">Aboleth Menor</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Aberração Grande — Aquática</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Memória de antes da criação. Escraviza não por poder — por tédio. Você é mais interessante como ferramenta do que como cadáver.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 85</span>
+          <span class="stat-pill st">🟡 ST: 11</span>
+          <span class="stat-pill fo">🔵 FO: 20</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 5🟡 / 8🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +7</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟠 Difícil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +4 | DES: -1 | CON: +3 | INT: +5 | CAR: +2 | SAB: +4</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Tentáculos - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Três ataques: 1d6+4 contundente cada, alcance 3 blocos. FOR 14 ou alvo fica Agarrado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Escravização Psíquica - Padrão</span><span class="skcost">7🔵</span>
+          <div class="skdesc">INT 16 ou alvo fica Escravizado: obedece comandos simples do Aboleth e defende-o ativamente. Dura até o fim do combate ou até sofrer 15+ de dano em um único golpe. 1 alvo por vez.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Muco Transformador - Passiva</span>
+          <div class="skdesc">Contato corporal com o Aboleth (toque ou Agarrado): CON 14 por turno ou alvo desenvolve branquias — precisa de água para respirar. Reversível com cura mágica.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Anfíbio Alienígena - Passiva</span>
+          <div class="skdesc">Respira água e ar. Em ambiente aquático, velocidade dobra e recupera +3🔵 por turno extra.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="aberracao" style="overflow: visible;">
+        <div class="base-card-title" style="color:#1A3A5C; margin-bottom:4px;">Devorador de Mentes</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Aberração Média — Caçador Psíquico</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Alimenta-se de pensamentos. Quanto mais inteligente a presa, mais nutritiva. Magos são a iguaria preferida.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 71</span>
+          <span class="stat-pill st">🟡 ST: 8</span>
+          <span class="stat-pill fo">🔵 FO: 26</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 3🟡 / 9🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 15 | Atq: +8</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🔴 Mortal</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +1 | DES: +2 | CON: +2 | INT: +6 | CAR: +3 | SAB: +5</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Explosão Mental - Padrão</span><span class="skcost">7🔵</span>
+          <div class="skdesc">Cone de 5 blocos: 4d8 psíquico. INT 16 reduz à metade. Alvos que falharem perdem 1d4🔵 máximo permanente até descanso longo. TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Extração Cerebral - Padrão</span><span class="skcost">6🔵</span>
+          <div class="skdesc">Toque: 3d6 psíquico e alvo perde memória de 1 habilidade aleatória por 2 turnos (não pode usá-la). INT 16 anula a perda de habilidade mas não o dano.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Barreira Psíquica - Rápida</span><span class="skcost">4🔵</span>
+          <div class="skdesc">Por 1 turno: imune a dano psíquico e qualquer efeito mental. Ataques físicos causam dano normalmente. TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Detecção de Pensamentos - Passiva</span>
+          <div class="skdesc">Não pode ser surpreendido por criaturas com INT acima de -2. Sabe a posição exata de todos os inimigos conscientes em 10 blocos mesmo atrás de paredes.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Voragem Mental - Passiva</span>
+          <div class="skdesc">Ao reduzir um inimigo a 0 HP com dano psíquico, recupera 2d6🔵 imediatamente.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <!-- ═══════════════════════════════════════════ INSETOS ═══ -->
+
+      <div class="base-card medium criatura-card" data-cat="inseto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#5A7A1A; margin-bottom:4px;">Enxame de Vespas</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-stil:italic;">Inseto Médio — Enxame</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Nenhuma vespa individualmente é perigosa. O enxame, sim. E armas não funcionam contra algo que não tem corpo.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 30</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 5🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 12 | Atq: +3</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟢 Fácil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: -2 | DES: +2 | CON: +0 | INT: -5 | CAR: -4 | SAB: +0</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Ferroadas - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Ocupa o espaço de um alvo: 2d4 perfurante. CON 12 ou sofre 1d4 de veneno por turno por 2 turnos. Acerta automaticamente alvos Derrubados ou Paralisados.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Nuvem Cegante - Rápida</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Enxame se expande: todos em 2 blocos ficam Cegos por 1 turno (vespas nos olhos). DES 13 anula. TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Corpo de Enxame - Passiva</span>
+          <div class="skdesc">Imune a condições: Agarrado, Derrubado, Paralisado. Resistência a dano cortante e perfurante. Vulnerável a dano de fogo e área (dano +50%).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Dispersar - Passiva</span>
+          <div class="skdesc">Abaixo de 50% HP: move até 4 blocos como reação a qualquer dano sofrido, sem provocar ataques de oportunidade.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="inseto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#5A7A1A; margin-bottom:4px;">Besouro Couraçado</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Inseto Grande</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">A carapaça resiste a espadas. O problema é quando ele vira — a barriga é mole e os aventureiros espertos sabem disso.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 75</span>
+          <span class="stat-pill st">🟡 ST: 13</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 6🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 17 | Atq: +6</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟠 Difícil</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +5 | DES: -1 | CON: +4 | INT: -4 | CAR: -3 | SAB: +0</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mandíbulas - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">2d8+5 perfurante. FOR 15 ou alvo fica Agarrado. Alvo Agarrado sofre 1d8+5 automaticamente no início de cada turno do Besouro.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Investida Blindada - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">Move até 4 blocos em linha reta e golpeia: 2d6+5 contundente. FOR 14 ou alvo fica Derrubado. TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Carapaça Natural - Passiva</span>
+          <div class="skdesc">RD 5 a dano físico não-mágico. Se Derrubado: CA reduz para 11 (barriga exposta) e perde a RD até se levantar (ação padrão).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Porte Maciço - Passiva</span>
+          <div class="skdesc">Não pode ser Derrubado por criaturas Médias ou menores. Terreno difícil não reduz sua velocidade.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="inseto" style="overflow: visible;">
+        <div class="base-card-title" style="color:#5A7A1A; margin-bottom:4px;">Rainha Ankheg</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Inseto Enorme — Chefe</p>
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">O solo sob seus pés é o corpo dela. Ela conhece cada túnel. Você está no território dela — e ela sabe exatamente onde você está.</p>
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 105</span>
+          <span class="stat-pill st">🟡 ST: 14</span>
+          <span class="stat-pill fo">🔵 FO: 10</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 6🟡 / 4🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +7</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🔴 Mortal</span>
+        </div>
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +5 | DES: +0 | CON: +5 | INT: -3 | CAR: -2 | SAB: +1</span>
+        </div>
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Cuspir Ácido - Padrão</span><span class="skcost">6🔵</span>
+          <div class="skdesc">Cone de 5 blocos: 3d8 ácido. DES 15 reduz à metade. Armaduras atingidas perdem 1 de CA permanente (máx -3). TR: 2 turnos.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Corrosiva - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">2d8+5 perfurante + 1d6 ácido. FOR 15 ou Agarrado. Alvo Agarrado sofre 1d6 ácido por turno enquanto preso.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Escavar - Rápida</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Mergulha no solo e reaparece em qualquer ponto a até 6 blocos. Criaturas no ponto de saída: DES 14 ou sofrem 2d6 contundente e ficam Derrubadas. TR: 1 turno.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Convocar Larvas - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">Faz emergir 1d4 larvas Ankheg (HP 18, CA 12, Atq+3, 1d6+2 perfurante) de buracos no solo adjacente. 1x por combate.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Sentido Sísmico - Passiva</span>
+          <div class="skdesc">Detecta qualquer criatura em contato com o solo em 10 blocos, mesmo invisível ou atrás de obstáculos.</div>
+        </div>
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
     </div>
   </div>
   <!-- end tab-bestiary -->
@@ -3182,7 +3630,7 @@
 
     /* ── BATTLE STATE ── */
     // Version key ensures old cached data is cleared when stats change
-    var BATTLE_VERSION = 'v5';
+    var BATTLE_VERSION = 'v6';
     let battleMonsters = [];
 
     function saveBattleState() {
