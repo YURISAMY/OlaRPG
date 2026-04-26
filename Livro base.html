@@ -1367,6 +1367,16 @@
       border-bottom-color: #e8b84b;
     }
 
+    .tab-btn.racas.active {
+      color: #5bb7a2;
+      border-bottom-color: #5bb7a2;
+    }
+
+    .tab-btn.panteao.active {
+      color: #9fa8ff;
+      border-bottom-color: #9fa8ff;
+    }
+
     /* BASE TAB STYLES */
     .base-grid {
       display: flex;
@@ -2345,6 +2355,12 @@
    <button class="tab-btn base active" onclick="showTab(&#39;base&#39;)">
     📜 BASE
    </button>
+    <button class="tab-btn racas" onclick="showTab(&#39;racas&#39;)">
+     🌍 RAÇAS
+    </button>
+    <button class="tab-btn panteao" onclick="showTab(&#39;panteao&#39;)">
+     ✦ PANTEÃO
+    </button>
    <button class="tab-btn marcial" onclick="showTab(&#39;marcial&#39;)">
     ⚔️ MARCIAL
    </button>
@@ -2803,10 +2819,10 @@
         Sobrecarga
        </span>
        <span class="skcost">
-        2🔵 + custo da magia — Padrão
+        4🔵 + custo da magia — Padrão
        </span>
        <div class="skdesc">
-        Aumenta o dano da magia em +2 dados, mas o conjurador recebe o status ABALADO. Se o resultado dos dados extras for o valor máximo, o Arcano recupera 1 de FO pela euforia mágica.
+        Duplica uma magia a sua escolha em alvo, permitindo repetir ela no mesmo turno, mas fica com status ABALADO após o conjuro. Se o resultado dos dados de dano for o valor máximo, o Arcano recupera 1 de FO pela euforia mágica.
        </div>
       </div>
      </div>
@@ -3184,6 +3200,278 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
        <br>
       </div>
      </div>
+    </div>
+   </div>
+  </div>
+  <!-- ═══════════════════════════════════════ RAÇAS ═══════════════════════════════════════ -->
+  <div class="section" id="tab-racas">
+   <div class="tree-header" style="margin-bottom:36px;">
+    <h2 style="font-family:'Cinzel',serif;font-size:28px;font-weight:700;letter-spacing:.15em;color:#5bb7a2;text-shadow:0 0 20px rgba(91,183,162,0.35);">
+     🌍 RAÇAS DO MUNDO
+    </h2>
+    <p style="font-size:14px;font-style:italic;opacity:.7;margin-top:4px;">
+     Cada raça carrega a marca do deus que a criou — ou que a amaldiçoou.
+    </p>
+   </div>
+
+   <div class="section-divider"></div>
+   <div class="tree-header" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;color:#e8b84b;letter-spacing:.1em;">☀️ Filhos de Auren — Sol</h2>
+   </div>
+   <div class="base-grid">
+    <div class="base-card medium" style="border-color:rgba(232,184,75,0.25);">
+     <div class="base-card-title" style="color:#e8b84b;">🌟 Humanos Solares</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Auren, o Eterno Radiante</p>
+     <p>A raça mais comum. Criados do fogo primordial de Auren, não são os mais fortes nem os mais sábios — mas são os mais adaptáveis.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Chama Interior</strong> Imune a veneno e doença. Uma vez por descanso longo, quando chegar a 0 HP, fica em 1 HP em vez de cair.</div>
+     <div class="mechanic-row"><strong>ESCALA — Bênção de Auren (nível 5)</strong> Curas recebidas curam +2 HP adicionais. No nível 10, esse bônus sobe para +1d4.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(232,184,75,0.25);">
+     <div class="base-card-title" style="color:#e8b84b;">✨ Iluminados</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Auren — linhagem abençoada</p>
+     <p>Humanos nascidos com traços angélicos — olhos que brilham no escuro, cabelo branco prateado. Raros e perseguidos por cultos de Verath como heresia ambulante.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Aura de Serenidade</strong> Criaturas não-hostis em 3 blocos ao redor não podem ser afetadas por medo enquanto você estiver consciente.</div>
+     <div class="mechanic-row"><strong>PADRÃO — Toque da Luz (2🔵)</strong> Cura 1d6 HP em si mesmo ou em aliado adjacente. Cooldown: 1 turno.</div>
+     <div class="mechanic-row"><strong>ESCALA (nível 8)</strong> Toque da Luz passa a curar 2d6 e alcança até 2 blocos.</div>
+    </div>
+   </div>
+
+   <div class="section-divider"></div>
+   <div class="tree-header" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;color:#c06de0;letter-spacing:.1em;">🌙 Filhos de Verath — Lua</h2>
+   </div>
+   <div class="base-grid">
+    <div class="base-card medium" style="border-color:rgba(192,109,224,0.25);">
+     <div class="base-card-title" style="color:#c06de0;">🐱 Kattes</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Verath, o Sem Rosto</p>
+     <p>Pequenos, felinos e incomensuravelmente azarentos para quem está ao redor. Vivem sobre Tibia, uma tartaruga colossal que carrega sua cidade nas costas.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Gato Negro</strong> Uma vez por turno, pode forçar um alvo em até 4 blocos a rerolar qualquer teste e ficar com o pior resultado.</div>
+     <div class="mechanic-row"><strong>RÁPIDA — Sorte do Katte (1🔵)</strong> Rerola qualquer teste seu e fica com o melhor resultado. Cooldown: 1 turno.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Pequeno e Rápido</strong> +1 bloco de movimento base. Inimigos de tamanho Grande ou maior têm -1 dado para te acertar.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(120,140,180,0.28);">
+     <div class="base-card-title" style="color:#9aa8d8;">⏳ Filhos de Ossian</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Ossian, o Contador — Saturno</p>
+     <p>Humanos de pele acinzentada que nascem com memórias fragmentadas de vidas passadas. Ossian os deixa retornar para terminar contas pendentes.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Memória de Outra Vida</strong> No nível 1, escolha uma skill de qualquer arquétipo diferente do seu. Você a conhece de uma vida anterior e a usa pagando o custo normalmente.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Difícil de Matar</strong> Quando cair a 0 HP, faz um teste. Se passar, fica em 1 HP. Uma vez por combate.</div>
+    </div>
+   </div>
+
+   <div class="section-divider"></div>
+   <div class="tree-header" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;color:#7bd48c;letter-spacing:.1em;">🌿 Elfos — Discípulos Divididos</h2>
+   </div>
+   <div class="base-grid">
+    <div class="base-card medium" style="border-color:rgba(123,212,140,0.25);">
+     <div class="base-card-title" style="color:#7bd48c;">🌫️ Elfos de Sylveth</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Sylveth, o Mensageiro Duplo — Mercúrio</p>
+     <p>Chamados de mi entre si, vivem nas fronteiras entre reinos como espiões, comerciantes e intermediários. Não têm pátria fixa e consideram isso vantagem.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Língua Dupla</strong> Sempre rola com vantagem em testes sociais em primeiros encontros. Percebe automaticamente mentiras óbvias.</div>
+     <div class="mechanic-row"><strong>RÁPIDA — Desaparecer (2🟡)</strong> Entra em furtividade mesmo sem cobertura por 1 turno. Cooldown: 2 turnos.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(90,130,255,0.26);">
+     <div class="base-card-title" style="color:#76a0ff;">⚡ Elfos de Val'hir</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Val'hir, o Trovejante</p>
+     <p>Guerreiros-sacerdotes com marcas de nascença que lembram raios. Para eles, toda batalha é uma oração. Recuar é heresia.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Oração de Batalha</strong> A cada inimigo que você derruba, recupera 1🟡 imediatamente.</div>
+     <div class="mechanic-row"><strong>PADRÃO — Raio de Val'hir (3🔵)</strong> Linha reta de 6 blocos, 1d8 elétrico. Nível 5: 2d8. Nível 10: 3d8 e atinge todos na linha. Cooldown: 1 turno.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Sem Recuo</strong> Imune a efeitos de empurrar ou derrubar involuntários.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(218,80,120,0.3);">
+     <div class="base-card-title" style="color:#e87098;">🌹 Elfos de Sangue</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deusa:</strong> Mirael, a Tecelã dos Laços — Vênus</p>
+     <p>De aparência perturbadoramente perfeita. Longevos e frios, com laços espirituais a Mirael que os tornam naturalmente magnéticos e perigosos.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Presença Irresistível</strong> Uma vez por combate, um inimigo que te ataque deve fazer um teste ou perder a ação padrão por 1 turno, paralisado pelo seu charme.</div>
+     <div class="mechanic-row"><strong>RÁPIDA — Laço de Mirael (2🔵)</strong> Vínculo com alvo em 5 blocos: dano que você recebe nos próximos 2 turnos é reduzido em 2 e transferido parcialmente ao alvo. Cooldown: 2 turnos.</div>
+    </div>
+   </div>
+
+   <div class="section-divider"></div>
+   <div class="tree-header" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;color:#d6b56c;letter-spacing:.1em;">⛏️ Anões — Filhos de Gorrath</h2>
+   </div>
+   <div class="base-grid">
+    <div class="base-card medium" style="border-color:rgba(214,181,108,0.3);">
+     <div class="base-card-title" style="color:#e2c57f;">💛 Anões de Coração de Ouro</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Gorrath, o Pai Imóvel — Terra</p>
+     <p>Construtores, comerciantes e guardiões de tumbas. Acreditam que Gorrath os criou para cuidar do que permanece: cidades, memórias e aliados caídos.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Resistência de Gorrath</strong> +4 HP base. +1 HP adicional por nível além do normal do arquétipo.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Não Abandona os Seus</strong> Quando aliado adjacente chegar a 0 HP, pode estabilizá-lo como reação gratuita sem custo de ação.</div>
+     <div class="mechanic-row"><strong>ESCALA (nível 6)</strong> +2 HP adicionais por nível em vez de +1.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(150,150,160,0.3);">
+     <div class="base-card-title" style="color:#b8bcc8;">🪨 Anões de Sangue de Pedra</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Gorrath — linhagem ancestral</p>
+     <p>A linhagem mais antiga. Mais fechados, mais lentos para confiar, mais duros para matar. Dizem descender do núcleo da terra.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Pele de Pedra</strong> Redução de dano de 1 contra todo dano físico. Nível 7: sobe para 2. Nível 13: sobe para 3.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Inabalável</strong> Imune a efeitos de medo. Dano de veneno reduzido à metade.</div>
+    </div>
+   </div>
+
+   <div class="section-divider"></div>
+   <div class="tree-header" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;color:#64b8d6;letter-spacing:.1em;">🌊 Galapians — Filhos de Thalvorn e Aethon</h2>
+   </div>
+   <div class="base-grid">
+    <div class="base-card medium" style="border-color:rgba(100,184,214,0.3);">
+     <div class="base-card-title" style="color:#7fd0ec;">🐊 Galapians Anfíbios</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Thalvorn, o Sem Fundo — Netuno</p>
+     <p>Criaturas de origem cósmica e biologia inexplicável. Vivem entre terra e água. Seus olhos não piscam nunca.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Anfíbio</strong> Respira embaixo d'água. Sem penalidades em combate aquático. Natação igual à caminhada.</div>
+     <div class="mechanic-row"><strong>PADRÃO — Chamado das Profundezas (3🔵)</strong> Cone de 4 blocos: 1d6 + Lento por 1 turno. Nível 8: 2d6. Cooldown: 1 turno.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Sentido Lateral</strong> Detecta movimento em 6 blocos sem visão. Não pode ser surpreendido em ambientes úmidos.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(130,170,110,0.28);">
+     <div class="base-card-title" style="color:#9dd07d;">🦎 Galapians Terrestres</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Origem:</strong> Renegados de Thalvorn</p>
+     <p>Galapians que abandonaram o culto do mar. Considerados traidores por seu povo, tornaram-se adaptáveis, pragmáticos e ligeiramente ressentidos.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Adaptação</strong> Uma vez por sessão, pode copiar uma passiva racial de outro personagem do grupo e usá-la até o próximo descanso longo.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Pele Grossa</strong> +2 de CA base. Não usa armadura — a pele já protege.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(120,120,180,0.28);">
+     <div class="base-card-title" style="color:#a0a0e8;">🌀 Fragmentos de Aethon</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Aethon, o Primeiro Vazio — Urano</p>
+     <p>Nenhum se parece com outro. Cada Fragmento é fisicamente único: alguns têm quatro braços, outros parecem borrados na visão periférica.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Forma Incoerente</strong> Ataques contra você têm 15% de chance de errar automaticamente.</div>
+     <div class="mechanic-row"><strong>PADRÃO — Ecoar Aethon (4🔵)</strong> Todos os inimigos em 3 blocos fazem testes com desvantagem por 1 turno. Cooldown: 3 turnos.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Além da Compreensão</strong> Imune a leitura de mente, adivinhação e magias que tentem prever suas ações.</div>
+    </div>
+   </div>
+
+   <div class="section-divider"></div>
+   <div class="tree-header" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;color:#e08458;letter-spacing:.1em;">🔥 Elementais — Sem Deus, Só Natureza</h2>
+   </div>
+   <div class="base-grid">
+    <div class="base-card wide" style="border-color:rgba(224,132,88,0.3);">
+     <div class="base-card-title" style="color:#f49b70;">🌪️ Elemental</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Origem:</strong> forças primordiais — sem deus</p>
+     <p>Seres nascidos diretamente de um elemento. Ao criar um Elemental, escolha uma variante permanente: 🔥 Fogo, 💧 Água, 🪨 Terra ou 🌬️ Ar.</p>
+     <div class="mechanic-row"><strong>🔥 FOGO — Calor Irradiante</strong> Início de cada turno: todos os inimigos adjacentes recebem 1d4 de fogo. Nível 8: 1d6. Nível 14: 1d8.</div>
+     <div class="mechanic-row"><strong>💧 ÁGUA — Forma Maleável</strong> +1 CA permanente. Nível 6: +2. Nível 12: +3. Sem dano de quedas de até 6 blocos.</div>
+     <div class="mechanic-row"><strong>🪨 TERRA — Corpo de Pedra</strong> Redução de dano de 2 físico. Nível 7: 3. Nível 13: 4. Em troca, -1 bloco de movimento.</div>
+     <div class="mechanic-row"><strong>🌬️ AR — Passo Leve</strong> +2 blocos de movimento. Passa por inimigos sem ataques de oportunidade. Nível 5: planagem curta de 4 blocos em queda.</div>
+    </div>
+   </div>
+
+   <div class="section-divider"></div>
+   <div class="tree-header" style="margin-bottom:20px;">
+    <h2 style="font-size:20px;color:#b892ff;letter-spacing:.1em;">⚡ Linhagens Raras</h2>
+   </div>
+   <div class="base-grid">
+    <div class="base-card medium" style="border-color:rgba(140,170,255,0.32);">
+     <div class="base-card-title" style="color:#9cb8ff;">🌩️ Humanos da Tempestade</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Val'hir, o Trovejante</p>
+     <p>Linhagem humana rara com marcas de nascença que lembram raios. Surgem mais em regiões de guerra constante, como se Val'hir os plantasse no conflito.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Marca do Trovão</strong> Imune a dano elétrico. Quando atingido por dano elétrico, recupera 1🟡 em vez de sofrer dano.</div>
+     <div class="mechanic-row"><strong>PADRÃO — Descarga (2🟡)</strong> Dano da arma +1d6 elétrico + Atordoado por 1 turno. Nível 6: +2d6. Cooldown: 2 turnos.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(165,150,185,0.35);">
+     <div class="base-card-title" style="color:#c8b8d8;">💀 Mortos-Vivos Conscientes</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Ossian, o Contador — Saturno</p>
+     <p>Não são criaturas de horror: são almas que Ossian permitiu retornar por dívida ou propósito incompleto. Lembram quem foram e carregam esse peso.</p>
+     <div class="mechanic-row"><strong>PASSIVA — Além da Morte</strong> Imune a veneno, doença e medo. Não precisa comer, dormir ou respirar. Curas mágicas curam metade do valor normal.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Propósito Incompleto</strong> Escolha um objetivo narrativo no nível 1. Enquanto o perseguir ativamente: +1 em todos os testes. Se abandonar, perde a passiva permanentemente.</div>
+     <div class="mechanic-row"><strong>ESCALA (nível 10) — Concessão de Ossian</strong> Uma vez por sessão, volta com 1 HP se cair a 0. Ossian ainda tem planos para você.</div>
+    </div>
+   </div>
+  </div>
+  <!-- ═══════════════════════════════════════ PANTEAO ═══════════════════════════════════════ -->
+  <div class="section" id="tab-panteao">
+   <div class="tree-header" style="margin-bottom:36px;">
+    <h2 style="font-family:'Cinzel',serif;font-size:28px;font-weight:700;letter-spacing:.15em;color:#9fa8ff;text-shadow:0 0 20px rgba(159,168,255,0.35);">
+     ✦ O PANTEÃO DOS DEZ CÉUS
+    </h2>
+    <p style="font-size:14px;font-style:italic;opacity:.7;margin-top:4px;">
+     Os deuses não governam o mundo. Eles apenas existiam antes dele.
+    </p>
+   </div>
+
+   <div class="base-grid">
+    <div class="base-card medium" style="border-color:rgba(232,184,75,0.32);">
+     <div class="base-card-title" style="color:#e8b84b;">☀️ 🌟 Auren — O Eterno Radiante</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Luz, Cura, Pureza, Vida</p>
+     <p>O mais adorado do panteão. Auren não é gentil, é inevitável como o amanhecer. Criou os humanos do próprio fogo e considera toda chama acesa um fragmento de si.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> clérigos, paladinos, curandeiros e agricultores que dependem da luz.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Humanos Solares · Iluminados.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(110,210,190,0.3);">
+     <div class="base-card-title" style="color:#73d2bd;">☿️ 🌫️ Sylveth — O Mensageiro Duplo</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Comércio, Segredos, Fronteiras, Viagens</p>
+     <p>Sem templo fixo: seus altares vivem em encruzilhadas, portos e mercados noturnos. Sylveth não julga intenção, apenas registra acordos e cobra na hora mais inconveniente.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> mercadores, espiões, viajantes, ladrões e diplomatas.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Elfos de Sylveth.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(230,110,150,0.3);">
+     <div class="base-card-title" style="color:#ea7fa6;">♀️ 🌹 Mirael — A Tecelã dos Laços</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Amor, Beleza, Manipulação, Vínculos</p>
+     <p>Para Mirael, amor e manipulação são ferramentas da mesma arte. Tudo existe para ser desejado por outra coisa, e essa tensão mantém o mundo coeso.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> bardos, sedutores, artistas e cortes reais.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Elfos de Sangue.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(180,160,120,0.35);">
+     <div class="base-card-title" style="color:#d6c39a;">🌍 ⛰️ Gorrath — O Pai Imóvel</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Terra, Resistência, Mortos, Permanência</p>
+     <p>Gorrath não fala, observa. Existia antes da adoração e seguirá depois dela. Mineiros e agricultores lhe pedem permissão antes de tocar o chão.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> anões, mineiros, agricultores e coveiros.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Anões de Coração de Ouro · Anões de Sangue de Pedra.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(150,120,190,0.34);">
+     <div class="base-card-title" style="color:#b8a0e8;">🌙 👁️ Verath — O Sem Rosto</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Trevas, Segredos, Maldições, Inevitabilidade</p>
+     <p>Verath não é puro mal, é inevitável. Representa o que existe quando a luz se apaga. Seus cultos respeitam a escuridão como estado primordial.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> cultistas, nekromantes, criaturas noturnas, licantrópicos e O Estranho.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Kattes · criaturas malditas · licantrópicos.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(110,150,255,0.36);">
+     <div class="base-card-title" style="color:#8fa9ff;">♂️/♃ ⚡ Val'hir — O Trovejante</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Guerra, Tempestade, Força, Honra Marcial</p>
+     <p>Val'hir não distingue justo de injusto: só forte de fraco. Para ele, toda batalha é oração e toda morte em combate é oferenda.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> guerreiros, mercenários, generais e combatentes devotos.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Elfos de Val'hir · Humanos da Tempestade.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(140,140,170,0.35);">
+     <div class="base-card-title" style="color:#c1c1df;">♄ ⏳ Ossian — O Contador</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Tempo, Morte, Memória, Inevitabilidade</p>
+     <p>Não condena nem absolve, apenas registra. Em raros casos permite retorno, não por misericórdia, mas por registro incompleto.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> clérigos funerários, escribas, anciãos e quem teme ser esquecido.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Filhos de Ossian · Mortos-Vivos Conscientes.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(120,130,185,0.35);">
+     <div class="base-card-title" style="color:#a8b0ea;">⛢ 🌀 Aethon — O Primeiro Vazio</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Cosmos, Loucura, Incompreensível, Origem</p>
+     <p>O mais antigo e menos adorado. Olhar para ele por tempo demais quebra algo na mente. É tratado por muitas teologias como o acidente primordial.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> ninguém de sã consciência; estudado por magos obsessivos, O Possuído e filósofos insones.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Fragmentos de Aethon · Galapians Anfíbios.</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(90,180,215,0.35);">
+     <div class="base-card-title" style="color:#76cfe9;">♆ 🌊 Thalvorn — O Sem Fundo</div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Domínios:</strong> Mares, Profundezas, Tempestades, Segredos Submersos</p>
+     <p>Se Val'hir é a tempestade no céu, Thalvorn é a que afoga em silêncio. Marinheiros fazem oferendas por medo de que o mar se lembre deles.</p>
+     <div class="mechanic-row"><strong>Adorado por</strong> marinheiros, pescadores, Galapians Anfíbios e viajantes do mar.</div>
+     <div class="mechanic-row"><strong>Raças associadas</strong> Galapians Anfíbios · (renegados: Galapians Terrestres).</div>
+    </div>
+
+    <div class="base-card medium" style="border-color:rgba(150,150,150,0.28);">
+     <div class="base-card-title" style="color:#bdbdbd;">❓ ??????</div>
+     <p>ele não existe</p>
     </div>
    </div>
   </div>
