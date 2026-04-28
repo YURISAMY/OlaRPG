@@ -769,6 +769,50 @@
       line-height: 1.55;
     }
 
+    .subskill-line {
+      display: block;
+      margin-top: 6px;
+    }
+
+    .subskill-badge {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 8.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      padding: 1px 6px;
+      margin-right: 6px;
+      vertical-align: baseline;
+    }
+
+    .subskill-badge.passive {
+      color: #bfbfbf;
+      background: rgba(136, 136, 136, 0.14);
+      border: 1px solid rgba(136, 136, 136, 0.25);
+    }
+
+    .subskill-badge.quick {
+      color: #76d7be;
+      background: rgba(76, 175, 144, 0.14);
+      border: 1px solid rgba(76, 175, 144, 0.25);
+    }
+
+    .subskill-badge.standard {
+      color: #f0c56d;
+      background: rgba(201, 146, 26, 0.14);
+      border: 1px solid rgba(201, 146, 26, 0.25);
+    }
+
+    .subskill-req {
+      color: #c06de0;
+      opacity: 0.95;
+      margin-left: 4px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.04em;
+    }
+
     .skill-divider {
       height: 1px;
       background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), transparent);
@@ -3644,7 +3688,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
           </div>
           <div class="skill-divider">
           </div>
-          <div class="skill standard">
+          <div class="skill passive">
            <div class="skill-header">
             <span class="skill-name">
              Punição Divina
@@ -3659,9 +3703,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
            <div class="skill-desc">
             Dano da arma + 2d6 sagrado. Contra criaturas das trevas: dobro do bônus.
            </div>
-           <span class="skill-req">
-            🔒 Req: Nível 6
-           </span>
           </div>
           <div class="skill-divider">
           </div>
@@ -3711,7 +3752,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             Cria escudo em si mesmo ou aliado adjacente que absorve até 1d8+2 de dano antes de dissipar. Dura até ser atingido.
            </div>
           </div>
-          <div class="skill standard">
+          <div class="skill passive">
            <div class="skill-header">
             <span class="skill-name">
              Golpe da Expiação
@@ -3825,9 +3866,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             Todos os aliados se movem até 3 blocos gratuitamente, sem provocar reações
                       de inimigos.
            </div>
-           <span class="skill-req">
-            🔒 Req: Nível 6
-           </span>
           </div>
           <div class="skill passive">
            <div class="skill-header">
@@ -4421,7 +4459,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
           </p>
          </div>
          <div class="card-skills">
-          <div class="skill standard">
+          <div class="skill passive">
            <div class="skill-header">
             <span class="skill-name">
              Desafio de Honra
@@ -7328,10 +7366,124 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
           </p>
          </div>
          <div class="card-skills">
+           <div class="skill passive">
+           <div class="skill-header">
+            <span class="skill-name">
+             Urso - Bruteza e Sustentacao
+            </span>
+              <span class="skill-type passive">
+               Passiva
+            </span>
+           </div>
+            <div class="skill-desc">
+              <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Brutamontes:</strong> na Forma do Urso, ataques causam 2d6 + FOR (Nível 10: 3d6 + FOR).</span>
+              <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Pele Grossa:</strong> reduz dano físico em 3 (Nível 10: 5). <span class="subskill-req">🔒 Req: Nível 8</span></span>
+              <span class="subskill-line"><span class="subskill-badge quick">Rápida 2🔵</span><strong>Abraço do Urso:</strong> após acertar, tenta agarrar; alvo agarrado sofre 3d6 no início do turno e não move/não ataca até se soltar. <span class="subskill-req">🔒 Req: Nível 9</span></span>
+              <span class="subskill-line"><span class="subskill-badge standard">Padrão 3🔵</span><strong>Devorar:</strong> causa 3d8 e cura 1/3 do dano causado. <span class="subskill-req">🔒 Req: Nível 12</span></span>
+            </div>
+          </div>
+          <div class="skill-divider">
+          </div>
           <div class="skill standard">
            <div class="skill-header">
             <span class="skill-name">
-             Espírito Guardião
+             Rugido Primordial
+            </span>
+            <span class="skill-type standard">
+             Magia
+            </span>
+            <span class="skill-cost">
+             6🔵
+            </span>
+           </div>
+           <div class="skill-desc">
+            Forma do Urso: inimigos em 3 blocos sofrem 2d10 sônico e ficam Amedrontados por 2 turnos. Aliados na área ganham +1d6 no próximo ataque. Nível 10: área 5 e dano 3d10.
+           </div>
+           <span class="skill-req">
+            🔒 Req: Nível 9
+           </span>
+          </div>
+          <div class="skill-divider">
+          </div>
+          <div class="skill passive">
+           <div class="skill-header">
+            <span class="skill-name">
+               Pantera - Evasao e Contra-ataque
+            </span>
+            <span class="skill-type passive">
+             Passiva
+            </span>
+           </div>
+           <div class="skill-desc">
+            <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Reflexos Felinos:</strong> na Forma da Pantera, se um inimigo errar um ataque contra voce, mova 1 bloco como reacao (Nível 8: 2 blocos e vantagem no proximo ataque).</span>
+            <span class="subskill-line"><span class="subskill-badge quick">Rápida 2🔵</span><strong>Contra-bote:</strong> após esquivar ou ser errada por um ataque, desfere contra-ataque com +1d8. <span class="subskill-req">🔒 Req: Nível 8</span></span>
+            <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Sombra Viva:</strong> enquanto oculta na Forma da Pantera, voce tem resistencia a danos fisicos; ataques furtivos causam +2d6 (Nível 10: +3d6). <span class="subskill-req">🔒 Req: Nível 9</span></span>
+            <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Rastro de Sangue:</strong> inimigos que te causarem dano na Forma da Pantera ficam Marcados; seus ataques contra Marcados causam +1d6 e ignoram reducao de dano. <span class="subskill-req">🔒 Req: Nível 11</span></span>
+           </div>
+          </div>
+
+          <div class="skill standard">
+           <div class="skill-header">
+            <span class="skill-name">
+             Véu da Predadora
+            </span>
+            <span class="skill-type standard">
+             Magia
+            </span>
+            <span class="skill-cost">
+             5🔵
+            </span>
+           </div>
+           <div class="skill-desc">
+            Forma da Pantera: fica invisível por 2 turnos. O próximo ataque causa +3d6 e aplica Sangramento (1d6 por 3 turnos). +1🔵: +1 turno de invisibilidade.
+           </div>
+           <span class="skill-req">
+            🔒 Req: Nível 9
+           </span>
+          </div>
+          <div class="skill passive">
+           <div class="skill-header">
+            <span class="skill-name">
+               Blaskiton - Dominio Aereo
+            </span>
+            <span class="skill-type passive">
+             Passiva
+            </span>
+           </div>
+           <div class="skill-desc">
+            <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Mergulho Rasante:</strong> movendo 2+ blocos em voo antes de atacar, ganha +1d8 e pode Derrubar (Forca CD 12). Nível 8: +2d8 e CD 15.</span>
+            <span class="subskill-line"><span class="subskill-badge quick">Rápida 2🔵</span><strong>Rajada de Penas:</strong> empurra inimigos em cone de 2 blocos em 2 blocos e aplica -1 dado em ataques ate o fim do turno deles. <span class="subskill-req">🔒 Req: Nível 8</span></span>
+            <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Olhos do Ceu:</strong> em voo a 2+ blocos de altura, enxerga toda a area sem bloqueios; aliados em 6 blocos de visao direta ganham +1 dado em ataques de oportunidade (Nível 10: aura 10 blocos). <span class="subskill-req">🔒 Req: Nível 9</span></span>
+            <span class="subskill-line"><span class="subskill-badge standard">Padrão 3🔵</span><strong>Vento Cortante:</strong> mergulha em linha reta por ate 3 blocos, causando 2d6 de dano cortante em cada inimigo na trajetoria. <span class="subskill-req">🔒 Req: Nível 11</span></span>
+           </div>
+          </div>
+
+
+          <div class="skill standard">
+           <div class="skill-header">
+            <span class="skill-name">
+             Redemoinho do Blaskiton
+            </span>
+            <span class="skill-type standard">
+             Magia
+            </span>
+            <span class="skill-cost">
+             4🔵+
+            </span>
+           </div>
+           <div class="skill-desc">
+            Forma do Blaskiton: cria redemoinho (2x2) por 2 turnos. Inimigos caem e sofrem 1d8 por turno. Entrar/sair custa movimento dobrado. +2🔵: +1 raio e +1 turno.
+           </div>
+           <span class="skill-req">
+            🔒 Req: Nível 9
+           </span>
+          </div>
+
+
+          <div class="skill standard">
+           <div class="skill-header">
+            <span class="skill-name">
+             Transformar-se
             </span>
             <span class="skill-type standard">
              Padrão
@@ -7341,120 +7493,16 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Invoca espírito por 3 turnos: 🐺 Lobo (1d6 + Lento), 🦅 Águia (+1 dado ao
-                      próximo aliado atacar) ou 🐻 Urso (absorve próximo ataque de até 8 dano).
+            Transformação: escolha Urso, Pantera ou Blaskiton por Nível/2 turnos (mín. 2). Urso: ganha HP temporário igual ao Nível + CON. Pantera: deslocamento extra igual ao mod de DES e pode se esconder como ação rápida. Blaskiton: Passa a voar, vantagem para notar furtivos em campo de batalha.
            </div>
           </div>
-          <div class="skill-divider">
-          </div>
-          <div class="skill passive">
-           <div class="skill-header">
-            <span class="skill-name">
-             Comunhão Animal
-            </span>
-            <span class="skill-type passive">
-             Passiva
-            </span>
-           </div>
-           <div class="skill-desc">
-            Criaturas e bestas têm 50% de chance de ignorar você como alvo — elas sentem
-                      que você não é uma ameaça.
-           </div>
-           <span class="skill-req">
-            🔒 Req: Nível 6
-           </span>
-          </div>
-          <div class="skill-divider">
-          </div>
-          <div class="skill quick">
-           <div class="skill-header">
-            <span class="skill-name">
-             Cura Instintiva
-            </span>
-            <span class="skill-type quick">
-             Rápida
-            </span>
-            <span class="skill-cost">
-             2🔵
-            </span>
-           </div>
-           <div class="skill-desc">
-            Reação a aliado cair abaixo de 30% HP. Ele recupera 1d8 HP imediatamente,
-                      sem precisar ser alvo de ação padrão.
-           </div>
-          </div>
-          <div class="skill passive">
-           <div class="skill-header">
-            <span class="skill-name">
-             Espírito Duplo
-            </span>
-            <span class="skill-type passive">
-             Passiva
-            </span>
-           </div>
-           <div class="skill-desc">
-            Pode ter 2 Espíritos Guardiões ativos simultaneamente. O segundo custa +2🔵 adicional para invocar.
-           </div>
-           <span class="skill-req">
-            🔒 Req: Nível 9
-           </span>
-          </div>
-          <div class="skill quick">
-           <div class="skill-header">
-            <span class="skill-name">
-             Rugido do Espírito
-            </span>
-            <span class="skill-type quick">
-             Rápida
-            </span>
-            <span class="skill-cost">
-             3🔵
-            </span>
-           </div>
-           <div class="skill-desc">
-            O Espírito Guardião ativo libera um grito: todos os inimigos em 3 blocos ficam Amedrontados (-1 dado) por 1 turno.
-           </div>
-          </div>
-          <div class="skill passive">
-           <div class="skill-header">
-            <span class="skill-name">
-             Laço Ancestral
-            </span>
-            <span class="skill-type passive">
-             Passiva
-            </span>
-           </div>
-           <div class="skill-desc">
-            Ao invocar Espírito Guardião, o tipo escolhido dura +1 turno e seus efeitos são aumentados em 1 dado.
-           </div>
-           <span class="skill-req">
-            🔒 Req: Nível 7
-           </span>
-          </div>
-          <div class="skill standard">
-           <div class="skill-header">
-            <span class="skill-name">
-             Avatar Bestial
-            </span>
-            <span class="skill-type standard">
-             Padrão
-            </span>
-            <span class="skill-cost">
-             7🔵
-            </span>
-           </div>
-           <div class="skill-desc">
-            Funde todos os espíritos disponíveis em si mesmo por 2 turnos: +2 dados de dano, +4 blocos de movimento, não pode ser imobilizado.
-           </div>
-           <span class="skill-req">
-            🔒 Req: Nível 12
-           </span>
-          </div>
+
          </div>
         </div>
        </div>
       </div>
      </div>
+
      <!-- BARDO -->
      <div class="tree-row">
       <div class="card semblante tier-sub">
@@ -10759,6 +10807,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+
     <div class="spell-card magica exclusiva" data-scope="exclusiva" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10786,6 +10836,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+
     <div class="spell-card magica exclusiva" data-scope="exclusiva" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10895,6 +10947,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
     <div class="spell-card magica exclusiva signature" data-scope="exclusiva" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10927,6 +10980,40 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+    <div class="spell-card magica exclusiva signature" data-scope="exclusiva" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">
+        ⭐ Sinfonia do Caos
+       </span>
+       <span class="spell-cost-badge">
+        10🔵
+       </span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag exclusiva-tag">
+        🎶 Menestrel de Batalha
+       </span>
+       <span class="spell-tag signature-tag">
+        ASSINATURA
+       </span>
+       <span class="spell-tag limitada">
+        1x por combate
+       </span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Por 1 turno completo: todos os aliados causam +2 dados, recuperam 2🟡 ou 2🔵 a cada
+            acerto e são imunes a status negativos. Pico absoluto de performance.
+      </div>
+      <div class="spell-warn">
+       Todos ficam com -1 dado de dano por 1 turno após pelo esgotamento.
+      </div>
+     </div>
+    </div>
+
     <div class="spell-card magica exclusiva signature" data-scope="exclusiva" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10956,6 +11043,36 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+    <div class="spell-card magica exclusiva" data-scope="exclusiva" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">
+        Narrar o Golpe
+       </span>
+       <span class="spell-cost-badge">
+        3🔵
+       </span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag exclusiva-tag">
+        🐾 Xamã das Bestas
+       </span>
+       <span class="spell-tag tipo-magica">
+        Exclusiva
+       </span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Descreve em voz alta como o próximo ataque de um aliado vai acontecer. O ataque causa
+            +2 dados de dano e não pode errar. Se o aliado agir de forma diferente da narração, o bônus é perdido mas o
+            FO não é devolvido.
+      </div>
+     </div>
+    </div>
+
+
     <div class="spell-card magica exclusiva signature" data-scope="exclusiva" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -10988,7 +11105,9 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
    </div>
+
    <!-- ── TÉCNICAS GERAIS ── -->
    <div class="spell-section-header tecnica">
     <h3>
