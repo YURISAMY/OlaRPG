@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Forja — Sistema de Armas</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9921a; --gold-light: #e8b84b; --gold-dim: #7a5510;
+  --parchment: #f5ead6;
+  --comum:    #5a5a5a; --comum-light:    #a0a0a0; --comum-bg:    #111111;
+  --incomum:  #1a4a1a; --incomum-light:  #4aaa4a; --incomum-bg:  #091209;
+  --raro:     #1a2860; --raro-light:     #5a8ad4; --raro-bg:     #08101a;
+  --epico:    #4a1a6a; --epico-light:    #b060e0; --epico-bg:    #110818;
+  --lendario: #6a3a00; --lendario-light: #e8a020; --lendario-bg: #120a00;
+  --forja:    #6a2a00; --forja-light:    #d06020; --forja-bg:    #120800;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body {
+  background:#0a0a0a;
+  background-image:
+    radial-gradient(ellipse at 20% 15%, rgba(106,42,0,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 85%, rgba(106,42,0,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(40,20,0,0.08) 0%, transparent 60%);
+  min-height:100vh;
+  font-family:'Crimson Pro',serif;
+  color:#f5ead6;
+  padding:40px 20px 100px;
+}
+
+/* ── HEADER ── */
+.header { text-align:center; margin-bottom:56px; }
+.header::before {
+  content:''; display:block; width:60%; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:0 auto 24px;
+}
+.header h1 {
+  font-family:'Cinzel',serif; font-size:clamp(32px,6vw,58px);
+  font-weight:900; letter-spacing:0.18em;
+  color:var(--forja-light);
+  text-shadow:0 0 40px rgba(208,96,32,0.5), 0 2px 4px rgba(0,0,0,0.9);
+}
+.header p { font-size:14px; color:rgba(245,234,214,0.4); font-style:italic; margin-top:8px; }
+.header::after {
+  content:'⚒ ✦ ⚒'; display:block; margin-top:16px;
+  color:var(--gold-dim); font-size:14px; letter-spacing:0.3em;
+}
+
+/* ── TABS ── */
+.tabs {
+  display:flex; gap:0; margin-bottom:48px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  justify-content:center; flex-wrap:wrap;
+}
+.tab-btn {
+  background:none; border:none; border-bottom:2px solid transparent;
+  color:rgba(245,234,214,0.35); font-family:'Share Tech Mono',monospace;
+  font-size:11px; letter-spacing:0.12em; padding:10px 22px;
+  cursor:pointer; text-transform:uppercase; transition:all 0.2s;
+  margin-bottom:-1px;
+}
+.tab-btn:hover { color:rgba(245,234,214,0.7); }
+.tab-btn.active { color:var(--forja-light); border-bottom-color:var(--forja-light); }
+
+/* ── SECTIONS ── */
+.section { display:none; }
+.section.active { display:block; }
+
+/* ── RARIDADE BADGES ── */
+.r-badge {
+  font-family:'Share Tech Mono',monospace; font-size:9px;
+  letter-spacing:0.14em; padding:3px 10px; border-radius:2px;
+  text-transform:uppercase; border:1px solid; display:inline-block;
+}
+.r-comum    { color:var(--comum-light);    border-color:rgba(160,160,160,0.3); background:rgba(90,90,90,0.1); }
+.r-incomum  { color:var(--incomum-light);  border-color:rgba(74,170,74,0.3);   background:rgba(26,74,26,0.1); }
+.r-raro     { color:var(--raro-light);     border-color:rgba(90,138,212,0.3);  background:rgba(26,40,96,0.1); }
+.r-epico    { color:var(--epico-light);    border-color:rgba(176,96,224,0.3);  background:rgba(74,26,106,0.1); }
+.r-lendario { color:var(--lendario-light); border-color:rgba(232,160,32,0.35); background:rgba(106,58,0,0.1); }
+
+/* ── SECTION TITLE ── */
+.section-title {
+  font-family:'Cinzel',serif; font-size:22px; font-weight:700;
+  letter-spacing:0.1em; color:var(--forja-light);
+  text-shadow:0 0 20px rgba(208,96,32,0.3);
+  margin-bottom:8px;
+}
+.section-sub {
+  font-size:13px; color:rgba(245,234,214,0.4); font-style:italic;
+  margin-bottom:32px;
+}
+.divider {
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(208,96,32,0.25),transparent);
+  margin:32px 0;
+}
+
+/* ══════════════════════════════
+   ROLETA DE ARMAS
+══════════════════════════════ */
+.roller-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px; margin-bottom:32px;
+}
+.roller-card {
+  background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.07);
+  border-radius:4px; overflow:hidden;
+}
+.roller-card-head {
+  padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex; align-items:center; gap:10px;
+}
+.roller-card-icon { font-size:22px; }
+.roller-card-title {
+  font-family:'Cinzel',serif; font-size:13px; font-weight:700;
+  letter-spacing:0.06em; flex:1;
+}
+.roller-card-body { padding:14px 16px; }
+.roller-card-body p {
+  font-size:12px; color:rgba(245,234,214,0.5);
+  line-height:1.5; margin-bottom:10px;
+}
+
+/* Select de raridade */
+.rarity-select-row {
+  display:flex; gap:8px; align-items:center; margin-bottom:14px; flex-wrap:wrap;
+}
+.rarity-select-row label {
+  font-family:'Share Tech Mono',monospace; font-size:9.5px;
+  color:rgba(245,234,214,0.4); letter-spacing:0.1em;
+}
+.rarity-select {
+  background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.12);
+  border-radius:3px; color:var(--parchment); font-family:'Share Tech Mono',monospace;
+  font-size:10px; padding:5px 10px; cursor:pointer; flex:1;
+}
+.rarity-select:focus { outline:none; border-color:var(--forja-light); }
+
+/* Roll button */
+.roll-btn {
+  width:100%; padding:9px 0;
+  background:rgba(106,42,0,0.25);
+  border:1px solid rgba(208,96,32,0.3);
+  border-radius:3px; color:var(--forja-light);
+  font-family:'Cinzel',serif; font-size:11px; letter-spacing:0.12em;
+  cursor:pointer; transition:all 0.2s;
+}
+.roll-btn:hover {
+  background:rgba(106,42,0,0.45); border-color:rgba(208,96,32,0.6);
+  box-shadow:0 0 14px rgba(208,96,32,0.2);
+}
+.roll-btn:active { transform:scale(0.98); }
+
+/* Resultado */
+.weapon-result {
+  margin-top:14px; display:none;
+  animation:fadeIn 0.3s ease;
+}
+.weapon-result.show { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+.weapon-result-card {
+  border-radius:4px; overflow:hidden;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.weapon-result-head {
+  padding:12px 14px;
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+}
+.weapon-result-name {
+  font-family:'Cinzel',serif; font-size:16px; font-weight:900;
+  letter-spacing:0.08em; flex:1;
+}
+.weapon-result-stats {
+  display:flex; flex-wrap:wrap; gap:6px;
+  padding:10px 14px; background:rgba(0,0,0,0.3);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.wstat {
+  font-family:'Share Tech Mono',monospace; font-size:10px;
+  color:rgba(245,234,214,0.5); padding:4px 8px;
+  background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.07);
+  border-radius:2px;
+}
+.wstat span { font-weight:bold; }
+.weapon-result-effects { padding:10px 14px; }
+.weffect {
+  padding:7px 10px 7px 22px; margin-bottom:6px;
+  background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.06);
+  border-radius:3px; position:relative; font-size:12px;
+  color:rgba(245,234,214,0.65); line-height:1.5;
+}
+.weffect::before {
+  content:''; position:absolute; left:8px; top:12px;
+  width:5px; height:5px; border-radius:50%;
+  background:var(--forja-light); box-shadow:0 0 5px var(--forja-light);
+  opacity:0.7;
+}
+.weffect-name {
+  font-family:'Cinzel',serif; font-size:11px; font-weight:700;
+  color:rgba(245,234,214,0.9); margin-bottom:2px;
+}
+.weapon-lore {
+  padding:8px 14px 12px;
+  font-size:12px; font-style:italic;
+  color:rgba(245,234,214,0.3); line-height:1.5;
+  border-top:1px solid rgba(255,255,255,0.04);
+}
+
+/* Reroll btn */
+.reroll-btn {
+  margin-top:8px; width:100%; padding:6px 0;
+  background:rgba(0,0,0,0.3); border:1px dashed rgba(255,255,255,0.1);
+  border-radius:3px; color:rgba(245,234,214,0.4);
+  font-family:'Share Tech Mono',monospace; font-size:9px;
+  letter-spacing:0.1em; cursor:pointer; transition:all 0.2s;
+}
+.reroll-btn:hover { border-color:var(--forja-light); color:var(--forja-light); }
+
+/* ══════════════════════════════
+   A FORJA DO FERREIRO
+══════════════════════════════ */
+.forja-layout {
+  display:grid; grid-template-columns:280px 1fr;
+  gap:20px; align-items:start;
+}
+@media(max-width:700px){ .forja-layout{ grid-template-columns:1fr; } }
+
+/* Painel do ferreiro */
+.blacksmith-panel {
+  background:rgba(0,0,0,0.4); border:1px solid rgba(208,96,32,0.2);
+  border-radius:4px; overflow:hidden; position:sticky; top:20px;
+}
+.blacksmith-head {
+  padding:14px 16px; background:rgba(106,42,0,0.2);
+  border-bottom:1px solid rgba(208,96,32,0.15);
+}
+.blacksmith-title {
+  font-family:'Cinzel',serif; font-size:14px; font-weight:700;
+  color:var(--forja-light); letter-spacing:0.08em; margin-bottom:4px;
+}
+.blacksmith-sub { font-size:11px; color:rgba(245,234,214,0.4); font-style:italic; }
+.blacksmith-body { padding:14px 16px; }
+.smith-field { margin-bottom:12px; }
+.smith-label {
+  font-family:'Share Tech Mono',monospace; font-size:9px;
+  color:rgba(245,234,214,0.4); letter-spacing:0.12em;
+  text-transform:uppercase; margin-bottom:5px; display:block;
+}
+.smith-input, .smith-select {
+  width:100%; background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.1); border-radius:3px;
+  color:var(--parchment); font-family:'Share Tech Mono',monospace;
+  font-size:11px; padding:7px 10px; transition:border-color 0.2s;
+}
+.smith-input:focus, .smith-select:focus {
+  outline:none; border-color:var(--forja-light);
+}
+.smith-level-row {
+  display:flex; gap:6px; align-items:center;
+}
+.smith-level-display {
+  font-family:'Cinzel',serif; font-size:28px; font-weight:900;
+  color:var(--forja-light); min-width:40px; text-align:center;
+  text-shadow:0 0 14px rgba(208,96,32,0.4);
+}
+.smith-level-btns { display:flex; flex-direction:column; gap:3px; }
+.smith-level-btn {
+  background:rgba(106,42,0,0.3); border:1px solid rgba(208,96,32,0.25);
+  color:var(--forja-light); font-size:12px; width:24px; height:24px;
+  border-radius:2px; cursor:pointer; transition:all 0.15s;
+  display:flex; align-items:center; justify-content:center;
+}
+.smith-level-btn:hover { background:rgba(106,42,0,0.6); }
+
+.smith-tier-bar {
+  margin-top:12px; padding:10px 12px;
+  background:rgba(0,0,0,0.3); border-radius:3px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.smith-tier-label {
+  font-family:'Share Tech Mono',monospace; font-size:9px;
+  color:rgba(245,234,214,0.35); letter-spacing:0.1em;
+  text-transform:uppercase; margin-bottom:6px;
+}
+.smith-tier-items { display:flex; flex-direction:column; gap:4px; }
+.smith-tier-item {
+  display:flex; align-items:center; gap:8px;
+  font-size:11px; color:rgba(245,234,214,0.5);
+}
+.smith-tier-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0;
+  background:rgba(255,255,255,0.15);
+}
+.smith-tier-item.unlocked { color:rgba(245,234,214,0.85); }
+.smith-tier-item.unlocked .smith-tier-dot { box-shadow:0 0 5px currentColor; }
+
+.forge-btn {
+  width:100%; margin-top:14px; padding:10px 0;
+  background:rgba(106,42,0,0.3); border:1px solid rgba(208,96,32,0.4);
+  border-radius:3px; color:var(--forja-light);
+  font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.14em;
+  cursor:pointer; transition:all 0.2s;
+}
+.forge-btn:hover {
+  background:rgba(106,42,0,0.55); border-color:var(--forja-light);
+  box-shadow:0 0 18px rgba(208,96,32,0.25);
+}
+
+/* Área de construção */
+.forge-workspace {
+  background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.07);
+  border-radius:4px;
+}
+.forge-workspace-head {
+  padding:14px 18px; border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex; align-items:center; gap:10px;
+}
+.forge-workspace-title {
+  font-family:'Cinzel',serif; font-size:14px; font-weight:700;
+  color:rgba(245,234,214,0.8); flex:1;
+}
+
+/* Steps */
+.forge-steps { padding:16px 18px; display:flex; flex-direction:column; gap:16px; }
+.forge-step {
+  padding:14px 16px; background:rgba(0,0,0,0.2);
+  border:1px solid rgba(255,255,255,0.06); border-radius:3px;
+}
+.forge-step.locked {
+  opacity:0.4; pointer-events:none;
+}
+.forge-step-header {
+  display:flex; align-items:center; gap:10px; margin-bottom:10px;
+}
+.forge-step-num {
+  font-family:'Share Tech Mono',monospace; font-size:9px;
+  color:var(--forja-light); background:rgba(106,42,0,0.3);
+  border:1px solid rgba(208,96,32,0.3); border-radius:2px;
+  padding:2px 7px; letter-spacing:0.1em;
+}
+.forge-step-title {
+  font-family:'Cinzel',serif; font-size:12px; font-weight:700;
+  color:rgba(245,234,214,0.85); letter-spacing:0.06em;
+}
+.forge-step-desc {
+  font-size:11.5px; color:rgba(245,234,214,0.45);
+  line-height:1.5; margin-bottom:10px;
+}
+
+/* Grid de opções */
+.forge-options {
+  display:flex; flex-wrap:wrap; gap:6px;
+}
+.forge-option {
+  padding:6px 12px; background:rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.08); border-radius:3px;
+  font-family:'Share Tech Mono',monospace; font-size:9.5px;
+  color:rgba(245,234,214,0.5); cursor:pointer; transition:all 0.15s;
+  letter-spacing:0.06em;
+}
+.forge-option:hover { border-color:var(--forja-light); color:var(--forja-light); }
+.forge-option.selected {
+  background:rgba(106,42,0,0.3); border-color:var(--forja-light);
+  color:var(--forja-light); box-shadow:0 0 8px rgba(208,96,32,0.15);
+}
+.forge-option.locked-opt {
+  opacity:0.3; pointer-events:none; cursor:default;
+}
+.forge-option .opt-lock {
+  font-size:8px; margin-left:4px; color:#c06de0;
+}
+
+/* Efeitos selecionados */
+.selected-effects {
+  margin-top:10px; display:flex; flex-direction:column; gap:5px;
+}
+.sel-effect {
+  display:flex; align-items:flex-start; gap:8px; padding:7px 10px;
+  background:rgba(106,42,0,0.12); border:1px solid rgba(208,96,32,0.2);
+  border-radius:3px; animation:fadeIn 0.2s ease;
+}
+.sel-effect-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+.sel-effect-content { flex:1; }
+.sel-effect-name {
+  font-family:'Cinzel',serif; font-size:11px; font-weight:700;
+  color:rgba(245,234,214,0.9); margin-bottom:2px;
+}
+.sel-effect-desc { font-size:11px; color:rgba(245,234,214,0.5); line-height:1.45; }
+.sel-effect-remove {
+  background:none; border:none; color:rgba(245,234,214,0.25);
+  cursor:pointer; font-size:14px; transition:color 0.15s; flex-shrink:0;
+}
+.sel-effect-remove:hover { color:#c04040; }
+
+/* Preview final */
+.weapon-preview {
+  margin:16px 18px 0;
+  padding:14px 16px;
+  background:rgba(0,0,0,0.35); border-radius:4px;
+  border:1px solid rgba(208,96,32,0.15);
+  display:none;
+}
+.weapon-preview.show { display:block; }
+.weapon-preview-title {
+  font-family:'Cinzel',serif; font-size:13px; font-weight:700;
+  color:rgba(245,234,214,0.5); letter-spacing:0.1em;
+  text-transform:uppercase; margin-bottom:12px;
+  display:flex; align-items:center; gap:8px;
+}
+.weapon-preview-title::after {
+  content:''; flex:1; height:1px; background:rgba(255,255,255,0.06);
+}
+
+/* ══════════════════════════════
+   CATÁLOGO DE EFEITOS
+══════════════════════════════ */
+.effects-filter {
+  display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;
+}
+.eff-filter-btn {
+  font-family:'Share Tech Mono',monospace; font-size:9px;
+  letter-spacing:0.1em; padding:5px 14px; border-radius:2px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(0,0,0,0.3); color:rgba(245,234,214,0.4);
+  cursor:pointer; transition:all 0.15s; text-transform:uppercase;
+}
+.eff-filter-btn:hover { color:rgba(245,234,214,0.8); border-color:rgba(255,255,255,0.18); }
+.eff-filter-btn.active {
+  background:rgba(106,42,0,0.25); border-color:var(--forja-light);
+  color:var(--forja-light);
+}
+.effects-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:10px;
+}
+.effect-card {
+  padding:12px 14px 12px 22px; background:rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.07); border-radius:3px;
+  position:relative; transition:border-color 0.15s;
+}
+.effect-card:hover { border-color:rgba(208,96,32,0.3); }
+.effect-card::before {
+  content:''; position:absolute; left:8px; top:16px;
+  width:5px; height:5px; border-radius:50%;
+}
+.effect-card.cat-dano::before    { background:#d04040; box-shadow:0 0 5px #d04040; }
+.effect-card.cat-controle::before{ background:#40a0d0; box-shadow:0 0 5px #40a0d0; }
+.effect-card.cat-elemental::before{ background:#d0a040; box-shadow:0 0 5px #d0a040; }
+.effect-card.cat-util::before    { background:#40d080; box-shadow:0 0 5px #40d080; }
+.effect-card.cat-magia::before   { background:#c06de0; box-shadow:0 0 5px #c06de0; }
+.effect-card.cat-passiva::before { background:#a0a0a0; box-shadow:0 0 5px #a0a0a0; }
+.effect-card.hidden { display:none; }
+
+.effect-card-header {
+  display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:5px;
+}
+.effect-card-name {
+  font-family:'Cinzel',serif; font-size:12px; font-weight:700;
+  color:rgba(245,234,214,0.92); letter-spacing:0.05em; flex:1;
+}
+.effect-cat-badge {
+  font-family:'Share Tech Mono',monospace; font-size:8px;
+  letter-spacing:0.1em; padding:1px 6px; border-radius:2px;
+  text-transform:uppercase;
+}
+.cat-dano     { background:rgba(208,64,64,0.12);  color:#d04040; border:1px solid rgba(208,64,64,0.2); }
+.cat-controle { background:rgba(64,160,208,0.12); color:#40a0d0; border:1px solid rgba(64,160,208,0.2); }
+.cat-elemental{ background:rgba(208,160,64,0.12); color:#d0a040; border:1px solid rgba(208,160,64,0.2); }
+.cat-util     { background:rgba(64,208,128,0.12); color:#40d080; border:1px solid rgba(64,208,128,0.2); }
+.cat-magia    { background:rgba(192,109,224,0.12);color:#c06de0; border:1px solid rgba(192,109,224,0.2); }
+.cat-passiva  { background:rgba(160,160,160,0.1); color:#a0a0a0; border:1px solid rgba(160,160,160,0.18); }
+
+.effect-rarity-req {
+  font-family:'Share Tech Mono',monospace; font-size:8px;
+  color:#c06de0; background:rgba(192,109,224,0.08);
+  border:1px solid rgba(192,109,224,0.2); border-radius:2px; padding:1px 5px;
+}
+.effect-card-desc {
+  font-size:12px; color:rgba(245,234,214,0.55); line-height:1.55;
+}
+
+/* ══════════════════════════════
+   TABELA DE RARIDADES
+══════════════════════════════ */
+.rarity-table { width:100%; border-collapse:collapse; margin-bottom:24px; }
+.rarity-table th {
+  font-family:'Share Tech Mono',monospace; font-size:9.5px;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:rgba(245,234,214,0.45); padding:8px 12px;
+  border-bottom:1px solid rgba(255,255,255,0.08); text-align:left;
+}
+.rarity-table td {
+  padding:10px 12px; border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:12px; color:rgba(245,234,214,0.6); vertical-align:top;
+}
+.rarity-table tr:last-child td { border-bottom:none; }
+.rarity-table tr:hover td { background:rgba(255,255,255,0.02); }
+
+/* Ferreiro level table */
+.smith-table { width:100%; border-collapse:collapse; }
+.smith-table th {
+  font-family:'Share Tech Mono',monospace; font-size:9.5px;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:rgba(245,234,214,0.45); padding:8px 12px;
+  border-bottom:1px solid rgba(255,255,255,0.08); text-align:left;
+}
+.smith-table td {
+  padding:9px 12px; border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:12px; color:rgba(245,234,214,0.6);
+}
+
+.info-box {
+  padding:14px 16px; background:rgba(0,0,0,0.3);
+  border:1px solid rgba(208,96,32,0.2); border-radius:3px;
+  border-left:3px solid var(--forja-light); margin-bottom:20px;
+}
+.info-box-title {
+  font-family:'Share Tech Mono',monospace; font-size:9.5px;
+  color:var(--forja-light); letter-spacing:0.12em;
+  text-transform:uppercase; margin-bottom:6px;
+}
+.info-box p {
+  font-size:12.5px; color:rgba(245,234,214,0.55); line-height:1.6;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align:center; margin-top:80px;
+  color:rgba(245,234,214,0.15); font-size:12px; font-style:italic;
+}
+.footer::before {
+  content:''; display:block; width:200px; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);
+  margin:0 auto 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚒ A Forja</h1>
+  <p>Sistema de criação e roleta de armas — Sistema Homebrew de Mesa</p>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('roleta')">🎲 Roleta de Armas</button>
+  <button class="tab-btn" onclick="showTab('ferreiro')">⚒ O Ferreiro</button>
+  <button class="tab-btn" onclick="showTab('catalogo')">📖 Catálogo de Efeitos</button>
+  <button class="tab-btn" onclick="showTab('regras')">📜 Regras</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     ROLETA DE ARMAS
+══════════════════════════════════════════════════ -->
+<div class="section active" id="tab-roleta">
+  <div class="section-title">🎲 Roleta de Armas</div>
+  <div class="section-sub">Gere armas aleatórias baseadas na raridade desejada</div>
+
+  <div class="roller-grid">
+
+    <!-- Card 1: Arma completa -->
+    <div class="roller-card">
+      <div class="roller-card-head">
+        <span class="roller-card-icon">⚔️</span>
+        <span class="roller-card-title" style="color:var(--forja-light)">Arma Aleatória</span>
+      </div>
+      <div class="roller-card-body">
+        <p>Gera uma arma completa com tipo, dano base e efeitos compatíveis com a raridade escolhida.</p>
+        <div class="rarity-select-row">
+          <label>RARIDADE</label>
+          <select class="rarity-select" id="rarity-full">
+            <option value="comum">Comum</option>
+            <option value="incomum">Incomum</option>
+            <option value="raro" selected>Raro</option>
+            <option value="epico">Épico</option>
+            <option value="lendario">Lendário</option>
+          </select>
+        </div>
+        <button class="roll-btn" onclick="rollFullWeapon()">⚄ Rolar Arma Completa</button>
+        <div class="weapon-result" id="result-full"></div>
+      </div>
+    </div>
+
+    <!-- Card 2: Só efeito -->
+    <div class="roller-card">
+      <div class="roller-card-head">
+        <span class="roller-card-icon">✨</span>
+        <span class="roller-card-title" style="color:var(--epico-light)">Efeito Aleatório</span>
+      </div>
+      <div class="roller-card-body">
+        <p>Rola apenas um efeito para adicionar a uma arma existente. Útil para encantamentos de ferreiro.</p>
+        <div class="rarity-select-row">
+          <label>PODER</label>
+          <select class="rarity-select" id="rarity-effect">
+            <option value="comum">Fraco (Comum)</option>
+            <option value="incomum">Moderado (Incomum)</option>
+            <option value="raro" selected>Forte (Raro)</option>
+            <option value="epico">Muito Forte (Épico)</option>
+            <option value="lendario">Absurdo (Lendário)</option>
+          </select>
+        </div>
+        <button class="roll-btn" onclick="rollEffect()">✦ Rolar Efeito</button>
+        <div class="weapon-result" id="result-effect"></div>
+      </div>
+    </div>
+
+    <!-- Card 3: Tesouro de dungeon -->
+    <div class="roller-card">
+      <div class="roller-card-head">
+        <span class="roller-card-icon">💀</span>
+        <span class="roller-card-title" style="color:var(--raro-light)">Tesouro de Dungeon</span>
+      </div>
+      <div class="roller-card-body">
+        <p>Simula um loot de dungeon: rola a raridade automaticamente com base na dificuldade do encontro.</p>
+        <div class="rarity-select-row">
+          <label>DIFICULDADE</label>
+          <select class="rarity-select" id="dungeon-diff">
+            <option value="facil">Fácil (Comum/Incomum)</option>
+            <option value="medio" selected>Médio (Incomum/Raro)</option>
+            <option value="dificil">Difícil (Raro/Épico)</option>
+            <option value="lendario">Lendário (Épico/Lendário)</option>
+          </select>
+        </div>
+        <button class="roll-btn" onclick="rollDungeonLoot()">🏴‍☠️ Rolar Tesouro</button>
+        <div class="weapon-result" id="result-dungeon"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     O FERREIRO
+══════════════════════════════════════════════════ -->
+<div class="section" id="tab-ferreiro">
+  <div class="section-title">⚒ O Ferreiro</div>
+  <div class="section-sub">Crie armas únicas combinando base, material e efeitos — limitado pelo nível do ferreiro</div>
+
+  <div class="forja-layout">
+
+    <!-- Painel lateral -->
+    <div class="blacksmith-panel">
+      <div class="blacksmith-head">
+        <div class="blacksmith-title">⚒ Configurar Ferreiro</div>
+        <div class="blacksmith-sub">Nível define o que pode ser criado</div>
+      </div>
+      <div class="blacksmith-body">
+        <div class="smith-field">
+          <label class="smith-label">Nome do Ferreiro</label>
+          <input class="smith-input" type="text" id="smith-name" placeholder="Ex: Durgin Ironhammer" oninput="updatePreview()">
+        </div>
+        <div class="smith-field">
+          <label class="smith-label">Nível do Ferreiro</label>
+          <div class="smith-level-row">
+            <div class="smith-level-display" id="smith-level-display">1</div>
+            <div class="smith-level-btns">
+              <button class="smith-level-btn" onclick="changeLevel(1)">▲</button>
+              <button class="smith-level-btn" onclick="changeLevel(-1)">▼</button>
+            </div>
+            <input type="range" min="1" max="20" value="1" id="smith-level-range"
+              oninput="syncLevel(this.value)"
+              style="flex:1;accent-color:var(--forja-light);">
+          </div>
+        </div>
+
+        <div class="smith-tier-bar">
+          <div class="smith-tier-label">Acesso por nível</div>
+          <div class="smith-tier-items" id="smith-tier-items"></div>
+        </div>
+
+        <button class="forge-btn" onclick="forgeWeapon()">⚒ FORJAR ARMA</button>
+        <button class="forge-btn" onclick="resetForge()" style="margin-top:6px;background:rgba(0,0,0,0.3);border-color:rgba(255,255,255,0.1);color:rgba(245,234,214,0.4);">↺ Resetar</button>
+      </div>
+    </div>
+
+    <!-- Workspace -->
+    <div>
+      <div class="forge-workspace">
+        <div class="forge-workspace-head">
+          <span style="font-size:20px;">⚙</span>
+          <span class="forge-workspace-title">Bancada de Criação</span>
+          <span id="forge-rarity-badge"></span>
+        </div>
+        <div class="forge-steps" id="forge-steps">
+
+          <!-- PASSO 1: Tipo de arma -->
+          <div class="forge-step" id="step-tipo">
+            <div class="forge-step-header">
+              <span class="forge-step-num">PASSO 01</span>
+              <span class="forge-step-title">Tipo de Arma</span>
+            </div>
+            <div class="forge-step-desc">Escolha o tipo base. Define o alcance, estilo de combate e dado de dano base.</div>
+            <div class="forge-options" id="opts-tipo"></div>
+          </div>
+
+          <!-- PASSO 2: Material -->
+          <div class="forge-step" id="step-material">
+            <div class="forge-step-header">
+              <span class="forge-step-num">PASSO 02</span>
+              <span class="forge-step-title">Material</span>
+            </div>
+            <div class="forge-step-desc">O material define o bônus de dano base e pode dar resistências ou propriedades passivas.</div>
+            <div class="forge-options" id="opts-material"></div>
+          </div>
+
+          <!-- PASSO 3: Efeito Principal -->
+          <div class="forge-step" id="step-efeito1">
+            <div class="forge-step-header">
+              <span class="forge-step-num">PASSO 03</span>
+              <span class="forge-step-title">Efeito Principal</span>
+            </div>
+            <div class="forge-step-desc">O efeito mais poderoso da arma. Efeitos épicos e lendários só disponíveis com nível de ferreiro suficiente.</div>
+            <div class="forge-options" id="opts-efeito1"></div>
+          </div>
+
+          <!-- PASSO 4: Efeito Secundário (nível 5+) -->
+          <div class="forge-step" id="step-efeito2">
+            <div class="forge-step-header">
+              <span class="forge-step-num">PASSO 04</span>
+              <span class="forge-step-title">Efeito Secundário</span>
+              <span class="r-badge r-incomum" style="font-size:8px;">Ferreiro Nív 5+</span>
+            </div>
+            <div class="forge-step-desc">Um efeito adicional menor. Não pode ser da mesma categoria do efeito principal.</div>
+            <div class="forge-options" id="opts-efeito2"></div>
+          </div>
+
+          <!-- PASSO 5: Encantamento especial (nível 12+) -->
+          <div class="forge-step" id="step-encanto">
+            <div class="forge-step-header">
+              <span class="forge-step-num">PASSO 05</span>
+              <span class="forge-step-title">Encantamento Especial</span>
+              <span class="r-badge r-epico" style="font-size:8px;">Ferreiro Nív 12+</span>
+            </div>
+            <div class="forge-step-desc">Encantamentos raros — magias imbuídas, efeitos únicos ou propriedades lendárias.</div>
+            <div class="forge-options" id="opts-encanto"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Preview da arma -->
+      <div class="weapon-preview" id="forge-preview">
+        <div class="weapon-preview-title">Prévia da Arma</div>
+        <div id="forge-preview-content"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     CATÁLOGO DE EFEITOS
+══════════════════════════════════════════════════ -->
+<div class="section" id="tab-catalogo">
+  <div class="section-title">📖 Catálogo de Efeitos</div>
+  <div class="section-sub">Todos os efeitos disponíveis organizados por categoria e raridade mínima</div>
+
+  <div class="effects-filter" id="eff-filters">
+    <button class="eff-filter-btn active" onclick="filterEffects('all',this)">Todos</button>
+    <button class="eff-filter-btn" onclick="filterEffects('cat-dano',this)">💢 Dano</button>
+    <button class="eff-filter-btn" onclick="filterEffects('cat-controle',this)">🔗 Controle</button>
+    <button class="eff-filter-btn" onclick="filterEffects('cat-elemental',this)">🔥 Elemental</button>
+    <button class="eff-filter-btn" onclick="filterEffects('cat-util',this)">🔧 Utilidade</button>
+    <button class="eff-filter-btn" onclick="filterEffects('cat-magia',this)">✨ Magia</button>
+    <button class="eff-filter-btn" onclick="filterEffects('cat-passiva',this)">⚪ Passiva</button>
+    <div style="flex:1"></div>
+    <button class="eff-filter-btn" onclick="filterEffects('r-comum',this)">Comum+</button>
+    <button class="eff-filter-btn" onclick="filterEffects('r-incomum',this)">Incomum+</button>
+    <button class="eff-filter-btn" onclick="filterEffects('r-raro',this)">Raro+</button>
+    <button class="eff-filter-btn" onclick="filterEffects('r-epico',this)">Épico+</button>
+    <button class="eff-filter-btn" onclick="filterEffects('r-lendario',this)">Lendário</button>
+  </div>
+
+  <div class="effects-grid" id="effects-grid"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     REGRAS
+══════════════════════════════════════════════════ -->
+<div class="section" id="tab-regras">
+  <div class="section-title">📜 Regras da Forja</div>
+  <div class="section-sub">Como o sistema de armas funciona na mesa</div>
+
+  <div class="info-box">
+    <div class="info-box-title">⚒ Filosofia do Sistema</div>
+    <p>Armas não são apenas dano — são expressão do personagem. Uma arma comum tem um efeito simples. Uma lendária tem dois ou três, interagindo entre si. O ferreiro pode criar com controle; o loot é sempre uma surpresa.</p>
+  </div>
+
+  <div class="section-title" style="font-size:16px;margin-bottom:12px;">Tabela de Raridades</div>
+  <table class="rarity-table">
+    <thead><tr>
+      <th>Raridade</th><th>Efeitos</th><th>Bônus de Dano</th><th>Como Obter</th><th>Nível Sugerido</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="r-badge r-comum">Comum</span></td>
+        <td>1 efeito fraco</td><td>+0</td>
+        <td>Loot básico, ferreiro nível 1</td><td>1–4</td>
+      </tr>
+      <tr>
+        <td><span class="r-badge r-incomum">Incomum</span></td>
+        <td>1 efeito moderado</td><td>+1</td>
+        <td>Dungeon fácil, ferreiro nível 3+</td><td>4–7</td>
+      </tr>
+      <tr>
+        <td><span class="r-badge r-raro">Raro</span></td>
+        <td>1 efeito forte + 1 fraco</td><td>+2</td>
+        <td>Dungeon médio, ferreiro nível 7+</td><td>7–11</td>
+      </tr>
+      <tr>
+        <td><span class="r-badge r-epico">Épico</span></td>
+        <td>2 efeitos fortes</td><td>+3</td>
+        <td>Boss, ferreiro nível 12+</td><td>11–16</td>
+      </tr>
+      <tr>
+        <td><span class="r-badge r-lendario">Lendário</span></td>
+        <td>2 efeitos fortes + 1 especial</td><td>+4</td>
+        <td>Boss lendário, ferreiro nível 18+</td><td>16+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="divider"></div>
+  <div class="section-title" style="font-size:16px;margin-bottom:12px;">Níveis do Ferreiro</div>
+  <table class="smith-table">
+    <thead><tr>
+      <th>Nível</th><th>Acesso</th><th>Efeitos Disponíveis</th><th>Máx. Efeitos</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1–2</td><td><span class="r-badge r-comum">Comum</span></td><td>Efeitos básicos de dano e passivas simples</td><td>1</td></tr>
+      <tr><td>3–4</td><td><span class="r-badge r-incomum">Incomum</span></td><td>Efeitos moderados, elementais básicos</td><td>1</td></tr>
+      <tr><td>5–6</td><td><span class="r-badge r-incomum">Incomum+</span></td><td>Segundo efeito desbloqueado (fraco)</td><td>2</td></tr>
+      <tr><td>7–9</td><td><span class="r-badge r-raro">Raro</span></td><td>Efeitos fortes, controle, elementais avançados</td><td>2</td></tr>
+      <tr><td>10–11</td><td><span class="r-badge r-raro">Raro+</span></td><td>Roubo de vida, ignorar redução de dano</td><td>2</td></tr>
+      <tr><td>12–14</td><td><span class="r-badge r-epico">Épico</span></td><td>Encantamento especial desbloqueado, magias imbuídas</td><td>3</td></tr>
+      <tr><td>15–17</td><td><span class="r-badge r-epico">Épico+</span></td><td>Efeitos de aura, encantamentos de movimento</td><td>3</td></tr>
+      <tr><td>18–19</td><td><span class="r-badge r-lendario">Lendário</span></td><td>Armas únicas, efeitos que interagem com o mundo</td><td>3+especial</td></tr>
+      <tr><td>20</td><td><span class="r-badge r-lendario">Mestre</span></td><td>Qualquer combinação — sem restrições de efeito</td><td>Sem limite</td></tr>
+    </tbody>
+  </table>
+
+  <div class="divider"></div>
+  <div class="info-box">
+    <div class="info-box-title">📜 Regras de Combinação</div>
+    <p><strong>1.</strong> Dois efeitos da mesma categoria (ex: dois elementais) só são permitidos em armas épicas ou lendárias.<br><br>
+    <strong>2.</strong> Magias imbuídas consomem Foco (🔵) do portador ao serem ativadas — a arma não tem pool próprio.<br><br>
+    <strong>3.</strong> Efeitos de controle (Lento, Imobilizado) se aplicam uma vez por turno, mesmo que o ataque acerte múltiplos alvos.<br><br>
+    <strong>4.</strong> Roubo de vida não funciona em alvos mortos-vivos ou constructos a menos que o efeito especifique.<br><br>
+    <strong>5.</strong> O mestre sempre tem a palavra final sobre efeitos criados pelo ferreiro — combinar efeitos absurdos requer aprovação.</p>
+  </div>
+</div>
+
+<div class="footer"><p>A Forja — Sistema Homebrew de Mesa · Sistema de Criação de Armas</p></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DADOS
+// ══════════════════════════════════════════════════
+
+const WEAPON_TYPES = [
+  {id:'espada-curta',    name:'Espada Curta',   icon:'🗡️', dmg:'1d6',  range:'corpo',   tags:['leve','finesse']},
+  {id:'espada-longa',   name:'Espada Longa',    icon:'⚔️', dmg:'1d8',  range:'corpo',   tags:['versátil']},
+  {id:'espadao',        name:'Espadão',         icon:'⚔️', dmg:'2d6',  range:'corpo',   tags:['pesada','duas-mãos']},
+  {id:'adaga',          name:'Adaga',            icon:'🔪', dmg:'1d4',  range:'corpo',   tags:['leve','arremessável','finesse']},
+  {id:'machado-guerra', name:'Machado de Guerra',icon:'🪓', dmg:'1d8',  range:'corpo',   tags:['versátil']},
+  {id:'grande-machado', name:'Grande Machado',   icon:'🪓', dmg:'1d12', range:'corpo',   tags:['pesada','duas-mãos']},
+  {id:'lanca',          name:'Lança',            icon:'🏹', dmg:'1d6',  range:'Médio', tags:['Médio','arremessável']},
+  {id:'alabarda',       name:'Alabarda',         icon:'🪖', dmg:'1d10', range:'Médio', tags:['pesada','duas-mãos','Médio']},
+  {id:'arco-curto',     name:'Arco Curto',       icon:'🏹', dmg:'1d6',  range:'distância',tags:['distância']},
+  {id:'arco-longo',     name:'Arco Longo',       icon:'🏹', dmg:'1d8',  range:'distância',tags:['pesada','distância']},
+  {id:'besta',          name:'Besta',            icon:'🏹', dmg:'1d10', range:'distância',tags:['munição','distância']},
+  {id:'cajado',         name:'Cajado',           icon:'🪄', dmg:'1d6',  range:'corpo',   tags:['versátil','arcano']},
+  {id:'foice',          name:'Foice',            icon:'⚙️', dmg:'1d8',  range:'Médio', tags:['exótica','Médio']},
+  {id:'corrente',       name:'Corrente',         icon:'⛓️', dmg:'1d6',  range:'Médio', tags:['exótica','Médio','prender']},
+  {id:'chicote',        name:'Chicote',          icon:'🪢', dmg:'1d4',  range:'Médio', tags:['exótica','Médio','finesse']},
+  {id:'garra-arcana',   name:'Garra Arcana',     icon:'✨', dmg:'1d6',  range:'corpo',   tags:['exótica','arcano','finesse']},
+];
+
+const MATERIALS = [
+  {id:'ferro',      name:'Ferro',          bonus:0, tier:'comum',   desc:'Material padrão. Sem bônus especiais.'},
+  {id:'aco',        name:'Aço',            bonus:1, tier:'incomum', desc:'+1 dano base. Arma mais durável e equilibrada.'},
+  {id:'mitral',     name:'Mitral',         bonus:1, tier:'raro',    desc:'+1 dano base, metade do peso. Portadores ágeis têm +1 dado em movimentos com ela.'},
+  {id:'adamantio',  name:'Adamantio',      bonus:2, tier:'raro',    desc:'+2 dano base. Ignora 1 de redução de dano naturalmente.'},
+  {id:'aco-sombrio',name:'Aço Sombrio',    bonus:1, tier:'epico',   desc:'+1 dano base. Ataques Das Sombras com esta arma causam +1d6 extra.'},
+  {id:'osso-dragao',name:'Osso de Dragão', bonus:2, tier:'epico',   desc:'+2 dano base. Imune a calor e fogo. Dano elemental de fogo causa +1d4 extra.'},
+  {id:'estrela',    name:'Aço Estelar',    bonus:2, tier:'lendario', desc:'+2 dano base. Emite luz suave. Criaturas das trevas recebem +1d6 extra de dano sagrado.'},
+  {id:'vivo',       name:'Metal Vivo',     bonus:1, tier:'lendario', desc:'+1 dano. A arma se adapta ao portador: após 3 combates, ganha 1 efeito aleatório permanente.'},
+];
+
+const EFEITOS = [
+  // DANO
+  {id:'sangramento',  cat:'cat-dano',     tier:'comum',   name:'Sangramento',         icon:'🩸', desc:'Ataques que acertam aplicam Hemorragia: alvo perde 1d4 HP no início de cada turno por 2 turnos.'},
+  {id:'critico-plus', cat:'cat-dano',     tier:'comum',   name:'Lâmina Afiada',       icon:'⚔️', desc:'Role os dados de dano duas vezes e use o maior em acertos críticos.'},
+  {id:'perfurante',   cat:'cat-dano',     tier:'incomum', name:'Perfurante',           icon:'🔩', desc:'Ataques ignoram 2 de redução de dano do alvo.'},
+  {id:'brutal',       cat:'cat-dano',     tier:'incomum', name:'Golpe Brutal',         icon:'💥', desc:'Uma vez por turno, ao acertar, pode gastar 2🟡 para reolar todos os 1s nos dados de dano.'},
+  {id:'drenagem',     cat:'cat-dano',     tier:'raro',    name:'Roubo de Vida',        icon:'❤️‍🔥', desc:'Cada ataque bem-sucedido cura o portador em metade do dano causado (mínimo 1 HP).'},
+  {id:'ignora-rd',    cat:'cat-dano',     tier:'raro',    name:'Ignorar Armadura',     icon:'🛡️', desc:'Ataques ignoram toda redução de dano não-mágica do alvo.'},
+  {id:'execucao',     cat:'cat-dano',     tier:'epico',   name:'Lâmina Executora',     icon:'💀', desc:'Alvos abaixo de 25% HP recebem dano dobrado desta arma.'},
+  {id:'devastador',   cat:'cat-dano',     tier:'lendario',name:'Devastador',           icon:'☄️', desc:'+2d6 de dano em todos os ataques. Se matar um inimigo, recupera 3🟡 imediatamente.'},
+
+  // CONTROLE
+  {id:'lento',        cat:'cat-controle', tier:'comum',   name:'Pesada',               icon:'🐢', desc:'Ataques que acertam aplicam Lento (movimento -2 blocos) por 1 turno.'},
+  {id:'derruba',      cat:'cat-controle', tier:'incomum', name:'Derrubadora',          icon:'⬇️', desc:'1x por turno ao acertar, alvo deve testar Força ou fica Derrubado.'},
+  {id:'prende',       cat:'cat-controle', tier:'incomum', name:'Prendedora',           icon:'⛓️', desc:'Ataques críticos prendem o alvo (Imobilizado 1 turno). Teste de Força para resistir.'},
+  {id:'silencia',     cat:'cat-controle', tier:'raro',    name:'Silenciadora',         icon:'🤫', desc:'Ataques que acertam aplicam Silenciado por 1 turno — alvo não pode conjurar magias.'},
+  {id:'cega',         cat:'cat-controle', tier:'raro',    name:'Ofuscante',            icon:'👁️', desc:'1x por combate: ataque que cega o alvo por 1 turno (sem teste). Ação padrão.'},
+  {id:'fraqueza',     cat:'cat-controle', tier:'epico',   name:'Enfraquecedora',       icon:'📉', desc:'Cada acerto aplica 1 stack de Fraqueza (-1 dado por stack, máx 3). Desaparece ao fim do combate.'},
+  {id:'terror',       cat:'cat-controle', tier:'epico',   name:'Aterrorizante',        icon:'😱', desc:'Ao reduzir inimigo a 50% HP, todos inimigos em 3 blocos testam Medo (falha = fogem 1 turno).'},
+  {id:'paralisa',     cat:'cat-controle', tier:'lendario',name:'Paralisante',          icon:'🧊', desc:'1x por combate: acerto crítico paralisa o alvo por 2 turnos (não age, não defende). Sem teste.'},
+
+  // ELEMENTAL
+  {id:'fogo-b',       cat:'cat-elemental',tier:'comum',   name:'Chamas Fracas',        icon:'🔥', desc:'+1d4 de dano de fogo em cada ataque.'},
+  {id:'gelo-b',       cat:'cat-elemental',tier:'comum',   name:'Gelo Fraco',           icon:'❄️', desc:'+1d4 de dano de gelo. Alvos atingidos têm -1 bloco de movimento no próximo turno.'},
+  {id:'raio-b',       cat:'cat-elemental',tier:'incomum', name:'Faísca',               icon:'⚡', desc:'+1d6 de dano elétrico. Alvos com armadura metálica recebem +1d4 extra.'},
+  {id:'acido-b',      cat:'cat-elemental',tier:'incomum', name:'Ácido',                icon:'🧪', desc:'+1d4 de dano ácido. Remove 1 de redução de dano do alvo permanentemente durante o combate.'},
+  {id:'fogo-f',       cat:'cat-elemental',tier:'raro',    name:'Chamas Vivas',         icon:'🔥', desc:'+1d8 de fogo. Alvo pega fogo: +1d4 de fogo no início do turno por 2 turnos.'},
+  {id:'gelo-f',       cat:'cat-elemental',tier:'raro',    name:'Gelo Profundo',        icon:'❄️', desc:'+1d8 de gelo. Alvos atingidos têm movimento reduzido à metade por 2 turnos.'},
+  {id:'raio-f',       cat:'cat-elemental',tier:'epico',   name:'Tempestade',           icon:'⚡', desc:'+1d10 elétrico. Raio que salta: causa 1d6 em um segundo alvo adjacente ao primeiro.'},
+  {id:'void',         cat:'cat-elemental',tier:'lendario',name:'Vazio',                icon:'🌑', desc:'+1d12 de dano do vazio (ignora resistências). Alvo atingido fica Silenciado e Cego por 1 turno.'},
+
+  // UTILIDADE
+  {id:'retorno',      cat:'cat-util',     tier:'comum',   name:'Retorno',              icon:'↩️', desc:'Arma arremessável. Retorna automaticamente à mão após cada arremesso.'},
+  {id:'leve-u',       cat:'cat-util',     tier:'comum',   name:'Leveza',               icon:'🍃', desc:'Arma não pesa — não causa penalidade de carga. Custo de uso reduzido em 1🟡 (mín 1).'},
+  {id:'invisivel',    cat:'cat-util',     tier:'incomum', name:'Oculta',               icon:'👻', desc:'A arma fica invisível ao olhar casual. Teste de Percepção para detectar. Bônus em ataques furtivos.'},
+  {id:'dupla',        cat:'cat-util',     tier:'raro',    name:'Dupla',                icon:'✌️', desc:'A arma pode se dividir em duas menores (1d4 cada) ou recombinar como ação rápida.'},
+  {id:'guardiao',     cat:'cat-util',     tier:'raro',    name:'Guardiã',              icon:'🛡️', desc:'Enquanto empunhada: +1 de redução de dano passiva. A arma protege além de atacar.'},
+  {id:'sede',         cat:'cat-util',     tier:'epico',   name:'Sôfrega',              icon:'⚰️', desc:'Ao matar um inimigo, o portador recupera 2🟡 e 1🔵 automaticamente.'},
+  {id:'alcance-plus', cat:'cat-util',     tier:'epico',   name:'Alcance Estendido',    icon:'📏', desc:'+2 blocos de alcance em todos os ataques. Pode atacar alvos atrás de cobertura parcial.'},
+  {id:'onipresente',  cat:'cat-util',     tier:'lendario',name:'Onipresente',          icon:'🌐', desc:'Pode atacar qualquer alvo em linha de visão, até 10 blocos, independente do tipo de arma.'},
+
+  // MAGIA
+  {id:'magia-fogo',   cat:'cat-magia',    tier:'raro',    name:'Bola de Fogo Imbuída', icon:'✨', desc:'1x por combate: gasta 4🔵 para disparar Bola de Fogo (2d6 em área 2x2) sem precisar conhecer a magia.'},
+  {id:'magia-raio',   cat:'cat-magia',    tier:'raro',    name:'Raio Imbuído',         icon:'⚡', desc:'1x por combate: gasta 3🔵 para disparar Raio (2d8 num alvo, até 8 blocos).'},
+  {id:'magia-cura',   cat:'cat-magia',    tier:'raro',    name:'Cura Imbuída',         icon:'💚', desc:'1x por combate: gasta 3🔵 para curar 1d8+2 HP em si mesmo ou aliado adjacente.'},
+  {id:'magia-tele',   cat:'cat-magia',    tier:'epico',   name:'Teletransporte Imbuído',icon:'🌀',desc:'1x por combate: gasta 5🔵 para teleportar o portador até 6 blocos. Não provoca reações.'},
+  {id:'magia-escudo', cat:'cat-magia',    tier:'epico',   name:'Escudo de Força Imbuído',icon:'🔵',desc:'1x por combate: gasta 4🔵 para criar escudo que absorve o próximo ataque (até 2d8+4).'},
+  {id:'magia-caos',   cat:'cat-magia',    tier:'lendario',name:'Caos Imbuído',         icon:'🎲', desc:'1x por combate: gasta 6🔵 para um efeito aleatório (role 1d6): 1=explosão 3d6, 2=cura aliados 2d6, 3=teleporta todos 3 blocos, 4=paralisa alvo, 5=tempestade elemental, 6=escolha.'},
+  {id:'magia-morte',  cat:'cat-magia',    tier:'lendario',name:'Toque da Morte Imbuído',icon:'💀',desc:'1x por sessão: gasta 8🔵 — alvo com menos de 30% HP morre instantaneamente. Sem teste.'},
+
+  // PASSIVA
+  {id:'pass-medo',    cat:'cat-passiva',  tier:'comum',   name:'Intimidante',          icon:'👁️', desc:'Portador tem +1 dado em testes de intimidação enquanto empunha a arma visivelmente.'},
+  {id:'pass-luz',     cat:'cat-passiva',  tier:'comum',   name:'Luminosa',             icon:'💡', desc:'Emite luz suave (3 blocos). Cancela penalidades de escuridão para o portador.'},
+  {id:'pass-sen',     cat:'cat-passiva',  tier:'incomum', name:'Sentinela',            icon:'🦅', desc:'Portador nunca é surpreendido — a arma vibra ao detectar ameaças próximas.'},
+  {id:'pass-veneno',  cat:'cat-passiva',  tier:'incomum', name:'Antivenenosa',         icon:'🧬', desc:'Portador é imune a efeitos de veneno enquanto carrega a arma.'},
+  {id:'pass-aura',    cat:'cat-passiva',  tier:'raro',    name:'Aura Elemental',       icon:'🌟', desc:'Emite aura do elemento do enchantamento elemental em 1 bloco. Aliados dentro têm resistência 1 a esse elemento.'},
+  {id:'pass-crescer', cat:'cat-passiva',  tier:'epico',   name:'Crescente',            icon:'📈', desc:'A cada inimigo morto com esta arma no mesmo combate, causa +1 dado de dano (máx +4, reseta por combate).'},
+  {id:'pass-alma',    cat:'cat-passiva',  tier:'lendario',name:'Absorvedora de Almas', icon:'👻', desc:'Ao matar um inimigo, a arma absorve parte de sua essência: portador recupera 1d6 HP e 1d4🔵.'},
+];
+
+const ENCHANTMENTS = [
+  {id:'enc-magia-double', name:'Ressonância Mágica', tier:'epico',   desc:'Magias lançadas pelo portador após um ataque desta arma custam 1🔵 a menos naquele turno.'},
+  {id:'enc-berserker',    name:'Fúria Imbuída',      tier:'epico',   desc:'Ao entrar em Fúria, os dados de dano desta arma sobem em um tipo (d6→d8, d8→d10, etc).'},
+  {id:'enc-umbra',        name:'Sombra',             tier:'epico',   desc:'Ao atacar Das Sombras, causa +2d6 e o alvo fica Cego por 1 turno adicionalmente.'},
+  {id:'enc-lenda',        name:'Presença Lendária',  tier:'lendario',desc:'A arma é reconhecida por qualquer pessoa instruída. Portador tem +2 dados em Persuasão e Intimidação em qualquer contexto.'},
+  {id:'enc-selo',         name:'Selada',             tier:'lendario',desc:'A arma causa +2d8 a qualquer criatura com origem planar (demônios, entidades, possessos).'},
+  {id:'enc-vontade',      name:'Vontade Própria',    tier:'lendario',desc:'A arma tem consciência rudimentar. 1x por sessão ela avisa o portador de um perigo iminente — o mestre descreve como.'},
+];
+
+const RARITY_ORDER = ['comum','incomum','raro','epico','lendario'];
+const RARITY_LABELS = {comum:'Comum',incomum:'Incomum',raro:'Raro',epico:'Épico',lendario:'Lendário'};
+const RARITY_COLORS = {comum:'#a0a0a0',incomum:'#4aaa4a',raro:'#5a8ad4',epico:'#b060e0',lendario:'#e8a020'};
+const RARITY_BG = {comum:'#1a1a1a',incomum:'#0a140a',raro:'#080e14',epico:'#100816',lendario:'#140c00'};
+
+const WEAPON_NAMES_PREFIX = ['Lâmina','Espinho','Fúria','Sombra','Chama','Gelo','Tempestade','Vazio','Sangue','Ouro','Prata','Noite'];
+const WEAPON_NAMES_SUFFIX = ['da Ruína','do Caos','Ancestral','Sussurrante','Eternamente Afiada','do Abismo','Implacável','das Eras','Silenciosa','da Tempestade','do Fim'];
+
+// ══════════════════════════════════════════════════
+// UTILIDADES
+// ══════════════════════════════════════════════════
+function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function tierIndex(t){ return RARITY_ORDER.indexOf(t); }
+function effectsOfTier(tier){
+  const idx = tierIndex(tier);
+  return EFEITOS.filter(e => tierIndex(e.tier) <= idx);
+}
+function randEffect(tier, excludeIds=[]){
+  const pool = effectsOfTier(tier).filter(e=>!excludeIds.includes(e.id));
+  return pool.length ? rand(pool) : null;
+}
+function genWeaponName(){ return rand(WEAPON_NAMES_PREFIX)+' '+rand(WEAPON_NAMES_SUFFIX); }
+
+function rarityEffectCount(tier){
+  return {comum:1, incomum:1, raro:2, epico:2, lendario:3}[tier]||1;
+}
+
+function buildWeaponCard(wname, wtype, material, rarity, effects, enchant){
+  const col = RARITY_COLORS[rarity];
+  const bg  = RARITY_BG[rarity];
+  const bonusDmg = material ? material.bonus : 0;
+  const dmgStr = `${wtype.dmg}${bonusDmg>0?`+${bonusDmg}`:''}`;
+
+  const effectsHTML = effects.map(e=>`
+    <div class="weffect">
+      <div class="weffect-name">${e.icon} ${e.name}</div>
+      ${e.desc}
+    </div>`).join('');
+
+  const enchantHTML = enchant ? `
+    <div class="weffect" style="border-color:rgba(192,109,224,0.2);background:rgba(74,0,106,0.15)">
+      <div class="weffect-name" style="color:#c06de0">⭐ ${enchant.name} <span style="font-size:9px;color:rgba(245,234,214,0.4)">(Encantamento Especial)</span></div>
+      ${enchant.desc}
+    </div>` : '';
+
+  const tagsHTML = wtype.tags.map(t=>`<span class="wstat"><span>${t}</span></span>`).join('');
+  const lore = `Forjada em ${material?.name||'ferro'}, porta os segredos de ${rand(['antigas batalhas','eras esquecidas','um mestre sem nome','um pacto selado no aço'])}.`;
+
+  return `
+    <div class="weapon-result-card">
+      <div class="weapon-result-head" style="background:${bg}">
+        <span style="font-size:26px">${wtype.icon}</span>
+        <div style="flex:1">
+          <div class="weapon-result-name" style="color:${col}">${wname}</div>
+          <div style="font-size:11px;color:rgba(245,234,214,0.4);font-style:italic">${wtype.name}${material?` · ${material.name}`:''}</div>
+        </div>
+        <span class="r-badge r-${rarity}">${RARITY_LABELS[rarity]}</span>
+      </div>
+      <div class="weapon-result-stats">
+        <div class="wstat">🗡️ DMG <span>${dmgStr}</span></div>
+        <div class="wstat">📏 ALCANCE <span>${wtype.range}</span></div>
+        ${tagsHTML}
+      </div>
+      <div class="weapon-result-effects">
+        ${effectsHTML}
+        ${enchantHTML}
+      </div>
+      <div class="weapon-lore">"${lore}"</div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════
+// ROLETA
+// ══════════════════════════════════════════════════
+function rollFullWeapon(){
+  const rarity = document.getElementById('rarity-full').value;
+  const wtype = rand(WEAPON_TYPES);
+  const mats = MATERIALS.filter(m=>tierIndex(m.tier)<=tierIndex(rarity));
+  const mat = rand(mats);
+  const count = rarityEffectCount(rarity);
+  const effects = [];
+  const usedIds = [];
+  for(let i=0;i<count;i++){
+    const e = randEffect(rarity, usedIds);
+    if(e){ effects.push(e); usedIds.push(e.id); }
+  }
+  const enchant = (rarity==='lendario'||rarity==='epico') && Math.random()>0.4
+    ? rand(ENCHANTMENTS.filter(e=>tierIndex(e.tier)<=tierIndex(rarity))) : null;
+
+  const name = genWeaponName();
+  const el = document.getElementById('result-full');
+  el.innerHTML = buildWeaponCard(name, wtype, mat, rarity, effects, enchant);
+  el.innerHTML += `<button class="reroll-btn" onclick="rollFullWeapon()">↺ Rolar novamente</button>`;
+  el.classList.add('show');
+}
+
+function rollEffect(){
+  const tier = document.getElementById('rarity-effect').value;
+  const e = randEffect(tier);
+  if(!e) return;
+  const el = document.getElementById('result-effect');
+  el.innerHTML = `
+    <div class="weapon-result-card">
+      <div class="weapon-result-head" style="background:${RARITY_BG[tier]}">
+        <span style="font-size:24px">${e.icon}</span>
+        <div style="flex:1">
+          <div class="weapon-result-name" style="color:${RARITY_COLORS[tier]}">${e.name}</div>
+          <div style="font-size:11px;color:rgba(245,234,214,0.4)">${e.cat.replace('cat-','').toUpperCase()}</div>
+        </div>
+        <span class="r-badge r-${e.tier}">${RARITY_LABELS[e.tier]}+</span>
+      </div>
+      <div class="weapon-result-effects">
+        <div class="weffect"><div class="weffect-name">${e.icon} ${e.name}</div>${e.desc}</div>
+      </div>
+    </div>
+    <button class="reroll-btn" onclick="rollEffect()">↺ Rolar novamente</button>`;
+  el.classList.add('show');
+}
+
+function rollDungeonLoot(){
+  const diff = document.getElementById('dungeon-diff').value;
+  const pools = {
+    facil: ['comum','incomum'],
+    medio: ['incomum','raro'],
+    dificil: ['raro','epico'],
+    lendario: ['epico','lendario']
+  };
+  const rarity = rand(pools[diff]);
+  const wtype = rand(WEAPON_TYPES);
+  const mats = MATERIALS.filter(m=>tierIndex(m.tier)<=tierIndex(rarity));
+  const mat = rand(mats);
+  const count = rarityEffectCount(rarity);
+  const effects = []; const usedIds = [];
+  for(let i=0;i<count;i++){
+    const e = randEffect(rarity,usedIds);
+    if(e){effects.push(e);usedIds.push(e.id);}
+  }
+  const enchant = rarity==='lendario'&&Math.random()>0.5
+    ? rand(ENCHANTMENTS.filter(e=>e.tier==='lendario')) : null;
+  const name = genWeaponName();
+  const el = document.getElementById('result-dungeon');
+  el.innerHTML = buildWeaponCard(name,wtype,mat,rarity,effects,enchant);
+  el.innerHTML += `<div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(245,234,214,0.3);margin-top:8px;text-align:center;">Raridade sorteada: ${RARITY_LABELS[rarity]}</div>`;
+  el.innerHTML += `<button class="reroll-btn" onclick="rollDungeonLoot()">↺ Rolar novamente</button>`;
+  el.classList.add('show');
+}
+
+// ══════════════════════════════════════════════════
+// FERREIRO
+// ══════════════════════════════════════════════════
+let smithLevel = 1;
+let forgeState = { tipo:null, material:null, efeito1:null, efeito2:null, encanto:null };
+
+function smithRarity(){
+  if(smithLevel>=18) return 'lendario';
+  if(smithLevel>=12) return 'epico';
+  if(smithLevel>=7)  return 'raro';
+  if(smithLevel>=3)  return 'incomum';
+  return 'comum';
+}
+
+function changeLevel(delta){
+  smithLevel = Math.max(1, Math.min(20, smithLevel+delta));
+  syncLevel(smithLevel);
+}
+function syncLevel(v){
+  smithLevel = parseInt(v);
+  document.getElementById('smith-level-display').textContent = smithLevel;
+  document.getElementById('smith-level-range').value = smithLevel;
+  updateSmithTier();
+  renderForgeOptions();
+  updatePreview();
+}
+function updateSmithTier(){
+  const tiers = [
+    {label:'Comum',    min:1,  color:'var(--comum-light)'},
+    {label:'Incomum',  min:3,  color:'var(--incomum-light)'},
+    {label:'2º Efeito',min:5,  color:'var(--incomum-light)'},
+    {label:'Raro',     min:7,  color:'var(--raro-light)'},
+    {label:'Épico',    min:12, color:'var(--epico-light)'},
+    {label:'Encantamento',min:12,color:'var(--epico-light)'},
+    {label:'Lendário', min:18, color:'var(--lendario-light)'},
+    {label:'Mestre',   min:20, color:'var(--gold-light)'},
+  ];
+  const el = document.getElementById('smith-tier-items');
+  el.innerHTML = tiers.map(t=>`
+    <div class="smith-tier-item ${smithLevel>=t.min?'unlocked':''}">
+      <div class="smith-tier-dot" style="${smithLevel>=t.min?`background:${t.color};`:''}"></div>
+      <span style="${smithLevel>=t.min?`color:${t.color}`:''}">${t.label}</span>
+    </div>`).join('');
+
+  // Badge
+  const r = smithRarity();
+  document.getElementById('forge-rarity-badge').innerHTML =
+    `<span class="r-badge r-${r}">${RARITY_LABELS[r]}</span>`;
+}
+
+function renderForgeOptions(){
+  // Tipo
+  const tipoEl = document.getElementById('opts-tipo');
+  tipoEl.innerHTML = WEAPON_TYPES.map(t=>`
+    <button class="forge-option ${forgeState.tipo?.id===t.id?'selected':''}"
+      onclick="selectForge('tipo','${t.id}')">
+      ${t.icon} ${t.name} <span style="opacity:0.5;font-size:8px">${t.dmg}</span>
+    </button>`).join('');
+
+  // Material
+  const rarity = smithRarity();
+  const matEl = document.getElementById('opts-material');
+  matEl.innerHTML = MATERIALS.map(m=>{
+    const locked = tierIndex(m.tier) > tierIndex(rarity);
+    return `<button class="forge-option ${forgeState.material?.id===m.id?'selected':''} ${locked?'locked-opt':''}"
+      onclick="selectForge('material','${m.id}')"
+      title="${m.desc}">
+      ${m.name} ${locked?`<span class="opt-lock">🔒</span>`:`<span style="opacity:0.5;font-size:8px">${m.bonus>0?'+'+m.bonus+'dmg':''}</span>`}
+    </button>`;
+  }).join('');
+
+  // Efeito 1
+  const e1El = document.getElementById('opts-efeito1');
+  e1El.innerHTML = EFEITOS.map(e=>{
+    const locked = tierIndex(e.tier) > tierIndex(rarity);
+    return `<button class="forge-option ${forgeState.efeito1?.id===e.id?'selected':''} ${locked?'locked-opt':''}"
+      onclick="selectForge('efeito1','${e.id}')" title="${e.desc}">
+      ${e.icon} ${e.name} ${locked?`<span class="opt-lock">🔒</span>`:''}
+    </button>`;
+  }).join('');
+
+  // Efeito 2 (nível 5+)
+  const step2 = document.getElementById('step-efeito2');
+  if(smithLevel < 5){
+    step2.classList.add('locked');
+  } else {
+    step2.classList.remove('locked');
+    const cat1 = forgeState.efeito1?.cat;
+    const e2El = document.getElementById('opts-efeito2');
+    e2El.innerHTML = EFEITOS.map(e=>{
+      const locked = tierIndex(e.tier) > tierIndex(rarity) || (cat1 && e.cat === cat1);
+      const reason = cat1 && e.cat === cat1 ? 'mesma categoria' : 'nível insuficiente';
+      return `<button class="forge-option ${forgeState.efeito2?.id===e.id?'selected':''} ${locked?'locked-opt':''}"
+        onclick="selectForge('efeito2','${e.id}')" title="${locked?'Bloqueado: '+reason:e.desc}">
+        ${e.icon} ${e.name} ${locked?`<span class="opt-lock">${cat1&&e.cat===cat1?'≠':'🔒'}</span>`:''}
+      </button>`;
+    }).join('');
+  }
+
+  // Encantamento (nível 12+)
+  const step3 = document.getElementById('step-encanto');
+  if(smithLevel < 12){
+    step3.classList.add('locked');
+  } else {
+    step3.classList.remove('locked');
+    const encEl = document.getElementById('opts-encanto');
+    encEl.innerHTML = ENCHANTMENTS.map(e=>{
+      const locked = tierIndex(e.tier) > tierIndex(rarity);
+      return `<button class="forge-option ${forgeState.encanto?.id===e.id?'selected':''} ${locked?'locked-opt':''}"
+        onclick="selectForge('encanto','${e.id}')" title="${e.desc}">
+        ⭐ ${e.name} ${locked?`<span class="opt-lock">🔒</span>`:''}
+      </button>`;
+    }).join('');
+  }
+}
+
+function selectForge(slot, id){
+  const maps = {tipo:WEAPON_TYPES, material:MATERIALS, efeito1:EFEITOS, efeito2:EFEITOS, encanto:ENCHANTMENTS};
+  const item = maps[slot].find(x=>x.id===id);
+  forgeState[slot] = forgeState[slot]?.id===id ? null : item;
+  renderForgeOptions();
+  updatePreview();
+}
+
+function updatePreview(){
+  const prev = document.getElementById('forge-preview');
+  const { tipo, material, efeito1, efeito2, encanto } = forgeState;
+  if(!tipo && !efeito1){ prev.classList.remove('show'); return; }
+
+  const effects = [efeito1, efeito2].filter(Boolean);
+  const name = genWeaponName();
+  const rarity = smithRarity();
+  const smithName = document.getElementById('smith-name').value || 'Ferreiro';
+
+  document.getElementById('forge-preview-content').innerHTML =
+    buildWeaponCard(name, tipo||WEAPON_TYPES[0], material, rarity, effects, encanto) +
+    `<div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(245,234,214,0.3);margin-top:8px;text-align:center;">
+      Forjada por ${smithName} · Nível ${smithLevel}
+    </div>`;
+  prev.classList.add('show');
+}
+
+function forgeWeapon(){
+  const { tipo, material, efeito1 } = forgeState;
+  if(!tipo || !efeito1){
+    alert('Selecione pelo menos o tipo de arma e um efeito principal!');
+    return;
+  }
+  updatePreview();
+  document.getElementById('forge-preview').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function resetForge(){
+  forgeState = { tipo:null, material:null, efeito1:null, efeito2:null, encanto:null };
+  renderForgeOptions();
+  document.getElementById('forge-preview').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════════
+// CATÁLOGO
+// ══════════════════════════════════════════════════
+function buildCatalog(){
+  const grid = document.getElementById('effects-grid');
+  grid.innerHTML = EFEITOS.concat(ENCHANTMENTS.map(e=>({...e, cat:'cat-magia', icon:'⭐'}))).map(e=>`
+    <div class="effect-card ${e.cat}" data-cat="${e.cat}" data-tier="${e.tier}">
+      <div class="effect-card-header">
+        <span style="font-size:16px">${e.icon||'⭐'}</span>
+        <span class="effect-card-name">${e.name}</span>
+        <span class="effect-cat-badge ${e.cat}">${e.cat.replace('cat-','')}</span>
+        <span class="r-badge r-${e.tier}" style="font-size:8px">${RARITY_LABELS[e.tier]}+</span>
+      </div>
+      <div class="effect-card-desc">${e.desc}</div>
+    </div>`).join('');
+}
+
+function filterEffects(val, btn){
+  document.querySelectorAll('.eff-filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.effect-card').forEach(c=>{
+    if(val==='all'){ c.classList.remove('hidden'); return; }
+    if(val.startsWith('cat-')){
+      c.classList.toggle('hidden', !c.classList.contains(val));
+    } else {
+      // filtro por raridade mínima
+      const tiers = {'r-comum':0,'r-incomum':1,'r-raro':2,'r-epico':3,'r-lendario':4};
+      const minIdx = tiers[val]??0;
+      c.classList.toggle('hidden', tierIndex(c.dataset.tier) < minIdx);
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════════
+function showTab(tab){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  buildCatalog();
+  updateSmithTier();
+  renderForgeOptions();
+});
+</script>
+</body>
+</html>
