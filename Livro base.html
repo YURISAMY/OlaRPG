@@ -2723,13 +2723,13 @@
      <div class="base-card wide">
       <div class="stat-row">
        <span class="stat-pill hp">
-        ❤️ HP: 24 + (1d10 + 1.5×CON por nível)
+        ❤️ HP: 24 (+ 1d10 + 1.5×CON por nível)
        </span>
        <span class="stat-pill st">
-        🟡 ST: 8 + 1 (a cada nivel par)
+        🟡 ST: 8 (+ 1 a cada nível par)
        </span>
        <span class="stat-pill fo">
-        🔵 FO: 6 + 1 (a cada nível múltiplo de 3)
+        🔵 FO: 6 (+ 1 a cada nível múltiplo de 3)
        </span>
        <span class="stat-pill rec">
         Rec: 🟡5 / 🔵2
@@ -2783,7 +2783,7 @@
          Constituição de Ferro
         </div>
         <div class="pdesc">
-         HP máximo aumenta em 5 por nível, além do normal da classe.
+         HP máximo aumenta em 2 por nível, além do normal da classe.
         </div>
        </div>
        <div class="passive-pill">
@@ -2809,7 +2809,7 @@
          Recuperar folego
         </div>
         <div class="pdesc">
-         Desbloqueia a ação padrão "Recuperar Fôlego" sem custo: que recupera 5🟡 e 2🔵, 1d10 + CON. Uma vez por combate. 
+         Desbloqueia a ação padrão "Recuperar Fôlego" sem custo: que recupera 5🟡 e 2🔵, e 1d10 + CON de HP. Uma vez por combate. 
         </div>
        </div>
       </div>
@@ -2829,13 +2829,13 @@
      <div class="base-card wide">
       <div class="stat-row">
        <span class="stat-pill hp">
-        ❤️ HP: 16 + (1d6 + CON por nível)
+        ❤️ HP: 16 (+ 1d6 + CON por nível)
        </span>
        <span class="stat-pill st">
-        🟡 ST: 5 + 1 (a cada nível múltiplo de 3)
+        🟡 ST: 5 (+ 1 a cada nível múltiplo de 3)
        </span>
        <span class="stat-pill fo">
-        🔵 FO: 15 + 1 (a cada nível par)
+        🔵 FO: 15 (+ 1 a cada nível par)
        </span>
        <span class="stat-pill rec">
         Rec: 🟡2 / 🔵2 + mod arcano
@@ -2926,20 +2926,20 @@
    <div class="archetype-section agil">
     <div class="archetype-header agil">
      <h3>
-      🪃 ÁGIL (ASTUTO)
+      🪃 ASTUTO
      </h3>
     </div>
     <div class="base-grid">
      <div class="base-card wide">
       <div class="stat-row">
        <span class="stat-pill hp">
-        ❤️ HP: 20 + (1d8 + CON por nível)
+        ❤️ HP: 20 (+ 1d8 + CON por nível)
        </span>
        <span class="stat-pill st">
-        🟡 ST: 8 + 1 (a cada nível par)
+        🟡 ST: 8 (+ 1 a cada nível par)
        </span>
        <span class="stat-pill fo">
-        🔵 FO: 10 + 3 (a cada nível múltiplo de 3)
+        🔵 FO: 8 (+2 a cada nível múltiplo de 3)
        </span>
        <span class="stat-pill rec">
         Rec: 🟡6 / 🔵3
@@ -3041,13 +3041,13 @@
      <div class="base-card wide">
       <div class="stat-row">
        <span class="stat-pill hp">
-        ❤️ HP: 20 + (1d8 + CON por nível)
+        ❤️ HP: 20 (+ 1d8 + CON por nível)
        </span>
        <span class="stat-pill st">
-        🟡 ST: 6 + 2 (a cada nível múltiplo de 4)
+        🟡 ST: 6 (+ 2 a cada nível múltiplo de 4)
        </span>
        <span class="stat-pill fo">
-        🔵 FO: 10 + 2 (a cada nível múltiplo de 3)
+        🔵 FO: 10 (+ 2 a cada nível múltiplo de 3)
        </span>
        <span class="stat-pill rec">
         Rec: 🟡4 / 🔵1 + mod de arcano
@@ -3246,6 +3246,81 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      </div>
     </div>
    </div>
+
+   <div class="section-divider"></div>
+
+   <!-- DEBUFFS E CONDIÇÕES -->
+   <div class="base-grid">
+    <div class="base-card wide" style="width: 100%;">
+     <div class="base-card-title">
+      ⚠️ Status e Condições
+     </div>
+     <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:10px;">
+      Efeitos que afetam os estatísticas, recursos ou limitações durante o jogo.
+     </p>
+     <div class="mechanic-row">
+      <strong>LENTO</strong>
+      — Deslocamento reduzido à metade. Reações de movimentação custam +1🟡 ou +1🔵 adicional.
+     </div>
+     <div class="mechanic-row">
+      <strong>CEGO</strong>
+      — Falha em testes de visão. Desvantagem em ataques. Só usa reações contra inimigos adjacentes.
+     </div>
+     <div class="mechanic-row">
+      <strong>TONTO</strong>
+      — Penalidade de -1 em todos os testes. Se receber dano, perde 1🔵 pela desorientação.
+     </div>
+     <div class="mechanic-row">
+      <strong>SILENCIADO</strong>
+      — Impossibilitado de falar ou usar habilidades com palavras de poder. Custo de FO🔵 dobrado.
+     </div>
+     <div class="mechanic-row">
+      <strong>DERRUBADO</strong>
+      — No chão. Precisa de Ação Padrão (ou 4🟡) para levantar. Atq corpo a corpo: +2 contra você.
+     </div>
+     <div class="mechanic-row">
+      <strong>ENFRAQUECIDO</strong>
+      — Músculos falham. Dano físico reduzido à metade. Estilo Ofensivo custa +2🟡.
+     </div>
+     <div class="mechanic-row">
+      <strong>ENRAIVECIDO</strong>
+      — Perde o controle. Deve atacar a criatura mais próxima. +2 dano, -3 CA.
+     </div>
+     <div class="mechanic-row">
+      <strong>SUPRIMIDO</strong>
+      — Não pode se aproximar de inimigos. Recuperação de 🟡 reduzida em -2 por turno.
+     </div>
+     <div class="mechanic-row">
+      <strong>SANGRAMENTO</strong>
+      — Perde 1d6 HP no início de cada turno (2 turnos padrão ou por efeito da skill).
+     </div>
+     <div class="mechanic-row">
+      <strong>EXAUSTO</strong>
+      — Perde -5 CA. Não pode se mover até o final do próximo turno (ST em 0 ou menor).
+     </div>
+     <div class="mechanic-row">
+      <strong>ABALADO</strong>
+      — Não pode aprimorar ataques/magias consumindo 🟡 ou 🔵 extra. -2 em testes de Determinação.
+     </div>
+     <div class="mechanic-row">
+      <strong>ACELERADO</strong>
+      — +4 blocos de movimento. Recuperação de 🟡 aumenta +1 por turno.
+     </div>
+     <div class="mechanic-row">
+      <strong>RETARDADO</strong>
+      — Sua próxima ação leva 2x o tempo padrão a mais para poder ser usada novamente.
+     </div>
+     <div class="mechanic-row">
+      <strong>INSPIRADO</strong>
+      — Permite re-rolar um teste em que você falhou uma vez, insistindo na ação.
+     </div>
+     <div class="mechanic-row">
+      <strong>FURTIVO</strong>
+      — Concede bônus nas jogadas de ataque igual a metade do seu bônus de proficiência (arredondado para cima).
+     </div>
+    </div>
+   </div>
+
   </div>
   <!-- ═══════════════════════════════════════ RAÇAS ═══════════════════════════════════════ -->
   <div class="section" id="tab-racas">
@@ -3255,6 +3330,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
     </h2>
     <p style="font-size:14px;font-style:italic;opacity:.7;margin-top:4px;">
      Cada raça carrega a marca do deus que a criou — ou que a amaldiçoou.
+     <br><span style="font-size: 13px; color: #5bb7a2;">Nota: Habilidades listadas nas raças podem ser usadas uma vez por descanso longo e não possuem custos de recurso. Passivas mais simples como aumentar curas recebidas ou imunidades seguem sem cooldown.</span>
     </p>
    </div>
 
@@ -3276,7 +3352,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Auren — linhagem abençoada</p>
      <p>Humanos nascidos com traços angélicos — olhos que brilham no escuro, cabelo branco prateado. Raros e perseguidos por cultos de Verath como heresia ambulante.</p>
      <div class="mechanic-row"><strong>PASSIVA — Aura de Serenidade</strong> Criaturas não-hostis em 3 blocos ao redor não podem ser afetadas por medo enquanto você estiver consciente.</div>
-     <div class="mechanic-row"><strong>PADRÃO — Toque da Luz (2🔵)</strong> Cura 1d6 HP em si mesmo ou em aliado adjacente. Cooldown: 1 turno.</div>
+     <div class="mechanic-row"><strong>ATIVA — Toque da Luz</strong> Cura 1d6 HP em si mesmo ou em aliado adjacente.</div>
      <div class="mechanic-row"><strong>ESCALA (nível 8)</strong> Toque da Luz passa a curar 2d6 e alcança até 2 blocos.</div>
     </div>
    </div>
@@ -3290,8 +3366,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <div class="base-card-title" style="color:#c06de0;">🐱 Kattes</div>
      <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Verath, o Sem Rosto</p>
      <p>Pequenos, felinos e incomensuravelmente azarentos para quem está ao redor. Vivem sobre Tibia, uma tartaruga colossal que carrega sua cidade nas costas.</p>
-     <div class="mechanic-row"><strong>PASSIVA — Gato Negro</strong> Uma vez por dia, pode forçar um alvo em até 4 blocos a rerolar qualquer teste e ficar com o pior resultado.</div>
-     <div class="mechanic-row"><strong>RÁPIDA — Sorte do Katte </strong> Rerola qualquer teste seu e fica com o melhor resultado. Cooldown: 1 dia.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Gato Negro</strong> Pode forçar um alvo em até 4 blocos a rerolar qualquer teste e ficar com o pior resultado.</div>
+     <div class="mechanic-row"><strong>ATIVA — Sorte do Katte </strong> Rerola qualquer teste seu e fica com o melhor resultado.</div>
      <div class="mechanic-row"><strong>PASSIVA — Pequeno e Rápido</strong> +1 bloco de movimento base. Inimigos de tamanho Grande ou maior têm -1 para te acertar.</div>
     </div>
 
@@ -3314,7 +3390,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Sylveth, o Mensageiro Duplo — Mercúrio</p>
      <p>Chamados de mi entre si, vivem nas fronteiras entre reinos como espiões, comerciantes e intermediários. Não têm pátria fixa e consideram isso vantagem.</p>
      <div class="mechanic-row"><strong>PASSIVA — Língua Dupla</strong> Sempre rola com vantagem em testes sociais em primeiros encontros. Percebe automaticamente mentiras óbvias.</div>
-     <div class="mechanic-row"><strong>RÁPIDA — Desaparecer (2🟡)</strong> Entra em furtividade mesmo sem cobertura por 1 turno. Cooldown: 2 turnos.</div>
+     <div class="mechanic-row"><strong>ATIVA — Desaparecer</strong> Entra em furtividade mesmo sem cobertura por 1 turno.</div>
     </div>
 
     <div class="base-card medium" style="border-color:rgba(90,130,255,0.26);">
@@ -3322,7 +3398,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Val'hir, o Trovejante</p>
      <p>Guerreiros-sacerdotes com marcas de nascença que lembram raios. Para eles, toda batalha é uma oração. Recuar é heresia.</p>
      <div class="mechanic-row"><strong>PASSIVA — Oração de Batalha</strong> A cada inimigo que você derruba, recupera 1🟡 imediatamente.</div>
-     <div class="mechanic-row"><strong>PADRÃO — Raio de Val'hir (3🔵)</strong> Linha reta de 6 blocos, 1d8 elétrico. Nível 5: 2d8. Nível 10: 3d8 e atinge todos na linha. Cooldown: 1 turno.</div>
+     <div class="mechanic-row"><strong>ATIVA — Raio de Val'hir</strong> Linha reta de 6 blocos, 1d8 elétrico. Nível 5: 2d8. Nível 10: 3d8 e atinge todos na linha.</div>
      <div class="mechanic-row"><strong>PASSIVA — Sem Recuo</strong> Imune a efeitos de empurrar ou derrubar involuntários.</div>
     </div>
 
@@ -3330,8 +3406,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <div class="base-card-title" style="color:#e87098;">🌹 Elfos de Sangue</div>
      <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deusa:</strong> Mirael, a Tecelã dos Laços — Vênus</p>
      <p>De aparência perturbadoramente perfeita. Longevos e frios, com laços espirituais a Mirael que os tornam naturalmente magnéticos e perigosos.</p>
-     <div class="mechanic-row"><strong>PASSIVA — Presença Irresistível</strong> Uma vez por combate, um inimigo que te ataque deve fazer um teste ou perder a ação padrão por 1 turno, paralisado pelo seu charme.</div>
-     <div class="mechanic-row"><strong>RÁPIDA — Laço de Mirael (2🔵)</strong> Vínculo com alvo em 5 blocos: dano que você recebe nos próximos 2 turnos é reduzido em 2 e transferido parcialmente ao alvo. Cooldown: 2 turnos.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Presença Irresistível</strong> Um inimigo que te ataque deve fazer um teste ou perder a ação padrão por 1 turno, paralisado pelo seu charme.</div>
+     <div class="mechanic-row"><strong>ATIVA — Laço de Mirael</strong> Vínculo com alvo em 5 blocos: dano que você recebe nos próximos 2 turnos é reduzido em 2 e transferido parcialmente ao alvo.</div>
     </div>
    </div>
 
@@ -3370,7 +3446,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       <div class="mechanic-row"><strong>PASSIVA — Crueldade de Guerra</strong> Sempre que um alvo cair abaixo de 50% HP, você recupera 1🟡 e causa +1 de dano contra ele até o fim do combate.</div>
       <div class="mechanic-row"><strong>PASSIVA — Brutamontes</strong> +2 em testes para arrombar, empurrar, quebrar ou derrubar. Inimigos menores têm -1 em testes do mesmo tipo contra você.</div>
       <div class="mechanic-row"><strong>PASSIVA — Burros</strong> Orcs tem desvantagem natural contra testes de enganação.</div>
-      <div class="mechanic-row"><strong>RÁPIDA — Riso de Sangue (1🟡)</strong> Um alvo em até 4 blocos faz teste de SAB ou CAR. Se falhar, fica Intimidado por 1 turno e sofre -1 dado no próximo ataque contra orcs.</div>
+      <div class="mechanic-row"><strong>ATIVA — Riso de Sangue</strong> Um alvo em até 4 blocos faz teste de SAB ou CAR. Se falhar, fica Intimidado por 1 turno e sofre -1 dado no próximo ataque contra orcs.</div>
      </div>
     </div>
 
@@ -3400,8 +3476,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <div class="base-card-title" style="color:#a0a0e8;">🌀 Fragmentos de Aethon</div>
      <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Aethon, o Primeiro Vazio — Urano</p>
      <p>Nenhum se parece com outro. Cada Fragmento é fisicamente único: alguns têm quatro braços, outros parecem borrados na visão periférica.</p>
-     <div class="mechanic-row"><strong>PASSIVA — Forma Incoerente</strong> Ao ser atacado, pode jogar um d20, se tirar par o ataque erra. Uma vez por combate.</div>
-     <div class="mechanic-row"><strong>PADRÃO — Ecoar Aethon</strong> Todos os inimigos adjascentes fazem seu proxímo teste com desvantagem. Cooldown: 4 turnos.</div>
+     <div class="mechanic-row"><strong>PASSIVA — Forma Incoerente</strong> Ao ser atacado, pode jogar um d20, se tirar par o ataque erra.</div>
+     <div class="mechanic-row"><strong>ATIVA — Ecoar Aethon</strong> Todos os inimigos adjascentes fazem seu proxímo teste com desvantagem.</div>
      <div class="mechanic-row"><strong>PASSIVA — Além da Compreensão</strong> Imune a leitura de mente, adivinhação e magias que tentem prever suas ações.</div>
     </div>
    </div>
@@ -3432,7 +3508,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      <p style="font-size:12px;color:rgba(245,234,214,0.52);"><strong>Deus:</strong> Val'hir, o Trovejante</p>
      <p>Linhagem humana rara com marcas de nascença que lembram raios. Surgem mais em regiões de guerra constante, como se Val'hir os plantasse no conflito.</p>
      <div class="mechanic-row"><strong>PASSIVA — Marca do Trovão</strong> Imune a dano elétrico. Quando atingido por dano elétrico, recupera 1🟡 em vez de sofrer dano.</div>
-     <div class="mechanic-row"><strong>PADRÃO — Descarga (2🟡)</strong> Dano da arma +1d6 elétrico + Atordoado por 1 turno. Nível 6: +2d6. Cooldown: 2 turnos.</div>
+     <div class="mechanic-row"><strong>ATIVA — Descarga</strong> Dano da arma +1d6 elétrico + Atordoado por 1 turno. Nível 6: +2d6.</div>
     </div>
 
     <div class="base-card medium" style="border-color:rgba(165,150,185,0.35);">
@@ -6065,13 +6141,13 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
   <div class="section" id="tab-agil">
    <div class="tree-header agil">
     <h2>
-     🪃 ÁGIL
+     🪃 ÁSTUTO
     </h2>
     <p>
      Velocidade, precisão e adaptabilidade acima de tudo
     </p>
    </div>
-   <div class="tree">
+   <div class="tree"> 
     <div class="tree-level">
      <!-- CAÇADOR -->
      <div class="tree-row">
@@ -6163,9 +6239,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
            Atinge todos em área 2x2 blocos dentro do alcance. Dano da arma -1 dado em
                     cada um. Não funciona em adjacentes.
           </div>
-          <span class="skill-req">
-           🔒 Req: Nível 7
-          </span>
          </div>
         </div>
        </div>
@@ -6521,9 +6594,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
            Atacar fora do campo de visão de um inimigo que ainda não agiu nesta rodada
                     causa o dobro do dano.
           </div>
-          <span class="skill-req">
-           🔒 Req: Nível 7
-          </span>
          </div>
          <div class="skill-divider">
          </div>
@@ -6562,9 +6632,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
            Só com alvo abaixo de 25% HP. Dano fixo 3x arma, ignorando reduções. Se matar:
                     +3🟡 e Desaparecer grátis.
           </div>
-          <span class="skill-req">
-           🔒 Req: Nível 7
-          </span>
          </div>
         </div>
        </div>
@@ -6950,9 +7017,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
            Quando qualquer dado da mesa rolar mínimo ou máximo, reage gratuitamente:
                     recupera 1🟡 ou aplica -1 no próximo ataque inimigo.
           </div>
-          <span class="skill-req">
-           🔒 Req: Nível 4
-          </span>
          </div>
         </div>
        </div>
