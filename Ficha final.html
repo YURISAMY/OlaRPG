@@ -1053,6 +1053,137 @@
     color: var(--gold-dim);
   }
   .pericia-row.proficiente .pericia-total { color: var(--gold-light); }
+
+  /* ── GERENCIADOR DE FICHAS ── */
+  .fichas-bar {
+    max-width: 1100px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    position: relative;
+  }
+  .fichas-bar::before {
+    content: '✦ FICHAS';
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--gold-dim);
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+  .fichas-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  .ficha-tab {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--text-dim);
+    transition: all 0.2s;
+    max-width: 180px;
+  }
+  .ficha-tab:hover { border-color: var(--border-gold); color: var(--text); }
+  .ficha-tab.active {
+    border-color: var(--gold);
+    color: var(--gold-light);
+    background: rgba(201,146,26,0.1);
+  }
+  .ficha-tab-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 120px;
+  }
+  .ficha-tab-del {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.2);
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    transition: color 0.2s;
+    flex-shrink: 0;
+  }
+  .ficha-tab-del:hover { color: var(--hp-color); }
+  .fichas-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .ficha-action-btn {
+    background: rgba(201,146,26,0.1);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.07em;
+    padding: 5px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .ficha-action-btn:hover { background: rgba(201,146,26,0.22); }
+  .ficha-action-btn.secondary {
+    background: rgba(255,255,255,0.04);
+    border-color: var(--border);
+    color: var(--text-dim);
+  }
+  .ficha-action-btn.secondary:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+  /* modal de renomear */
+  .rename-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+  }
+  .rename-modal-overlay.open { display: flex; }
+  .rename-modal {
+    background: var(--surface2);
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    padding: 24px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .rename-modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--gold-light);
+    letter-spacing: 0.1em;
+  }
+  .rename-modal input {
+    font-size: 15px;
+    padding: 8px 12px;
+  }
+  .rename-modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
 </style>
 </head>
 <body>
@@ -1060,6 +1191,29 @@
 <div class="page-header">
   <h1>FICHA DE PERSONAGEM</h1>
   <p>Sistema Homebrew de Mesa</p>
+</div>
+
+<!-- GERENCIADOR DE FICHAS -->
+<div class="fichas-bar">
+  <div class="fichas-tabs" id="fichas-tabs"></div>
+  <div class="fichas-actions">
+    <button class="ficha-action-btn" onclick="novaFicha()">＋ Nova Ficha</button>
+    <button class="ficha-action-btn secondary" onclick="duplicarFicha()">⎘ Duplicar</button>
+    <button class="ficha-action-btn secondary" onclick="abrirRenomear()">✎ Renomear</button>
+  </div>
+</div>
+
+<!-- MODAL RENOMEAR -->
+<div class="rename-modal-overlay" id="rename-modal-overlay" onclick="fecharRenomear(event)">
+  <div class="rename-modal" onclick="event.stopPropagation()">
+    <div class="rename-modal-title">Renomear Ficha</div>
+    <input type="text" id="rename-input" placeholder="Nome da ficha" maxlength="40"
+      onkeydown="if(event.key==='Enter') confirmarRenomear()">
+    <div class="rename-modal-actions">
+      <button class="add-btn danger" onclick="fecharRenomear()">Cancelar</button>
+      <button class="add-btn" onclick="confirmarRenomear()">Salvar</button>
+    </div>
+  </div>
 </div>
 
 <div class="sheet-grid">
@@ -2549,17 +2703,208 @@ function applyState() {
   renderPericias();
 }
 
+// ─── SISTEMA DE MÚLTIPLAS FICHAS ─────────────────────────────────────
+const FICHAS_KEY   = 'rpg-fichas-v2';
+const ATIVA_KEY    = 'rpg-ficha-ativa';
+const LEGACY_KEY   = 'rpg-ficha';
+
+function gerarId() {
+  return 'f' + Date.now() + Math.random().toString(36).slice(2, 7);
+}
+
+function getDefaultState() {
+  return {
+    level: 1,
+    char: {},
+    attrs: { for:10, des:10, con:10, int:10, car:10, sab:10 },
+    profAttrs: [],
+    resources: { hpCur:20, hpMax:20, stCur:12, stMax:12, foCur:10, foMax:10, recSt:2, recFo:2 },
+    skillsBase: [], skillsSpec: [], itens: [], passivas: [],
+    magiasGerais: [], tecnicasGerais: [], exclusivas: [],
+    artefatos: [
+      { name:'', effect:'', raridade:'comum' },
+      { name:'', effect:'', raridade:'comum' },
+      { name:'', effect:'', raridade:'comum' }
+    ],
+    statuses: [], notes: '', historia: '', pericias: {}
+  };
+}
+
+function carregarFichas() {
+  try {
+    const raw = localStorage.getItem(FICHAS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+
+  // Migração de ficha legada
+  const fichas = {};
+  try {
+    const legado = localStorage.getItem(LEGACY_KEY);
+    if (legado) {
+      const id = gerarId();
+      const dadosLegados = JSON.parse(legado);
+      const nome = dadosLegados.char?.name || 'Personagem';
+      fichas[id] = { nome, dados: dadosLegados };
+      salvarFichas(fichas);
+      localStorage.setItem(ATIVA_KEY, id);
+      return fichas;
+    }
+  } catch(e) {}
+
+  // Sem nenhuma ficha: cria uma em branco
+  const id = gerarId();
+  fichas[id] = { nome: 'Personagem 1', dados: getDefaultState() };
+  salvarFichas(fichas);
+  localStorage.setItem(ATIVA_KEY, id);
+  return fichas;
+}
+
+function salvarFichas(fichas) {
+  try { localStorage.setItem(FICHAS_KEY, JSON.stringify(fichas)); } catch(e) {}
+}
+
+function getIdAtivo() {
+  return localStorage.getItem(ATIVA_KEY) || Object.keys(carregarFichas())[0];
+}
+
 function save() {
   collectState();
-  try { localStorage.setItem('rpg-ficha', JSON.stringify(state)); } catch(e) {}
+  const fichas = carregarFichas();
+  const id = getIdAtivo();
+  if (!fichas[id]) return;
+  fichas[id].dados = JSON.parse(JSON.stringify(state));
+  // Sincroniza nome da aba com o nome do personagem
+  const nomePers = (state.char?.name || '').trim();
+  if (nomePers) fichas[id].nome = nomePers;
+  salvarFichas(fichas);
+  renderFichasTabs();
 }
 
 function loadFromStorage() {
-  try {
-    const raw = localStorage.getItem('rpg-ficha');
-    if (raw) { state = { ...state, ...JSON.parse(raw) }; }
-  } catch(e) {}
+  const fichas = carregarFichas();
+  let id = getIdAtivo();
+  if (!fichas[id]) id = Object.keys(fichas)[0];
+  localStorage.setItem(ATIVA_KEY, id);
+  const dados = fichas[id]?.dados || getDefaultState();
+  state = { ...getDefaultState(), ...dados };
   applyState();
+  renderFichasTabs();
+}
+
+function renderFichasTabs() {
+  const fichas = carregarFichas();
+  const ativo = getIdAtivo();
+  const container = document.getElementById('fichas-tabs');
+  if (!container) return;
+  container.innerHTML = '';
+  Object.entries(fichas).forEach(([id, ficha]) => {
+    const tab = document.createElement('div');
+    tab.className = 'ficha-tab' + (id === ativo ? ' active' : '');
+    tab.title = ficha.nome;
+
+    const nomeSpan = document.createElement('span');
+    nomeSpan.className = 'ficha-tab-name';
+    nomeSpan.textContent = ficha.nome;
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'ficha-tab-del';
+    delBtn.title = 'Deletar ficha';
+    delBtn.textContent = '\u00d7';
+    delBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deletarFicha(id);
+    });
+
+    tab.appendChild(nomeSpan);
+    tab.appendChild(delBtn);
+    tab.addEventListener('click', () => trocarFicha(id));
+    container.appendChild(tab);
+  });
+}
+
+function trocarFicha(id) {
+  save(); // salva a ficha atual antes de trocar
+  localStorage.setItem(ATIVA_KEY, id);
+  const fichas = carregarFichas();
+  const dados = fichas[id]?.dados || getDefaultState();
+  state = { ...getDefaultState(), ...dados };
+  applyState();
+  renderFichasTabs();
+}
+
+function novaFicha() {
+  save();
+  const fichas = carregarFichas();
+  const id = gerarId();
+  const num = Object.keys(fichas).length + 1;
+  fichas[id] = { nome: 'Personagem ' + num, dados: getDefaultState() };
+  salvarFichas(fichas);
+  localStorage.setItem(ATIVA_KEY, id);
+  state = getDefaultState();
+  applyState();
+  renderFichasTabs();
+}
+
+function duplicarFicha() {
+  save();
+  const fichas = carregarFichas();
+  const id = getIdAtivo();
+  const original = fichas[id];
+  if (!original) return;
+  const novoId = gerarId();
+  fichas[novoId] = {
+    nome: original.nome + ' (cópia)',
+    dados: JSON.parse(JSON.stringify(original.dados))
+  };
+  salvarFichas(fichas);
+  localStorage.setItem(ATIVA_KEY, novoId);
+  state = { ...getDefaultState(), ...fichas[novoId].dados };
+  applyState();
+  renderFichasTabs();
+}
+
+function deletarFicha(id) {
+  const fichas = carregarFichas();
+  const nome = fichas[id]?.nome || 'esta ficha';
+  if (Object.keys(fichas).length <= 1) {
+    alert('Você precisa ter pelo menos uma ficha.');
+    return;
+  }
+  if (!confirm(`Deletar a ficha "${nome}"? Esta ação não pode ser desfeita.`)) return;
+  delete fichas[id];
+  salvarFichas(fichas);
+  const novoId = Object.keys(fichas)[0];
+  localStorage.setItem(ATIVA_KEY, novoId);
+  state = { ...getDefaultState(), ...fichas[novoId].dados };
+  applyState();
+  renderFichasTabs();
+}
+
+function abrirRenomear() {
+  const fichas = carregarFichas();
+  const id = getIdAtivo();
+  const input = document.getElementById('rename-input');
+  input.value = fichas[id]?.nome || '';
+  document.getElementById('rename-modal-overlay').classList.add('open');
+  setTimeout(() => input.focus(), 50);
+}
+
+function fecharRenomear(e) {
+  if (e && e.target !== document.getElementById('rename-modal-overlay')) return;
+  document.getElementById('rename-modal-overlay').classList.remove('open');
+}
+
+function confirmarRenomear() {
+  const nome = document.getElementById('rename-input').value.trim();
+  if (!nome) return;
+  const fichas = carregarFichas();
+  const id = getIdAtivo();
+  if (fichas[id]) {
+    fichas[id].nome = nome;
+    salvarFichas(fichas);
+    renderFichasTabs();
+  }
+  document.getElementById('rename-modal-overlay').classList.remove('open');
 }
 
 function exportJSON() {
@@ -2578,16 +2923,22 @@ function importJSON(event) {
   const reader = new FileReader();
   reader.onload = e => {
     try {
-      state = { ...state, ...JSON.parse(e.target.result) };
+      const importado = JSON.parse(e.target.result);
+      // Importar como nova ficha em vez de sobrescrever
+      const fichas = carregarFichas();
+      const id = gerarId();
+      const nomeChar = importado.char?.name || file.name.replace('.json','') || 'Importado';
+      fichas[id] = { nome: nomeChar, dados: importado };
+      salvarFichas(fichas);
+      localStorage.setItem(ATIVA_KEY, id);
+      state = { ...getDefaultState(), ...importado };
       applyState();
-      save();
+      renderFichasTabs();
     } catch(err) { alert('Arquivo inválido.'); }
   };
   reader.readAsText(file);
   event.target.value = '';
 }
-
-
 
 // ─── GENERIC EDIT FUNCTIONS ──────────────────────────────────────────
 function editGenericSkill(listKey, idx) {
@@ -2722,9 +3073,16 @@ function openItemEdit(idx) {
 }
 
 function clearAll() {
-  if (!confirm('Limpar todos os dados da ficha?')) return;
-  localStorage.removeItem('rpg-ficha');
-  location.reload();
+  if (!confirm('Limpar todos os dados da ficha ATIVA? As outras fichas não serão afetadas.')) return;
+  const fichas = carregarFichas();
+  const id = getIdAtivo();
+  if (fichas[id]) {
+    fichas[id].dados = getDefaultState();
+    salvarFichas(fichas);
+  }
+  state = getDefaultState();
+  applyState();
+  renderFichasTabs();
 }
 </script>
 
