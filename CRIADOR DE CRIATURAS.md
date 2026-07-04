@@ -178,11 +178,11 @@ O tier de dificuldade indica quão letal uma criatura é em combate. Como criatu
 
 | Score | Tier | Nível sugerido dos jogadores |
 |---|---|---|
-| **0–7** | 🟢 Fácil | Nível 1–5 |
-| **8–13** | 🔵 Médio | Nível 6–10 |
-| **14–22** | 🟠 Difícil | Nível 11–15 |
-| **23–37** | 🔴 Mortal | Nível 16–20 |
-| **38+** | ⚫ Lendário | Nível 20+ (boss final) |
+| **0–11** | 🟢 Fácil | Nível 1–5 |
+| **12–17** | 🔵 Médio | Nível 6–10 |
+| **18–25** | 🟠 Difícil | Nível 11–15 |
+| **26–41** | 🔴 Mortal | Nível 16–20 |
+| **42+** | ⚫ Lendário | Nível 20+ (boss final) |
 
 ### Exemplos calibrados
 
@@ -424,6 +424,7 @@ Para inserir uma criatura no `bestiario.html`, use este template HTML e insira a
           <span class="stat-pill fo">🔵 FO: VALOR</span>
           <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: X🟡 por turno</span>
           <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: X | Atq: +X</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">TIER CAlCULADO</span>
         </div>
 
         <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
@@ -437,7 +438,7 @@ Para inserir uma criatura no `bestiario.html`, use este template HTML e insira a
               </div>
 
             <button class="add-battle-btn">Adicionar ➕</button></div>
-      ```
+```
 
       ---
 
