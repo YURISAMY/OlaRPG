@@ -404,9 +404,26 @@
     border: 1px solid var(--border);
     border-radius: 3px;
     position: relative;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, opacity 0.15s;
   }
   .list-item:hover { border-color: var(--border-gold); }
+  .list-item.dragging { opacity: 0.35; border-style: dashed; }
+  .list-item.drag-over { border-color: var(--gold); background: rgba(201,146,26,0.08); }
+  .drag-handle {
+    display: flex;
+    align-items: center;
+    padding: 2px 3px 2px 0;
+    color: var(--gold-dim);
+    cursor: grab;
+    font-size: 14px;
+    line-height: 1;
+    flex-shrink: 0;
+    opacity: 0.4;
+    transition: opacity 0.15s;
+    user-select: none;
+  }
+  .list-item:hover .drag-handle { opacity: 1; }
+  .drag-handle:active { cursor: grabbing; }
   .list-item-content { flex: 1; min-width: 0; }
   .list-item-name {
     font-family: 'Cinzel', serif;
@@ -1236,8 +1253,8 @@
           <input type="number" id="char-ca" placeholder="10" oninput="save()">
         </div>
         <div class="field">
-          <label>CD</label>
-          <input type="number" id="char-cd" placeholder="" oninput="save()">
+          <label>CD <span style="font-size:9px;color:var(--gold-dim);letter-spacing:0.05em;" title="8 + prof + maior mod entre INT/CAR/SAB">auto</span></label>
+          <input type="number" id="char-cd" readonly style="cursor:default;opacity:0.85;background:rgba(0,0,0,0.25);" title="8 + bônus de proficiência + maior mod entre INT/CAR/SAB">
         </div>
         <div class="field">
           <label>Arquétipo</label>
@@ -1930,6 +1947,7 @@ function updateProfBonus() {
   // refresh checkbox states and values
   updateProfAttrValues();
   renderPericias();
+  updateCD();
 }
 
 function toggleProfAttr(attr) {
@@ -2067,6 +2085,7 @@ function updateMod(attr) {
   updateProfAttrValues();
   renderPericias();
   updatePericiasSlotsLabel();
+  if (['int','car','sab'].includes(attr)) updateCD();
 }
 
 // ─── RECOVERY ─────────────────────────────────────────────────────────
@@ -2156,6 +2175,13 @@ function buildPericias() {
 function getModValue(attr) {
   const val = parseInt(document.getElementById('attr-' + attr)?.value) || 10;
   return Math.floor((val - 10) / 2);
+}
+
+function updateCD() {
+  const profBonus = getProfBonus(state.level || 1);
+  const maiorMod = Math.max(getModValue('int'), getModValue('car'), getModValue('sab'));
+  const cd = 8 + profBonus + maiorMod;
+  document.getElementById('char-cd').value = cd;
 }
 
 function getMaxPericias() {
@@ -2315,7 +2341,8 @@ function _renderSkillsWithBtns(listId, items, removeCallback, listKey) {
         Usar
       </button>`;
     }
-    return `<div class="list-item">
+    return `<div class="list-item" data-index="${i}">
+      <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
       <div class="list-item-content">
         <div class="list-item-name">${item.name}</div>
         ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
@@ -2331,6 +2358,7 @@ function _renderSkillsWithBtns(listId, items, removeCallback, listKey) {
       </div>
     </div>`;
   }).join('');
+  _makeDraggable(el, listKey, renderSkills);
 }
 
 function renderSkills() {
@@ -2383,7 +2411,8 @@ function _renderPassivaWithBtns() {
         Usar
       </button>`;
     }
-    return `<div class="list-item">
+    return `<div class="list-item" data-index="${i}">
+      <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
       <div class="list-item-content">
         <div class="list-item-name">${item.name}</div>
         ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
@@ -2400,6 +2429,7 @@ function _renderPassivaWithBtns() {
       </div>
     </div>`;
   }).join('');
+  _makeDraggable(el, 'passivas', renderPassivas);
 }
 
 function usePassiva(index) {
@@ -2456,7 +2486,8 @@ function _renderItensWithBtns() {
     if (cat === 'consumivel' && item.quantidade > 0) {
       useBtn = `<button class="list-use-btn" onclick="useItem(${i})" title="Consumir 1 unidade">Usar</button>`;
     }
-    return `<div class="list-item">
+    return `<div class="list-item" data-index="${i}">
+      <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
       <div class="list-item-content">
         <div class="list-item-name">${item.name}${qtd}</div>
         ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
@@ -2471,6 +2502,7 @@ function _renderItensWithBtns() {
       </div>
     </div>`;
   }).join('');
+  _makeDraggable(el, 'itens', renderItens);
 }
 
 function useItem(index) {
@@ -2580,7 +2612,8 @@ function _renderMagiaWithBtns(listId, items, removeCallback, listKey) {
         Usar
       </button>`;
     }
-    return `<div class="list-item">
+    return `<div class="list-item" data-index="${i}">
+      <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
       <div class="list-item-content">
         <div class="list-item-name">${item.name}</div>
         ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
@@ -2596,6 +2629,7 @@ function _renderMagiaWithBtns(listId, items, removeCallback, listKey) {
       </div>
     </div>`;
   }).join('');
+  _makeDraggable(el, listKey, () => renderMagias());
 }
 
 function renderMagias() {
@@ -2604,6 +2638,57 @@ function renderMagias() {
   _renderMagiaWithBtns('list-exclusivas', state.exclusivas, 'removeExclusiva', 'exclusivas');
 }
 
+
+// ─── DRAG & DROP ──────────────────────────────────────────────────────
+let _dragSrc = null;
+
+function _makeDraggable(container, stateKey, renderFn) {
+  const items = container.querySelectorAll('.list-item[data-index]');
+  items.forEach(item => {
+    item.draggable = true;
+
+    item.addEventListener('dragstart', e => {
+      _dragSrc = { container, stateKey, index: parseInt(item.dataset.index) };
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      container.querySelectorAll('.list-item').forEach(i => i.classList.remove('drag-over'));
+    });
+
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (_dragSrc && _dragSrc.stateKey === stateKey) {
+        container.querySelectorAll('.list-item').forEach(i => i.classList.remove('drag-over'));
+        item.classList.add('drag-over');
+      }
+    });
+
+    item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      if (!_dragSrc || _dragSrc.stateKey !== stateKey) return;
+      const from = _dragSrc.index;
+      const to   = parseInt(item.dataset.index);
+      if (from === to) return;
+      const arr = state[stateKey];
+      const moved = arr.splice(from, 1)[0];
+      arr.splice(to, 0, moved);
+      renderFn();
+      save();
+    });
+  });
+}
+
+function _enableDragOnList(listId, stateKey, renderFn) {
+  const el = document.getElementById(listId);
+  if (el) _makeDraggable(el, stateKey, renderFn);
+}
 // ─── SAVE / LOAD ──────────────────────────────────────────────────────
 function collectState() {
   state.char = {
@@ -2699,6 +2784,7 @@ function applyState() {
   renderItens();
   renderMagias();
   updateProfBonus();
+  updateCD();
   applyProfAttrs();
   renderPericias();
 }
