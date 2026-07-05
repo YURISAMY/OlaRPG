@@ -1201,6 +1201,190 @@
     gap: 8px;
     justify-content: flex-end;
   }
+  /* ─── COMBOS ─────────────────────────────────────────────────────── */
+  .combos-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 700px) { .combos-layout { grid-template-columns: 1fr; } }
+
+  .combo-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .combo-list-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .combo-list-item:hover { border-color: var(--border-gold); }
+  .combo-list-item.active { border-color: var(--gold); background: rgba(201,146,26,0.1); }
+  .combo-list-item-name {
+    flex: 1;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .combo-list-item-del {
+    background: none; border: none;
+    color: rgba(255,255,255,0.2);
+    cursor: pointer; font-size: 14px; padding: 0;
+    transition: color 0.15s; flex-shrink: 0;
+  }
+  .combo-list-item-del:hover { color: var(--hp-color); }
+
+  .combo-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .combo-editor-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .combo-name-input {
+    flex: 1;
+    min-width: 150px;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  /* Seletor de habilidades */
+  .combo-skill-selector {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .combo-skill-selector select {
+    flex: 1;
+    min-width: 180px;
+  }
+
+  /* Steps do combo */
+  .combo-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 48px;
+  }
+  .combo-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    transition: border-color 0.15s, opacity 0.15s;
+  }
+  .combo-step.dragging   { opacity: 0.35; border-style: dashed; }
+  .combo-step.drag-over  { border-color: var(--gold); background: rgba(201,146,26,0.08); }
+  .combo-step-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--gold-dim);
+    min-width: 18px;
+    text-align: center;
+  }
+  .combo-step-name {
+    flex: 1;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .combo-step-cost {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--gold-dim);
+    white-space: nowrap;
+  }
+  .combo-step-remove {
+    background: none; border: none;
+    color: rgba(255,255,255,0.2);
+    cursor: pointer; font-size: 14px; padding: 0;
+    transition: color 0.15s;
+  }
+  .combo-step-remove:hover { color: var(--hp-color); }
+
+  /* Totalizador */
+  .combo-totals {
+    display: flex;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .combo-total-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gold-dim);
+    margin-right: 4px;
+  }
+  .combo-total-val {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .combo-total-val.st { color: #e8c84a; }
+  .combo-total-val.fo { color: #5ab4f0; }
+  .combo-total-val.ok  { }
+  .combo-total-val.nok { color: var(--hp-color); }
+  .combo-status-tag {
+    margin-left: auto;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid;
+  }
+  .combo-status-tag.ok  { color: #6ab06a; border-color: rgba(106,176,106,0.4); background: rgba(106,176,106,0.1); }
+  .combo-status-tag.nok { color: var(--hp-color); border-color: rgba(180,40,40,0.4); background: rgba(180,40,40,0.1); }
+  .combo-status-tag.empty { color: var(--gold-dim); border-color: var(--border); background: transparent; }
+
+  .combo-execute-btn {
+    padding: 9px 22px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    background: rgba(201,146,26,0.15);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    color: var(--gold-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .combo-execute-btn:hover:not(:disabled) { background: rgba(201,146,26,0.3); }
+  .combo-execute-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .combo-empty-state {
+    text-align: center;
+    color: var(--gold-dim);
+    font-size: 11px;
+    padding: 24px 0;
+    font-style: italic;
+  }
+
 </style>
 </head>
 <body>
@@ -1578,7 +1762,73 @@
   <!-- ═══ COL RIGHT ═══ -->
   <div class="col-right">
 
-    <!-- HABILIDADES DA CLASSE -->
+  
+
+  <!-- COMBOS -->
+  <div class="panel col-full" id="panel-combos">
+    <div class="panel-title">Combos de Turno</div>
+    <div class="combos-layout">
+
+      <!-- sidebar: lista de combos salvos -->
+      <div class="combo-sidebar">
+        <button class="add-btn" style="width:100%;" onclick="novoCombo()">＋ Novo Combo</button>
+        <div id="combo-list-container">
+          <div class="combo-empty-state">Nenhum combo criado.</div>
+        </div>
+      </div>
+
+      <!-- editor do combo ativo -->
+      <div class="combo-editor" id="combo-editor-area">
+        <div class="combo-empty-state" id="combo-no-selection">
+          Selecione ou crie um combo para editar.
+        </div>
+        <div id="combo-editor-content" style="display:none; flex-direction:column; gap:12px;">
+
+          <div class="combo-editor-header">
+            <input class="combo-name-input" type="text" id="combo-name-input"
+              placeholder="Nome do combo" maxlength="40"
+              oninput="renomearComboAtivo()">
+          </div>
+
+          <div class="combo-skill-selector">
+            <select id="combo-skill-select">
+              <option value="">— Selecionar habilidade —</option>
+            </select>
+            <button class="add-btn" onclick="adicionarStepCombo()">＋ Adicionar</button>
+          </div>
+
+          <div class="combo-steps" id="combo-steps-list">
+          </div>
+
+          <div class="combo-totals" id="combo-totals">
+            <span class="combo-total-label">ST</span>
+            <span class="combo-total-val st" id="combo-total-st">0</span>
+            <span style="color:var(--border-gold);margin:0 2px;">/</span>
+            <span class="combo-total-val" id="combo-total-st-max" style="font-size:12px;color:var(--gold-dim);">0</span>
+            &nbsp;&nbsp;
+            <span class="combo-total-label">FO</span>
+            <span class="combo-total-val fo" id="combo-total-fo">0</span>
+            <span style="color:var(--border-gold);margin:0 2px;">/</span>
+            <span class="combo-total-val" id="combo-total-fo-max" style="font-size:12px;color:var(--gold-dim);">0</span>
+            <span class="combo-status-tag empty" id="combo-status-tag">SEM STEPS</span>
+          </div>
+
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <button class="combo-execute-btn" id="combo-execute-btn" onclick="executarCombo()">
+              ⚔ Executar Combo
+            </button>
+            <span style="font-size:10px;color:var(--gold-dim);font-style:italic;">
+              Desconta os recursos ao confirmar
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HABILIDADES DA CLASSE -->
     <div class="panel">
       <div class="panel-title">Habilidades da Classe</div>
 
@@ -2093,6 +2343,7 @@ function refreshUseButtons() {
   renderSkills();
   renderPassivas();
   renderMagias();
+  renderComboEditor();
 }
 
 function recoverTurn() {
@@ -2364,6 +2615,7 @@ function _renderSkillsWithBtns(listId, items, removeCallback, listKey) {
 function renderSkills() {
   _renderSkillsWithBtns('list-skills-base', state.skillsBase, 'removeSkillBase', 'skillsBase');
   _renderSkillsWithBtns('list-skills-spec', state.skillsSpec, 'removeSkillSpec', 'skillsSpec');
+  renderComboSkillSelect();
 }
 
 function addPassiva() {
@@ -2447,7 +2699,7 @@ function usePassiva(index) {
   }
 }
 
-function renderPassivas() { _renderPassivaWithBtns(); }
+function renderPassivas() { _renderPassivaWithBtns(); renderComboSkillSelect(); }
 
 function addItem() {
   const name = document.getElementById('new-item-name').value.trim();
@@ -2636,6 +2888,7 @@ function renderMagias() {
   _renderMagiaWithBtns('list-magias-gerais', state.magiasGerais, 'removeMagiaGeral', 'magiasGerais');
   _renderMagiaWithBtns('list-tecnicas-gerais', state.tecnicasGerais, 'removeTecnicaGeral', 'tecnicasGerais');
   _renderMagiaWithBtns('list-exclusivas', state.exclusivas, 'removeExclusiva', 'exclusivas');
+  renderComboSkillSelect();
 }
 
 
@@ -2688,6 +2941,282 @@ function _makeDraggable(container, stateKey, renderFn) {
 function _enableDragOnList(listId, stateKey, renderFn) {
   const el = document.getElementById(listId);
   if (el) _makeDraggable(el, stateKey, renderFn);
+}
+
+// ─── COMBOS ───────────────────────────────────────────────────────────
+// state.combos = [ { id, nome, steps: [ { key, name, stCost, foCost } ] } ]
+// state.comboAtivo = id | null
+
+function _getAllSkills() {
+  // Retorna todas as habilidades de todas as seções com custo parseado
+  const SECTIONS = [
+    { arr: state.skillsBase,     label: 'Classe (Base)' },
+    { arr: state.skillsSpec,     label: 'Classe (Esp.)' },
+    { arr: state.passivas,       label: 'Passivas' },
+    { arr: state.magiasGerais,   label: 'Magias' },
+    { arr: state.tecnicasGerais, label: 'Técnicas' },
+    { arr: state.exclusivas,     label: 'Exclusivas' },
+  ];
+  const skills = [];
+  SECTIONS.forEach(({ arr, label }) => {
+    (arr || []).forEach((item, i) => {
+      if (!item.name) return;
+      const recurso = item.recurso || 'fo';
+      const custo   = item.custo   || '';
+      const match   = custo.match(/(\d+(?:\.\d+)?)/);
+      const val     = match ? parseFloat(match[1]) : 0;
+      const stCost  = recurso === 'st' ? val : (recurso === 'fo' ? Math.ceil(val / 3) : 0);
+      const foCost  = recurso === 'fo' ? val : 0;
+      skills.push({ key: label + '_' + i, name: item.name, label, stCost, foCost, custoRaw: custo, recurso });
+    });
+  });
+  return skills;
+}
+
+function _getComboAtivo() {
+  if (!state.combos || !state.comboAtivo) return null;
+  return state.combos.find(c => c.id === state.comboAtivo) || null;
+}
+
+function novoCombo() {
+  if (!state.combos) state.combos = [];
+  const id   = 'combo_' + Date.now();
+  const nome = 'Combo ' + (state.combos.length + 1);
+  state.combos.push({ id, nome, steps: [] });
+  state.comboAtivo = id;
+  save();
+  renderCombos();
+}
+
+function selecionarCombo(id) {
+  state.comboAtivo = id;
+  save();
+  renderCombos();
+}
+
+function deletarCombo(id) {
+  if (!confirm('Deletar este combo?')) return;
+  state.combos = (state.combos || []).filter(c => c.id !== id);
+  if (state.comboAtivo === id) {
+    state.comboAtivo = state.combos.length ? state.combos[0].id : null;
+  }
+  save();
+  renderCombos();
+}
+
+function renomearComboAtivo() {
+  const combo = _getComboAtivo();
+  if (!combo) return;
+  combo.nome = document.getElementById('combo-name-input').value || combo.nome;
+  save();
+  renderComboSidebar();
+}
+
+function adicionarStepCombo() {
+  const combo  = _getComboAtivo();
+  const select = document.getElementById('combo-skill-select');
+  const idx    = select.selectedIndex;
+  if (!combo || idx <= 0) return;
+  const skills = _getAllSkills();
+  const chosen = skills[idx - 1]; // -1 pelo option placeholder
+  if (!chosen) return;
+  combo.steps.push({ key: chosen.key, name: chosen.name, stCost: chosen.stCost, foCost: chosen.foCost, custoRaw: chosen.custoRaw, recurso: chosen.recurso });
+  select.selectedIndex = 0;
+  save();
+  renderComboEditor();
+}
+
+function removerStepCombo(i) {
+  const combo = _getComboAtivo();
+  if (!combo) return;
+  combo.steps.splice(i, 1);
+  save();
+  renderComboEditor();
+}
+
+function executarCombo() {
+  const combo = _getComboAtivo();
+  if (!combo || !combo.steps.length) return;
+  const totSt = combo.steps.reduce((s, x) => s + (x.stCost || 0), 0);
+  const totFo = combo.steps.reduce((s, x) => s + (x.foCost || 0), 0);
+  const curSt = parseFloat(document.getElementById('st-cur').value) || 0;
+  const curFo = parseFloat(document.getElementById('fo-cur').value) || 0;
+  if (totSt > curSt || totFo > curFo) {
+    alert('Recursos insuficientes para executar este combo!');
+    return;
+  }
+  const nomes = combo.steps.map((s, i) => (i+1) + '. ' + s.name).join('\n');
+  if (!confirm('Executar combo "' + combo.nome + '"?\n\n' + nomes + '\n\nCusto: ' + totSt + ' 🟡 ST  /  ' + totFo + ' 🔵 FO')) return;
+  if (totSt > 0) {
+    const el = document.getElementById('st-cur');
+    el.value = Math.max(0, curSt - totSt);
+    updateBar('st');
+  }
+  if (totFo > 0) {
+    const el = document.getElementById('fo-cur');
+    el.value = Math.max(0, curFo - totFo);
+    updateBar('fo');
+  }
+  save();
+  renderComboEditor(); // atualiza o status de suficiência
+  // flash no botão
+  const btn = document.getElementById('combo-execute-btn');
+  btn.textContent = '✓ Executado!';
+  btn.style.borderColor = '#6ab06a';
+  btn.style.color = '#6ab06a';
+  setTimeout(() => {
+    btn.textContent = '⚔ Executar Combo';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    renderComboEditor();
+  }, 1500);
+}
+
+function renderComboSidebar() {
+  const container = document.getElementById('combo-list-container');
+  const combos    = state.combos || [];
+  if (!combos.length) {
+    container.innerHTML = '<div class="combo-empty-state">Nenhum combo criado.</div>';
+    return;
+  }
+  container.innerHTML = combos.map(c => `
+    <div class="combo-list-item ${c.id === state.comboAtivo ? 'active' : ''}"
+         onclick="selecionarCombo('${c.id}')">
+      <span class="combo-list-item-name" title="${c.nome}">${c.nome}</span>
+      <button class="combo-list-item-del" title="Deletar"
+        onclick="event.stopPropagation(); deletarCombo('${c.id}')">×</button>
+    </div>
+  `).join('');
+}
+
+function renderComboSkillSelect() {
+  const select = document.getElementById('combo-skill-select');
+  const skills = _getAllSkills();
+  let html = '<option value="">— Selecionar habilidade —</option>';
+  let lastLabel = '';
+  skills.forEach((s) => {
+    if (s.label !== lastLabel) {
+      if (lastLabel) html += '</optgroup>';
+      html += `<optgroup label="${s.label}">`;
+      lastLabel = s.label;
+    }
+    const custoStr = s.custoRaw ? ` (${s.custoRaw})` : '';
+    html += `<option>${s.name}${custoStr}</option>`;
+  });
+  if (lastLabel) html += '</optgroup>';
+  select.innerHTML = html;
+}
+
+function renderComboEditor() {
+  const combo      = _getComboAtivo();
+  const noSel      = document.getElementById('combo-no-selection');
+  const edContent  = document.getElementById('combo-editor-content');
+
+  if (!combo) {
+    noSel.style.display     = 'block';
+    edContent.style.display = 'none';
+    return;
+  }
+  noSel.style.display     = 'none';
+  edContent.style.display = 'flex';
+
+  document.getElementById('combo-name-input').value = combo.nome;
+  renderComboSkillSelect();
+
+  // Steps
+  const stepsEl = document.getElementById('combo-steps-list');
+  if (!combo.steps.length) {
+    stepsEl.innerHTML = '<div class="combo-empty-state">Nenhuma habilidade adicionada ainda.</div>';
+  } else {
+    stepsEl.innerHTML = combo.steps.map((s, i) => `
+      <div class="combo-step" data-index="${i}" draggable="true">
+        <span class="drag-handle" title="Arrastar">⠿</span>
+        <span class="combo-step-num">${i + 1}.</span>
+        <span class="combo-step-name">${s.name}</span>
+        <span class="combo-step-cost">
+          ${s.stCost ? s.stCost + ' 🟡' : ''}
+          ${s.stCost && s.foCost ? ' + ' : ''}
+          ${s.foCost ? s.foCost + ' 🔵' : ''}
+          ${!s.stCost && !s.foCost ? '<span style="color:var(--gold-dim)">—</span>' : ''}
+        </span>
+        <button class="combo-step-remove" onclick="removerStepCombo(${i})">×</button>
+      </div>
+    `).join('');
+    // drag & drop nos steps
+    _makeComboStepsDraggable(stepsEl);
+  }
+
+  // Totais
+  const totSt = combo.steps.reduce((s, x) => s + (x.stCost || 0), 0);
+  const totFo = combo.steps.reduce((s, x) => s + (x.foCost || 0), 0);
+  const curSt = parseFloat(document.getElementById('st-cur').value) || 0;
+  const curFo = parseFloat(document.getElementById('fo-cur').value) || 0;
+  const maxSt = parseFloat(document.getElementById('st-max').value) || 0;
+  const maxFo = parseFloat(document.getElementById('fo-max').value) || 0;
+  const canSt = totSt <= curSt;
+  const canFo = totFo <= curFo;
+  const canAll = canSt && canFo;
+
+  document.getElementById('combo-total-st').textContent = totSt;
+  document.getElementById('combo-total-fo').textContent = totFo;
+  document.getElementById('combo-total-st-max').textContent = curSt + ' / ' + maxSt;
+  document.getElementById('combo-total-fo-max').textContent = curFo + ' / ' + maxFo;
+  document.getElementById('combo-total-st').className = 'combo-total-val st ' + (totSt > 0 && !canSt ? 'nok' : 'ok');
+  document.getElementById('combo-total-fo').className = 'combo-total-val fo ' + (totFo > 0 && !canFo ? 'nok' : 'ok');
+
+  const statusTag = document.getElementById('combo-status-tag');
+  const execBtn   = document.getElementById('combo-execute-btn');
+  if (!combo.steps.length) {
+    statusTag.textContent  = 'SEM STEPS';
+    statusTag.className    = 'combo-status-tag empty';
+    execBtn.disabled       = true;
+  } else if (canAll) {
+    statusTag.textContent  = '✓ RECURSOS OK';
+    statusTag.className    = 'combo-status-tag ok';
+    execBtn.disabled       = false;
+  } else {
+    statusTag.textContent  = '✗ INSUFICIENTE';
+    statusTag.className    = 'combo-status-tag nok';
+    execBtn.disabled       = true;
+  }
+}
+
+function _makeComboStepsDraggable(container) {
+  let dragIdx = null;
+  container.querySelectorAll('.combo-step[data-index]').forEach(item => {
+    item.addEventListener('dragstart', e => {
+      dragIdx = parseInt(item.dataset.index);
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    item.addEventListener('dragend', () => {
+      item.classList.remove('dragging');
+      container.querySelectorAll('.combo-step').forEach(i => i.classList.remove('drag-over'));
+    });
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      container.querySelectorAll('.combo-step').forEach(i => i.classList.remove('drag-over'));
+      item.classList.add('drag-over');
+    });
+    item.addEventListener('dragleave', () => item.classList.remove('drag-over'));
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      const to = parseInt(item.dataset.index);
+      if (dragIdx === null || dragIdx === to) return;
+      const combo = _getComboAtivo();
+      if (!combo) return;
+      const moved = combo.steps.splice(dragIdx, 1)[0];
+      combo.steps.splice(to, 0, moved);
+      save();
+      renderComboEditor();
+    });
+  });
+}
+
+function renderCombos() {
+  renderComboSidebar();
+  renderComboEditor();
 }
 // ─── SAVE / LOAD ──────────────────────────────────────────────────────
 function collectState() {
@@ -2785,6 +3314,8 @@ function applyState() {
   renderMagias();
   updateProfBonus();
   updateCD();
+  if (!state.combos) state.combos = [];
+  renderCombos();
   applyProfAttrs();
   renderPericias();
 }
