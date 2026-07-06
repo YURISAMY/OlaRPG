@@ -4973,7 +4973,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
            </span>
           </div>
           <div class="skill-desc">
-           Escolha um elemento. Magias dele custam 1🔵 a menos (minimo de 1) e causam +1 dado. Não pode
+           Escolha um elemento. Magias dele custam 1🔵 a menos (minimo de 1) e causam +1 dado (magias que disparam varios feixes só são afetadas uma vez independente do numero de feixes). Não pode
                     aprender o elemento oposto.
           </div>
          </div>
@@ -5161,7 +5161,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
          </div>
         </div>
        </div>
-       
+
        <div class="card arcano tier-spec">
         <div class="card-inner">
          <div class="card-header">
@@ -5818,6 +5818,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
                       cura constante por um combate, dentre outras acertadas com o mestre.
            </div>
           </div>
+
           <div class="skill-divider">
           </div>
           <div class="skill standard">
@@ -5837,6 +5838,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
                       intenção. Manter o objeto animado permanece consumindo 2🔵 por turno.
            </div>
           </div>
+
+
           <div class="skill passive">
            <div class="skill-header">
             <span class="skill-name">
@@ -8849,6 +8852,8 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+
     <div class="spell-card magica geral" data-scope="geral" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
@@ -8874,6 +8879,342 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       </div>
      </div>
     </div>
+
+
+    <!-- 2. Esfera Elemental (Área) -->
+    <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">Esfera Elemental</span>
+       <span class="spell-cost-badge">4🔵</span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">Destruição</span>
+       <span class="spell-tag tipo-magica">Magia Geral</span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Cria uma explosão de energia em um raio de 3 blocos. Escolha um elemento: o dano é 2d8 do tipo escolhido e aplica um efeito leve (ex: Fogo deixa o alvo Incendiado, Gelo deixa Lento, Elétrico reduz a esquiva).
+      </div>
+     </div>
+    </div>
+
+    <!-- 3. Infusão Elemental (Buff) -->
+    <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">Infusão Elemental</span>
+       <span class="spell-cost-badge">2🔵</span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">Destruição</span>
+       <span class="spell-tag tipo-magica">Magia Geral</span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Você infunde uma arma ou objeto com um elemento escolhido. Pelos próximos 2 turnos, ataques realizados com ele causam +1d6 de dano adicional do elemento.
+      </div>
+     </div>
+    </div>
+
+    <!-- 4. Lâmina Elemental (Corpo a Corpo) -->
+    <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">Lâmina Elemental</span>
+       <span class="spell-cost-badge">3🔵</span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">Destruição</span>
+       <span class="spell-tag tipo-magica">Magia Geral</span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Cria uma lâmina de energia pura ao seu redor. Realiza um ataque corpo a corpo contra alvos adjacentes. Causa 2d10 de dano do elemento escolhido.
+      </div>
+     </div>
+    </div>
+
+    <!-- 5. Disparo Multi-Elemental (Projéteis) -->
+    <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">Disparo Multi-Elemental</span>
+       <span class="spell-cost-badge">4🔵</span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">Destruição</span>
+       <span class="spell-tag tipo-magica">Magia Geral</span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Dispara 3 dardos de energia. Cada um pode ter um elemento diferente à sua escolha. Cada dardo causa 1d4 +1 de dano.
+      </div>
+     </div>
+    </div>
+
+    <!-- 6. Muralha Elemental (Defensiva/Controle) -->
+    <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">Muralha Elemental</span>
+       <span class="spell-cost-badge">5🔵</span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">Destruição</span>
+       <span class="spell-tag tipo-magica">Magia Geral</span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Ergue uma linha de 5 blocos de pura energia elemental. Criaturas que atravessarem ou terminarem o turno nela sofrem 2d6 de dano do elemento escolhido.
+      </div>
+     </div>
+    </div>
+
+    <!-- 7. Explosão de Singularidade (Finalizador) -->
+    <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+     <div class="spell-card-top">
+      <div class="spell-name-row">
+       <span class="spell-name">Explosão de Singularidade</span>
+       <span class="spell-cost-badge">6🔵</span>
+      </div>
+      <div class="spell-tags">
+       <span class="spell-tag escola">Destruição</span>
+       <span class="spell-tag tipo-magica">Magia Geral</span>
+      </div>
+     </div>
+     <div class="spell-card-body">
+      <div class="spell-desc">
+       Concentra energia elemental em um único ponto. Causa 4d8 de dano elemental. Se o alvo for vulnerável a esse elemento, o dano é dobrado.
+      </div>
+     </div>
+    </div>
+
+    
+
+
+<!-- TERRA / FÍSICO -->
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Lança de Pedra</span>
+      <span class="spell-cost-badge">2🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Conjura uma lança de rocha sólida e a arremessa em um alvo a até 10 blocos. Causa 1d10 de dano perfurante. Se o alvo estiver adjacente a uma parede ou obstáculo, recebe +1d4 extra pelo impacto.</div>
+  </div>
+</div>
+
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Terremoto Localizado</span>
+      <span class="spell-cost-badge">5🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">O chão em uma área 3x3 blocos treme violentamente. Todos os alvos na área recebem 2d6 de dano contundente e rolam FOR 13 ou ficam Derrubados. Estruturas frágeis na área colapsam.</div>
+  </div>
+</div>
+
+<!-- GELO -->
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Flecha de Gelo</span>
+      <span class="spell-cost-badge">2🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Projétil de gelo comprimido em um alvo a até 12 blocos. Causa 1d8 de dano de frio. Se o alvo já estiver com algum efeito de frio ativo, causa +1d6 extra e aplica Lento por 1 turno.</div>
+  </div>
+</div>
+
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Ventania Glacial</span>
+      <span class="spell-cost-badge">4🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Cone de vento gelado de 4 blocos à sua frente. Todos os alvos recebem 2d6 de dano de frio e são empurrados 2 blocos para trás. O chão na área fica Escorregadio por 2 turnos — DES 11 ou cai ao se mover nele.</div>
+  </div>
+</div>
+
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Prisão de Gelo</span>
+      <span class="spell-cost-badge">5🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Gelo brota do chão ao redor de um alvo a até 8 blocos. Causa 1d6 de dano de frio e Imobiliza por 2 turnos (FOR 14 para escapar como ação padrão). Enquanto preso, o alvo recebe +1 de dano de todas as fontes.</div>
+  </div>
+</div>
+
+<!-- VENENO / ÁCIDO -->
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Cuspe Ácido</span>
+      <span class="spell-cost-badge">2🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Projétil de ácido concentrado em um alvo a até 8 blocos. Causa 1d6 de dano imediato e aplica Corrosão: o alvo perde 1d4 HP no início de cada turno por 2 turnos. Armaduras do alvo perdem 1 de CA enquanto Corrosão durar.</div>
+  </div>
+</div>
+
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Nuvem Tóxica</span>
+      <span class="spell-cost-badge">4🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Cria uma nuvem de gás venenoso em área 2x2 blocos por 3 turnos. Criaturas que iniciarem ou entrarem na área recebem 1d6 de veneno e ficam Envenenadas (1d4/turno por 2 turnos). CON 13 reduz o veneno à metade.</div>
+  </div>
+</div>
+
+<!-- SÔNICO -->
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Onda de Choque</span>
+      <span class="spell-cost-badge">3🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Pulso sônico irradiando 3 blocos ao redor de você. Todos os alvos recebem 1d8 de dano sônico e rolam CON 12 ou ficam Atordoados por 1 turno. Estruturas de vidro e cristal na área são destruídas.</div>
+  </div>
+</div>
+
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Grito Dilacerante</span>
+      <span class="spell-cost-badge">5🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Cone de 5 blocos à sua frente. Todos os alvos recebem 3d6 de dano sônico. CON 14 reduz à metade. Falha: também ficam Ensurdecidos por 2 turnos — não podem ouvir ordens, canções ou habilidades que exijam som.</div>
+  </div>
+</div>
+
+<!-- TREVAS / SOMBRA -->
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Projétil das Sombras</span>
+      <span class="spell-cost-badge">2🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Projétil de energia sombria em um alvo a até 14 blocos. Causa 1d8 de dano necrótico. Se usado de dentro de uma área de escuridão ou furtividade, causa +1d6 extra.</div>
+  </div>
+</div>
+
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Abraço das Trevas</span>
+      <span class="spell-cost-badge">4🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Tentáculos de sombra brotam ao redor de um alvo a até 6 blocos. Causa 2d6 de dano necrótico e Imobiliza por 1 turno. Se o alvo estiver em área de escuridão, também fica Cego pelo mesmo turno.</div>
+  </div>
+</div>
+
+<!-- ARCANO PURO — sem elemento definido -->
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Ruptura Arcana</span>
+      <span class="spell-cost-badge">6🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Concentra energia arcana bruta e a libera num único ponto a até 10 blocos. Causa 4d8 de dano arcano num raio de 1 bloco. Ignora resistências e reduções de dano de qualquer tipo — é energia pura, sem classificação elemental.</div>
+  </div>
+</div>
+
+<div class="spell-card magica geral" data-scope="geral" data-type="magica">
+  <div class="spell-card-top">
+    <div class="spell-name-row">
+      <span class="spell-name">Fragmentação</span>
+      <span class="spell-cost-badge">3🔵</span>
+    </div>
+    <div class="spell-tags">
+      <span class="spell-tag escola">Destruição</span>
+      <span class="spell-tag tipo-magica">Magia Geral</span>
+    </div>
+  </div>
+  <div class="spell-card-body">
+    <div class="spell-desc">Lança um projétil que explode ao atingir o alvo, espalhando fragmentos. Causa 1d6 no alvo principal e 1d4 em todos os alvos em 1 bloco ao redor dele. Útil contra grupos compactos.</div>
+  </div>
+</div>
+
+
+
+
     <div class="spell-card magica geral" data-scope="geral" data-type="magica">
      <div class="spell-card-top">
       <div class="spell-name-row">
