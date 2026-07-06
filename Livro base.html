@@ -2890,9 +2890,10 @@
          Ecos Arcanos
         </div>
         <div class="pdesc">
-         Quando uma magia sua mata um inimigo, todos os aliados em 3 blocos recuperam 1🔵.
+         Quando uma magia sua mata um inimigo, um missel magico salta dele, e atinge um inimigo a sua escolha causando 1d4 + 1 de dano arcano. Duas vezes por turno.
         </div>
        </div>
+
        <div class="passive-pill">
         <div class="pname">
          Memória Fotográfica
@@ -2903,18 +2904,18 @@
        </div>
        <div class="passive-pill">
         <div class="pname">
-         Conduíte
+         Geomancia Dinâmica
         </div>
         <div class="pdesc">
-         Magias que causam dano em área têm o alcance aumentado em 1 bloco.
+         Magias de área não causam dano em aliados. Além disso, ao conjurar uma magia de área, você pode mover um UNICO aliado (incluindo você mesmo) em 1 bloco antes da magia ser resolvida.
         </div>
        </div>
        <div class="passive-pill">
         <div class="pname">
-         Sangue Arcano
+         Ressonância Instável
         </div>
         <div class="pdesc">
-         Cada vez que recebe dano, recupera 1🔵. Máximo de 3🔵 recuperados por turno assim.
+         Sempre que você derrotar um inimigo com uma magia, a energia gasta nessa magia é convertida em um escudo arcano igual ao custo original da magia. Este escudo dura até o início do seu próximo turno.
         </div>
        </div>
        <div class="passive-pill">
@@ -5170,7 +5171,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
            Mestre dos Elementos
           </div>
           <div class="card-subtitle">
-           Domínio de múltiplos elementos. Flexibilidade máxima.
+           Domínio elemental. Poder de fogo máximo.
           </div>
           <div class="card-tier-badge">
            ESPECIALIZAÇÃO
@@ -5178,48 +5179,68 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
          </div>
          <div class="card-flavor">
           <p>
-           "Por que escolher uma arma quando posso ter todas?"
+           "Por que escolher uma arma quando posso usar o arcano?"
           </p>
          </div>
          <div class="card-skills">
           <div class="skill passive">
            <div class="skill-header">
             <span class="skill-name">
-             Polimorfismo Elemental
+             Ressonância Elemental
             </span>
             <span class="skill-type passive">
              Passiva
             </span>
            </div>
            <div class="skill-desc">
-            Domina dois elementos. O custo adicional do segundo elemento é removido.
+            Seu elemento escolhido ganha um efeito de status leve automático (sem custo extra): fogo aplica queimando, água aplica lento, veneno (enfraquecido) e etc. Você escolhe o efeito na criação com base no elemento.
            </div>
           </div>
+
+
           <div class="skill-divider">
           </div>
+
+
           <div class="skill standard">
            <div class="skill-header">
             <span class="skill-name">
-             Convergência
+             Penetração elemental
             </span>
             <span class="skill-type standard">
              Padrão
             </span>
             <span class="skill-cost">
-             5🔵
+             2🔵
             </span>
            </div>
            <div class="skill-desc">
-            Combina dois elementos num ataque. 1d6 de cada + efeito combinado único
-                      (vapor, tempestade, etc).
+            Uma vez por turno, faz seu elemento escolhido ignorar resistências simples. Imunes recebem metade do dano em vez de nada.           
            </div>
           </div>
+
+
           <div class="skill-divider">
           </div>
+          <div class="skill passive">
+           <div class="skill-header">
+            <span class="skill-name">
+             Fragmento elemental
+            </span>
+            <span class="skill-type passive">
+             Passiva
+            </span>
+           </div>
+           <div class="skill-desc">
+            Ao acertar um inimgo com uma magia do seu elemento, um fragmento do elemento escolhido permanece no local do inimigo atingido, podendo ser coletado se chegar a até 5 blocos de distância dele. você pode coletar e levar consigo até 5 fragmentos, e eles reduzem em 1🔵 o custo de qualquer magia do mesmo elemento (minimo de 1🔵). Fragmentos desaparecem depois de 2 turnos seus.
+           </div>
+          </div>
+
+          
           <div class="skill quick">
            <div class="skill-header">
             <span class="skill-name">
-             Adaptação Elemental
+             Fragmentos do caos
             </span>
             <span class="skill-type quick">
              Rápida
@@ -5229,42 +5250,35 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Ao detectar resistência, muda o elemento ativo instantaneamente sem custo
-                      adicional.
-           </div>
-          </div>
-          <div class="skill passive">
-           <div class="skill-header">
-            <span class="skill-name">
-             Tríade Elemental
-            </span>
-            <span class="skill-type passive">
-             Passiva
-            </span>
-           </div>
-           <div class="skill-desc">
-            Pode dominar um terceiro elemento, mas magias dele custam +1🔵 adicional. O terceiro elemento não pode ser oposto a nenhum dos dois dominados.
+            Pode explodir todos os fragmentos coletados de uma vez, causando 1d6 de dano do elemento correspondente em todos os inimigos adjacentes a cada fragmento. Fragmentos são consumidos.
            </div>
            <span class="skill-req">
             🔒 Req: Nível 10
            </span>
           </div>
+
+
           <div class="skill passive">
            <div class="skill-header">
             <span class="skill-name">
-             Reação Química
+             Exposição elemental
             </span>
             <span class="skill-type passive">
              Passiva
             </span>
            </div>
            <div class="skill-desc">
-            Quando dois elementos combinados via Convergência atingem o mesmo alvo, o efeito dura 2 turnos em vez de 1.
+            Inimigos proximos dos fragmentos elementais, tomam 5 de dano extra do elemento correspondente a cada fragmento adjacente a eles, no final do turno.
            </div>
+              <span class="skill-req">
+            🔒 Req: Nível 10
+           </span>
           </div>
           <div class="skill quick">
            <div class="skill-header">
             <span class="skill-name">
+
+
              Escudo Elemental
             </span>
             <span class="skill-type quick">
@@ -5275,23 +5289,24 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
             </span>
            </div>
            <div class="skill-desc">
-            Troca o elemento ativo e aplica uma barreira do novo elemento: resistência de 2 ao tipo do elemento escolhido por 1 turno.
+            Para cada fragmento elemental que você tenha, você pode absorver 1d6 de dano do elemento correspondente. Fragmentos são consumidos.
            </div>
           </div>
+
           <div class="skill standard">
            <div class="skill-header">
             <span class="skill-name">
-             Sobrecarga Dupla
+             Sobrecarga de fragmentos
             </span>
             <span class="skill-type standard">
              Padrão
             </span>
             <span class="skill-cost">
-             7🔵
+             5🔵
             </span>
            </div>
            <div class="skill-desc">
-            Dispara Convergência duas vezes no mesmo alvo no mesmo turno. Segundo disparo tem -1 dado mas efeito se acumula.
+            Puxa todos os fragentos na sua direção, se curando em 2 de vida para cada fragmento absorvido. Fragmentos PERMANCEM com você, e podem ser usados normalmente.
            </div>
            <span class="skill-req">
             🔒 Req: Nível 12
