@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0050)file:///C:/Users/yuri/Downloads/Ficha_final_7.html -->
+
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ficha de Personagem — Sistema RPG</title>
-<link href="./Ficha final_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
     --parchment: #f5ead6;
@@ -1454,8 +1454,8 @@
 </style>
 
 <!-- Firebase (sincronização em tempo real com o Mestre) -->
-<script src="./Ficha final_files/firebase-app-compat.js.download"></script>
-<script src="./Ficha final_files/firebase-database-compat.js.download"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -1466,7 +1466,7 @@
 
 <!-- GERENCIADOR DE FICHAS -->
 <div class="fichas-bar">
-  <div class="fichas-tabs" id="fichas-tabs"><div class="ficha-tab" title="JORGE"><span class="ficha-tab-name">JORGE</span><button class="ficha-tab-del" title="Deletar ficha">×</button></div><div class="ficha-tab active" title="JORGE"><span class="ficha-tab-name">JORGE</span><button class="ficha-tab-del" title="Deletar ficha">×</button></div></div>
+  <div class="fichas-tabs" id="fichas-tabs"></div>
   <div class="fichas-actions">
     <button class="ficha-action-btn" onclick="novaFicha()">＋ Nova Ficha</button>
     <button class="ficha-action-btn secondary" onclick="duplicarFicha()">⎘ Duplicar</button>
@@ -1476,17 +1476,18 @@
 
 <!-- SINCRONIZAÇÃO COM O MESTRE -->
 <div class="sync-bar">
-  <input type="text" id="session-code-input" placeholder="Código da mesa (ex: MESA01)" maxlength="20" onkeydown="if(event.key===&#39;Enter&#39;) conectarSessao()">
-  <button class="ficha-action-btn" id="sync-connect-btn" onclick="conectarSessao()" style="display: none;">🔗 Conectar</button>
-  <button class="ficha-action-btn secondary" id="sync-disconnect-btn" onclick="desconectarSessao()" style="">Desconectar</button>
-  <span class="sync-status online" id="sync-status-label">🟢 sincronizado: AAAAAA</span>
+  <input type="text" id="session-code-input" placeholder="Código da mesa (ex: MESA01)" maxlength="20" onkeydown="if(event.key==='Enter') conectarSessao()">
+  <button class="ficha-action-btn" id="sync-connect-btn" onclick="conectarSessao()">🔗 Conectar</button>
+  <button class="ficha-action-btn secondary" id="sync-disconnect-btn" onclick="desconectarSessao()" style="display:none;">Desconectar</button>
+  <span class="sync-status offline" id="sync-status-label">desconectado</span>
 </div>
 
 <!-- MODAL RENOMEAR -->
 <div class="rename-modal-overlay" id="rename-modal-overlay" onclick="fecharRenomear(event)">
   <div class="rename-modal" onclick="event.stopPropagation()">
     <div class="rename-modal-title">Renomear Ficha</div>
-    <input type="text" id="rename-input" placeholder="Nome da ficha" maxlength="40" onkeydown="if(event.key===&#39;Enter&#39;) confirmarRenomear()">
+    <input type="text" id="rename-input" placeholder="Nome da ficha" maxlength="40"
+      onkeydown="if(event.key==='Enter') confirmarRenomear()">
     <div class="rename-modal-actions">
       <button class="add-btn danger" onclick="fecharRenomear()">Cancelar</button>
       <button class="add-btn" onclick="confirmarRenomear()">Salvar</button>
@@ -1515,7 +1516,7 @@
         </div>
         <div class="field">
           <label>CD <span style="font-size:9px;color:var(--gold-dim);letter-spacing:0.05em;" title="8 + prof + maior mod entre INT/CAR/SAB">auto</span></label>
-          <input type="number" id="char-cd" readonly="" style="cursor:default;opacity:0.85;background:rgba(0,0,0,0.25);" title="8 + bônus de proficiência + maior mod entre INT/CAR/SAB">
+          <input type="number" id="char-cd" readonly style="cursor:default;opacity:0.85;background:rgba(0,0,0,0.25);" title="8 + bônus de proficiência + maior mod entre INT/CAR/SAB">
         </div>
         <div class="field">
           <label>Arquétipo</label>
@@ -1552,7 +1553,7 @@
 
       <!-- NÍVEL -->
       <div class="level-display">
-        <div class="level-number" id="level-display">1</div>
+        <div class="level-number" id="level-display">17</div>
         <div class="level-info">
           <div class="level-label">Nível atual</div>
           <div class="level-btn-row">
@@ -1628,7 +1629,7 @@
       <button class="rec-btn" id="rec-btn" onclick="recoverTurn()">
         ↺ RECUPERAÇÃO DE TURNO
       </button>
-      <div class="rec-preview" id="rec-preview">+<span id="rec-preview-st">2</span> 🟡 &nbsp;·&nbsp; +<span id="rec-preview-fo">2</span> 🔵</div>
+      <div class="rec-preview" id="rec-preview">+<span id="rec-preview-st">4</span> 🟡 &nbsp;·&nbsp; +<span id="rec-preview-fo">5</span> 🔵</div>
     </div>
 
     <!-- ATRIBUTOS -->
@@ -1658,12 +1659,12 @@
         <div class="attr-box">
           <div class="attr-name">Carisma</div>
           <input class="attr-value" type="number" id="attr-car" value="10" min="1" max="30" oninput="updateMod(&#39;car&#39;); save()">
-          <div class="attr-mod" id="mod-car" style="color: var(--gold-dim);">+0</div>
+          <div class="attr-mod" id="mod-car" style="color: rgb(106, 176, 106);">+3</div>
         </div>
         <div class="attr-box">
           <div class="attr-name">Sabedoria</div>
           <input class="attr-value" type="number" id="attr-sab" value="10" min="1" max="30" oninput="updateMod(&#39;sab&#39;); save()">
-          <div class="attr-mod" id="mod-sab" style="color: var(--gold-dim);">+0</div>
+          <div class="attr-mod" id="mod-sab" style="color: rgb(106, 176, 106);">+6</div>
         </div>
       </div>
     </div>
@@ -1672,9 +1673,9 @@
     <div class="panel" id="panel-proficiencia">
       <div class="panel-title">Bônus de Proficiência</div>
       <div class="proficiency-banner">
-        <div class="prof-bonus-box" id="prof-bonus-display">+2</div>
+        <div class="prof-bonus-box" id="prof-bonus-display">+6</div>
         <div class="prof-bonus-info">
-          <div class="prof-bonus-label">Bônus atual (nível <span id="prof-nivel-display">1</span>)</div>
+          <div class="prof-bonus-label">Bônus atual (nível <span id="prof-nivel-display">17</span>)</div>
           <div class="prof-bonus-attrs" id="prof-bonus-attrs">Nenhum atributo selecionado</div>
         </div>
       </div>
@@ -1704,12 +1705,12 @@
         <label class="prof-attr-item" id="prof-item-car">
           <input type="checkbox" id="prof-check-car" onchange="toggleProfAttr(&#39;car&#39;)">
           <span class="prof-attr-label">CAR</span>
-          <span class="prof-attr-value" id="prof-val-car">+0</span>
+          <span class="prof-attr-value" id="prof-val-car">+3</span>
         </label>
         <label class="prof-attr-item" id="prof-item-sab">
           <input type="checkbox" id="prof-check-sab" onchange="toggleProfAttr(&#39;sab&#39;)">
           <span class="prof-attr-label">SAB</span>
-          <span class="prof-attr-value" id="prof-val-sab">+0</span>
+          <span class="prof-attr-value" id="prof-val-sab">+6</span>
         </label>
       </div>
       <div class="prof-hint">Marque livremente. Relíquias e subclasses podem ampliar quais atributos recebem o bônus.</div>
@@ -1720,7 +1721,7 @@
       <div class="panel-title">Perícias</div>
       <div class="pericias-header">
         <span style="font-size:11px;color:var(--text-dim);">Proficiências: <span id="pericias-usadas" style="color:var(--gold-light);font-weight:700;">0</span> / <span id="pericias-max" style="color:var(--gold-light);">4</span></span>
-        <span class="pericias-slots" id="pericias-slots-label">Prof atual =&gt; +2</span>
+        <span class="pericias-slots" id="pericias-slots-label">4 · Prof +6</span>
       </div>
       <div class="pericias-list" id="pericias-list"><div class="pericia-row" id="pericia-row-acrobacia">
       <input type="checkbox" class="pericia-check" id="pcheck-acrobacia" onchange="togglePericia(&#39;acrobacia&#39;)">
@@ -1741,22 +1742,22 @@
       <input type="checkbox" class="pericia-check" id="pcheck-apresentacao" onchange="togglePericia(&#39;apresentacao&#39;)">
       <label for="pcheck-apresentacao" class="pericia-nome">Apresentação</label>
       <span class="pericia-atributo">CAR</span>
-      <span class="pericia-total" id="ptotal-apresentacao">+0</span>
+      <span class="pericia-total" id="ptotal-apresentacao">+3</span>
     </div><div class="pericia-row" id="pericia-row-intimidacao">
       <input type="checkbox" class="pericia-check" id="pcheck-intimidacao" onchange="togglePericia(&#39;intimidacao&#39;)">
       <label for="pcheck-intimidacao" class="pericia-nome">Intimidação</label>
       <span class="pericia-atributo">CAR</span>
-      <span class="pericia-total" id="ptotal-intimidacao">+0</span>
+      <span class="pericia-total" id="ptotal-intimidacao">+3</span>
     </div><div class="pericia-row" id="pericia-row-enganacao">
       <input type="checkbox" class="pericia-check" id="pcheck-enganacao" onchange="togglePericia(&#39;enganacao&#39;)">
       <label for="pcheck-enganacao" class="pericia-nome">Enganação</label>
       <span class="pericia-atributo">CAR</span>
-      <span class="pericia-total" id="ptotal-enganacao">+0</span>
+      <span class="pericia-total" id="ptotal-enganacao">+3</span>
     </div><div class="pericia-row" id="pericia-row-persuasao">
       <input type="checkbox" class="pericia-check" id="pcheck-persuasao" onchange="togglePericia(&#39;persuasao&#39;)">
       <label for="pcheck-persuasao" class="pericia-nome">Persuasão</label>
       <span class="pericia-atributo">CAR</span>
-      <span class="pericia-total" id="ptotal-persuasao">+0</span>
+      <span class="pericia-total" id="ptotal-persuasao">+3</span>
     </div><div class="pericia-row" id="pericia-row-furtividade">
       <input type="checkbox" class="pericia-check" id="pcheck-furtividade" onchange="togglePericia(&#39;furtividade&#39;)">
       <label for="pcheck-furtividade" class="pericia-nome">Furtividade</label>
@@ -1766,12 +1767,12 @@
       <input type="checkbox" class="pericia-check" id="pcheck-conhecimento" onchange="togglePericia(&#39;conhecimento&#39;)">
       <label for="pcheck-conhecimento" class="pericia-nome">Conhecimento</label>
       <span class="pericia-atributo">SAB</span>
-      <span class="pericia-total" id="ptotal-conhecimento">+0</span>
+      <span class="pericia-total" id="ptotal-conhecimento">+6</span>
     </div><div class="pericia-row" id="pericia-row-religiao">
       <input type="checkbox" class="pericia-check" id="pcheck-religiao" onchange="togglePericia(&#39;religiao&#39;)">
       <label for="pcheck-religiao" class="pericia-nome">Religião</label>
       <span class="pericia-atributo">SAB</span>
-      <span class="pericia-total" id="ptotal-religiao">+0</span>
+      <span class="pericia-total" id="ptotal-religiao">+6</span>
     </div><div class="pericia-row" id="pericia-row-medicina">
       <input type="checkbox" class="pericia-check" id="pcheck-medicina" onchange="togglePericia(&#39;medicina&#39;)">
       <label for="pcheck-medicina" class="pericia-nome">Medicina</label>
@@ -1781,32 +1782,30 @@
       <input type="checkbox" class="pericia-check" id="pcheck-sobrevivencia" onchange="togglePericia(&#39;sobrevivencia&#39;)">
       <label for="pcheck-sobrevivencia" class="pericia-nome">Sobrevivência</label>
       <span class="pericia-atributo">SAB</span>
-      <span class="pericia-total" id="ptotal-sobrevivencia">+0</span>
+      <span class="pericia-total" id="ptotal-sobrevivencia">+6</span>
     </div><div class="pericia-row" id="pericia-row-percepcao">
       <input type="checkbox" class="pericia-check" id="pcheck-percepcao" onchange="togglePericia(&#39;percepcao&#39;)">
       <label for="pcheck-percepcao" class="pericia-nome">Percepção</label>
       <span class="pericia-atributo">SAB</span>
-      <span class="pericia-total" id="ptotal-percepcao">+0</span>
+      <span class="pericia-total" id="ptotal-percepcao">+6</span>
+
     </div><div class="pericia-row" id="pericia-row-investigacao">
       <input type="checkbox" class="pericia-check" id="pcheck-investigacao" onchange="togglePericia(&#39;investigacao&#39;)">
       <label for="pcheck-investigacao" class="pericia-nome">Investigação</label>
       <span class="pericia-atributo">INT</span>
       <span class="pericia-total" id="ptotal-investigacao">+0</span>
+
     </div><div class="pericia-row" id="pericia-row-tecnologia">
       <input type="checkbox" class="pericia-check" id="pcheck-tecnologia" onchange="togglePericia(&#39;tecnologia&#39;)">
       <label for="pcheck-tecnologia" class="pericia-nome">Tecnologia</label>
       <span class="pericia-atributo">INT</span>
       <span class="pericia-total" id="ptotal-tecnologia">+0</span>
+
     </div><div class="pericia-row" id="pericia-row-manipresto">
       <input type="checkbox" class="pericia-check" id="pcheck-manipresto" onchange="togglePericia(&#39;manipresto&#39;)">
       <label for="pcheck-manipresto" class="pericia-nome">Manipresto</label>
       <span class="pericia-atributo">DES</span>
       <span class="pericia-total" id="ptotal-manipresto">+0</span>
-    </div><div class="pericia-row" id="pericia-row-intuicao">
-      <input type="checkbox" class="pericia-check" id="pcheck-intuicao" onchange="togglePericia(&#39;intuicao&#39;)">
-      <label for="pcheck-intuicao" class="pericia-nome">Intuição</label>
-      <span class="pericia-atributo">SAB</span>
-      <span class="pericia-total" id="ptotal-intuicao">+0</span>
     </div><div class="pericia-row" id="pericia-row-determinacao">
       <input type="checkbox" class="pericia-check" id="pcheck-determinacao" onchange="togglePericia(&#39;determinacao&#39;)">
       <label for="pcheck-determinacao" class="pericia-nome">Determinação</label>
@@ -1851,22 +1850,28 @@
       <!-- sidebar: lista de combos salvos -->
       <div class="combo-sidebar">
         <button class="add-btn" style="width:100%;" onclick="novoCombo()">＋ Novo Combo</button>
-        <div id="combo-list-container"><div class="combo-empty-state">Nenhum combo criado.</div></div>
+        <div id="combo-list-container">
+          <div class="combo-empty-state">Nenhum combo criado.</div>
+        </div>
       </div>
 
       <!-- editor do combo ativo -->
       <div class="combo-editor" id="combo-editor-area">
-        <div class="combo-empty-state" id="combo-no-selection" style="display: block;">
+        <div class="combo-empty-state" id="combo-no-selection">
           Selecione ou crie um combo para editar.
         </div>
         <div id="combo-editor-content" style="display:none; flex-direction:column; gap:12px;">
 
           <div class="combo-editor-header">
-            <input class="combo-name-input" type="text" id="combo-name-input" placeholder="Nome do combo" maxlength="40" oninput="renomearComboAtivo()">
+            <input class="combo-name-input" type="text" id="combo-name-input"
+              placeholder="Nome do combo" maxlength="40"
+              oninput="renomearComboAtivo()">
           </div>
 
           <div class="combo-skill-selector">
-            <select id="combo-skill-select"><option value="">— Selecionar habilidade —</option></select>
+            <select id="combo-skill-select">
+              <option value="">— Selecionar habilidade —</option>
+            </select>
             <button class="add-btn" onclick="adicionarStepCombo()">＋ Adicionar</button>
           </div>
 
@@ -2087,11 +2092,11 @@
           <div class="field">
             <label>Raridade</label>
             <div class="artefato-raridade">
-              <button class="raridade-btn comum active" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
+              <button class="raridade-btn comum" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
               <button class="raridade-btn incomum" onclick="setRaridade(1, &#39;incomum&#39;, this)">🟢 Incomum</button>
               <button class="raridade-btn raro" onclick="setRaridade(1, &#39;raro&#39;, this)">🔵 Raro</button>
               <button class="raridade-btn epico" onclick="setRaridade(1, &#39;epico&#39;, this)">🟣 Épico</button>
-              <button class="raridade-btn lendario" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
+              <button class="raridade-btn lendario active" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
             </div>
           </div>
         </div>
@@ -2118,7 +2123,7 @@
           </div>
         </div>
 
-        <div class="artefato-slot locked" id="artefato-2">
+        <div class="artefato-slot" id="artefato-2">
           <div class="artefato-slot-label">🔮 Artefato III — Desbloqueado no Nível 8</div>
           <div class="field">
             <label>Nome</label>
@@ -2131,11 +2136,11 @@
           <div class="field">
             <label>Raridade</label>
             <div class="artefato-raridade">
-              <button class="raridade-btn comum active" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
+              <button class="raridade-btn comum" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
               <button class="raridade-btn incomum" onclick="setRaridade(1, &#39;incomum&#39;, this)">🟢 Incomum</button>
               <button class="raridade-btn raro" onclick="setRaridade(1, &#39;raro&#39;, this)">🔵 Raro</button>
                 <button class="raridade-btn epico" onclick="setRaridade(1, &#39;epico&#39;, this)">🟣 Épico</button>
-              <button class="raridade-btn lendario" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
+              <button class="raridade-btn lendario active" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
             </div>
           </div>
         </div>
@@ -2153,11 +2158,11 @@
           <div class="field">
             <label>Raridade</label>
             <div class="artefato-raridade">
-              <button class="raridade-btn comum active" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
+              <button class="raridade-btn comum" onclick="setRaridade(1, &#39;comum&#39;, this)">⚪ Comum</button>
               <button class="raridade-btn incomum" onclick="setRaridade(1, &#39;incomum&#39;, this)">🟢 Incomum</button>
               <button class="raridade-btn raro" onclick="setRaridade(1, &#39;raro&#39;, this)">🔵 Raro</button>
               <button class="raridade-btn epico" onclick="setRaridade(1, &#39;epico&#39;, this)">🟣 Épico</button>
-              <button class="raridade-btn lendario" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
+              <button class="raridade-btn lendario active" onclick="setRaridade(1, &#39;lendario&#39;, this)">🔴 Lendário</button>
             </div>
           </div>
         </div>
@@ -2172,7 +2177,28 @@
   <!-- PROGRESSÃO -->
   <div class="panel col-full">
     <div class="panel-title">Progressão de Nível</div>
-    <div class="level-track" id="level-track"><div class="lvl-pip milestone current" id="lvl-pip-1">1<div class="lvl-pip-tooltip">Arquétipo + Passiva + Skills Base | 🎯 Prof: +2</div></div><div class="lvl-pip" id="lvl-pip-2">2<div class="lvl-pip-tooltip">Benção de Artefato (Ganha seu primeiro artefato) | 🎯 Prof: +2</div></div><div class="lvl-pip" id="lvl-pip-3">3<div class="lvl-pip-tooltip">Escolha da subclasse | 🎯 Prof: +2</div></div><div class="lvl-pip milestone" id="lvl-pip-4">4<div class="lvl-pip-tooltip">2 Pontos de Atributo + Passiva | 🎯 Prof: +2</div></div><div class="lvl-pip" id="lvl-pip-5">5<div class="lvl-pip-tooltip">Ponto de Especialização + Recuperação +1 em stamina ou mana | 🎯 Prof: +3</div></div><div class="lvl-pip milestone" id="lvl-pip-6">6<div class="lvl-pip-tooltip">Benção de Artefato (Seu segundo artefato) | 🎯 Prof: +3</div></div><div class="lvl-pip" id="lvl-pip-7">7<div class="lvl-pip-tooltip">Ponto de Especialização | 🎯 Prof: +3</div></div><div class="lvl-pip milestone" id="lvl-pip-8">8<div class="lvl-pip-tooltip">🔮 3º Slot de Artefato | 🎯 Prof: +3</div></div><div class="lvl-pip" id="lvl-pip-9">9<div class="lvl-pip-tooltip">Ponto de Especialização + 2 Pontos de Atributo | 🎯 Prof: +4</div></div><div class="lvl-pip milestone" id="lvl-pip-10">10<div class="lvl-pip-tooltip">⭐ Magia Assinatura | 🎯 Prof: +4</div></div><div class="lvl-pip milestone" id="lvl-pip-11">11<div class="lvl-pip-tooltip">Passiva + Recuperação +1 | 🎯 Prof: +4</div></div><div class="lvl-pip" id="lvl-pip-12">12<div class="lvl-pip-tooltip">Ponto de Especialização + Atributo | 🎯 Prof: +4</div></div><div class="lvl-pip milestone" id="lvl-pip-13">13<div class="lvl-pip-tooltip">Ponto de Especialização ou Aquisição de Subclasse | 🎯 Prof: +5</div></div><div class="lvl-pip" id="lvl-pip-14">14<div class="lvl-pip-tooltip">Ponto de Especialização | 🎯 Prof: +5</div></div><div class="lvl-pip" id="lvl-pip-15">15<div class="lvl-pip-tooltip">Passiva | 🎯 Prof: +5</div></div><div class="lvl-pip" id="lvl-pip-16">16<div class="lvl-pip-tooltip">Ponto de Especialização + 2 Pontos de Atributo | 🎯 Prof: +5</div></div><div class="lvl-pip" id="lvl-pip-17">17<div class="lvl-pip-tooltip">Recuperação +1 | 🎯 Prof: +6</div></div><div class="lvl-pip" id="lvl-pip-18">18<div class="lvl-pip-tooltip">Atributo | 🎯 Prof: +6</div></div><div class="lvl-pip milestone" id="lvl-pip-19">19<div class="lvl-pip-tooltip">🔮 4º Slot de Artefato + Ponto de Classe | 🎯 Prof: +6</div></div><div class="lvl-pip milestone" id="lvl-pip-20">20<div class="lvl-pip-tooltip">✦ Habilidade Lendária | 🎯 Prof: +6</div></div></div>
+    <div class="level-track" id="level-track">
+      <div class="lvl-pip milestone done" id="lvl-pip-1">1<div class="lvl-pip-tooltip">Arquétipo + Passiva + Skills Base | 🎯 Prof: +2</div>
+    </div><div class="lvl-pip done" id="lvl-pip-2">2<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +2</div>
+  </div><div class="lvl-pip done" id="lvl-pip-3">3<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +2</div>
+</div><div class="lvl-pip milestone done" id="lvl-pip-4">4<div class="lvl-pip-tooltip">2 Pontos de Atributo + Passiva | 🎯 Prof: +2</div>
+</div><div class="lvl-pip done" id="lvl-pip-5">5<div class="lvl-pip-tooltip">Ponto de Classe + Recuperação +1 | 🎯 Prof: +3</div>
+</div><div class="lvl-pip milestone done" id="lvl-pip-6">6<div class="lvl-pip-tooltip">Especialização + Ponto de Classe | 🎯 Prof: +3</div>
+</div><div class="lvl-pip done" id="lvl-pip-7">7<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +3</div>
+</div><div class="lvl-pip milestone done" id="lvl-pip-8">8<div class="lvl-pip-tooltip">🔮 3º Slot de Artefato | 🎯 Prof: +3</div>
+</div><div class="lvl-pip done" id="lvl-pip-9">9<div class="lvl-pip-tooltip">Ponto de Classe + Atributo | 🎯 Prof: +4</div>
+</div><div class="lvl-pip milestone done" id="lvl-pip-10">10<div class="lvl-pip-tooltip">⭐ Magia Assinatura | 🎯 Prof: +4</div>
+</div><div class="lvl-pip milestone done" id="lvl-pip-11">11<div class="lvl-pip-tooltip">Passiva + Recuperação +1 | 🎯 Prof: +4</div>
+</div><div class="lvl-pip done" id="lvl-pip-12">12<div class="lvl-pip-tooltip">Ponto de Classe + Atributo | 🎯 Prof: +4</div>
+</div><div class="lvl-pip milestone done" id="lvl-pip-13">13<div class="lvl-pip-tooltip">🔀 Multiclasse + Passiva | 🎯 Prof: +5</div>
+</div><div class="lvl-pip done" id="lvl-pip-14">14<div class="lvl-pip-tooltip">Ponto de Classe | 🎯 Prof: +5</div>
+</div><div class="lvl-pip done" id="lvl-pip-15">15<div class="lvl-pip-tooltip">Ponto de Classe + Passiva | 🎯 Prof: +5</div>
+</div><div class="lvl-pip done" id="lvl-pip-16">16<div class="lvl-pip-tooltip">Atributo + Ponto de Classe | 🎯 Prof: +5</div>
+</div><div class="lvl-pip current" id="lvl-pip-17">17<div class="lvl-pip-tooltip">Passiva + Recuperação +1 | 🎯 Prof: +6</div>
+</div><div class="lvl-pip" id="lvl-pip-18">18<div class="lvl-pip-tooltip">Ponto de Classe + Atributo | 🎯 Prof: +6</div>
+</div><div class="lvl-pip milestone" id="lvl-pip-19">19<div class="lvl-pip-tooltip">🔮 4º Slot de Artefato + Ponto de Classe | 🎯 Prof: +6</div>
+</div><div class="lvl-pip milestone" id="lvl-pip-20">20<div class="lvl-pip-tooltip">✦ Habilidade Lendária | 🎯 Prof: +6</div>
+</div></div>
   </div>
 
   <!-- NOTAS -->
