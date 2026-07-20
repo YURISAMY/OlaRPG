@@ -1231,6 +1231,29 @@
   @keyframes syncToastIn { from { opacity:0; transform: translateX(-50%) translateY(10px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
   .sync-toast strong { color: var(--gold-light); }
 
+  /* ── ROLAR INICIATIVA ── */
+  .init-roll-row { display: flex; gap: 4px; align-items: stretch; }
+  .init-roll-row input { flex: 1; }
+  .roll-init-btn {
+    background: rgba(201,146,26,0.12);
+    border: 1px solid var(--border-gold);
+    border-radius: 3px;
+    color: var(--gold-light);
+    font-size: 15px;
+    width: 34px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .roll-init-btn:hover { background: rgba(201,146,26,0.25); }
+  .init-roll-result {
+    margin-top: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--gold-light);
+    letter-spacing: 0.03em;
+  }
+
   /* modal de renomear */
   .rename-modal-overlay {
     display: none;
@@ -1508,7 +1531,11 @@
       <div class="identity-row three">
         <div class="field">
           <label>Iniciativa</label>
-          <input type="number" id="char-iniciativa" placeholder="+0" oninput="save()">
+          <div class="init-roll-row">
+            <input type="number" id="char-iniciativa" placeholder="+0" oninput="save()">
+            <button type="button" class="roll-init-btn" onclick="rolarIniciativa()" title="Rolar iniciativa: d20 + bônus acima (ou + mod. de DES, se o campo estiver vazio)">🎲</button>
+          </div>
+          <div class="init-roll-result" id="init-roll-result" style="display:none;"></div>
         </div>
         <div class="field">
           <label>CA</label>
@@ -3361,6 +3388,7 @@ function collectState() {
 function applyState() {
   const codeInput = document.getElementById('session-code-input');
   if (codeInput) codeInput.value = state.sessionCode || '';
+  atualizarDisplayIniciativa();
   if (state.char) {
     Object.entries(state.char).forEach(([k,v]) => {
       const el = document.getElementById('char-'+k);
@@ -3445,7 +3473,7 @@ function getDefaultState() {
       { name:'', effect:'', raridade:'comum' }
     ],
     statuses: [], notes: '', historia: '', pericias: {},
-    sessionCode: '', syncId: null
+    sessionCode: '', syncId: null, battleInitiative: null
   };
 }
 
@@ -3817,7 +3845,33 @@ function clearAll() {
   syncRestoreConnection();
 }
 
-// ─── SINCRONIZAÇÃO EM TEMPO REAL COM O MESTRE (FIREBASE) ──────────────
+// ─── ROLAR INICIATIVA ───────────────────────────────────────────────
+function rolarIniciativa() {
+  const baseRaw = document.getElementById('char-iniciativa').value;
+  const desVal = parseInt(document.getElementById('attr-des').value) || 10;
+  const desMod = Math.floor((desVal - 10) / 2);
+  const base = (baseRaw !== '' && baseRaw !== null) ? (parseInt(baseRaw) || 0) : desMod;
+  const roll = Math.floor(Math.random() * 20) + 1;
+  const total = roll + base;
+  state.battleInitiative = total;
+  state.battleInitiativeRoll = roll;
+  state.battleInitiativeBase = base;
+  atualizarDisplayIniciativa();
+  save(); // persiste e envia pro Firebase se estiver conectado
+}
+
+function atualizarDisplayIniciativa() {
+  const el = document.getElementById('init-roll-result');
+  if (!el) return;
+  if (state.battleInitiative === null || state.battleInitiative === undefined) {
+    el.style.display = 'none';
+    return;
+  }
+  el.style.display = 'block';
+  el.textContent = '🎲 ' + state.battleInitiativeRoll + ' + ' + state.battleInitiativeBase + ' = ' + state.battleInitiative;
+}
+
+
 // Substitua os valores abaixo pelos dados do SEU projeto Firebase
 // (Firebase Console → Configurações do Projeto → Seus apps → SDK setup).
 const firebaseConfig = {
@@ -3964,6 +4018,7 @@ function syncPushState(immediate) {
       foCur: parseFloat(document.getElementById('fo-cur')?.value) || 0,
       foMax: parseFloat(document.getElementById('fo-max')?.value) || 0,
       ca: parseFloat(document.getElementById('char-ca')?.value) || 0,
+      initiative: (state.battleInitiative === null || state.battleInitiative === undefined) ? null : state.battleInitiative,
       updatedAt: Date.now()
     };
     syncRef.update(payload).catch(e => console.error('Erro ao enviar dados:', e));
