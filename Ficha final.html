@@ -1230,6 +1230,43 @@
   }
   @keyframes syncToastIn { from { opacity:0; transform: translateX(-50%) translateY(10px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
   .sync-toast strong { color: var(--gold-light); }
+  .sync-toast.whisper { border-color: #9a6fd6; }
+  .sync-toast.whisper strong { color: #c9a8f0; }
+  .sync-toast.dano { border-color: #c06060; }
+  .sync-toast.cura { border-color: #4caf50; }
+
+  /* ── TURNO DE BATALHA ── */
+  .turn-status-bar {
+    max-width: 1100px;
+    margin: 0 auto 18px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: rgba(245,234,214,0.55);
+  }
+  .turn-status-bar .round-label { color: var(--gold-dim); }
+  .turn-banner {
+    max-width: 1100px;
+    margin: 0 auto 18px;
+    display: none;
+    text-align: center;
+    padding: 16px;
+    background: linear-gradient(90deg, rgba(201,146,26,0.08), rgba(201,146,26,0.18), rgba(201,146,26,0.08));
+    border: 1px solid var(--border-gold);
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+    color: #e8b84b;
+    animation: turnPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes turnPulse { 0%,100% { box-shadow: 0 0 0 rgba(201,146,26,0); } 50% { box-shadow: 0 0 20px rgba(201,146,26,0.3); } }
 
   /* ── ROLAR INICIATIVA ── */
   .init-roll-row { display: flex; gap: 4px; align-items: stretch; }
@@ -1504,6 +1541,12 @@
   <button class="ficha-action-btn secondary" id="sync-disconnect-btn" onclick="desconectarSessao()" style="display:none;">Desconectar</button>
   <span class="sync-status offline" id="sync-status-label">desconectado</span>
 </div>
+
+<div class="turn-status-bar" id="turn-status-bar">
+  <span class="round-label" id="turn-round-label">Rodada 1</span>
+  <span id="turn-active-label">—</span>
+</div>
+<div class="turn-banner" id="turn-banner">🎯 SUA VEZ DE JOGAR!</div>
 
 <!-- MODAL RENOMEAR -->
 <div class="rename-modal-overlay" id="rename-modal-overlay" onclick="fecharRenomear(event)">
@@ -2690,6 +2733,7 @@ function useSkill(listKey, index) {
     spendResource(item.recurso, cost);
     if (foTax > 0) spendResource('st', foTax);
     refreshUseButtons();
+    syncLogAction('skill', item.name, item.custo, item.desc);
   }
 }
 
@@ -2822,6 +2866,7 @@ function usePassiva(index) {
     spendResource(item.recurso, cost);
     if (foTax > 0) spendResource('st', foTax);
     refreshUseButtons();
+    syncLogAction('passiva', item.name, item.custo, item.desc);
   }
 }
 
@@ -2887,6 +2932,7 @@ function useItem(index) {
   const item = state.itens[index];
   if (!item || item.quantidade < 1) return;
   item.quantidade -= 1;
+  syncLogAction('item', item.name, '', item.desc);
   if (item.quantidade <= 0) {
     state.itens.splice(index, 1);
   }
@@ -2961,6 +3007,7 @@ function useMagia(listKey, index) {
     spendResource(item.recurso, cost);
     if (foTax > 0) spendResource('st', foTax);
     refreshUseButtons();
+    syncLogAction('magia', item.name, item.custo, item.desc);
   }
 }
 
@@ -3908,10 +3955,10 @@ function syncSetStatus(mode, text) {
   if (disconnectBtn) disconnectBtn.style.display = mode === 'online' ? '' : 'none';
 }
 
-function syncShowToast(html) {
+function syncShowToast(html, cls) {
   document.querySelectorAll('.sync-toast').forEach(t => t.remove());
   const el = document.createElement('div');
-  el.className = 'sync-toast';
+  el.className = 'sync-toast' + (cls ? ' ' + cls : '');
   el.innerHTML = html;
   document.body.appendChild(el);
   setTimeout(() => { if (el.parentNode) el.remove(); }, 4000);
@@ -3929,10 +3976,15 @@ function conectarSessao() {
 
 function desconectarSessao() {
   if (syncRef) { syncRef.off(); syncRef = null; }
+  if (turnRef) { turnRef.off(); turnRef = null; }
   state.sessionCode = '';
   save();
   syncSetStatus('offline', 'desconectado');
+  document.getElementById('turn-status-bar').style.display = 'none';
+  document.getElementById('turn-banner').style.display = 'none';
 }
+
+let turnRef = null;
 
 function syncConnect() {
   const code = (state.sessionCode || '').trim().toUpperCase();
@@ -3947,7 +3999,7 @@ function syncConnect() {
   if (syncRef) syncRef.off();
   syncRef = db.ref('sessions/' + code + '/players/' + state.syncId);
 
-  // Escuta alterações vindas do Mestre (dano, cura, ajustes)
+  // Escuta alterações vindas do Mestre (dano, cura, ajustes, sussurros)
   syncRef.on('value', (snapshot) => {
     const data = snapshot.val();
     if (!data) return; // ainda não existe — o push inicial abaixo vai criar
@@ -3975,10 +4027,30 @@ function syncConnect() {
         syncLastEventSeen = data.lastEvent.ts;
         const ev = data.lastEvent;
         if (ev.amount) {
-          const verbo = ev.amount < 0 ? 'sofreu' : 'recuperou';
           const valor = Math.abs(ev.amount);
           const origem = ev.source ? (' de <strong>' + ev.source + '</strong>') : '';
-          syncShowToast('Você ' + verbo + ' <strong>' + valor + '</strong> de ' + (ev.stat === 'st' ? 'ST' : ev.stat === 'fo' ? 'FO' : 'HP') + origem + '.');
+          let msg, cls;
+          if (ev.stat === 'hp' || !ev.stat) {
+            msg = ev.amount < 0
+              ? 'Você sofreu <strong>' + valor + '</strong> pontos de dano' + origem + '.'
+              : 'Você curou <strong>' + valor + '</strong> pontos de vida' + origem + '.';
+            cls = ev.amount < 0 ? 'dano' : 'cura';
+          } else {
+            const statLabel = ev.stat === 'st' ? 'ST' : 'FO';
+            msg = ev.amount < 0
+              ? 'Você perdeu <strong>' + valor + '</strong> pontos de ' + statLabel + origem + '.'
+              : 'Você recuperou <strong>' + valor + '</strong> pontos de ' + statLabel + origem + '.';
+            cls = ev.amount < 0 ? 'dano' : 'cura';
+          }
+          syncShowToast(msg, cls);
+        }
+      }
+
+      // Sussurro privado do Mestre
+      if (data.whisper && data.whisper.ts && data.whisper.ts !== syncLastWhisperSeen) {
+        syncLastWhisperSeen = data.whisper.ts;
+        if (data.whisper.text) {
+          syncShowToast('🤫 O Mestre sussurra: "<strong>' + data.whisper.text + '</strong>"', 'whisper');
         }
       }
     } finally {
@@ -3989,11 +4061,31 @@ function syncConnect() {
     syncSetStatus('offline', 'erro — verifique o código');
   });
 
+  // Escuta o turno atual de batalha (pra saber quando é a vez do jogador)
+  if (turnRef) turnRef.off();
+  turnRef = db.ref('sessions/' + code + '/turn');
+  turnRef.on('value', (snapshot) => {
+    const data = snapshot.val();
+    const bar = document.getElementById('turn-status-bar');
+    const banner = document.getElementById('turn-banner');
+    if (!data) {
+      bar.style.display = 'none';
+      banner.style.display = 'none';
+      return;
+    }
+    bar.style.display = 'flex';
+    document.getElementById('turn-round-label').textContent = 'Rodada ' + (data.round || 1);
+    document.getElementById('turn-active-label').textContent = 'Turno de: ' + (data.activeName || '—');
+    const isMyTurn = data.activeType === 'player' && data.activeId === state.syncId;
+    banner.style.display = isMyTurn ? 'block' : 'none';
+  });
+
   syncSetStatus('online', '🟢 sincronizado: ' + code);
   syncPushState(true); // envia o estado atual assim que conecta
 }
 
 let syncLastEventSeen = null;
+let syncLastWhisperSeen = null;
 
 function salvarFichaAtivaSilencioso() {
   const fichas = carregarFichas();
@@ -4001,6 +4093,19 @@ function salvarFichaAtivaSilencioso() {
   if (!fichas[id]) return;
   fichas[id].dados = JSON.parse(JSON.stringify(state));
   salvarFichas(fichas);
+}
+
+// Registra o uso de uma habilidade/magia/passiva pro Mestre ver no log de batalha
+function syncLogAction(tipo, nome, custoTexto, desc) {
+  if (!syncRef || !state.sessionCode) return;
+  syncRef.child('lastAction').set({
+    tipo,
+    charName: (state.char && state.char.name) || 'Personagem',
+    skillName: nome || '',
+    custo: custoTexto || '',
+    desc: desc || '',
+    ts: Date.now()
+  }).catch(e => console.error('Erro ao enviar ação:', e));
 }
 
 function syncPushState(immediate) {
@@ -4028,6 +4133,9 @@ function syncPushState(immediate) {
 
 function syncRestoreConnection() {
   if (syncRef) { syncRef.off(); syncRef = null; }
+  if (turnRef) { turnRef.off(); turnRef = null; }
+  document.getElementById('turn-status-bar').style.display = 'none';
+  document.getElementById('turn-banner').style.display = 'none';
   if (state.sessionCode) {
     const input = document.getElementById('session-code-input');
     if (input) input.value = state.sessionCode;

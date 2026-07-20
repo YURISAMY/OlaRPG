@@ -918,13 +918,51 @@
       border-radius: 6px;
       padding: 16px 18px;
     }
+    .turn-order-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
     .turn-order-title {
       font-family: 'Share Tech Mono', monospace;
       font-size: 10px;
       letter-spacing: 0.2em;
       color: var(--gold-light);
-      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+    .turn-round-badge {
+      background: rgba(201,146,26,0.15);
+      border: 1px solid rgba(201,146,26,0.3);
+      border-radius: 3px;
+      padding: 2px 8px;
+      font-size: 9px;
+      color: var(--gold-dim);
+    }
+    .turn-order-controls { display: flex; gap: 8px; }
+    .turn-order-btn {
+      background: rgba(201,146,26,0.15);
+      border: 1px solid var(--gold-dim);
+      border-radius: 3px;
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .turn-order-btn:hover { background: rgba(201,146,26,0.28); }
+    .turn-order-btn.secondary {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.15);
+      color: rgba(245,234,214,0.6);
+    }
+    .turn-order-btn.secondary:hover { background: rgba(255,255,255,0.09); }
     .turn-order-list {
       display: flex;
       flex-wrap: wrap;
@@ -942,7 +980,7 @@
     }
     .turn-order-item.monster { border-color: rgba(201,64,64,0.3); }
     .turn-order-item.player { border-color: rgba(64,96,201,0.35); }
-    .turn-order-item:first-child { border-color: var(--gold); background: rgba(201,146,26,0.1); }
+    .turn-order-item.active-turn { border-color: var(--gold); background: rgba(201,146,26,0.14); box-shadow: 0 0 10px rgba(201,146,26,0.15); }
     .turn-order-pos {
       font-family: 'Share Tech Mono', monospace;
       font-size: 10px;
@@ -955,6 +993,34 @@
       color: var(--gold-light);
       font-weight: bold;
     }
+    .battle-player-whisper-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .battle-player-whisper-row input[type="text"] {
+      flex: 1;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(154,111,214,0.3);
+      border-radius: 3px;
+      color: var(--parchment);
+      font-family: 'Crimson Pro', serif;
+      font-size: 12px;
+      padding: 6px 10px;
+    }
+    .battle-player-whisper-btn {
+      background: rgba(154,111,214,0.15);
+      border: 1px solid rgba(154,111,214,0.4);
+      color: #c9a8f0;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 7px 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .battle-player-whisper-btn:hover { background: rgba(154,111,214,0.28); }
     .roll-init-btn-m {
       background: rgba(201,146,26,0.12);
       border: 1px solid var(--gold-dim);
@@ -4898,8 +4964,10 @@
       projectId: "olaaa-rpg"
     };
 
-    let syncDb = null, playersRef = null;
+    let syncDb = null, playersRef = null, turnRef = null;
     let sessionPlayers = {}; // { playerId: {name, hpCur, hpMax, ...} }
+    let lastSeenActionTs = {}; // { playerId: timestamp } — evita logar a mesma ação 2x
+    let currentSessionCode = '';
     const SESSION_STORAGE_KEY = 'rpg-battle-session-code';
 
     function syncGetDb() {
@@ -4932,6 +5000,7 @@
       const db = syncGetDb();
       if (!db) { syncSetStatus('offline', 'erro de conexão'); return; }
 
+      currentSessionCode = code;
       localStorage.setItem(SESSION_STORAGE_KEY, code);
       syncSetStatus('connecting', 'conectando a ' + code + '...');
 
@@ -4940,17 +5009,45 @@
       playersRef.on('value', (snapshot) => {
         sessionPlayers = snapshot.val() || {};
         syncSetStatus('online', '🟢 sincronizado: ' + code);
+        detectarNovasAcoes();
         renderPlayers();
       }, (err) => {
         console.error('Erro de sincronização:', err);
         syncSetStatus('offline', 'erro — verifique o código');
       });
+
+      if (turnRef) turnRef.off();
+      turnRef = db.ref('sessions/' + code + '/turn');
+      // (o mestre não precisa escutar o próprio turno, só escreve nele — mas mantemos a ref pra push)
+      carregarEstadoTurno();
+      renderTurnOrder();
+    }
+
+    // Detecta ações novas (uso de skill/magia/passiva/item) enviadas pela Ficha do jogador
+    function detectarNovasAcoes() {
+      Object.entries(sessionPlayers).forEach(([id, p]) => {
+        if (!p || !p.lastAction || !p.lastAction.ts) return;
+        if (lastSeenActionTs[id] === p.lastAction.ts) return;
+        lastSeenActionTs[id] = p.lastAction.ts;
+        const a = p.lastAction;
+        const tipoLabel = { skill: 'usou a habilidade', passiva: 'usou a passiva', magia: 'usou', item: 'usou o item' }[a.tipo] || 'usou';
+        let msg = '<span class="log-skill-name">' + (a.skillName || '?') + '</span>';
+        if (a.custo) msg += ' <span style="color:var(--gold-dim);">(' + a.custo + ')</span>';
+        if (a.desc) msg += ' — ' + a.desc;
+        addBattleLog(p.name || 'Jogador', tipoLabel + ' ' + msg);
+      });
     }
 
     function desconectarSessaoBatalha() {
       if (playersRef) { playersRef.off(); playersRef = null; }
+      if (turnRef) { turnRef.off(); turnRef = null; }
       sessionPlayers = {};
+      lastSeenActionTs = {};
+      currentSessionCode = '';
+      currentTurnKey = null;
+      roundNumber = 1;
       localStorage.removeItem(SESSION_STORAGE_KEY);
+      localStorage.removeItem(TURN_STORAGE_KEY);
       syncSetStatus('offline', 'desconectado');
       renderPlayers();
     }
@@ -5010,6 +5107,11 @@
         html += '<button class="battle-player-heal-btn" onclick="aplicarCuraJogador(\'' + id + '\')">✚ Curar</button>';
         html += '</div>';
 
+        html += '<div class="battle-player-whisper-row">';
+        html += '<input type="text" id="sussurro-' + id + '" placeholder="Mensagem privada só pra este jogador..." onkeydown="if(event.key===\'Enter\') enviarSussurro(\'' + id + '\')">';
+        html += '<button class="battle-player-whisper-btn" onclick="enviarSussurro(\'' + id + '\')">🤫 Sussurrar</button>';
+        html += '</div>';
+
         html += '</div>';
       });
 
@@ -5034,17 +5136,7 @@
       const container = document.getElementById('turn-order-container');
       if (!container) return;
 
-      let combatants = [];
-      battleMonsters.forEach(m => {
-        if (m.initiative !== undefined && m.initiative !== null) {
-          combatants.push({ name: m.displayName || m.name, value: m.initiative, type: 'monster' });
-        }
-      });
-      Object.values(sessionPlayers || {}).forEach(p => {
-        if (p && p.initiative !== undefined && p.initiative !== null) {
-          combatants.push({ name: p.name || 'Jogador', value: p.initiative, type: 'player' });
-        }
-      });
+      const combatants = getSortedCombatants();
 
       if (combatants.length === 0) {
         container.style.display = 'none';
@@ -5052,14 +5144,21 @@
         return;
       }
 
-      combatants.sort((a, b) => b.value - a.value);
       container.style.display = '';
 
-      let html = '<div class="turn-order-title">⚔ ORDEM DE TURNO</div><div class="turn-order-list">';
+      let html = '<div class="turn-order-header">';
+      html += '<div class="turn-order-title">⚔ ORDEM DE TURNO <span class="turn-round-badge">Rodada ' + roundNumber + '</span></div>';
+      html += '<div class="turn-order-controls">';
+      html += '<button class="turn-order-btn" onclick="avancarTurno()">▶ Próximo Turno</button>';
+      html += '<button class="turn-order-btn secondary" onclick="reiniciarTurno()">🔄 Reiniciar</button>';
+      html += '</div></div>';
+
+      html += '<div class="turn-order-list">';
       combatants.forEach((c, i) => {
-        html += '<div class="turn-order-item ' + c.type + '">';
+        const isActive = c.key === currentTurnKey;
+        html += '<div class="turn-order-item ' + c.type + (isActive ? ' active-turn' : '') + '">';
         html += '<span class="turn-order-pos">' + (i + 1) + '</span>';
-        html += '<span class="turn-order-name">' + c.name + '</span>';
+        html += '<span class="turn-order-name">' + (isActive ? '🎯 ' : '') + c.name + '</span>';
         html += '<span class="turn-order-val">' + c.value + '</span>';
         html += '</div>';
       });
@@ -5136,6 +5235,97 @@
         lastEvent: { stat: 'hp', amount: qtd, source: null, ts: Date.now() }
       });
       addBattleLog('✚', 'curou ' + qtd + ' HP de <span class="log-skill-name">' + (p.name || 'Jogador') + '</span> (' + novoHp + '/' + (p.hpMax || 0) + ' HP)');
+    }
+
+    function enviarSussurro(id) {
+      if (!playersRef) return;
+      const p = sessionPlayers[id];
+      const input = document.getElementById('sussurro-' + id);
+      const texto = (input.value || '').trim();
+      if (!texto) return;
+      playersRef.child(id).update({
+        whisper: { text: texto, ts: Date.now() }
+      });
+      input.value = '';
+      addBattleLog('🤫', 'sussurrou algo para <span class="log-skill-name">' + (p?.name || 'Jogador') + '</span> (privado)');
+    }
+
+    /* ── ORDEM DE TURNO: avançar / reiniciar ── */
+    let currentTurnKey = null;
+    let roundNumber = 1;
+    const TURN_STORAGE_KEY = 'rpg-battle-turn';
+
+    function carregarEstadoTurno() {
+      try {
+        const raw = localStorage.getItem(TURN_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          currentTurnKey = parsed.currentTurnKey || null;
+          roundNumber = parsed.roundNumber || 1;
+        }
+      } catch (e) { /* ignora */ }
+    }
+
+    function salvarEstadoTurno() {
+      try {
+        localStorage.setItem(TURN_STORAGE_KEY, JSON.stringify({ currentTurnKey, roundNumber }));
+      } catch (e) { /* ignora */ }
+    }
+
+    function getSortedCombatants() {
+      let combatants = [];
+      battleMonsters.forEach(m => {
+        if (m.initiative !== undefined && m.initiative !== null) {
+          combatants.push({ key: 'monster:' + m.id, name: m.displayName || m.name, value: m.initiative, type: 'monster', refId: m.id });
+        }
+      });
+      Object.entries(sessionPlayers || {}).forEach(([id, p]) => {
+        if (p && p.initiative !== undefined && p.initiative !== null) {
+          combatants.push({ key: 'player:' + id, name: p.name || 'Jogador', value: p.initiative, type: 'player', refId: id });
+        }
+      });
+      combatants.sort((a, b) => b.value - a.value);
+      return combatants;
+    }
+
+    function pushTurnToFirebase(combatant) {
+      if (!turnRef || !currentSessionCode) return;
+      turnRef.set({
+        activeType: combatant ? combatant.type : null,
+        activeId: combatant ? combatant.refId : null,
+        activeName: combatant ? combatant.name : null,
+        round: roundNumber,
+        ts: Date.now()
+      }).catch(e => console.error('Erro ao atualizar turno:', e));
+    }
+
+    function avancarTurno() {
+      const combatants = getSortedCombatants();
+      if (combatants.length === 0) { alert('Ninguém rolou iniciativa ainda.'); return; }
+
+      let nextIndex = 0;
+      if (currentTurnKey) {
+        const idx = combatants.findIndex(c => c.key === currentTurnKey);
+        if (idx !== -1) {
+          nextIndex = idx + 1;
+          if (nextIndex >= combatants.length) { nextIndex = 0; roundNumber++; }
+        }
+      }
+      const next = combatants[nextIndex];
+      currentTurnKey = next.key;
+      salvarEstadoTurno();
+      pushTurnToFirebase(next);
+      renderTurnOrder();
+      addBattleLog('⚔', 'Rodada <strong>' + roundNumber + '</strong> — turno de <span class="log-skill-name">' + next.name + '</span>');
+    }
+
+    function reiniciarTurno() {
+      currentTurnKey = null;
+      roundNumber = 1;
+      salvarEstadoTurno();
+      pushTurnToFirebase(null);
+      renderTurnOrder();
+      addBattleLog('🔄', 'ordem de turno reiniciada.');
     }
 
     /* ── INIT ── */
