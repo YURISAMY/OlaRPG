@@ -2733,6 +2733,7 @@ function useSkill(listKey, index) {
     spendResource(item.recurso, cost);
     if (foTax > 0) spendResource('st', foTax);
     refreshUseButtons();
+    syncPushState(true); // envia o novo HP/ST/FO já, antes do aviso, pra evitar sobrescrever com valor antigo
     syncLogAction('skill', item.name, item.custo, item.desc);
   }
 }
@@ -2866,6 +2867,7 @@ function usePassiva(index) {
     spendResource(item.recurso, cost);
     if (foTax > 0) spendResource('st', foTax);
     refreshUseButtons();
+    syncPushState(true);
     syncLogAction('passiva', item.name, item.custo, item.desc);
   }
 }
@@ -3007,6 +3009,7 @@ function useMagia(listKey, index) {
     spendResource(item.recurso, cost);
     if (foTax > 0) spendResource('st', foTax);
     refreshUseButtons();
+    syncPushState(true);
     syncLogAction('magia', item.name, item.custo, item.desc);
   }
 }
