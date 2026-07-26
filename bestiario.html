@@ -5137,6 +5137,7 @@
       if (!container) return;
 
       const combatants = getSortedCombatants();
+      pushTurnOrderToFirebase(combatants);
 
       if (combatants.length === 0) {
         container.style.display = 'none';
@@ -5164,6 +5165,18 @@
       });
       html += '</div>';
       container.innerHTML = html;
+    }
+
+    // Envia só nomes + tipo (jogador/monstro) pra Ficha — nunca os valores de iniciativa
+    // dos monstros nem qualquer outro dado deles, só a ordem em si.
+    let turnOrderPushTimer = null;
+    function pushTurnOrderToFirebase(combatants) {
+      if (!currentSessionCode || !syncDb) return;
+      if (turnOrderPushTimer) clearTimeout(turnOrderPushTimer);
+      turnOrderPushTimer = setTimeout(() => {
+        const payload = combatants.map(c => ({ type: c.type, name: c.name }));
+        syncDb.ref('sessions/' + currentSessionCode + '/turnOrder').set(payload).catch(e => console.error('Erro ao enviar ordem de turno:', e));
+      }, 250);
     }
 
     function renderPlayerStat(id, stat, label, val, maxVal, pct) {

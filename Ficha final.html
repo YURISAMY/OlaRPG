@@ -1268,6 +1268,65 @@
   }
   @keyframes turnPulse { 0%,100% { box-shadow: 0 0 0 rgba(201,146,26,0); } 50% { box-shadow: 0 0 20px rgba(201,146,26,0.3); } }
 
+  /* ── ORDEM DE TURNO (visão do jogador) ── */
+  .turn-order-mini {
+    max-width: 1100px;
+    margin: 0 auto 12px;
+    display: none;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+  .turn-order-mini-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+  .turn-order-mini-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .turn-order-mini-item {
+    font-size: 12px;
+    padding: 4px 9px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: rgba(245,234,214,0.7);
+  }
+  .turn-order-mini-item.monster { border-color: rgba(201,64,64,0.28); }
+  .turn-order-mini-item.player { border-color: rgba(64,96,201,0.32); }
+  .turn-order-mini-item.active-turn {
+    border-color: var(--gold);
+    background: rgba(201,146,26,0.14);
+    color: var(--gold-light);
+    font-weight: bold;
+  }
+
+  /* ── QUEM ESTÁ NA MESA ── */
+  .party-roster {
+    max-width: 1100px;
+    margin: 0 auto 18px;
+    display: none;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 12px;
+    color: rgba(245,234,214,0.55);
+  }
+  .party-roster-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--gold-dim);
+    margin-right: 6px;
+  }
+  .party-roster-name {
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+  }
+
   /* ── ROLAR INICIATIVA ── */
   .init-roll-row { display: flex; gap: 4px; align-items: stretch; }
   .init-roll-row input { flex: 1; }
@@ -1547,6 +1606,8 @@
   <span id="turn-active-label">—</span>
 </div>
 <div class="turn-banner" id="turn-banner">🎯 SUA VEZ DE JOGAR!</div>
+<div class="turn-order-mini" id="turn-order-mini"></div>
+<div class="party-roster" id="party-roster"></div>
 
 <!-- MODAL RENOMEAR -->
 <div class="rename-modal-overlay" id="rename-modal-overlay" onclick="fecharRenomear(event)">
@@ -3980,14 +4041,21 @@ function conectarSessao() {
 function desconectarSessao() {
   if (syncRef) { syncRef.off(); syncRef = null; }
   if (turnRef) { turnRef.off(); turnRef = null; }
+  if (turnOrderRef) { turnOrderRef.off(); turnOrderRef = null; }
+  if (rosterRef) { rosterRef.off(); rosterRef = null; }
   state.sessionCode = '';
   save();
   syncSetStatus('offline', 'desconectado');
   document.getElementById('turn-status-bar').style.display = 'none';
   document.getElementById('turn-banner').style.display = 'none';
+  document.getElementById('turn-order-mini').style.display = 'none';
+  document.getElementById('party-roster').style.display = 'none';
 }
 
 let turnRef = null;
+let turnOrderRef = null;
+let rosterRef = null;
+let currentActiveTurnName = null;
 
 function syncConnect() {
   const code = (state.sessionCode || '').trim().toUpperCase();
@@ -4074,6 +4142,8 @@ function syncConnect() {
     if (!data) {
       bar.style.display = 'none';
       banner.style.display = 'none';
+      currentActiveTurnName = null;
+      renderTurnOrderMini(lastTurnOrderData);
       return;
     }
     bar.style.display = 'flex';
@@ -4081,6 +4151,23 @@ function syncConnect() {
     document.getElementById('turn-active-label').textContent = 'Turno de: ' + (data.activeName || '—');
     const isMyTurn = data.activeType === 'player' && data.activeId === state.syncId;
     banner.style.display = isMyTurn ? 'block' : 'none';
+    currentActiveTurnName = data.activeName || null;
+    renderTurnOrderMini(lastTurnOrderData);
+  });
+
+  // Escuta a ordem de turno completa (só nomes — nunca stats dos monstros)
+  if (turnOrderRef) turnOrderRef.off();
+  turnOrderRef = db.ref('sessions/' + code + '/turnOrder');
+  turnOrderRef.on('value', (snapshot) => {
+    lastTurnOrderData = snapshot.val() || [];
+    renderTurnOrderMini(lastTurnOrderData);
+  });
+
+  // Escuta quem mais está conectado na mesa (só nomes)
+  if (rosterRef) rosterRef.off();
+  rosterRef = db.ref('sessions/' + code + '/players');
+  rosterRef.on('value', (snapshot) => {
+    renderPartyRoster(snapshot.val() || {});
   });
 
   syncSetStatus('online', '🟢 sincronizado: ' + code);
@@ -4134,11 +4221,50 @@ function syncPushState(immediate) {
   if (immediate) doPush(); else syncPushTimer = setTimeout(doPush, 350);
 }
 
+let lastTurnOrderData = [];
+
+function renderTurnOrderMini(list) {
+  const el = document.getElementById('turn-order-mini');
+  if (!el) return;
+  if (!list || list.length === 0) {
+    el.style.display = 'none';
+    el.innerHTML = '';
+    return;
+  }
+  el.style.display = 'block';
+  let html = '<div class="turn-order-mini-title">⚔ ORDEM DE TURNO</div><div class="turn-order-mini-list">';
+  list.forEach((c, i) => {
+    const isActive = currentActiveTurnName && c.name === currentActiveTurnName;
+    const icon = c.type === 'monster' ? '👹' : '🧑';
+    html += '<span class="turn-order-mini-item ' + c.type + (isActive ? ' active-turn' : '') + '">' + (i + 1) + '. ' + icon + ' ' + c.name + '</span>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function renderPartyRoster(playersObj) {
+  const el = document.getElementById('party-roster');
+  if (!el) return;
+  const names = Object.values(playersObj || {}).map(p => p && p.name).filter(Boolean);
+  if (names.length === 0) {
+    el.style.display = 'none';
+    el.innerHTML = '';
+    return;
+  }
+  el.style.display = 'block';
+  el.innerHTML = '<span class="party-roster-title">🧑‍🤝‍🧑 Na mesa:</span>' +
+    names.map(n => '<span class="party-roster-name">' + n + '</span>').join('<span style="color:rgba(245,234,214,0.3);"> · </span>');
+}
+
 function syncRestoreConnection() {
   if (syncRef) { syncRef.off(); syncRef = null; }
   if (turnRef) { turnRef.off(); turnRef = null; }
+  if (turnOrderRef) { turnOrderRef.off(); turnOrderRef = null; }
+  if (rosterRef) { rosterRef.off(); rosterRef = null; }
   document.getElementById('turn-status-bar').style.display = 'none';
   document.getElementById('turn-banner').style.display = 'none';
+  document.getElementById('turn-order-mini').style.display = 'none';
+  document.getElementById('party-roster').style.display = 'none';
   if (state.sessionCode) {
     const input = document.getElementById('session-code-input');
     if (input) input.value = state.sessionCode;
