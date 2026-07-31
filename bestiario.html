@@ -1021,6 +1021,48 @@
       white-space: nowrap;
     }
     .battle-player-whisper-btn:hover { background: rgba(154,111,214,0.28); }
+
+    /* ── EFEITOS VISUAIS ── */
+    .battle-player-fx-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .fx-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      color: rgba(245,234,214,0.4);
+      white-space: nowrap;
+    }
+    .fx-btn {
+      background: rgba(120,80,180,0.12);
+      border: 1px solid rgba(120,80,180,0.35);
+      color: #b89ce0;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      padding: 5px 9px;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .fx-btn:hover { background: rgba(120,80,180,0.26); }
+    .fx-broadcast-bar {
+      max-width: 720px;
+      margin: 0 auto 18px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 10px 16px;
+      background: #0d0d10;
+      border: 1px solid rgba(120,80,180,0.3);
+      border-radius: 6px;
+    }
     .roll-init-btn-m {
       background: rgba(201,146,26,0.12);
       border: 1px solid var(--gold-dim);
@@ -4425,6 +4467,13 @@
       <span class="sync-status offline" id="sync-status-label">desconectado</span>
     </div>
 
+    <div class="fx-broadcast-bar" id="fx-broadcast-bar">
+      <span class="fx-label">🎭 EFEITO PRA MESA TODA:</span>
+      <button class="fx-btn" onclick="dispararEfeitoMesa('glitch')">⚡ Glitch</button>
+      <button class="fx-btn" onclick="dispararEfeitoMesa('estatico')">📺 Estático</button>
+      <button class="fx-btn" onclick="dispararEfeitoMesa('nevoa')">🌫️ Névoa</button>
+    </div>
+
     <div class="turn-order-container" id="turn-order-container" style="display:none;"></div>
 
     <div class="players-title" id="players-title" style="display:none;">🧑‍🤝‍🧑 JOGADORES CONECTADOS</div>
@@ -5021,6 +5070,7 @@
       // (o mestre não precisa escutar o próprio turno, só escreve nele — mas mantemos a ref pra push)
       carregarEstadoTurno();
       renderTurnOrder();
+      document.getElementById('fx-broadcast-bar').style.display = 'flex';
     }
 
     // Detecta ações novas (uso de skill/magia/passiva/item) enviadas pela Ficha do jogador
@@ -5049,6 +5099,7 @@
       localStorage.removeItem(SESSION_STORAGE_KEY);
       localStorage.removeItem(TURN_STORAGE_KEY);
       syncSetStatus('offline', 'desconectado');
+      document.getElementById('fx-broadcast-bar').style.display = 'none';
       renderPlayers();
     }
 
@@ -5110,6 +5161,13 @@
         html += '<div class="battle-player-whisper-row">';
         html += '<input type="text" id="sussurro-' + id + '" placeholder="Mensagem privada só pra este jogador..." onkeydown="if(event.key===\'Enter\') enviarSussurro(\'' + id + '\')">';
         html += '<button class="battle-player-whisper-btn" onclick="enviarSussurro(\'' + id + '\')">🤫 Sussurrar</button>';
+        html += '</div>';
+
+        html += '<div class="battle-player-fx-row">';
+        html += '<span class="fx-label">🎭 Efeito:</span>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'glitch\')">⚡ Glitch</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'estatico\')">📺 Estático</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'nevoa\')">🌫️ Névoa</button>';
         html += '</div>';
 
         html += '</div>';
@@ -5261,6 +5319,23 @@
       });
       input.value = '';
       addBattleLog('🤫', 'sussurrou algo para <span class="log-skill-name">' + (p?.name || 'Jogador') + '</span> (privado)');
+    }
+
+    const FX_NOME = { glitch: 'Glitch', estatico: 'Estático', nevoa: 'Névoa' };
+
+    function dispararEfeitoJogador(id, tipo) {
+      if (!playersRef) return;
+      const p = sessionPlayers[id];
+      playersRef.child(id).update({
+        effect: { tipo, ts: Date.now() }
+      });
+      addBattleLog('🎭', 'ativou o efeito <strong>' + (FX_NOME[tipo] || tipo) + '</strong> em <span class="log-skill-name">' + (p?.name || 'Jogador') + '</span>');
+    }
+
+    function dispararEfeitoMesa(tipo) {
+      if (!currentSessionCode || !syncDb) return;
+      syncDb.ref('sessions/' + currentSessionCode + '/broadcastEffect').set({ tipo, ts: Date.now() }).catch(e => console.error('Erro ao disparar efeito:', e));
+      addBattleLog('🎭', 'ativou o efeito <strong>' + (FX_NOME[tipo] || tipo) + '</strong> pra mesa toda.');
     }
 
     /* ── ORDEM DE TURNO: avançar / reiniciar ── */
