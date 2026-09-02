@@ -3119,6 +3119,57 @@ function addSkill(type) {
 function removeSkillBase(i) { state.skillsBase.splice(i, 1); renderSkills(); save(); }
 function removeSkillSpec(i) { state.skillsSpec.splice(i, 1); renderSkills(); save(); }
 
+/* ── SISTEMA DE ÁUDIO DINÂMICO DE SKILLS & MAGIAS ── */
+const skillAudioCache = {};
+
+function playSkillAudio(recurso, cost) {
+  const c = (typeof cost === 'number' && !isNaN(cost)) ? cost : (parseInt(cost, 10) || 0);
+  let soundPath = '';
+
+  if (recurso === 'fo') {
+    // ── MAGIAS (Foco 🔵) ──
+    // Magia até 5, magia 5 a 10 e magia 10 acima
+    if (c <= 5) {
+      soundPath = 'sons/magia_ate_5.mp3';
+    } else if (c <= 10) {
+      soundPath = 'sons/magia_5_a_10.mp3';
+    } else {
+      soundPath = 'sons/magia_10_acima.mp3';
+    }
+  } else {
+    // ── GOLPES / ARTES MARCIAIS (Stamina 🟡) ──
+    // Se for até 3: golpe_ate_3
+    // Se for 4 a 7 (intermediário): golpe_4_a_6
+    // Se for 8 acima: golpe_8_acima
+    if (c <= 3) {
+      soundPath = 'sons/golpe_ate_3.mp3';
+    } else if (c < 8) {
+      soundPath = 'sons/golpe_4_a_6.mp3';
+    } else {
+      soundPath = 'sons/golpe_8_acima.mp3';
+    }
+  }
+
+  if (soundPath) {
+    try {
+      if (!skillAudioCache[soundPath]) {
+        skillAudioCache[soundPath] = new Audio(soundPath);
+      }
+      const audio = skillAudioCache[soundPath];
+      audio.currentTime = 0;
+      audio.volume = 0.65;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.warn('Áudio de habilidade bloqueado ou não carregado:', soundPath, err);
+        });
+      }
+    } catch (e) {
+      console.warn('Erro ao tocar som de habilidade:', e);
+    }
+  }
+}
+
 function useSkill(listKey, index) {
   const map = { skillsBase:'skillsBase', skillsSpec:'skillsSpec' };
   const items = state[map[listKey]];
@@ -3135,6 +3186,7 @@ function useSkill(listKey, index) {
     refreshUseButtons();
     syncPushState(true); // envia o novo HP/ST/FO já, antes do aviso, pra evitar sobrescrever com valor antigo
     syncLogAction('skill', item.name, item.custo, item.desc);
+    playSkillAudio(item.recurso, cost);
   }
 }
 
@@ -3411,6 +3463,7 @@ function useMagia(listKey, index) {
     refreshUseButtons();
     syncPushState(true);
     syncLogAction('magia', item.name, item.custo, item.desc);
+    playSkillAudio(item.recurso, cost);
   }
 }
 
@@ -4781,6 +4834,25 @@ function syncRestoreConnection() {
     syncSetStatus('offline', 'desconectado');
   }
 }
+
+/* ── TOPBAR BRAND EASTER EGG (5 CLIQUES) ── */
+(function initDinoEasterEgg() {
+  let clicks = 0;
+  let timer = null;
+  const brand = document.querySelector('.topbar-brand');
+  if (!brand) return;
+  brand.style.cursor = 'pointer';
+  brand.addEventListener('click', (e) => {
+    clicks++;
+    clearTimeout(timer);
+    timer = setTimeout(() => { clicks = 0; }, 1500);
+    if (clicks >= 5) {
+      e.preventDefault();
+      clicks = 0;
+      playAudio('sons/easter_egg.mp3', 0.85);
+    }
+  });
+})();
 </script>
 
 

@@ -410,6 +410,134 @@
       background: rgba(201, 64, 64, 0.3);
     }
 
+    /* ════════════ CHEFES E CRIATURAS LENDÁRIAS (AURA & LABAREDAS) ════════════ */
+    @keyframes flameInferno {
+      0% {
+        box-shadow: 
+          0 0 22px rgba(255, 80, 0, 0.55),
+          0 0 50px rgba(255, 30, 0, 0.35),
+          0 0 75px rgba(200, 0, 0, 0.2),
+          inset 0 0 24px rgba(255, 110, 0, 0.25);
+        border-color: #ff8c1a;
+      }
+      50% {
+        box-shadow: 
+          0 0 38px rgba(255, 120, 0, 0.8),
+          0 0 70px rgba(255, 50, 0, 0.55),
+          0 0 100px rgba(220, 30, 0, 0.35),
+          inset 0 0 38px rgba(255, 130, 0, 0.4);
+        border-color: #ffaa33;
+      }
+      100% {
+        box-shadow: 
+          0 0 22px rgba(255, 80, 0, 0.55),
+          0 0 50px rgba(255, 30, 0, 0.35),
+          0 0 75px rgba(200, 0, 0, 0.2),
+          inset 0 0 24px rgba(255, 110, 0, 0.25);
+        border-color: #ff8c1a;
+      }
+    }
+
+    @keyframes bloodFlameInferno {
+      0% {
+        box-shadow: 
+          0 0 20px rgba(190, 20, 60, 0.5),
+          0 0 45px rgba(140, 10, 40, 0.35),
+          inset 0 0 22px rgba(160, 20, 50, 0.25);
+        border-color: #d63030;
+      }
+      50% {
+        box-shadow: 
+          0 0 35px rgba(230, 30, 70, 0.75),
+          0 0 65px rgba(190, 20, 60, 0.5),
+          inset 0 0 32px rgba(210, 30, 60, 0.4);
+        border-color: #ff4d4d;
+      }
+      100% {
+        box-shadow: 
+          0 0 20px rgba(190, 20, 60, 0.5),
+          0 0 45px rgba(140, 10, 40, 0.35),
+          inset 0 0 22px rgba(160, 20, 50, 0.25);
+        border-color: #d63030;
+      }
+    }
+
+    @keyframes flameTongue {
+      0%, 100% { opacity: 0.75; transform: scaleY(1); filter: blur(3px); }
+      50% { opacity: 1; transform: scaleY(1.1) skewX(2deg); filter: blur(2px); }
+    }
+
+    .boss-card.boss-lendario {
+      border: 2px solid #ff7a18 !important;
+      animation: flameInferno 3s infinite ease-in-out;
+      background: radial-gradient(ellipse at top, rgba(140, 45, 10, 0.5), #0d0a0e 70%) !important;
+      position: relative;
+    }
+
+    .boss-card.boss-lendario::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 140, 0, 0.45);
+      pointer-events: none;
+      animation: flameTongue 2s infinite ease-in-out;
+    }
+
+    .boss-card.boss-mortal {
+      border: 2px solid #c93030 !important;
+      animation: bloodFlameInferno 3.5s infinite ease-in-out;
+      background: radial-gradient(ellipse at top, rgba(100, 15, 25, 0.45), #0d0a0f 70%) !important;
+      position: relative;
+    }
+
+    .boss-card.boss-mortal::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 7px;
+      border: 1px solid rgba(220, 50, 50, 0.4);
+      pointer-events: none;
+      animation: flameTongue 2.4s infinite ease-in-out;
+    }
+
+    .boss-flame-crown {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 6px 12px;
+      margin: -20px -22px 14px -22px;
+      border-radius: 4px 4px 0 0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      font-weight: 700;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .boss-flame-crown.lendario {
+      background: linear-gradient(90deg, rgba(255, 60, 0, 0.35), rgba(255, 140, 0, 0.7), rgba(255, 60, 0, 0.35));
+      border-bottom: 1px solid #ffaa33;
+      color: #fff2cc;
+      text-shadow: 0 0 10px #ff6600;
+    }
+
+    .boss-flame-crown.mortal {
+      background: linear-gradient(90deg, rgba(160, 20, 40, 0.35), rgba(220, 30, 60, 0.65), rgba(160, 20, 40, 0.35));
+      border-bottom: 1px solid #ff4d4d;
+      color: #ffd6d6;
+      text-shadow: 0 0 10px #cc0000;
+    }
+
+    /* ════════════ REDESIGN HORIZONTAL DA ABA DE BATALHA ════════════ */
+    #tab-battle {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
     /* BATTLE TAB */
     .battle-empty {
       text-align: center;
@@ -419,119 +547,171 @@
       font-size: 16px;
     }
 
-    .battle-monster {
-      background: #0d0d10;
-      border: 1px solid rgba(201, 64, 64, 0.2);
-      border-radius: 6px;
-      padding: 24px;
-      margin-bottom: 24px;
-      position: relative;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .battle-monster::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #c94040, transparent);
-    }
-
-    .battle-monster-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 16px;
-    }
-
-    .battle-monster-name {
-      font-family: 'Cinzel', serif;
-      font-size: 20px;
-      font-weight: 700;
-      color: #c94040;
-      text-shadow: 0 0 16px rgba(201, 64, 64, 0.3);
-      letter-spacing: 0.08em;
-    }
-
-    .battle-monster-subtitle {
-      font-size: 12px;
-      color: rgba(245, 234, 214, 0.4);
-      font-style: italic;
-      margin-top: 2px;
-    }
-
-    .remove-monster-btn {
-      background: rgba(180, 40, 40, 0.15);
-      border: 1px solid rgba(180, 40, 40, 0.3);
-      color: #e07070;
-      font-size: 16px;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      flex-shrink: 0;
-      margin-top: 4px;
-    }
-
-    .remove-monster-btn:hover {
-      background: rgba(180, 40, 40, 0.3);
-    }
-
-    .battle-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .battle-stat {
+    /* DECK DE COMANDO TÁTICO (SUPERIOR) */
+    .battle-command-deck {
+      background: #0e1017;
+      background-image: radial-gradient(ellipse at top, rgba(201, 146, 26, 0.08), transparent 70%);
+      border: 1px solid rgba(201, 146, 26, 0.28);
+      border-radius: 8px;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.7);
+      padding: 14px 18px;
+      margin-bottom: 22px;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      gap: 12px;
     }
 
-    .battle-stat-label {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: rgba(245, 234, 214, 0.4);
+    .command-deck-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .command-deck-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-next-turn {
+      background: linear-gradient(135deg, rgba(64, 96, 201, 0.35), rgba(30, 50, 130, 0.65));
+      border: 1px solid #5a8be8;
+      border-radius: 4px;
+      color: #eaf1ff;
+      font-family: 'Cinzel', serif;
+      font-size: 12.5px;
+      font-weight: 700;
       letter-spacing: 0.1em;
-      margin-bottom: 4px;
-    }
-
-    .battle-stat-bar {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      width: 100%;
-    }
-
-    .battle-stat-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(245, 234, 214, 0.7);
-      width: 24px;
-      height: 24px;
-      border-radius: 3px;
+      padding: 8px 20px;
       cursor: pointer;
-      font-size: 14px;
-      display: flex;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 16px rgba(90, 139, 232, 0.35);
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
-      flex-shrink: 0;
+      gap: 8px;
     }
 
-    .battle-stat-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
+    .btn-next-turn:hover {
+      background: linear-gradient(135deg, rgba(90, 139, 232, 0.55), rgba(40, 70, 180, 0.85));
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(90, 139, 232, 0.6);
       color: #fff;
+    }
+
+    .btn-new-round {
+      background: rgba(201, 146, 26, 0.15);
+      border: 1px solid rgba(201, 146, 26, 0.4);
+      border-radius: 4px;
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 11.5px;
+      letter-spacing: 0.08em;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-new-round:hover {
+      background: rgba(201, 146, 26, 0.28);
+      color: #fff;
+      border-color: var(--gold-bright);
+    }
+
+    .btn-clear-battle {
+      background: rgba(180, 40, 40, 0.15);
+      border: 1px solid rgba(220, 60, 60, 0.35);
+      border-radius: 4px;
+      color: #ff9090;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+
+    .btn-clear-battle:hover {
+      background: rgba(220, 40, 40, 0.3);
+      color: #fff;
+      border-color: #ff4d4d;
+    }
+
+    /* ARENA DE BATALHA MULTI-COLUNA */
+    #battle-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+      align-items: start;
+    }
+
+    .battle-monster {
+      background: #0d0d12;
+      border: 1px solid rgba(201, 64, 64, 0.25);
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin: 0;
+      max-width: 100%;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+
+    .battle-monster:hover {
+      border-color: rgba(201, 64, 64, 0.5);
+    }
+
+    /* MONSTRO CHEFE EM COMBATE (GRANDEZA & CHAMA) */
+    .battle-monster.boss-tier.boss-lendario {
+      border: 2px solid #ff7a18 !important;
+      animation: flameInferno 3s infinite ease-in-out;
+      background: radial-gradient(ellipse at top, rgba(130, 40, 10, 0.4), #0d0d12 70%) !important;
+      grid-column: span 2;
+    }
+
+    .battle-monster.boss-tier.boss-mortal {
+      border: 2px solid #c93030 !important;
+      animation: bloodFlameInferno 3.5s infinite ease-in-out;
+      background: radial-gradient(ellipse at top, rgba(90, 15, 25, 0.35), #0d0d12 70%) !important;
+      grid-column: span 2;
+    }
+
+    @media (max-width: 900px) {
+      .battle-monster.boss-tier.boss-lendario,
+      .battle-monster.boss-tier.boss-mortal {
+        grid-column: span 1 !important;
+      }
+    }
+
+    .battle-boss-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.15em;
+      padding: 3px 10px;
+      border-radius: 3px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .battle-boss-badge.lendario {
+      background: rgba(255, 100, 0, 0.25);
+      border: 1px solid #ff8c1a;
+      color: #ffcc66;
+      box-shadow: 0 0 10px rgba(255, 120, 0, 0.35);
+    }
+
+    .battle-boss-badge.mortal {
+      background: rgba(200, 20, 40, 0.25);
+      border: 1px solid #ff4d4d;
+      color: #ffaaaa;
+      box-shadow: 0 0 10px rgba(220, 40, 60, 0.35);
     }
 
     .battle-stat-value {
@@ -4587,38 +4767,53 @@
   <!-- end tab-bestiary -->
 
     <div class="tab-content" id="tab-battle">
-    <div class="sync-bar">
-      <input type="text" id="session-code-input" placeholder="Código da mesa (ex: MESA01)" maxlength="20" onkeydown="if(event.key==='Enter') conectarSessaoBatalha()">
-      <button id="sync-connect-btn" onclick="conectarSessaoBatalha()">🔗 Conectar</button>
-      <button id="sync-disconnect-btn" onclick="desconectarSessaoBatalha()" style="display:none;">Desconectar</button>
-      <span class="sync-status offline" id="sync-status-label">desconectado</span>
+      <!-- DECK DE COMANDO TÁTICO SUPERIOR (CONTROLE HORIZONTAL) -->
+      <div class="battle-command-deck">
+        <div class="command-deck-top">
+          <div class="sync-bar">
+            <input type="text" id="session-code-input" placeholder="Código da mesa (ex: MESA01)" maxlength="20" onkeydown="if(event.key==='Enter') conectarSessaoBatalha()">
+            <button id="sync-connect-btn" onclick="conectarSessaoBatalha()">🔗 Conectar</button>
+            <button id="sync-disconnect-btn" onclick="desconectarSessaoBatalha()" style="display:none;">Desconectar</button>
+            <span class="sync-status offline" id="sync-status-label">desconectado</span>
+          </div>
+
+          <div class="fx-broadcast-bar" id="fx-broadcast-bar">
+            <span class="fx-label">🎭 EFEITO:</span>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('glitch')">⚡ Glitch</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('estatico')">📺 Estático</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('nevoa')">🌫️ Névoa</button>
+          </div>
+
+          <div class="command-deck-actions" id="battle-actions" style="display: none;">
+            <button class="btn-next-turn" onclick="avancarTurno()" title="Passa a vez para o próximo combatente">⚔️ Próximo Turno</button>
+            <button class="btn-new-round" onclick="nextTurn()" title="Inicia nova rodada e regenera ST/FO dos monstros">🔄 Nova Rodada</button>
+            <button class="btn-clear-battle" onclick="clearBattle()" title="Limpar todos os monstros">🗑️ Limpar</button>
+          </div>
+        </div>
+
+        <div class="turn-order-container" id="turn-order-container" style="display:none;"></div>
+      </div>
+
+      <div class="players-title" id="players-title" style="display:none;">🧑‍🤝‍🧑 JOGADORES CONECTADOS</div>
+      <div id="players-container"></div>
+
+      <!-- ARENA MULTI-COLUNA DE MONSTROS -->
+      <div id="battle-container">
+        <div class="battle-empty">
+          <p>Nenhum monstro em batalha.</p>
+          <p style="font-size:14px;margin-top:12px;">Vá ao Bestiário e clique em <strong>"Adicionar ➕"</strong> nos monstros para incluí-los aqui.</p>
+        </div>
+      </div>
+
+      <div class="battle-log" id="battle-log" style="display: none;">
+        <div class="battle-log-title">REGISTRO DE COMBATE</div>
+        <div id="battle-log-entries"></div>
+      </div>
     </div>
 
-    <div class="fx-broadcast-bar" id="fx-broadcast-bar">
-      <span class="fx-label">🎭 EFEITO PRA MESA TODA:</span>
-      <button class="fx-btn" onclick="dispararEfeitoMesa('glitch')">⚡ Glitch</button>
-      <button class="fx-btn" onclick="dispararEfeitoMesa('estatico')">📺 Estático</button>
-      <button class="fx-btn" onclick="dispararEfeitoMesa('nevoa')">🌫️ Névoa</button>
+    <div class="footer">
+      Bestiário & Arena de Batalha — Sistema Homebrew de Mesa
     </div>
-
-    <div class="turn-order-container" id="turn-order-container" style="display:none;"></div>
-
-    <div class="players-title" id="players-title" style="display:none;">🧑‍🤝‍🧑 JOGADORES CONECTADOS</div>
-    <div id="players-container"></div>
-
-    <div id="battle-container"><div class="battle-empty"><p>Nenhum monstro em batalha.</p><p style="font-size:14px;margin-top:12px;">Vá ao Bestiário e clique em <strong>"Adicionar ➕"</strong> nos monstros para incluí-los aqui.</p></div></div>
-    <div class="battle-actions" id="battle-actions" style="display: none;">
-      <button onclick="nextTurn()" style="background:rgba(64,96,201,0.15);border:1px solid rgba(64,96,201,0.35);border-radius:3px;color:#8aA8e8;font-family:&#39;Cinzel&#39;,serif;font-size:11px;letter-spacing:0.08em;padding:8px 18px;cursor:pointer;margin-right:8px;">Proximo Turno</button><button class="clear-battle-btn" onclick="clearBattle()">Limpar Batalha</button>
-    </div>
-    <div class="battle-log" id="battle-log" style="display: none;">
-      <div class="battle-log-title">REGISTRO</div>
-      <div id="battle-log-entries"></div>
-    </div>
-  </div>
-
-  <div class="footer">
-    Compêndio de Classes — Sistema Homebrew de Mesa
-  </div>
 
   <script>
     /* ── TAB SWITCHING ── */
@@ -4629,8 +4824,10 @@
       document.getElementById('tab-battle').classList.toggle('active', tab === 'battle');
       if (tab === 'battle') {
         document.querySelector('.main-tab-btn.battle').classList.add('active');
+        playAudioSafe(['sons/magia.mp3', 'sons/som de forja 1.mp3'], 0.25);
       } else {
         document.querySelectorAll('.main-tab-btn')[0].classList.add('active');
+        playAudioSafe(['sons/folhear.mp3', 'stone.mp3'], 0.25);
       }
       if (tab === 'battle') renderBattle();
     }
@@ -4674,6 +4871,7 @@
       activeCategoryFilter = filter;
       document.querySelectorAll('.criatura-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      playAudioSafe('sons/folhear.mp3', 0.15);
       applyBestiaryFilters();
     }
 
@@ -4681,6 +4879,7 @@
       activeDifficultyFilter = filter;
       document.querySelectorAll('.dificuldade-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      playAudioSafe('sons/folhear.mp3', 0.15);
       applyBestiaryFilters();
     }
 
@@ -4845,9 +5044,10 @@
         }
       });
 
+      const difficulty = getCardDifficulty(parent);
       const id = Date.now() + '_' + Math.random().toString(36).substr(2, 6);
       battleMonsters.push({
-        id, name, instance, displayName, subtitle, titleColor,
+        id, name, instance, displayName, subtitle, titleColor, difficulty,
         hp, maxHp: hp,
         st, maxSt: st,
         fo, maxFo: fo,
@@ -4858,6 +5058,13 @@
       });
       saveBattleState();
       renderBattle();
+      
+      if (difficulty === 'lendario') {
+        playAudioSafe(['sons/magia.mp3', 'sons/easter_egg.mp3', 'stone.mp3'], 0.45);
+      } else {
+        playAudioSafe(['sons/folhear.mp3', 'stone.mp3'], 0.25);
+      }
+
       showToast('<span class="toast-name">' + displayName + '</span> adicionado à batalha!');
     }
 
@@ -4872,7 +5079,7 @@
       renderBattle();
     }
 
-    /* ── UPDATE STAT (step of 1) ── */
+    /* ── UPDATE STAT ── */
     function updateStat(id, stat, delta) {
       const m = battleMonsters.find(x => x.id === id);
       if (!m) return;
@@ -4908,6 +5115,8 @@
       if (stCost > 0) m.st -= stCost;
       if (foCost > 0) m.fo -= foCost;
 
+      playSkillAudio(foCost > 0 ? 'fo' : 'st', foCost > 0 ? foCost : stCost);
+
       saveBattleState();
       renderBattle();
 
@@ -4934,7 +5143,7 @@
         return;
       }
 
-      actionsEl.style.display = 'block';
+      actionsEl.style.display = 'flex';
       logEl.style.display = 'block';
 
       let html = '';
@@ -4945,13 +5154,25 @@
         const stPct = m.maxSt > 0 ? (m.st / m.maxSt * 100) : 0;
         const foPct = m.maxFo > 0 ? (m.fo / m.maxFo * 100) : 0;
 
-        html += '<div class="battle-monster">';
+        let bossClass = '';
+        let bossBadge = '';
+        if (m.difficulty === 'lendario') {
+          bossClass = ' boss-tier boss-lendario';
+          bossBadge = '<div class="battle-boss-badge lendario">🔥 CHEFE LENDÁRIO 🔥</div>';
+        } else if (m.difficulty === 'mortal') {
+          bossClass = ' boss-tier boss-mortal';
+          bossBadge = '<div class="battle-boss-badge mortal">💀 AMEAÇA MORTAL</div>';
+        }
+
+        html += '<div class="battle-monster' + bossClass + '">';
+        if (bossBadge) html += bossBadge;
+
         html += '<div class="battle-monster-header">';
         html += '<div><div class="battle-monster-name" style="' + (m.titleColor ? 'color:' + m.titleColor + ';' : '') + '">' + (m.displayName || m.name) + '</div>';
         html += '<div class="battle-monster-subtitle">' + m.subtitle + '</div></div>';
         html += '<div style="display:flex;gap:6px;align-items:center;">';
-        html += '<button class="roll-init-btn-m" onclick="rolarIniciativaMonstro(\'' + m.id + '\')" title="Rolar iniciativa: d20 + DES">🎲 ' + (m.initiative !== undefined && m.initiative !== null ? m.initiative : 'Iniciativa') + '</button>';
-        html += '<button class="remove-monster-btn" onclick="removeFromBattle(\'' + m.id + '\')" title="Remover">✕</button>';
+        html += '<button class="roll-init-btn-m" onclick="rolarIniciativaMonstro(\'' + m.id + '\')" title="Rolar iniciativa: d20 + DES">🎲 ' + (m.initiative !== undefined && m.initiative !== null ? m.initiative : 'Inic') + '</button>';
+        html += '<button class="remove-monster-btn" onclick="removeFromBattle(\'' + m.id + '\')" title="Remover da batalha">✕</button>';
         html += '</div>';
         html += '</div>';
 
@@ -4963,7 +5184,7 @@
 
         // CA and attributes
         html += '<div class="battle-meta">';
-        html += '<span class="battle-meta-ca">CA: ' + m.ca + '</span>';
+        html += '<span class="battle-meta-ca">🛡️ CA: ' + m.ca + '</span>';
         // Recovery display
         let recParts = [];
         if (m.recSt > 0) recParts.push(m.recSt + '🟡');
@@ -4976,14 +5197,15 @@
         attrOrder.forEach(function(attr) {
           if (m.attributes[attr] !== undefined) {
             const v = m.attributes[attr];
-            const sign = v > 0 ? '+ ' : '− ';
-            html += '<span>' + attr + ': <span class="attr-val">' + (v > 0 ? '+' : '') + v + '</span></span>';
+            const sign = v > 0 ? '+' : '';
+            html += '<span>' + attr + ': <span class="attr-val">' + sign + v + '</span></span>';
           }
         });
         html += '</div></div>';
 
         if (m.skills.length > 0) {
-          html += '<div class="battle-skills-title">HABILIDADES</div>';
+          html += '<div class="battle-skills-title">HABILIDADES & AÇÕES (' + m.skills.length + ')</div>';
+          html += '<div class="battle-skills-grid">';
           m.skills.forEach((sk, i) => {
             const c = parseCost(sk.cost);
             const totalSt = c.st + (c.fo > 0 ? Math.ceil(c.fo / 3) : 0);
@@ -5004,6 +5226,7 @@
             }
             html += '</div>';
           });
+          html += '</div>';
         }
 
         html += '</div>';
@@ -5017,12 +5240,14 @@
       let html = '<div class="battle-stat">';
       html += '<span class="battle-stat-label">' + label + '</span>';
       html += '<div class="battle-stat-bar">';
-      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',-1)">−</button>';
+      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',-5)" title="-5">-5</button>';
+      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',-1)" title="-1">−</button>';
       html += '<input class="battle-stat-value ' + stat + '-color" type="number" value="' + val + '" onchange="manualStat(\'' + id + '\',\'' + stat + '\',this.value)" />';
-      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',1)">+</button>';
+      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',1)" title="+1">+</button>';
+      html += '<button class="battle-stat-btn" onclick="updateStat(\'' + id + '\',\'' + stat + '\',5)" title="+5">+5</button>';
       html += '</div>';
       html += '<span class="battle-stat-max">' + val + ' / ' + maxVal + '</span>';
-      html += '<div class="battle-stat-bar"><div class="battle-bar-track"><div class="battle-bar-fill ' + stat + '" style="width:' + pct + '%"></div></div></div>';
+      html += '<div class="battle-bar-track"><div class="battle-bar-fill ' + stat + '" style="width:' + Math.min(100, Math.max(0, pct)) + '%"></div></div>';
       html += '</div>';
       return html;
     }
@@ -5543,7 +5768,91 @@
       addBattleLog('🔄', 'ordem de turno reiniciada.');
     }
 
+    /* ── AUDIO SUPPORT ── */
+    const audioCache = {};
+    function playAudioSafe(paths, volume = 0.3) {
+      if (!Array.isArray(paths)) paths = [paths];
+      for (const p of paths) {
+        if (!audioCache[p]) {
+          const snd = new Audio(p);
+          snd.volume = volume;
+          audioCache[p] = snd;
+        }
+        const a = audioCache[p];
+        a.currentTime = 0;
+        const prom = a.play();
+        if (prom !== undefined) {
+          prom.catch(() => {});
+        }
+        break;
+      }
+    }
+
+    function playSkillAudio(recurso, cost) {
+      const c = (typeof cost === 'number' && !isNaN(cost)) ? cost : (parseInt(cost, 10) || 0);
+      let soundPath = '';
+
+      if (recurso === 'fo') {
+        if (c <= 5) soundPath = 'sons/magia_ate_5.mp3';
+        else if (c <= 10) soundPath = 'sons/magia_5_a_10.mp3';
+        else soundPath = 'sons/magia_10_acima.mp3';
+      } else {
+        if (c <= 3) soundPath = 'sons/golpe_ate_3.mp3';
+        else if (c < 8) soundPath = 'sons/golpe_4_a_6.mp3';
+        else soundPath = 'sons/golpe_8_acima.mp3';
+      }
+
+      if (soundPath) {
+        playAudioSafe(soundPath, 0.6);
+      }
+    }
+
+    /* ── BOSS DECORATOR & AURAS ── */
+    function initBestiaryBosses() {
+      const cards = document.querySelectorAll('#criaturas-container .criatura-card');
+      cards.forEach(card => {
+        const diff = getCardDifficulty(card);
+        if (diff === 'lendario') {
+          card.classList.add('boss-card', 'boss-lendario');
+          if (!card.querySelector('.boss-flame-crown')) {
+            const crown = document.createElement('div');
+            crown.className = 'boss-flame-crown lendario';
+            crown.innerHTML = '<span>🔥</span> <span>CHEFE LENDÁRIO</span> <span>🔥</span>';
+            card.prepend(crown);
+          }
+        } else if (diff === 'mortal') {
+          card.classList.add('boss-card', 'boss-mortal');
+          if (!card.querySelector('.boss-flame-crown')) {
+            const crown = document.createElement('div');
+            crown.className = 'boss-flame-crown mortal';
+            crown.innerHTML = '<span>💀</span> <span>AMEAÇA MORTAL</span> <span>💀</span>';
+            card.prepend(crown);
+          }
+        }
+      });
+    }
+
+    /* ── TOPBAR BRAND EASTER EGG (5 CLIQUES) ── */
+    (function initDinoEasterEgg() {
+      let clicks = 0;
+      let timer = null;
+      const brand = document.querySelector('.topbar-brand');
+      if (!brand) return;
+      brand.style.cursor = 'pointer';
+      brand.addEventListener('click', () => {
+        clicks++;
+        clearTimeout(timer);
+        timer = setTimeout(() => { clicks = 0; }, 1500);
+        if (clicks >= 5) {
+          clicks = 0;
+          playAudioSafe('sons/easter_egg.mp3', 0.8);
+          showToast('🦖 <em>Rugido Ancestral ecoa pelas catacumbas!</em>');
+        }
+      });
+    })();
+
     /* ── INIT ── */
+    initBestiaryBosses();
     loadBattleState();
     initBattleButtons();
     (function restoreSession() {
