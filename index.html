@@ -3,155 +3,805 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OlaRPG</title>
+  <title>OlaRPG — Grimdark Fantasy System</title>
   <link rel="icon" type="image/png" href="jacaroa.png">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-dark: #07080a;
+      --bg-deep: #0d0f14;
+      --surface: #12141c;
+      --surface-card: rgba(18, 20, 28, 0.78);
+      --surface-card-hover: rgba(26, 29, 41, 0.95);
+      
+      --gold: #c9921a;
+      --gold-bright: #f3c358;
+      --gold-dim: #7a5510;
+      --parchment: #f5ead6;
+      --parchment-dim: rgba(245, 234, 214, 0.65);
+      --parchment-faint: rgba(245, 234, 214, 0.35);
+
+      /* Categorias / Pilares */
+      --color-char: #b83232;
+      --color-char-glow: rgba(184, 50, 50, 0.25);
+      --color-rules: #3d68d1;
+      --color-rules-glow: rgba(61, 104, 209, 0.25);
+      --color-bestiary: #913ec4;
+      --color-bestiary-glow: rgba(145, 62, 196, 0.25);
+      --color-forge: #df6418;
+      --color-forge-glow: rgba(223, 100, 24, 0.25);
+
+      --border-subtle: rgba(201, 146, 26, 0.18);
+      --border-accent: rgba(201, 146, 26, 0.45);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      background: #0d0d0d;
-      background-image:
-        radial-gradient(ellipse at 15% 10%, rgba(201,146,26,0.04) 0%, transparent 45%),
-        radial-gradient(ellipse at 85% 90%, rgba(64,96,201,0.04) 0%, transparent 45%);
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% -20%, rgba(201, 146, 26, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 10% 40%, rgba(184, 50, 50, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 60%, rgba(61, 104, 209, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 120%, rgba(223, 100, 24, 0.08) 0%, transparent 60%),
+        linear-gradient(to bottom, rgba(7, 8, 10, 0.85), rgba(7, 8, 10, 0.98));
+      background-attachment: fixed;
       min-height: 100vh;
       font-family: 'Crimson Pro', serif;
-      color: rgba(245,234,214,0.85);
-      padding: 40px 20px 80px;
+      color: var(--parchment);
+      padding: 50px 20px 80px;
+      position: relative;
+      overflow-x: hidden;
     }
 
+    /* Vinheta cinematográfica nas bordas */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      box-shadow: inset 0 0 140px rgba(0, 0, 0, 0.95), inset 0 0 70px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* Cinzas / brasas sutis em background */
+    .ember-layer {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      background: radial-gradient(1px 1px at 20px 30px, rgba(232, 184, 75, 0.45), rgba(0,0,0,0)),
+                  radial-gradient(1px 1px at 70px 180px, rgba(223, 100, 24, 0.35), rgba(0,0,0,0)),
+                  radial-gradient(1.5px 1.5px at 150px 80px, rgba(201, 146, 26, 0.4), rgba(0,0,0,0)),
+                  radial-gradient(1px 1px at 280px 240px, rgba(245, 234, 214, 0.25), rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 320px 320px;
+      opacity: 0.35;
+      animation: floatParticles 45s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floatParticles {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-320px); }
+    }
+
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ═══════════ HEADER ═══════════ */
     .header {
       text-align: center;
-      margin-bottom: 60px;
-    }
-    .header::before, .header::after {
-      content: '';
-      display: block;
-      width: 60%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold, #c9921a), transparent);
-      margin: 0 auto;
-    }
-    .header::after {
-      width: 20px;
-      height: 0;
-      background: none;
-      margin-top: 16px;
-    }
-    .header h1 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(28px, 5vw, 48px);
-      font-weight: 900;
-      color: #e8b84b;
-      letter-spacing: 0.15em;
-      text-shadow: 0 0 30px rgba(201,146,26,0.35);
-      margin: 20px 0 8px;
-    }
-    .header p {
-      font-size: 16px;
-      color: rgba(245,234,214,0.45);
-      font-style: italic;
-      letter-spacing: 0.05em;
-    }
-
-    .menu {
+      margin-bottom: 54px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      max-width: 520px;
-      margin: 0 auto;
+      align-items: center;
     }
 
-    .menu-card {
-      display: block;
-      text-decoration: none;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 4px;
-      padding: 24px 28px;
-      transition: all 0.3s;
+    .crest-container {
       position: relative;
-      overflow: hidden;
+      margin-bottom: 22px;
+      display: inline-block;
     }
-    .menu-card::before {
+
+    .crest-frame {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      padding: 6px;
+      background: radial-gradient(circle, #201a14 0%, #0d0e12 100%);
+      border: 2px solid var(--gold);
+      box-shadow: 
+        0 0 25px rgba(201, 146, 26, 0.35),
+        inset 0 0 15px rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .crest-frame.dino-wobble {
+      animation: dinoWobble 0.28s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    .crest-frame.easter-egg-active {
+      animation: easterEggRune 1.2s ease-in-out infinite alternate, rotateRune 4s linear infinite;
+      border-color: #ffd700 !important;
+      box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), inset 0 0 25px rgba(255, 100, 0, 0.6) !important;
+    }
+
+    @keyframes dinoWobble {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.15) rotate(10deg); }
+      70% { transform: scale(1.1) rotate(-10deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes easterEggRune {
+      0% { filter: hue-rotate(0deg) drop-shadow(0 0 15px #ffd700); transform: scale(1.15); }
+      50% { filter: hue-rotate(120deg) drop-shadow(0 0 25px #ff3b30); transform: scale(1.25); }
+      100% { filter: hue-rotate(240deg) drop-shadow(0 0 20px #70a0ff); transform: scale(1.15); }
+    }
+
+    .crest-frame::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 1px dashed rgba(201, 146, 26, 0.4);
+      pointer-events: none;
+      animation: rotateRune 30s linear infinite;
+    }
+
+    @keyframes rotateRune {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .crest-frame img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
+      transition: transform 0.4s ease;
+    }
+
+    .crest-container:hover .crest-frame {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 35px rgba(243, 195, 88, 0.5), inset 0 0 18px rgba(0, 0, 0, 0.9);
+    }
+    .crest-container:hover .crest-frame img {
+      transform: scale(1.08);
+    }
+
+    .divider-flourish {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      width: 100%;
+      max-width: 540px;
+      margin: 10px 0 16px;
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    .divider-flourish::before,
+    .divider-flourish::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .header h1 {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: clamp(38px, 6.5vw, 68px);
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      background: linear-gradient(180deg, #fff3d1 0%, #e8b84b 50%, #9e6f14 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 4px 25px rgba(201, 146, 26, 0.4);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    .header .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(12px, 2.2vw, 15px);
+      letter-spacing: 0.35em;
+      color: rgba(245, 234, 214, 0.75);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .header .lore-quote {
+      font-size: 15px;
+      color: var(--parchment-faint);
+      font-style: italic;
+      letter-spacing: 0.04em;
+      margin-top: 14px;
+      max-width: 580px;
+      line-height: 1.5;
+    }
+
+    /* ═══════════ RESUMO DE RECURSOS (TRIAD) ═══════════ */
+    .system-triad {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .triad-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(14, 16, 22, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 7px 18px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+    .triad-pill:hover {
+      border-color: rgba(201, 146, 26, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .triad-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 10px currentColor;
+    }
+    .dot-hp { background: #c94040; color: #c94040; }
+    .dot-st { background: #c9921a; color: #c9921a; }
+    .dot-fo { background: #4060c9; color: #4060c9; }
+
+    .triad-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--parchment-dim);
+      text-transform: uppercase;
+    }
+    .triad-label strong {
+      color: var(--parchment);
+      font-weight: 700;
+    }
+
+    /* ═══════════ GRID DE CARDS (DARK FANTASY PORTALS) ═══════════ */
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+
+    @media (max-width: 780px) {
+      .portal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .portal-card {
+      position: relative;
+      text-decoration: none;
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      padding: 32px 30px;
+      border-radius: 2px;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 230px;
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Cantoneiras metálicas / ornamentais nos 4 cantos */
+    .portal-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, #c9921a, transparent);
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--gold)), transparent);
       opacity: 0.4;
-      transition: opacity 0.3s;
+      transition: opacity 0.35s ease, height 0.35s ease;
     }
-    .menu-card:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(201,146,26,0.2);
-    }
-    .menu-card:hover::before { opacity: 0.8; }
 
-    .menu-card h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 18px;
-      font-weight: 700;
-      color: #e8b84b;
-      letter-spacing: 0.1em;
-      margin-bottom: 6px;
+    .corner {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      opacity: 0.5;
     }
-    .menu-card p {
-      font-size: 14px;
-      color: rgba(245,234,214,0.5);
-      line-height: 1.5;
+    .corner-tl { top: 4px; left: 4px; border-top: 2px solid var(--card-accent, var(--gold)); border-left: 2px solid var(--card-accent, var(--gold)); }
+    .corner-tr { top: 4px; right: 4px; border-top: 2px solid var(--card-accent, var(--gold)); border-right: 2px solid var(--card-accent, var(--gold)); }
+    .corner-bl { bottom: 4px; left: 4px; border-bottom: 2px solid var(--card-accent, var(--gold)); border-left: 2px solid var(--card-accent, var(--gold)); }
+    .corner-br { bottom: 4px; right: 4px; border-bottom: 2px solid var(--card-accent, var(--gold)); border-right: 2px solid var(--card-accent, var(--gold)); }
+
+    /* Efeito de iluminação suave de fundo ao passar o mouse */
+    .card-glow {
+      position: absolute;
+      top: -40%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle, var(--card-glow, rgba(201,146,26,0.15)) 0%, transparent 65%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 0;
     }
-    .menu-card .icon {
+
+    .portal-card:hover {
+      background: var(--surface-card-hover);
+      border-color: var(--card-accent, var(--gold));
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 25px var(--card-glow, rgba(201,146,26,0.15));
+    }
+
+    .portal-card:hover::before {
+      opacity: 1;
+      height: 3px;
+    }
+
+    .portal-card:hover .corner {
+      opacity: 1;
+      width: 14px;
+      height: 14px;
+    }
+
+    .portal-card:hover .card-glow {
+      opacity: 1;
+    }
+
+    /* Conteúdo do Card */
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      color: rgba(245,234,214,0.25);
-      letter-spacing: 0.15em;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: var(--card-accent, var(--gold));
       text-transform: uppercase;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      opacity: 0.85;
     }
 
-    .ornament {
-      text-align: center;
-      color: #7a5510;
+    .card-tag .symbol {
+      font-size: 13px;
+    }
+
+    .portal-card h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(20px, 2.8vw, 24px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      transition: color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .portal-card:hover h2 {
+      color: var(--gold-bright);
+    }
+
+    .portal-card p {
+      font-size: 15px;
+      color: var(--parchment-dim);
+      line-height: 1.6;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    /* Footer do Card com Ação */
+    .card-action {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 16px;
+    }
+
+    .card-action .action-text {
+      font-family: 'Cinzel', serif;
       font-size: 12px;
-      margin-top: 50px;
-      letter-spacing: 0.4em;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: var(--card-accent, var(--gold));
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.3s ease;
+    }
+
+    .portal-card:hover .action-text {
+      gap: 12px;
+      color: var(--gold-bright);
+    }
+
+    .card-action .action-glyph {
+      font-size: 16px;
+      color: var(--parchment-faint);
+      transition: color 0.3s ease;
+    }
+
+    .portal-card:hover .action-glyph {
+      color: var(--gold);
+    }
+
+    /* Variações de Cores por Seção */
+    .theme-char {
+      --card-accent: #d84545;
+      --card-glow: var(--color-char-glow);
+    }
+    .theme-rules {
+      --card-accent: #5a8be8;
+      --card-glow: var(--color-rules-glow);
+    }
+    .theme-bestiary {
+      --card-accent: #b45be8;
+      --card-glow: var(--color-bestiary-glow);
+    }
+    .theme-forge {
+      --card-accent: #f07428;
+      --card-glow: var(--color-forge-glow);
+    }
+
+    /* ═══════════ FOOTER & SOUND ═══════════ */
+    .footer {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      margin-top: 20px;
+    }
+
+    .footer-flourish {
+      color: var(--gold-dim);
+      font-size: 13px;
+      letter-spacing: 0.5em;
+      margin-bottom: 14px;
+    }
+
+    .footer-info {
+      font-size: 13px;
+      color: var(--parchment-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .sound-toggle {
+      background: none;
+      border: 1px solid rgba(201, 146, 26, 0.25);
+      color: var(--parchment-dim);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      padding: 6px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sound-toggle:hover {
+      background: rgba(201, 146, 26, 0.1);
+      border-color: var(--gold);
+      color: var(--parchment);
+    }
+
+    .sound-toggle.muted {
+      opacity: 0.6;
+      border-color: rgba(255, 255, 255, 0.1);
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>OLARPG</h1>
-    <p>Sistema Homebrew de Mesa</p>
+  <!-- Camada de partículas / cinzas no ar -->
+  <div class="ember-layer"></div>
+
+  <div class="container">
+    
+    <!-- CABEÇALHO HERO -->
+    <header class="header">
+      <div class="crest-container">
+        <div class="crest-frame">
+          <img src="jacaroa.png" alt="Emblema OlaRPG" onerror="this.style.display='none'">
+        </div>
+      </div>
+
+      <h1>OLARPG</h1>
+
+      <div class="divider-flourish">
+        <span>⚔</span>
+        <span>✦</span>
+        <span>⚔</span>
+      </div>
+
+      <div class="subtitle">Sistema Homebrew de Alta Fantasia Sombria</div>
+      <p class="lore-quote">
+        "Onde a carne cede ao aço e os deuses silenciam, apenas a disciplina marcial e o fogo arcano mantêm a escuridão afastada."
+      </p>
+    </header>
+
+    <!-- RESUMO DOS PILARES DE COMBATE -->
+    <section class="system-triad">
+      <div class="triad-pill" title="Pontos de Vida e Sobrevivência">
+        <span class="triad-dot dot-hp"></span>
+        <span class="triad-label"><strong>HP</strong> Vitalidade</span>
+      </div>
+      <div class="triad-pill" title="Stamina: Técnicas Ofensivas, Defensivas e de Controle">
+        <span class="triad-dot dot-st"></span>
+        <span class="triad-label"><strong>ST</strong> Stamina Marcial</span>
+      </div>
+      <div class="triad-pill" title="Força Espiritual: Magias e Habilidades Arcanas">
+        <span class="triad-dot dot-fo"></span>
+        <span class="triad-label"><strong>FO</strong> Força Espiritual</span>
+      </div>
+      <div class="triad-pill" title="Combate tático baseado em grids e áreas de efeito">
+        <span class="triad-label">⚔ <strong>Grid</strong> Tático</span>
+      </div>
+    </section>
+
+    <!-- PORTAL PRINCIPAL (CARDS) -->
+    <main class="portal-grid">
+
+      <!-- CARD 1: FICHA DE PERSONAGEM -->
+      <a href="Ficha final.html" class="portal-card theme-char">
+        <div class="card-glow"></div>
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        
+        <div class="card-content">
+          <div class="card-tag">
+            <span class="symbol">🩸</span> Heróis & Progressão
+          </div>
+          <h2>FICHA DE PERSONAGEM</h2>
+          <p>
+            Crie, personalize e gerencie seu combatente. Rastreamento completo de HP, ST e FO, árvore de perícias, artes marciais, grimório pessoal e inventário.
+          </p>
+        </div>
+
+        <div class="card-action">
+          <span class="action-text">Adentrar Salão ➔</span>
+          <span class="action-glyph">🛡️</span>
+        </div>
+      </a>
+
+      <!-- CARD 2: LIVRO DE REGRAS -->
+      <a href="Livro base.html" class="portal-card theme-rules">
+        <div class="card-glow"></div>
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <div class="card-content">
+          <div class="card-tag">
+            <span class="symbol">📜</span> Codex & Grimório
+          </div>
+          <h2>LIVRO DE REGRAS</h2>
+          <p>
+            O compêndio sagrado do sistema: escolas arcanas de Destruição e Proteção, técnicas marciais avançadas (Ofensivo, Defensivo, Controle) e relíquias lendárias.
+          </p>
+        </div>
+
+        <div class="card-action">
+          <span class="action-text">Consultar Tomo ➔</span>
+          <span class="action-glyph">🔮</span>
+        </div>
+      </a>
+
+      <!-- CARD 3: BESTIÁRIO -->
+      <a href="bestiario.html" class="portal-card theme-bestiary">
+        <div class="card-glow"></div>
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <div class="card-content">
+          <div class="card-tag">
+            <span class="symbol">💀</span> Ameaças & Horrores
+          </div>
+          <h2>BESTIÁRIO</h2>
+          <p>
+            Catálogo impiedoso de monstros, abominações e criaturas corrompidas. Estatísticas táticas de combate, resistências e habilidades prontas para suas sessões.
+          </p>
+        </div>
+
+        <div class="card-action">
+          <span class="action-text">Inspecionar Bestas ➔</span>
+          <span class="action-glyph">👁️</span>
+        </div>
+      </a>
+
+      <!-- CARD 4: A FORJA -->
+      <a href="forja.html" class="portal-card theme-forge">
+        <div class="card-glow"></div>
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+
+        <div class="card-content">
+          <div class="card-tag">
+            <span class="symbol">⚒️</span> Metalurgia & Artefatos
+          </div>
+          <h2>A FORJA</h2>
+          <p>
+            Oficina de armaria ancestral. Forje armas sob medida, role modificadores de raridade, descubra efeitos elementais e monte arsenais dignos de lendas.
+          </p>
+        </div>
+
+        <div class="card-action">
+          <span class="action-text">Acender Fornalha ➔</span>
+          <span class="action-glyph">🔥</span>
+        </div>
+      </a>
+
+    </main>
+
+    <!-- RODAPÉ & CONTROLES -->
+    <footer class="footer">
+      <div class="footer-flourish">◆ ✦ ◆</div>
+      <div class="footer-info">OlaRPG &bull; Sistema Proprietário de Mesa &bull; Módulo de Campanha</div>
+      <div>
+        <button id="soundToggle" class="sound-toggle" type="button" title="Ativar ou desativar som tátil de pedra">
+          <span>🔊</span> <span id="soundStatus">Som Tátil: Ativo</span>
+        </button>
+      </div>
+    </footer>
+
   </div>
 
-  <div class="menu">
-    <a href="Ficha final.html" class="menu-card">
-      <div class="icon">Ficha de Personagem</div>
-      <h2>FICHA DE PERSONAGEM</h2>
-      <p>Crie e gerencie personagens com atributos, pericias, habilidades, artefatos e inventario.</p>
-    </a>
+  <!-- SCRIPT DE ÁUDIO TÁTIL (stone.mp3) -->
+  <script>
+    (function() {
+      let soundEnabled = true;
+      let stoneAudio = null;
 
-    <a href="Livro base.html" class="menu-card">
-      <div class="icon">Referencia do Sistema</div>
-      <h2>LIVRO DE REGRAS</h2>
-      <p>Magias, tecnicas, habilidades por classe, reliquias e regras completas do sistema.</p>
-    </a>
+      try {
+        stoneAudio = new Audio('stone.mp3');
+        stoneAudio.volume = 0.25;
+      } catch (e) {
+        console.warn('Áudio não suportado ou arquivo não encontrado.');
+      }
 
-    <a href="bestiario.html" class="menu-card">
-      <div class="icon">Criaturas</div>
-      <h2>BESTIARIO</h2>
-      <p>Criaturas e monstros para usar nas suas sessoes.</p>
-    </a>
+      function playTactileSound() {
+        if (!soundEnabled || !stoneAudio) return;
+        try {
+          stoneAudio.currentTime = 0;
+          stoneAudio.play().catch(function() {
+            // Navegadores podem bloquear áudio antes da primeira interação
+          });
+        } catch (err) {}
+      }
 
-    <a href="forja.html" class="menu-card">
-      <div class="icon">Ferramentas</div>
-      <h2>A FORJA</h2>
-      <p>Crie armas, role efeitos e monte combinações para sua mesa.</p>
-    </a>
-  </div>
+      // Efeito de som nos cards ao passar o mouse
+      const cards = document.querySelectorAll('.portal-card, .crest-frame');
+      cards.forEach(function(card) {
+        card.addEventListener('mouseenter', function() {
+          playTactileSound();
+        });
+      });
 
-  <div class="ornament">✦</div>
+      // Toggle de som no rodapé
+      const soundBtn = document.getElementById('soundToggle');
+      const soundStatus = document.getElementById('soundStatus');
+
+      if (soundBtn && soundStatus) {
+        soundBtn.addEventListener('click', function() {
+          soundEnabled = !soundEnabled;
+          if (soundEnabled) {
+            soundBtn.classList.remove('muted');
+            soundStatus.textContent = 'Som Tátil: Ativo';
+            playTactileSound();
+          } else {
+            soundBtn.classList.add('muted');
+            soundStatus.textContent = 'Som Tátil: Silenciado';
+          }
+        });
+      }
+
+      // ════════════ EASTER EGG: 5 CLIQUES NO DINOSSAURO ════════════
+      const crest = document.querySelector('.crest-frame');
+      let dinoClicks = 0;
+      let dinoResetTimer = null;
+
+      function playEasterEggSound() {
+        const audioPaths = ['sons/easter_egg.mp3', 'easter_egg.mp3'];
+        let played = false;
+        for (const p of audioPaths) {
+          const snd = new Audio(p);
+          snd.volume = 0.85;
+          const prom = snd.play();
+          if (prom !== undefined) {
+            prom.then(() => {
+              played = true;
+            }).catch(() => {
+              // Fallback
+              if (!played) {
+                const fb = new Audio('easter_egg.mp3');
+                fb.volume = 0.85;
+                fb.play().catch(() => {});
+              }
+            });
+            break;
+          }
+        }
+      }
+
+      if (crest) {
+        crest.addEventListener('click', function(e) {
+          dinoClicks++;
+
+          // Feedback visual imediato de impacto no dinossauro
+          crest.classList.remove('dino-wobble');
+          void crest.offsetWidth; // Força reflow da animação
+          crest.classList.add('dino-wobble');
+
+          // Reinicia contagem se ficar 3.5 segundos sem clicar
+          clearTimeout(dinoResetTimer);
+          dinoResetTimer = setTimeout(function() {
+            dinoClicks = 0;
+          }, 3500);
+
+          if (dinoClicks >= 5) {
+            dinoClicks = 0;
+            clearTimeout(dinoResetTimer);
+
+            // Dispara o som e a animação mágica radiante do dinossauro
+            crest.classList.add('easter-egg-active');
+            playEasterEggSound();
+
+            setTimeout(function() {
+              crest.classList.remove('easter-egg-active');
+            }, 5000);
+          }
+        });
+      }
+    })();
+  </script>
 </body>
 </html>

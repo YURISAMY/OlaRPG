@@ -4,34 +4,36 @@
   
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>
-   Fichas de Classe — Sistema RPG
+   Livro do Jogador — Sistema RPG
   </title>
-  <link href="file:///C:/Users/yuri/Downloads/Livro%20base_files/css2" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
    :root {
       --parchment: #f5ead6;
       --ink: #1a1008;
       --gold: #c9921a;
-      --gold-light: #e8b84b;
+      --gold-light: #f3c358;
       --gold-dim: #7a5510;
 
       --marcial: #8b2020;
-      --marcial-light: #c94040;
+      --marcial-light: #d83a3a;
       --marcial-dim: #3d0f0f;
       --marcial-bg: #1a0808;
 
       --arcano: #1a2860;
-      --arcano-light: #4060c9;
+      --arcano-light: #5a8be8;
       --arcano-dim: #0d1430;
       --arcano-bg: #080d1a;
 
       --agil: #1a4020;
-      --agil-light: #3a9050;
+      --agil-light: #3ca358;
       --agil-dim: #0a2010;
       --agil-bg: #081208;
 
       --semblante: #6b2080;
-      --semblante-light: #c06de0;
+      --semblante-light: #c56de0;
       --semblante-dim: #2d0a40;
       --semblante-bg: #100818;
 
@@ -50,46 +52,140 @@
     }
 
     body {
-      background: #0d0d0d;
+      background: #08080b;
       background-image:
+        radial-gradient(circle at 50% -10%, rgba(61, 104, 209, 0.1) 0%, transparent 60%),
         radial-gradient(ellipse at 20% 20%, rgba(139, 32, 32, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(26, 40, 96, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(26, 64, 32, 0.06) 0%, transparent 60%);
+        radial-gradient(ellipse at 80% 80%, rgba(201, 146, 26, 0.06) 0%, transparent 50%),
+        linear-gradient(to bottom, rgba(8, 8, 11, 0.85), rgba(8, 8, 11, 0.98));
+      background-attachment: fixed;
       min-height: 100vh;
       font-family: 'Crimson Pro', serif;
       color: var(--parchment);
-      padding: 40px 20px 80px;
+      padding: 0 0 80px;
+    }
+
+    /* ════════════ TOPBAR DARK FANTASY ════════════ */
+    .dark-topbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(8, 9, 13, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(90, 139, 232, 0.25);
+      box-shadow: 0 4px 22px rgba(0, 0, 0, 0.7);
+    }
+    .topbar-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+    .topbar-brand:hover {
+      transform: scale(1.02);
+    }
+    .topbar-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      padding: 2px;
+      background: #14110e;
+      box-shadow: 0 0 8px rgba(201, 146, 26, 0.3);
+    }
+    .topbar-title {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      background: linear-gradient(180deg, #fff3d1, #5a8be8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .topbar-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 2px 0;
+    }
+    .topbar-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(245, 234, 214, 0.55);
+      padding: 6px 12px;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .topbar-link:hover {
+      color: var(--parchment);
+      background: rgba(90, 139, 232, 0.1);
+      border-color: rgba(90, 139, 232, 0.3);
+    }
+    .topbar-link.active {
+      color: #5a8be8;
+      background: rgba(90, 139, 232, 0.15);
+      border-color: rgba(90, 139, 232, 0.45);
+      box-shadow: inset 0 0 10px rgba(90, 139, 232, 0.15);
+    }
+    .topbar-link .link-icon {
+      font-size: 13px;
     }
 
     /* HEADER */
     .header {
       text-align: center;
-      margin-bottom: 60px;
+      margin: 36px 20px 48px;
       position: relative;
     }
 
     .header::before {
       content: '';
       display: block;
-      width: 80%;
+      width: 60%;
+      max-width: 480px;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 24px;
+      background: linear-gradient(90deg, transparent, var(--arcano-light), transparent);
+      margin: 0 auto 20px;
     }
 
     .header h1 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(28px, 5vw, 52px);
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: clamp(30px, 5.5vw, 54px);
       font-weight: 900;
-      letter-spacing: 0.12em;
-      color: var(--gold-light);
-      text-shadow: 0 0 40px rgba(201, 146, 26, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8);
+      letter-spacing: 0.18em;
+      background: linear-gradient(180deg, #fff3d1 0%, #5a8be8 50%, #1a2860 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(90, 139, 232, 0.45);
       margin-bottom: 8px;
     }
 
     .header p {
-      font-size: 16px;
-      color: rgba(245, 234, 214, 0.5);
+      font-size: 14.5px;
+      color: rgba(245, 234, 214, 0.55);
       font-style: italic;
       letter-spacing: 0.05em;
     }
@@ -106,95 +202,166 @@
     /* LEGEND */
     .legend {
       display: flex;
-      gap: 20px;
+      gap: 22px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 50px;
+      margin-bottom: 36px;
     }
 
     .legend-item {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 13px;
-      color: rgba(245, 234, 214, 0.6);
+      font-size: 12px;
+      color: rgba(245, 234, 214, 0.65);
       font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 0.06em;
     }
 
     .legend-dot {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
+      box-shadow: 0 0 8px currentColor;
     }
 
     .legend-dot.passive {
       background: #aaa;
+      color: #aaa;
     }
 
     .legend-dot.quick {
       background: #4caf90;
+      color: #4caf90;
     }
 
     .legend-dot.standard {
-      background: #e8b84b;
+      background: #f3c358;
+      color: #f3c358;
     }
 
-    /* TABS */
+    /* ════════════ TABS DARK FANTASY ════════════ */
     .tabs {
       display: flex;
       justify-content: center;
-      gap: 0;
+      gap: 6px;
       margin-bottom: 40px;
-      border-bottom: 1px solid rgba(201, 146, 26, 0.2);
+      border-bottom: 1px solid rgba(201, 146, 26, 0.25);
+      flex-wrap: wrap;
+      padding: 0 10px 2px;
     }
 
     .tab-btn {
-      background: none;
-      border: none;
-      border-bottom: 3px solid transparent;
-      color: rgba(245, 234, 214, 0.4);
+      background: rgba(14, 16, 24, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 2px solid transparent;
+      border-radius: 4px 4px 0 0;
+      color: rgba(245, 234, 214, 0.5);
       font-family: 'Cinzel', serif;
-      font-size: 14px;
+      font-size: 12.5px;
+      font-weight: 700;
       letter-spacing: 0.1em;
-      padding: 12px 28px;
+      padding: 10px 18px;
       cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-      top: 1px;
+      transition: all 0.25s ease;
+      margin-bottom: -1px;
+      white-space: nowrap;
+      text-transform: uppercase;
     }
 
     .tab-btn:hover {
-      color: rgba(245, 234, 214, 0.8);
+      color: var(--parchment);
+      background: rgba(201, 146, 26, 0.1);
+      border-color: rgba(201, 146, 26, 0.3);
+      transform: translateY(-1px);
     }
 
     .tab-btn.active {
       color: var(--gold-light);
-      border-bottom-color: var(--gold);
+      background: rgba(201, 146, 26, 0.16);
+      border-color: rgba(201, 146, 26, 0.45);
+      border-bottom: 2px solid var(--gold);
+      box-shadow: 0 -2px 10px rgba(201, 146, 26, 0.15);
     }
 
     .tab-btn.marcial.active {
-      color: var(--marcial-light);
-      border-bottom-color: var(--marcial-light);
+      color: #ff6b6b;
+      background: rgba(216, 58, 58, 0.16);
+      border-color: rgba(216, 58, 58, 0.45);
+      border-bottom: 2px solid #d83a3a;
+      box-shadow: 0 -2px 10px rgba(216, 58, 58, 0.2);
     }
 
     .tab-btn.arcano.active {
-      color: var(--arcano-light);
-      border-bottom-color: var(--arcano-light);
+      color: #7ba3f5;
+      background: rgba(90, 139, 232, 0.16);
+      border-color: rgba(90, 139, 232, 0.45);
+      border-bottom: 2px solid #5a8be8;
+      box-shadow: 0 -2px 10px rgba(90, 139, 232, 0.2);
     }
 
     .tab-btn.agil.active {
-      color: var(--agil-light);
-      border-bottom-color: var(--agil-light);
+      color: #5ecf7c;
+      background: rgba(60, 163, 88, 0.16);
+      border-color: rgba(60, 163, 88, 0.45);
+      border-bottom: 2px solid #3ca358;
+      box-shadow: 0 -2px 10px rgba(60, 163, 88, 0.2);
     }
 
     .tab-btn.semblante.active {
-      color: var(--semblante-light);
-      border-bottom-color: var(--semblante-light);
+      color: #df8bf8;
+      background: rgba(197, 109, 224, 0.16);
+      border-color: rgba(197, 109, 224, 0.45);
+      border-bottom: 2px solid #c56de0;
+      box-shadow: 0 -2px 10px rgba(197, 109, 224, 0.2);
+    }
+
+    .tab-btn.estranho.active {
+      color: #e880e8;
+      background: rgba(208, 96, 208, 0.16);
+      border-color: rgba(208, 96, 208, 0.45);
+      border-bottom: 2px solid #d060d0;
+      box-shadow: 0 -2px 10px rgba(208, 96, 208, 0.2);
     }
 
     .tab-btn.feiticos.active {
       color: var(--gold-light);
-      border-bottom-color: var(--gold-light);
+      background: rgba(201, 146, 26, 0.16);
+      border-color: rgba(201, 146, 26, 0.45);
+      border-bottom: 2px solid var(--gold-light);
+      box-shadow: 0 -2px 10px rgba(201, 146, 26, 0.2);
+    }
+
+    .tab-btn.reliquias.active {
+      color: #c97bf5;
+      background: rgba(192, 109, 224, 0.16);
+      border-color: rgba(192, 109, 224, 0.45);
+      border-bottom: 2px solid #c06de0;
+      box-shadow: 0 -2px 10px rgba(192, 109, 224, 0.2);
+    }
+
+    .tab-btn.itens.active {
+      color: #f07428;
+      background: rgba(240, 116, 40, 0.16);
+      border-color: rgba(240, 116, 40, 0.45);
+      border-bottom: 2px solid #f07428;
+      box-shadow: 0 -2px 10px rgba(240, 116, 40, 0.2);
+    }
+
+    .tab-btn.racas.active {
+      color: #6ed1bc;
+      background: rgba(91, 183, 162, 0.16);
+      border-color: rgba(91, 183, 162, 0.45);
+      border-bottom: 2px solid #5bb7a2;
+      box-shadow: 0 -2px 10px rgba(91, 183, 162, 0.2);
+    }
+
+    .tab-btn.panteao.active {
+      color: #b5bcff;
+      background: rgba(159, 168, 255, 0.16);
+      border-color: rgba(159, 168, 255, 0.45);
+      border-bottom: 2px solid #9fa8ff;
+      box-shadow: 0 -2px 10px rgba(159, 168, 255, 0.2);
     }
 
     /* SECTION */
@@ -246,76 +413,228 @@
       text-shadow: 0 0 20px rgba(192, 109, 224, 0.4);
     }
 
-    /* TREE LAYOUT */
+    /* ════════════ TREE LAYOUT & SUBCLASSES EXPANSÍVEIS ════════════ */
     .tree {
       display: flex;
       flex-direction: column;
-      gap: 40px;
+      gap: 32px;
+      width: 100%;
+      max-width: 1260px;
+      margin: 0 auto;
     }
 
+    /* BARRA DE NAVEGAÇÃO & CONTROLES DE SUBCLASSE */
+    .subclass-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding: 14px 22px;
+      background: rgba(14, 16, 24, 0.78);
+      border: 1px solid rgba(201, 146, 26, 0.22);
+      border-radius: 6px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+    }
+
+    .subclass-nav-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .subclass-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--parchment);
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 7px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .subclass-pill:hover,
+    .subclass-pill.active {
+      background: rgba(201, 146, 26, 0.18);
+      border-color: var(--accent-light, var(--gold));
+      color: #fff;
+      box-shadow: 0 0 16px var(--accent-glow, rgba(201, 146, 26, 0.3));
+      transform: translateY(-2px);
+    }
+
+    .subclass-toggle-all-btn {
+      background: rgba(20, 22, 32, 0.8);
+      border: 1px solid rgba(201, 146, 26, 0.3);
+      color: var(--gold-light);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      padding: 7px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+    }
+
+    .subclass-toggle-all-btn:hover {
+      background: rgba(201, 146, 26, 0.2);
+      border-color: var(--gold-light);
+      box-shadow: 0 0 14px rgba(201, 146, 26, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* ESTRUTURA DAS SUBCLASSES */
     .tree-level {
       display: flex;
       flex-wrap: wrap;
-      gap: 24px;
       justify-content: center;
+      align-items: flex-start;
+      gap: 28px;
+      width: 100%;
     }
 
     .tree-row {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      flex: 1 1 340px;
+      max-width: 380px;
+      width: 100%;
       position: relative;
+      scroll-margin-top: 85px;
     }
 
-    .tree-connector {
+    /* Subclasse expandida toma destaque na tela */
+    .tree-row.expanded {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+
+    /* CONDUÍTE RÚNICO (NEXUS BEAM) */
+    .split-arrow {
+      margin: 12px 0 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 5;
+    }
+
+    .nexus-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      background: rgba(12, 14, 20, 0.96);
+      border: 1px solid var(--accent-dim, rgba(201, 146, 26, 0.35));
+      border-radius: 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--accent-light, var(--gold-light));
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .nexus-badge:hover,
+    .nexus-badge.active {
+      border-color: var(--accent-light, var(--gold));
+      box-shadow: 0 0 22px var(--accent-glow, rgba(201, 146, 26, 0.45));
+      transform: scale(1.05);
+      color: #fff;
+    }
+
+    .nexus-glow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-light, var(--gold));
+      box-shadow: 0 0 10px var(--accent-light, var(--gold));
+      display: inline-block;
+      animation: pulseRune 1.8s infinite;
+    }
+
+    .nexus-line {
       width: 2px;
-      height: 30px;
-      background: linear-gradient(180deg, var(--gold-dim), transparent);
-      flex-shrink: 0;
+      height: 18px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, var(--accent, var(--gold)), transparent);
+      opacity: 0.8;
     }
 
+    @keyframes pulseRune {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* RAMIFICAÇÃO EXPANSÍVEL (TREE BRANCH) */
     .tree-branch {
+      width: 100%;
+      max-width: 1240px;
       display: flex;
-      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 26px;
       position: relative;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-16px) scale(0.98);
+      pointer-events: none;
+      transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.4s ease,
+                  transform 0.45s ease,
+                  margin 0.3s ease,
+                  padding 0.3s ease;
+      margin: 0;
+      padding: 0;
     }
 
-    .tree-branch::before {
-      content: '';
-      position: absolute;
-      top: -16px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 160px);
-      height: 1px;
-      background: var(--gold-dim);
+    .tree-row.expanded .tree-branch {
+      max-height: 5000px;
+      opacity: 1;
+      overflow: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+      margin-top: 18px;
+      margin-bottom: 28px;
+      padding: 24px 10px;
+      border-top: 1px dashed var(--accent-dim, rgba(201, 146, 26, 0.35));
+      background: radial-gradient(ellipse at 50% 0%, var(--accent-glow, rgba(201, 146, 26, 0.08)), transparent 75%);
     }
 
+    .tree-branch::before,
     .tree-branch::after {
-      content: '';
-      position: absolute;
-      top: -16px;
-      left: calc(25% + 0px);
-      width: 1px;
-      height: 16px;
-      background: var(--gold-dim);
+      display: none;
     }
 
-    /* CARD */
+    /* CARD DARK FANTASY */
     .card {
       width: var(--card-w);
       border-radius: 4px;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: default;
       flex-shrink: 0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(10px);
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 30px var(--accent-glow, rgba(201, 146, 26, 0.18));
+      border-color: var(--accent-light, var(--accent));
     }
 
     /* Card tiers */
@@ -323,57 +642,271 @@
       --accent: var(--gold);
       --accent-light: var(--gold-light);
       --accent-dim: var(--gold-dim);
-      --card-bg: #111008;
-      border: 1px solid var(--gold-dim);
-      box-shadow: 0 0 0 1px rgba(201, 146, 26, 0.1), inset 0 0 40px rgba(201, 146, 26, 0.03);
+      --accent-glow: rgba(201, 146, 26, 0.25);
+      --card-bg: #0f1016;
+      border: 1px solid rgba(201, 146, 26, 0.35);
+      box-shadow: 0 0 0 1px rgba(201, 146, 26, 0.15), inset 0 0 40px rgba(201, 146, 26, 0.05);
     }
 
+    /* ════════════ ESTILO ESTANDARTE DE SUBCLASSE (TIER-SUB) ════════════ */
     .card.tier-sub {
-      border: 1px solid;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 380px;
+      background: var(--card-bg, #0f1016);
+      border: 1px solid var(--accent-dim, rgba(201, 146, 26, 0.28));
+      border-radius: 6px;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.7);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
     }
 
+    .card.tier-sub::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-light, var(--gold)), transparent);
+      opacity: 0.85;
+      z-index: 3;
+    }
+
+    .card.tier-sub:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-light, var(--gold));
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.85), 0 0 26px var(--accent-glow, rgba(201, 146, 26, 0.22));
+    }
+
+    .tree-row.expanded .card.tier-sub {
+      border-color: var(--accent-light, var(--gold));
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.85), 0 0 32px var(--accent-glow, rgba(201, 146, 26, 0.35));
+    }
+
+    .card.tier-sub .card-emoji {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.75));
+      border: 2px solid var(--accent, var(--gold));
+      border-radius: 50%;
+      font-size: 28px;
+      box-shadow: 0 0 16px var(--accent-glow, rgba(201, 146, 26, 0.3));
+      transition: all 0.3s ease;
+    }
+
+    .card.tier-sub:hover .card-emoji {
+      transform: scale(1.1) rotate(6deg);
+      box-shadow: 0 0 25px var(--accent-glow, rgba(201, 146, 26, 0.45));
+    }
+
+    .card.tier-sub .card-header {
+      text-align: center;
+      padding: 22px 20px 14px;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent);
+    }
+
+    .card.tier-sub .card-title {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--accent-light, var(--gold-light));
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+      text-shadow: 0 0 16px var(--accent-glow, rgba(201, 146, 26, 0.35));
+    }
+
+    .card.tier-sub .card-tier-badge {
+      position: static;
+      display: inline-block;
+      margin-top: 6px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      color: var(--accent-light, var(--gold));
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--accent-dim, rgba(201, 146, 26, 0.3));
+      padding: 2px 10px;
+      border-radius: 3px;
+    }
+
+    .subclass-expand-bar {
+      margin-top: 14px;
+      padding: 12px 18px;
+      background: rgba(20, 22, 32, 0.95);
+      border-top: 1px solid var(--accent-dim, rgba(201, 146, 26, 0.3));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .subclass-expand-bar:hover {
+      background: var(--accent-dim, rgba(201, 146, 26, 0.3));
+      color: #fff;
+      box-shadow: inset 0 0 18px var(--accent-glow, rgba(201, 146, 26, 0.25));
+    }
+
+    .subclass-expand-bar .sub-exp-sparkle {
+      color: var(--accent-light, var(--gold));
+      font-size: 13px;
+      animation: pulseRune 2s infinite ease-in-out;
+    }
+
+    .subclass-expand-bar .sub-exp-icon {
+      font-size: 10px;
+      transition: transform 0.35s ease;
+    }
+
+    .subclass-expand-bar.active {
+      background: rgba(201, 146, 26, 0.18);
+      color: #fff;
+    }
+
+    .subclass-expand-bar.active .sub-exp-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ════════════ TÁBUAS DE ASCENSÃO (ESPECIALIZAÇÕES TIER-SPEC) ════════════ */
     .card.tier-spec {
-      border: 1px solid;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      width: min(580px, 94vw);
+      max-width: 100%;
+      background: var(--card-bg, #0b0d14);
+      border: 1px solid var(--accent, rgba(201, 146, 26, 0.38));
+      border-radius: 6px;
+      box-shadow: 0 14px 45px rgba(0, 0, 0, 0.78), inset 0 0 40px rgba(0, 0, 0, 0.65);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .card.tier-spec:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-light, var(--gold));
+      box-shadow: 0 22px 65px rgba(0, 0, 0, 0.88), 0 0 32px var(--accent-glow, rgba(201, 146, 26, 0.28));
+    }
+
+    .card.tier-spec .card-header {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.2));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 20px 24px 16px;
+      position: relative;
+    }
+
+    .card.tier-spec .card-header::before {
+      content: '👑 ESPECIALIZAÇÃO AVANÇADA • NÍVEL 6+';
+      display: block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .card.tier-spec .card-title {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent-light, var(--gold-light));
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 16px var(--accent-glow, rgba(201, 146, 26, 0.35));
+    }
+
+    .card.tier-spec .card-skills {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 20px 22px;
+    }
+
+    .card.tier-spec .card-skills > .skill {
+      flex: 1 1 calc(50% - 14px);
+      min-width: 240px;
+      background: rgba(14, 16, 24, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-left: 3px solid var(--accent, var(--gold));
+      border-radius: 4px;
+      padding: 12px 14px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .card.tier-spec .card-skills > .skill:hover {
+      background: rgba(20, 22, 34, 0.88);
+      border-color: rgba(255, 255, 255, 0.18);
+      border-left-color: var(--accent-light, var(--gold-light));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    .card.tier-spec .card-skills > .skill-divider {
+      display: none;
+    }
+
+    .card.tier-spec .card-skills .pool-section {
+      flex: 1 1 100%;
+      width: 100%;
+      margin-top: 8px;
+      padding: 16px 14px 4px;
+      border-top: 1px solid rgba(201, 146, 26, 0.2);
     }
 
     .card.marcial {
       --accent: var(--marcial-light);
-      --accent-light: #e05050;
+      --accent-light: #ff6b6b;
       --accent-dim: var(--marcial-dim);
-      --card-bg: var(--marcial-bg);
-      border-color: rgba(139, 32, 32, 0.5);
+      --accent-glow: rgba(216, 58, 58, 0.25);
+      --card-bg: #15090b;
+      border-color: rgba(216, 58, 58, 0.45);
     }
 
     .card.arcano {
       --accent: var(--arcano-light);
-      --accent-light: #6080d9;
+      --accent-light: #7ba3f5;
       --accent-dim: var(--arcano-dim);
-      --card-bg: var(--arcano-bg);
-      border-color: rgba(26, 40, 96, 0.5);
+      --accent-glow: rgba(90, 139, 232, 0.25);
+      --card-bg: #090e1a;
+      border-color: rgba(90, 139, 232, 0.45);
     }
 
     .card.agil {
       --accent: var(--agil-light);
-      --accent-light: #5ab070;
+      --accent-light: #5ecf7c;
       --accent-dim: var(--agil-dim);
-      --card-bg: var(--agil-bg);
-      border-color: rgba(26, 64, 32, 0.5);
+      --accent-glow: rgba(60, 163, 88, 0.25);
+      --card-bg: #09140c;
+      border-color: rgba(60, 163, 88, 0.45);
     }
 
     .card.semblante {
       --accent: var(--semblante-light);
-      --accent-light: #d48ef0;
+      --accent-light: #df8bf8;
       --accent-dim: var(--semblante-dim);
-      --card-bg: var(--semblante-bg);
-      border-color: rgba(107, 32, 128, 0.5);
+      --accent-glow: rgba(197, 109, 224, 0.25);
+      --card-bg: #140a1c;
+      border-color: rgba(197, 109, 224, 0.45);
     }
 
     /* Card inner */
     .card-inner {
       background: var(--card-bg);
-      background-image: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.03), transparent 60%);
+      background-image: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.05), transparent 65%);
       padding: 0;
       height: 100%;
     }
@@ -383,31 +916,40 @@
     .card::after {
       content: '';
       position: absolute;
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       border-color: var(--accent);
       border-style: solid;
-      opacity: 0.6;
+      opacity: 0.65;
       z-index: 2;
+      transition: all 0.3s ease;
     }
 
     .card::before {
       top: 6px;
       left: 6px;
-      border-width: 1px 0 0 1px;
+      border-width: 2px 0 0 2px;
     }
 
     .card::after {
       bottom: 6px;
       right: 6px;
-      border-width: 0 1px 1px 0;
+      border-width: 0 2px 2px 0;
+    }
+
+    .card:hover::before,
+    .card:hover::after {
+      opacity: 1;
+      width: 18px;
+      height: 18px;
     }
 
     /* Card header */
     .card-header {
-      padding: 20px 20px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 22px 20px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       position: relative;
+      background: rgba(0, 0, 0, 0.2);
     }
 
     .card-header::after {
@@ -418,23 +960,24 @@
       right: 20px;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0.4;
+      opacity: 0.6;
     }
 
     .card-emoji {
       font-size: 28px;
       line-height: 1;
       margin-bottom: 8px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
     }
 
     .card-title {
       font-family: 'Cinzel', serif;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--accent-light);
       letter-spacing: 0.08em;
       margin-bottom: 4px;
-      text-shadow: 0 0 20px var(--accent);
+      text-shadow: 0 0 20px var(--accent-glow, var(--accent));
     }
 
     .card-subtitle {
@@ -463,90 +1006,6 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-    }
-
-    
-    /* Especializações - Módulos Quadrados e Cartas Largas */
-    .card.tier-spec {
-      width: 600px;
-      max-width: 100%;
-    }
-
-    .card.tier-spec .card-skills {
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      gap: 12px;
-    }
-    
-    .card.tier-spec .card-skills > .skill {
-      flex: 1 1 calc(50% - 12px);
-      background: var(--card-bg);
-      background-image: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.05), transparent 60%);
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      padding: 12px;
-      padding-left: 24px;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-
-    .card.tier-spec .card-skills > .skill-divider {
-      display: none;
-    }
-    
-    .card.tier-spec .card-skills > .skill::before {
-      left: 10px;
-      top: 18px;
-    }
-
-    /* Garantir que a pool-section ocupe 100% da largura em uma linha inteira */
-    .card.tier-spec .card-skills .pool-section {
-      flex: 1 1 100%;
-      margin-top: 8px;
-      padding-top: 14px;
-    }
-
-    
-    /* Especializações - Módulos Quadrados e Cartas Largas */
-    .card.tier-spec {
-      width: 600px;
-      max-width: 100%;
-    }
-
-    .card.tier-spec .card-skills {
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      gap: 12px;
-    }
-    
-    .card.tier-spec .card-skills > .skill {
-      flex: 1 1 calc(50% - 12px);
-      background: var(--card-bg);
-      background-image: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.05), transparent 60%);
-      border: 1px solid var(--accent);
-      border-radius: 4px;
-      padding: 12px;
-      padding-left: 24px;
-      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-
-    .card.tier-spec .card-skills > .skill-divider {
-      display: none;
-    }
-    
-    .card.tier-spec .card-skills > .skill::before {
-      left: 10px;
-      top: 18px;
-    }
-
-    /* Garantir que a pool-section ocupe 100% da largura em uma linha inteira */
-    .card.tier-spec .card-skills .pool-section {
-      flex: 1 1 100%;
-      margin-top: 8px;
-      padding-top: 14px;
     }
 
     /* ── POOL DE PROGRESSÃO HORIZONTAL ── */
@@ -906,31 +1365,32 @@
       gap: 20px;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 40px;
-      padding: 16px 24px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(201, 146, 26, 0.1);
+      margin: 0 auto 28px;
+      padding: 12px 28px;
+      background: rgba(14, 16, 24, 0.78);
+      border: 1px solid rgba(201, 146, 26, 0.22);
       border-radius: 4px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 40px;
+      max-width: 660px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(201, 146, 26, 0.04);
     }
 
     .res {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 12px;
+      font-size: 11.5px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      letter-spacing: 0.06em;
     }
 
     .res-icon {
-      font-size: 16px;
+      font-size: 17px;
+      filter: drop-shadow(0 0 6px rgba(201, 146, 26, 0.35));
     }
 
     .res-name {
-      color: rgba(245, 234, 214, 0.7);
+      color: rgba(245, 234, 214, 0.82);
     }
 
     /* RESPONSIVE */
@@ -1152,64 +1612,184 @@
     }
 
     .filter-btn {
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(14, 16, 24, 0.65);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 3px;
-      color: rgba(245, 234, 214, 0.5);
+      color: rgba(245, 234, 214, 0.55);
       font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      padding: 6px 14px;
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      padding: 7px 16px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       text-transform: uppercase;
     }
 
     .filter-btn:hover {
-      color: rgba(245, 234, 214, 0.9);
-      border-color: rgba(255, 255, 255, 0.2);
+      color: var(--parchment);
+      border-color: rgba(201, 146, 26, 0.35);
+      background: rgba(201, 146, 26, 0.08);
+      transform: translateY(-1px);
     }
 
     .filter-btn.active {
-      background: rgba(201, 146, 26, 0.15);
-      border-color: var(--gold-dim);
+      background: rgba(201, 146, 26, 0.18);
+      border-color: var(--gold);
       color: var(--gold-light);
+      box-shadow: 0 0 12px rgba(201, 146, 26, 0.2);
     }
 
     .filter-btn.magica.active {
-      background: rgba(64, 96, 201, 0.15);
+      background: rgba(90, 139, 232, 0.18);
       border-color: var(--arcano-light);
-      color: var(--arcano-light);
+      color: #7ba3f5;
+      box-shadow: 0 0 12px rgba(90, 139, 232, 0.2);
     }
 
     .filter-btn.tecnica.active {
-      background: rgba(139, 32, 32, 0.15);
+      background: rgba(216, 58, 58, 0.18);
       border-color: var(--marcial-light);
-      color: var(--marcial-light);
+      color: #ff6b6b;
+      box-shadow: 0 0 12px rgba(216, 58, 58, 0.2);
     }
 
+    /* ════════════ AURA ARCANA & PARTÍCULAS (TAB FEITIÇOS) ════════════ */
+    #tab-feiticos {
+      position: relative;
+    }
+
+    .arcane-aura-bg {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(90, 139, 232, 0.12) 0%, rgba(197, 109, 224, 0.06) 40%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      animation: arcanePulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes arcanePulse {
+      0% { transform: translateX(-50%) scale(0.95); opacity: 0.6; }
+      100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+    }
+
+    .arcane-rune-ring {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 480px;
+      height: 480px;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'%3E%3Ccircle cx='250' cy='250' r='230' fill='none' stroke='%235a8be8' stroke-width='2' stroke-dasharray='10 15'/%3E%3Ccircle cx='250' cy='250' r='190' fill='none' stroke='%23c9921a' stroke-width='1.5'/%3E%3Cpolygon points='250,60 414.5,345 85.5,345' fill='none' stroke='%235a8be8' stroke-width='1'/%3E%3Cpolygon points='250,440 85.5,155 414.5,155' fill='none' stroke='%23c56de0' stroke-width='1'/%3E%3Ccircle cx='250' cy='250' r='100' fill='none' stroke='%23f3c358' stroke-width='2' stroke-dasharray='5 10'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: rotateRing 60s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes rotateRing {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    /* BUSCA MÁGICA (ORÁCULO DO GRIMÓRIO) */
+    .spell-search-container {
+      max-width: 580px;
+      margin: 0 auto 28px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .spell-search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(12, 14, 20, 0.85);
+      border: 1px solid rgba(201, 146, 26, 0.28);
+      border-radius: 4px;
+      padding: 9px 18px;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.6), inset 0 0 15px rgba(90, 139, 232, 0.05);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .spell-search-box:focus-within {
+      border-color: var(--gold-light);
+      box-shadow: 0 0 25px rgba(201, 146, 26, 0.35), inset 0 0 20px rgba(90, 139, 232, 0.1);
+    }
+
+    .spell-search-icon {
+      font-size: 18px;
+      filter: drop-shadow(0 0 8px rgba(90, 139, 232, 0.5));
+    }
+
+    .spell-search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--parchment);
+      font-family: 'Crimson Pro', serif;
+      font-size: 15px;
+      outline: none;
+      letter-spacing: 0.03em;
+    }
+    .spell-search-input::placeholder {
+      color: rgba(245, 234, 214, 0.45);
+      font-style: italic;
+    }
+
+    .spell-count-badge {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--gold-light);
+      background: rgba(201, 146, 26, 0.12);
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid rgba(201, 146, 26, 0.25);
+      white-space: nowrap;
+    }
+
+    /* GRID & CARDS DE MAGIAS/TÉCNICAS */
     .spell-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 18px;
       justify-content: center;
-      margin-bottom: 16px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
     }
 
     .spell-card {
-      width: 280px;
-      background: #0d0d10;
+      width: 295px;
+      background: rgba(12, 14, 20, 0.9);
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(90, 139, 232, 0.03) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Ccircle cx='80' cy='80' r='70' fill='none' stroke='rgba(201,146,26,0.04)' stroke-width='1'/%3E%3Cpolygon points='80,15 140,115 20,115' fill='none' stroke='rgba(90,139,232,0.03)' stroke-width='1'/%3E%3C/svg%3E");
+      background-position: center;
+      background-repeat: no-repeat;
       border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s, box-shadow 0.25s;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(8px);
     }
 
     .spell-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      transform: translateY(-5px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 25px rgba(90, 139, 232, 0.18);
+      border-color: rgba(201, 146, 26, 0.45);
+      background-color: rgba(16, 18, 26, 0.95);
     }
 
     .spell-card::before {
@@ -1219,14 +1799,40 @@
       left: 0;
       right: 0;
       height: 2px;
+      opacity: 0.75;
+      transition: opacity 0.25s, height 0.25s;
+    }
+    .spell-card:hover::before {
+      opacity: 1;
+      height: 3px;
+    }
+
+    .spell-card::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid rgba(201, 146, 26, 0.3);
+      border-right: 2px solid rgba(201, 146, 26, 0.3);
+      pointer-events: none;
+      transition: all 0.25s ease;
+      opacity: 0.6;
+    }
+    .spell-card:hover::after {
+      width: 12px;
+      height: 12px;
+      opacity: 1;
+      border-color: var(--gold-light);
     }
 
     .spell-card.magica::before {
-      background: linear-gradient(90deg, transparent, var(--arcano-light), transparent);
+      background: linear-gradient(90deg, transparent, #5a8be8, #7ba3f5, #5a8be8, transparent);
     }
 
     .spell-card.tecnica::before {
-      background: linear-gradient(90deg, transparent, var(--marcial-light), transparent);
+      background: linear-gradient(90deg, transparent, #d83a3a, #ff6b6b, #d83a3a, transparent);
     }
 
     .spell-card.exclusiva.magica::before {
@@ -1242,142 +1848,157 @@
     }
 
     .spell-card.magica {
-      border-color: rgba(64, 96, 201, 0.2);
+      border-color: rgba(90, 139, 232, 0.25);
     }
 
     .spell-card.tecnica {
-      border-color: rgba(139, 32, 32, 0.2);
+      border-color: rgba(216, 58, 58, 0.25);
     }
 
     .spell-card.exclusiva {
-      border-color: rgba(201, 146, 26, 0.25);
+      border-color: rgba(201, 146, 26, 0.35);
     }
 
     .spell-card.signature {
-      border-color: rgba(255, 215, 0, 0.3);
-      background: #0d0d0a;
+      border-color: rgba(255, 215, 0, 0.4);
+      background-color: rgba(18, 16, 10, 0.95);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 215, 0, 0.1);
     }
 
     .spell-card-top {
-      padding: 14px 16px 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.2);
     }
 
     .spell-name-row {
       display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
     }
 
     .spell-name {
       font-family: 'Cinzel', serif;
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--parchment);
       letter-spacing: 0.06em;
       flex: 1;
+      transition: color 0.2s ease;
+    }
+    .spell-card:hover .spell-name {
+      color: var(--gold-light);
     }
 
     .spell-card.signature .spell-name {
       color: #ffd700;
-      text-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+      text-shadow: 0 0 14px rgba(255, 215, 0, 0.4);
     }
 
+    /* GEMA DE CUSTO TRIDIMENSIONAL */
     .spell-cost-badge {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 10px;
-      padding: 2px 7px;
-      border-radius: 2px;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
       white-space: nowrap;
       flex-shrink: 0;
+      letter-spacing: 0.05em;
     }
 
     .spell-card.magica .spell-cost-badge {
-      background: rgba(64, 96, 201, 0.2);
-      color: #8aa0e8;
-      border: 1px solid rgba(64, 96, 201, 0.3);
+      background: radial-gradient(circle at 30% 30%, #3d68d1, #101c3d);
+      color: #b0c8ff;
+      border: 1px solid #5a8be8;
+      box-shadow: 0 0 10px rgba(90, 139, 232, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 4px #000;
     }
 
     .spell-card.tecnica .spell-cost-badge {
-      background: rgba(139, 32, 32, 0.2);
-      color: #e08080;
-      border: 1px solid rgba(139, 32, 32, 0.3);
+      background: radial-gradient(circle at 30% 30%, #c9921a, #4a3405);
+      color: #fff1c0;
+      border: 1px solid #e8b84b;
+      box-shadow: 0 0 10px rgba(201, 146, 26, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      text-shadow: 0 0 4px #000;
     }
 
     .spell-card.signature .spell-cost-badge {
-      background: rgba(255, 215, 0, 0.15);
-      color: #ffd700;
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      background: radial-gradient(circle at 30% 30%, #ffd700, #5a4400);
+      color: #fffde0;
+      border: 1px solid #ffe040;
+      box-shadow: 0 0 14px rgba(255, 215, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+      text-shadow: 0 0 4px #000;
     }
 
     .spell-tags {
       display: flex;
       gap: 5px;
       flex-wrap: wrap;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .spell-tag {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
+      font-size: 8.5px;
       letter-spacing: 0.1em;
-      padding: 1px 6px;
+      padding: 2px 7px;
       border-radius: 2px;
       text-transform: uppercase;
+      box-shadow: inset 0 0 4px rgba(0,0,0,0.4);
     }
 
     .spell-tag.escola {
       background: rgba(201, 146, 26, 0.12);
-      color: var(--gold-dim);
-      border: 1px solid rgba(201, 146, 26, 0.15);
+      color: var(--gold-light);
+      border: 1px solid rgba(201, 146, 26, 0.28);
     }
 
     .spell-tag.tipo-magica {
-      background: rgba(64, 96, 201, 0.12);
-      color: #7090d0;
-      border: 1px solid rgba(64, 96, 201, 0.15);
+      background: rgba(90, 139, 232, 0.12);
+      color: #9abaff;
+      border: 1px solid rgba(90, 139, 232, 0.28);
     }
 
     .spell-tag.tipo-tecnica {
-      background: rgba(139, 32, 32, 0.12);
-      color: #c06060;
-      border: 1px solid rgba(139, 32, 32, 0.15);
+      background: rgba(216, 58, 58, 0.12);
+      color: #ffa0a0;
+      border: 1px solid rgba(216, 58, 58, 0.28);
     }
 
     .spell-tag.exclusiva-tag {
-      background: rgba(201, 146, 26, 0.15);
+      background: rgba(201, 146, 26, 0.18);
       color: var(--gold-light);
-      border: 1px solid rgba(201, 146, 26, 0.25);
+      border: 1px solid rgba(201, 146, 26, 0.35);
     }
 
     .spell-tag.signature-tag {
-      background: rgba(255, 215, 0, 0.12);
+      background: rgba(255, 215, 0, 0.16);
       color: #ffd700;
-      border: 1px solid rgba(255, 215, 0, 0.25);
+      border: 1px solid rgba(255, 215, 0, 0.35);
     }
 
     .spell-tag.limitada {
-      background: rgba(180, 60, 60, 0.12);
-      color: #e07070;
-      border: 1px solid rgba(180, 60, 60, 0.2);
+      background: rgba(180, 60, 60, 0.14);
+      color: #ff9090;
+      border: 1px solid rgba(180, 60, 60, 0.28);
     }
 
     .spell-tag.furia {
-      background: rgba(200, 40, 40, 0.18);
-      color: #ff6060;
-      border: 1px solid rgba(200, 40, 40, 0.35);
+      background: rgba(200, 40, 40, 0.22);
+      color: #ff7070;
+      border: 1px solid rgba(200, 40, 40, 0.4);
       font-weight: 700;
     }
 
     .spell-card-body {
-      padding: 10px 16px 14px;
+      padding: 14px 18px 16px;
     }
 
     .spell-desc {
-      font-size: 12px;
-      color: rgba(245, 234, 214, 0.65);
+      font-size: 12.5px;
+      color: rgba(245, 234, 214, 0.72);
       line-height: 1.6;
     }
 
@@ -1421,6 +2042,231 @@
       border-bottom-color: #9fa8ff;
     }
 
+    /* ════════════ GUIA DE CRIAÇÃO & TABELA DE PROGRESSÃO ════════════ */
+    .progression-section {
+      max-width: 1060px;
+      margin: 0 auto 56px;
+      width: 100%;
+      padding: 0 10px;
+    }
+
+    .creation-guide-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+      margin-bottom: 40px;
+    }
+
+    .creation-step-card {
+      background: rgba(14, 16, 24, 0.85);
+      border: 1px solid rgba(201, 146, 26, 0.22);
+      border-radius: 4px;
+      padding: 20px 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      transition: all 0.25s ease;
+    }
+
+    .creation-step-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(201, 146, 26, 0.45);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 16px rgba(201, 146, 26, 0.12);
+    }
+
+    .creation-step-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+    }
+
+    .creation-step-num {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: 32px;
+      font-weight: 900;
+      color: rgba(201, 146, 26, 0.2);
+      position: absolute;
+      top: 8px;
+      right: 14px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .creation-step-title {
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .creation-step-desc {
+      font-size: 12.5px;
+      color: rgba(245, 234, 214, 0.72);
+      line-height: 1.6;
+    }
+
+    .creation-step-desc strong {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    /* TABELA DE NÍVEIS 1 A 20 */
+    .progression-table-wrapper {
+      background: rgba(12, 14, 20, 0.88);
+      border: 1px solid rgba(201, 146, 26, 0.25);
+      border-radius: 6px;
+      overflow-x: auto;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), inset 0 0 25px rgba(201, 146, 26, 0.03);
+      margin-bottom: 28px;
+    }
+
+    .progression-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .progression-table thead th {
+      background: rgba(20, 16, 12, 0.9);
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 14px 16px;
+      border-bottom: 2px solid rgba(201, 146, 26, 0.35);
+      white-space: nowrap;
+    }
+
+    .progression-table tbody tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background 0.18s ease;
+    }
+
+    .progression-table tbody tr:hover {
+      background: rgba(201, 146, 26, 0.08);
+    }
+
+    .progression-table tbody tr.milestone-row {
+      background: rgba(201, 146, 26, 0.05);
+      border-left: 3px solid var(--gold);
+    }
+
+    .progression-table tbody tr.milestone-row:hover {
+      background: rgba(201, 146, 26, 0.12);
+    }
+
+    .progression-table td {
+      padding: 11px 16px;
+      vertical-align: middle;
+      color: rgba(245, 234, 214, 0.8);
+    }
+
+    .lvl-badge {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 13.5px;
+      color: var(--parchment);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .lvl-badge.milestone {
+      color: #fff;
+      background: radial-gradient(circle at 30% 30%, #f3c358, #875c08);
+      border-color: #ffd700;
+      box-shadow: 0 0 10px rgba(243, 195, 88, 0.4);
+      text-shadow: 0 1px 2px #000;
+    }
+
+    .prof-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: 700;
+      font-size: 12px;
+      color: #70a0ff;
+      background: rgba(90, 139, 232, 0.12);
+      border: 1px solid rgba(90, 139, 232, 0.25);
+      padding: 2px 8px;
+      border-radius: 3px;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .prog-pill {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+      margin-right: 5px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .prog-pill.class-pt {
+      background: rgba(201, 146, 26, 0.14);
+      color: var(--gold-light);
+      border: 1px solid rgba(201, 146, 26, 0.3);
+    }
+
+    .prog-pill.passive {
+      background: rgba(160, 160, 160, 0.14);
+      color: #ddd;
+      border: 1px solid rgba(160, 160, 160, 0.3);
+    }
+
+    .prog-pill.attr {
+      background: rgba(60, 163, 88, 0.14);
+      color: #6ed1bc;
+      border: 1px solid rgba(60, 163, 88, 0.3);
+    }
+
+    .prog-pill.spec {
+      background: rgba(197, 109, 224, 0.16);
+      color: #df8bf8;
+      border: 1px solid rgba(197, 109, 224, 0.35);
+      font-weight: 700;
+    }
+
+    .prog-pill.relic {
+      background: rgba(90, 139, 232, 0.16);
+      color: #7ba3f5;
+      border: 1px solid rgba(90, 139, 232, 0.35);
+      font-weight: 700;
+    }
+
+    .prog-pill.sig {
+      background: rgba(255, 215, 0, 0.16);
+      color: #ffd700;
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      font-weight: 700;
+    }
+
+    .prog-pill.recov {
+      background: rgba(240, 116, 40, 0.16);
+      color: #ff9b52;
+      border: 1px solid rgba(240, 116, 40, 0.35);
+    }
+
     /* BASE TAB STYLES */
     .base-grid {
       display: flex;
@@ -1431,18 +2277,21 @@
     }
 
     .base-card {
-      background: #0d0d10;
-      border: 1px solid rgba(201, 146, 26, 0.15);
+      background: rgba(14, 16, 24, 0.85);
+      border: 1px solid rgba(201, 146, 26, 0.22);
       border-radius: 4px;
-      padding: 20px 22px;
+      padding: 22px 24px;
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s, box-shadow 0.25s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
     }
 
     .base-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(201, 146, 26, 0.12);
+      border-color: rgba(201, 146, 26, 0.4);
     }
 
     .base-card::before {
@@ -1819,18 +2668,21 @@
     }
 
     .relic-card {
-      width: 260px;
+      width: 265px;
       flex-shrink: 0;
-      background: #0d0d10;
+      background: rgba(13, 14, 20, 0.88);
       border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s, box-shadow 0.25s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
     }
 
     .relic-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
     }
 
     .relic-card::before {
@@ -2344,12 +3196,41 @@
   </style>
  </head>
  <body>
+
+  <!-- BARRA DE NAVEGAÇÃO DARK FANTASY -->
+  <nav class="dark-topbar">
+    <div class="topbar-inner">
+      <a href="index.html" class="topbar-brand" title="Voltar ao Salão Principal">
+        <img src="jacaroa.png" alt="Logo" class="topbar-logo" onerror="this.style.display='none'">
+        <span class="topbar-title">OLARPG</span>
+      </a>
+      <div class="topbar-links">
+        <a href="Ficha final.html" class="topbar-link">
+          <span class="link-icon">🩸</span>
+          <span class="link-text">Ficha</span>
+        </a>
+        <a href="Livro base.html" class="topbar-link active">
+          <span class="link-icon">📜</span>
+          <span class="link-text">Livro de Regras</span>
+        </a>
+        <a href="bestiario.html" class="topbar-link">
+          <span class="link-icon">💀</span>
+          <span class="link-text">Bestiário</span>
+        </a>
+        <a href="forja.html" class="topbar-link">
+          <span class="link-icon">⚒️</span>
+          <span class="link-text">A Forja</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
   <div class="header">
    <h1>
-    Compêndio de Classes
+    Livro do Jogador
    </h1>
    <p>
-    Sistema de Combate — Referência de Mesa
+    Sistema de Regras, Classes, Grimório &amp; Referência Completa de Mesa
    </p>
   </div>
   <div class="resource-bar">
@@ -2432,126 +3313,365 @@
   </div>
   <!-- ═══════════════════════════════════════ BASE ═══════════════════════════════════════ -->
   <div class="section active" id="tab-base">
-   <div class="tree-header" style="margin-bottom:36px;">
-    <h2 style="font-family:&#39;Cinzel&#39;,serif;font-size:28px;font-weight:700;letter-spacing:.15em;color:var(--gold-light);text-shadow:0 0 20px rgba(201,146,26,0.4);">
-     📜 REGRAS BASE
+   <div class="tree-header" style="margin-bottom:32px;">
+    <h2 style="font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(26px,5vw,36px);font-weight:900;letter-spacing:.16em;color:var(--gold-light);text-shadow:0 0 25px rgba(201,146,26,0.4);">
+     📜 GUIA DO JOGADOR &amp; REGRAS BASE
     </h2>
-    <p style="font-size:14px;font-style:italic;opacity:.6;margin-top:4px;">
-     Fundamentos do sistema e arquétipos
-        iniciais
+    <p style="font-size:14px;font-style:italic;color:rgba(245,234,214,0.6);margin-top:6px;">
+     Criação de personagem, progressão de níveis 1 a 20 e fundamentos do sistema de mesa
     </p>
    </div>
+
+   <!-- ════════════ GUIA DE CRIAÇÃO DE PERSONAGEM ════════════ -->
+   <div class="progression-section">
+    <div class="tree-header" style="margin-bottom:24px;">
+     <h3 style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;letter-spacing:.12em;color:var(--gold-light);">
+      🧙 Criação de Personagem — Passo a Passo
+     </h3>
+     <p style="font-size:13px;font-style:italic;color:rgba(245,234,214,0.5);margin-top:4px;">
+      Siga os 5 passos fundamentais para forjar seu herói antes da primeira sessão
+     </p>
+    </div>
+
+    <div class="creation-guide-grid">
+     <!-- Passo 1 -->
+     <div class="creation-step-card">
+      <div class="creation-step-num">01</div>
+      <div class="creation-step-title">📊 Atributos Iniciais</div>
+      <div class="creation-step-desc">
+       Distribua o <strong>Conjunto Padrão (Array)</strong> nos seus 6 atributos:
+       <br><code style="color:var(--gold-light);font-family:'Share Tech Mono',monospace;font-size:13px;display:inline-block;margin:4px 0;">15, 14, 13, 12, 10, 8</code>
+       <br>Em seguida, adicione <strong>+3 pontos bônus</strong> distribuídos livremente como quiser (máximo inicial de 18).
+       <br><small style="color:rgba(245,234,214,0.5);display:block;margin-top:4px;">Modificador = (Valor - 10) / 2 (arredondado para baixo).</small>
+      </div>
+     </div>
+
+     <!-- Passo 2 -->
+     <div class="creation-step-card">
+      <div class="creation-step-num">02</div>
+      <div class="creation-step-title">🌍 Escolha sua Raça</div>
+      <div class="creation-step-desc">
+       Consulte a aba <strong>🌍 RAÇAS</strong> para definir sua ancestralidade.
+       <br>Cada raça concede <strong>bônus de atributos fixos</strong>, modificadores de deslocamento e uma <strong>habilidade ou passiva racial única</strong> que define sua história no mundo.
+      </div>
+     </div>
+
+     <!-- Passo 3 -->
+     <div class="creation-step-card">
+      <div class="creation-step-num">03</div>
+      <div class="creation-step-title">⚔️ Arquétipo no Nível 1</div>
+      <div class="creation-step-desc">
+       Escolha um dos 5 Arquétipos: <strong>Marcial</strong>, <strong>Arcano</strong>, <strong>Ágil</strong>, <strong>Bom Semblante</strong> ou <strong>? ? ?</strong>.
+       <br>No <strong>Nível 1</strong> você ganha:
+       <br>• <strong>2 Skills Ativas Iniciais</strong> do card base do arquétipo.
+       <br>• <strong>1 Passiva</strong> à sua escolha da lista de passivas do arquétipo.
+       <br>• Seus valores iniciais de <strong>HP, ST 🟡 e FO 🔵</strong>.
+       <br>• <strong>🎯 Bônus de Proficiência +2</strong> nos atributos da classe.
+      </div>
+     </div>
+
+     <!-- Passo 4 -->
+     <div class="creation-step-card">
+      <div class="creation-step-num">04</div>
+      <div class="creation-step-title">✦ Devoção &amp; Panteão</div>
+      <div class="creation-step-desc">
+       Consulte a aba <strong>✦ PANTEÃO</strong> para escolher a divindade ou poder cósmico que rege seu destino.
+       <br>Deuses concedem <strong>bênçãos passivas</strong> ou juramentos sagrados que influenciam tanto o combate quanto o roleplay.
+      </div>
+     </div>
+
+     <!-- Passo 5 -->
+     <div class="creation-step-card">
+      <div class="creation-step-num">05</div>
+      <div class="creation-step-title">⚒️ Armas &amp; Equipamento</div>
+      <div class="creation-step-desc">
+       Consulte a aba <strong>⚔️ ITENS</strong> ou acerte com o Mestre seu kit inicial.
+       <br>Equipe suas armas principais, armadura (ou manto) para definir sua <strong>Classe de Armadura (CA)</strong> e <strong>Redução de Dano</strong>, além de poções e itens utilitários.
+      </div>
+     </div>
+    </div>
+   </div>
+
+   <!-- ════════════ TABELA COMPLETA DE PROGRESSÃO (NÍVEL 1 AO 20) ════════════ -->
+   <div class="progression-section">
+    <div class="tree-header" style="margin-bottom:24px;">
+     <h3 style="font-family:'Cinzel',serif;font-size:22px;font-weight:700;letter-spacing:.12em;color:var(--gold-light);">
+      📈 Tabela Completa de Progressão (Níveis 1 ao 20)
+     </h3>
+     <p style="font-size:13.5px;font-style:italic;color:rgba(245,234,214,0.55);margin-top:4px;">
+      Todos os desbloqueios, aumentos de atributos, pontos de classe e marcos épicos da jornada
+     </p>
+    </div>
+
+    <div class="progression-table-wrapper">
+     <table class="progression-table">
+      <thead>
+       <tr>
+        <th style="width:70px;text-align:center;">Nível</th>
+        <th style="width:110px;text-align:center;">Proficiência</th>
+        <th style="width:360px;">Ganhos Principais</th>
+        <th>Detalhes &amp; Marcos</th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">1</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+2</span></td>
+        <td>
+         <span class="prog-pill spec">Escolha de Arquétipo</span>
+         <span class="prog-pill class-pt">2 Skills Base Iniciais</span>
+         <span class="prog-pill passive">1 Passiva à Escolha</span>
+        </td>
+        <td>Criação do herói: atributos distribuídos, 2 habilidades ativas da classe base + 1 passiva à escolha.</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">2</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+2</span></td>
+        <td><span class="prog-pill class-pt">+1 Ponto de Classe</span></td>
+        <td>Desbloqueia ou aprimora 1 habilidade na árvore do seu arquétipo base.</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">3</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+2</span></td>
+        <td><span class="prog-pill class-pt">+1 Ponto de Classe</span></td>
+        <td>+1 habilidade da sua árvore. Preparação para as ramificações de especialização.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">4</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+2</span></td>
+        <td>
+         <span class="prog-pill attr">+2 Pontos de Atributo</span>
+         <span class="prog-pill passive">+1 Passiva</span>
+        </td>
+        <td>Aumente um atributo em +2 (ou dois em +1 cada, máx 20) e escolha uma nova habilidade passiva.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">5</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+3</span></td>
+        <td>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+         <span class="prog-pill recov">Recuperação de Recursos +1</span>
+        </td>
+        <td><strong>Proficiência sobe para +3!</strong> Ganha +1 ponto na taxa de recuperação por turno de 🟡 ST ou 🔵 FO.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">6</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+3</span></td>
+        <td>
+         <span class="prog-pill spec">👑 Especialização (Subclasse)</span>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+        </td>
+        <td><strong>Marco Maior:</strong> Escolha sua <strong>Especialização Avançada</strong>! Desbloqueia acesso à árvore exclusiva da subclasse.</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">7</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+3</span></td>
+        <td><span class="prog-pill class-pt">+1 Ponto de Classe</span></td>
+        <td>+1 habilidade de especialização (libera acesso aos requerimentos de Nível 7).</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">8</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+3</span></td>
+        <td><span class="prog-pill relic">🔮 3º Slot de Artefato</span></td>
+        <td>Desbloqueia o 3º espaço para equipar e sintonizar artefatos e relíquias místicas simultaneamente.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">9</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+4</span></td>
+        <td>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+         <span class="prog-pill attr">+1 Ponto de Atributo</span>
+        </td>
+        <td><strong>Proficiência sobe para +4!</strong> +1 Ponto de Classe e +1 ponto em qualquer atributo.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">10</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+4</span></td>
+        <td><span class="prog-pill sig">⭐ Magia / Técnica de Assinatura</span></td>
+        <td><strong>Poder de Assinatura:</strong> Desbloqueia a técnica ou feitiço definitivo e característico do seu arquétipo.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">11</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+4</span></td>
+        <td>
+         <span class="prog-pill passive">+1 Passiva</span>
+         <span class="prog-pill recov">Recuperação de Recursos +1</span>
+        </td>
+        <td>Nova passiva à sua escolha e +1 permanente na recuperação de 🟡 ST ou 🔵 FO por turno.</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">12</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+4</span></td>
+        <td>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+         <span class="prog-pill attr">+1 Ponto de Atributo</span>
+        </td>
+        <td>+1 habilidade avançada de classe e +1 ponto de atributo livre.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">13</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+5</span></td>
+        <td>
+         <span class="prog-pill spec">🔀 Multiclasse Liberada</span>
+         <span class="prog-pill passive">+1 Passiva</span>
+        </td>
+        <td><strong>Proficiência sobe para +5!</strong> Desbloqueia opção de adquirir habilidades de um segundo arquétipo + 1 passiva.</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">14</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+5</span></td>
+        <td><span class="prog-pill class-pt">+1 Ponto de Classe</span></td>
+        <td>+1 habilidade de classe (ou multiclasse secundária).</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">15</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+5</span></td>
+        <td>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+         <span class="prog-pill passive">+1 Passiva</span>
+        </td>
+        <td>+1 habilidade de classe de alto escalão e +1 nova habilidade passiva.</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">16</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+5</span></td>
+        <td>
+         <span class="prog-pill attr">+1 Ponto de Atributo</span>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+        </td>
+        <td>+1 ponto de atributo livre e +1 habilidade de classe.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">17</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+6</span></td>
+        <td>
+         <span class="prog-pill passive">+1 Passiva</span>
+         <span class="prog-pill recov">Recuperação de Recursos +1</span>
+        </td>
+        <td><strong>Proficiência sobe para +6 (Máximo)!</strong> +1 Passiva e mais +1 permanente na recuperação de 🟡 ou 🔵 por turno.</td>
+       </tr>
+       <tr>
+        <td style="text-align:center;"><span class="lvl-badge">18</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+6</span></td>
+        <td>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+         <span class="prog-pill attr">+1 Ponto de Atributo</span>
+        </td>
+        <td>+1 habilidade de classe mestre e +1 ponto de atributo livre.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">19</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+6</span></td>
+        <td>
+         <span class="prog-pill relic">🔮 4º Slot de Artefato</span>
+         <span class="prog-pill class-pt">+1 Ponto de Classe</span>
+        </td>
+        <td>Desbloqueia o 4º e último espaço para artefatos lendários/divinos + 1 ponto de classe.</td>
+       </tr>
+       <tr class="milestone-row">
+        <td style="text-align:center;"><span class="lvl-badge milestone">20</span></td>
+        <td style="text-align:center;"><span class="prof-tag">+6</span></td>
+        <td><span class="prog-pill sig">✦ Habilidade Lendária Máxima</span></td>
+        <td><strong>Ápice do Personagem:</strong> Desbloqueia o poder supremo do herói — a habilidade lendária máxima capaz de alterar o destino de reinos.</td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+   </div>
+
+   <div class="section-divider"></div>
+
    <!-- RECURSOS E MECÂNICAS GERAIS -->
+   <div class="tree-header" style="margin-bottom:24px;">
+    <h3 style="font-family:'Cinzel',serif;font-size:20px;font-weight:700;letter-spacing:.12em;color:var(--gold-light);">
+     ⚙️ Recursos Vitais &amp; Ações de Combate
+    </h3>
+    <p style="font-size:13px;font-style:italic;color:rgba(245,234,214,0.5);margin-top:4px;">
+     Entenda como a economia de turnos, custos e resistências funcionam em jogo
+    </p>
+   </div>
+
    <div class="base-grid">
     <!-- ATRIBUTOS -->
     <div class="base-card narrow">
      <div class="base-card-title">
-      📊 Atributos Base
+      📊 Os 6 Atributos
      </div>
      <ul>
-      <li>
-       Força
-      </li>
-      <li>
-       Destreza
-      </li>
-      <li>
-       Constituição
-      </li>
-      <li>
-       Inteligência
-      </li>
-      <li>
-       Carisma
-      </li>
-      <li>
-       Sabedoria
-      </li>
+      <li><strong>Força (FOR):</strong> Ataques pesados, atletismo e saltos.</li>
+      <li><strong>Destreza (DES):</strong> Agilidade, pontaria, esquiva e furtividade.</li>
+      <li><strong>Constituição (CON):</strong> HP máximo e resistências a danos severos.</li>
+      <li><strong>Inteligência (INT):</strong> Magias de destruição, lógica e arcanismo.</li>
+      <li><strong>Sabedoria (SAB):</strong> Percepção, intuição, foco e fé.</li>
+      <li><strong>Carisma (CAR):</strong> Presença, semblante, liderança e persuasão.</li>
      </ul>
     </div>
+
     <!-- STAMINA -->
     <div class="base-card medium">
      <div class="base-card-title">
       🟡 Stamina (ST)
      </div>
      <p>
-      Representa esforço físico, fôlego e capacidade de ação.
+      Representa esforço físico, fôlego e capacidade de ação no turno.
      </p>
-     <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-bottom:6px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
-      USOS
+     <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-bottom:6px;font-family:'Share Tech Mono',monospace;letter-spacing:0.08em;">
+      USOS FREQUENTES
      </p>
      <ul>
-      <li>
-       Ataques especiais
-      </li>
-      <li>
-       Esquiva / defesa
-      </li>
-      <li>
-       Habilidades marciais
-      </li>
-      <li>
-       Ações rápidas
-      </li>
+      <li>Ataques especiais e artes marciais</li>
+      <li>Esquiva, bloqueio e movimentação extra</li>
+      <li>Ações rápidas no turno de aliados/inimigos</li>
      </ul>
      <div class="warn-text">
-      ⚠ Zerar a stamina tem consequências terríveis.
+      ⚠ Zerar a stamina tem consequências graves!
       <br>
       <span style="font-weight:400;font-size:12px;color:rgba(245,234,214,0.6);">
-       Ao zerar a stamina você não pode se mover no seu proximo turno. além disso você perde 5 de CA (min de 10) até seu proximo turno.
+       Ao zerar a stamina você <strong>não pode se mover</strong> no seu próximo turno e <strong>perde 5 de CA</strong> (mínimo de 10) até recuperar fôlego.
       </span>
      </div>
     </div>
+
     <!-- FOCO -->
     <div class="base-card medium">
      <div class="base-card-title">
       🔵 Foco (FO)
      </div>
      <p>
-      Representa energia mental, mágica ou espiritual.
+      Representa energia mental, mágica e poder espiritual acumulado.
      </p>
-     <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-bottom:6px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
-      USOS
+     <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-bottom:6px;font-family:'Share Tech Mono',monospace;letter-spacing:0.08em;">
+      USOS FREQUENTES
      </p>
      <ul>
-      <li>
-       Magias
-      </li>
-      <li>
-       Habilidades especiais
-      </li>
-      <li>
-       Efeitos sobrenaturais
-      </li>
+      <li>Conjuração de feitiços arcanos e divinos</li>
+      <li>Habilidades mentais e pactos ancestrais</li>
+      <li>Canalizações sobrenaturais e relíquias</li>
      </ul>
-     <div style="margin-top:12px;padding:8px 12px;background:rgba(64,96,201,0.08);border-left:2px solid rgba(64,96,201,0.3);font-size:12px;color:rgba(245,234,214,0.6);font-style:italic;">
-      Conjurar Magia custa o valor da magia em 🔵 + 1/3 do valor dela em 🟡 adicional.
+     <div style="margin-top:12px;padding:8px 12px;background:rgba(64,96,201,0.08);border-left:2px solid rgba(64,96,201,0.3);font-size:12px;color:rgba(245,234,214,0.7);font-style:italic;">
+      ✦ Conjurar Magia custa o valor do feitiço em 🔵 + 1/3 do valor em 🟡 (arredondado para cima).
      </div>
     </div>
+
     <!-- HP -->
     <div class="base-card medium">
      <div class="base-card-title">
-      ❤️ HP (VIDA)
+      ❤️ HP (Pontos de Vida)
      </div>
      <p>
-      É vida. Tem muito o que explicar não — é pra apanhar e aguentar.
+      Sua integridade física. Quando o HP chega a 0, o personagem cai inconsciente ou à beira da morte.
      </p>
-     <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-bottom:6px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
-      USOS
+     <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-bottom:6px;font-family:'Share Tech Mono',monospace;letter-spacing:0.08em;">
+      SUSTENTAÇÃO
      </p>
      <ul>
-      <li>
-       Levar porrada
-      </li>
-      <li>
-       Tankar
-      </li>
-      <li>
-       Farmear tranki
-      </li>
+      <li>Absorção de golpes e dano direto</li>
+      <li>Aumenta a cada nível somando dado de vida + bônus de CON</li>
+      <li>Reduzido por dano físico, elemental e mágico</li>
      </ul>
     </div>
    </div>
+
    <!-- AÇÕES -->
    <div class="base-grid">
     <div class="base-card medium">
@@ -2559,161 +3679,69 @@
       🟣 Ações Rápidas
      </div>
      <p>
-      Ações rápidas podem ser executadas em qualquer turno desde que se tenha stamina ou foco suficiente.
-     </p>
-     <div class="base-card-title" style="color:var(--semblante-light);">
-      🟣 Atributos
-     </div>
-     <p>
-      O valores base dos atributos são: 15, 14, 13, 12 ,10 e 8, +3 pontos distribuídos como quiser.
+      Ações rápidas podem ser executadas <strong>a qualquer momento</strong> (inclusive fora do seu turno, como reações ou apoios) desde que você tenha stamina 🟡 ou foco 🔵 suficiente para pagá-las.
      </p>
     </div>
+
     <!-- AÇÕES PADRÃO -->
     <div class="base-card wide">
      <div class="base-card-title">
-      ⚡ Ações Padrão — todos podem fazer isso
+      ⚡ Ações Padrão — Todos Podem Realizar
      </div>
      <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:10px;">
-      As ações abaixo podem ser feitas
-          quantas vezes quiser enquanto tiver pontos suficientes.
+      Podem ser feitas quantas vezes quiser no seu turno, desde que você tenha pontos suficientes.
      </p>
      <div class="mechanic-row">
-      <strong>
-       PADRÃO
-      </strong>
-      — uma ação padrão comum custa 4🟡, exemplos são bater com a arma em mão, causando o dano da mesma. Fincar um escudo no chão (caso ele permita). Dentre outras ações que podem ser cobradas em itens. 
+      <strong>PADRÃO (4🟡)</strong> — Golpe básico com a arma em mãos, fincar escudo ou manipular mecanismos pesados.
      </div>
      <div class="mechanic-row">
-      <strong>
-       NÃO AGIR
-      </strong>
-      — Não faz nada no turno. Em troca recupera 2🟡 de stamina extra no inicio do proximo turno.
-     </div>
-
-     <div class="mechanic-row">
-      <strong>
-       MOVIMENTO
-      </strong>
-      — Pode andar 6 blocos de graça. Por 2🟡 pode andar 6 blocos
-          adicionais, uma vez por turno.
-     </div>
-
-     <div class="mechanic-row">
-      <strong>
-       SALTAR
-      </strong>
-      — 1🟡 por bloco saltado, sendo o máximo de distancia o seu maior mod entre força e destreza. 
-     </div>
-
-
-     <div class="mechanic-row">
-      <strong>
-       ESCONDER-SE
-      </strong>
-      — Pode gastar 2🟡 para se esconder (pelo menos em
-          cobertura parcial).
+      <strong>NÃO AGIR (0🟡)</strong> — Descansa o turno. Em troca, <strong>recupera 2🟡 de stamina extra</strong> no início do próximo turno.
      </div>
      <div class="mechanic-row">
-      <strong>
-       DESVIAR
-      </strong>
-      — Pode gastar 2🟡 para desviar de um golpe, reduzindo o dano em 1d6.
+      <strong>MOVIMENTO (Grátis / 2🟡)</strong> — Anda 6 blocos de graça. Pode gastar 2🟡 para andar mais 6 blocos adicionais (1x por turno).
      </div>
      <div class="mechanic-row">
-      <strong>
-       CONJURAR MAGIA
-      </strong>
-      — Pode conjurar uma magia conhecida se tiver 🔵
-          suficiente + um terço do valor dela em 🟡. Ex: Conjurar uma magia de 9🔵 custa 3🟡. Sempre arredonda para cima.
+      <strong>SALTAR (1🟡 por bloco)</strong> — Pula obstáculos, até o limite do seu maior modificador entre FOR e DES em blocos.
      </div>
      <div class="mechanic-row">
-      <strong>
-       USAR OBJETO
-      </strong>
-      — Usar algo. O custo é baseado no objeto em si. Alavancas, portas, tirolesas, e canhões são exemplos de objetos que podem ser usados.
+      <strong>ESCONDER-SE (2🟡)</strong> — Oculta-se atrás de cobertura parcial ou sombras com teste de Furtividade.
      </div>
      <div class="mechanic-row">
-      <strong>
-       USAR ITEM
-      </strong>
-      — Usar um item como uma poção custa 1🟡 (2🟡 em outro
-          jogador) e arremessar um item como uma bombas e afins custa 2🟡.
+      <strong>DESVIAR (2🟡)</strong> — Esquiva reativa de um golpe, <strong>reduzindo o dano sofrido em 1d6</strong>.
+     </div>
+     <div class="mechanic-row">
+      <strong>USAR ITEM (1🟡 / 2🟡)</strong> — Ingerir uma poção custa 1🟡 (2🟡 para aplicar em um aliado). Arremessar bombas ou frascos custa 2🟡.
      </div>
     </div>
    </div>
-   <div class="section-divider">
-   </div>
 
-   <!-- REGRAS DE COMBATE + PROGRESSÃO -->
+   <div class="section-divider"></div>
+
+   <!-- REGRAS DE COMBATE -->
    <div class="base-grid">
-
-    <!-- REGRAS DE COMBATE -->
     <div class="base-card wide">
      <div class="base-card-title">
-      ⚔️ Regras de Combate
+      ⚔️ Regras de Fluxo de Combate
      </div>
      <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:10px;">
-      Como o fluxo de um combate funciona neste sistema.
+      Como as rodadas e habilidades funcionam no campo de batalha.
      </p>
      <div class="mechanic-row">
-      <strong>RECURSOS E AÇÕES</strong>
-      — Você pode realizar quantas ações quiser no seu turno, desde que tenha 🟡 ou 🔵 suficientes para pagá-las. Não há limite fixo de ações por turno — o limite é o seu recurso.
+      <strong>RECURSOS E AÇÕES</strong> — Não há limite artificial de ações por turno. O único limite é a sua reserva de recursos (🟡 e 🔵).
      </div>
      <div class="mechanic-row">
-      <strong>COOLDOWN DE 1 TURNO</strong>
-      — Toda skill tem cooldown de <strong>1 turno</strong> por padrão: cada habilidade só pode ser usada <strong>uma vez por turno</strong>. Você não pode repetir a mesma skill duas vezes no mesmo turno a não ser que tenha uma modificação para tal.
+      <strong>COOLDOWN DE 1 TURNO</strong> — Toda habilidade tem recarga de <strong>1 turno</strong> por padrão: você não pode usar a mesma skill duas vezes no mesmo turno a não ser que uma relíquia ou modificador permita explicitamente.
      </div>
      <div class="mechanic-row">
-      <strong>COOLDOWNS MAIORES</strong>
-      — Algumas skills possuem cooldown superior a 1 turno, indicado explicitamente na descrição (ex: <em>"1x por combate"</em>, <em>"cooldown 2 turnos"</em>). São mais poderosas justamente por isso.
+      <strong>COOLDOWNS MAIORES</strong> — Certas técnicas mais devastadoras indicam recargas maiores (ex: <em>"1x por combate"</em>, <em>"cooldown 2 turnos"</em>).
      </div>
      <div class="mechanic-row">
-      <strong>RECUPERAÇÃO DE RECURSOS</strong>
-      — No início de cada turno você recupera automaticamente uma quantidade base de 🟡 e 🔵 definida pelo seu arquétipo. Esse valor pode ser aumentado por relíquias, itens ou progressão de nível.
+      <strong>RECUPERAÇÃO POR TURNO</strong> — No início do seu turno, você recupera automaticamente sua taxa base de 🟡 e 🔵 (aumentada nos níveis 5, 11 e 17).
      </div>
      <div class="mechanic-row">
-      <strong>RELÍQUIAS E COOLDOWN</strong>
-      — Certas relíquias podem <strong>quebrar o limite de 1 uso por turno</strong> de skills específicas, ou <strong>reduzir o cooldown</strong> de habilidades mais poderosas. São exceções deliberadas, não a regra geral.
+      <strong>RELÍQUIAS &amp; ARTEFATOS</strong> — Itens mágicos de grande poder podem alterar regras de cooldown, conceder reações gratuitas ou multiplicar recursos.
      </div>
     </div>
-
-    <!-- PROGRESSÃO DE NÍVEL -->
-    <div class="base-card wide">
-     <div class="base-card-title">
-      📈 Progressão de Nível
-     </div>
-     <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:10px;">
-      O que você ganha a cada nível e como evoluir seu personagem.
-     </p>
-     <div class="mechanic-row">
-      <strong>NÍVEL 1</strong> — Escolha seu <strong>Arquétipo</strong>. Você recebe uma Passiva e as Skills Base daquele arquétipo.
-     </div>
-     <div class="mechanic-row">
-      <strong>NÍVEL 2</strong> — <strong>Bênção de Relíquia:</strong> você ganha sua primeira relíquia. Relíquias são itens permanentes que modificam recursos, cooldowns ou desbloqueiam novas possibilidades.
-     </div>
-     <div class="mechanic-row">
-      <strong>NÍVEL 3</strong> — <strong>Escolha da Subclasse:</strong> você herda automaticamente todas as skills do card de subclasse escolhido dentro do seu arquétipo.
-     </div>
-     <div class="mechanic-row">
-      <strong>NÍVEL 4</strong> — <strong>Ponto de Atributo + Passiva:</strong> aumente um atributo e escolha uma nova passiva disponível.
-     </div>
-     <div class="mechanic-row">
-      <strong>NÍVEL 5+</strong> — A partir daqui você passa a ganhar <strong>Pontos de Especialização</strong> em vez de Pontos de Classe. Eles são gastos <strong>horizontalmente</strong> nas especializações às quais sua subclasse tem acesso — você progride na direção que preferir dentro das possibilidades da subclasse. Algumas habilidades mais poderosas têm <strong>cap de nível</strong> para serem desbloqueadas.
-     </div>
-     <div class="mechanic-row">
-      <strong>NÍVEL 13</strong> — Opção de <strong>Aquisição de Subclasse secundária</strong> ou Ponto de Especialização normal.
-     </div>
-     <div class="mechanic-row">
-      <strong>BÔNUS DE PROFICIÊNCIA</strong> — Escala com o nível: +2 (níveis 1–4) → +3 (5–8) → +4 (9–12) → +5 (13–16) → +6 (17–20). Aplicado nos atributos do seu arquétipo.
-     </div>
-     <div class="mechanic-row">
-      <strong>RECUPERAÇÃO +1</strong> — Nos níveis 5, 11 e 17 você ganha +1 de recuperação base para distribuir entre 🟡 ou 🔵, à sua escolha.
-     </div>
-     <div class="mechanic-row">
-      <strong>SLOTS DE ARTEFATO</strong> — 2 slots iniciais. 3º slot no nível 8. 4º slot no nível 19.
-     </div>
-    </div>
-
    </div>
    <div class="section-divider">
    </div>
@@ -8839,32 +9867,46 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
   </div>
   <!-- ═══════════════════════════════════════ MAGIAS & TÉCNICAS ═══════════════════════════════════════ -->
   <div class="section" id="tab-feiticos">
-   <div class="tree-header" style="margin-bottom:20px;">
-    <h2 style="font-family:&#39;Cinzel&#39;,serif;font-size:28px;font-weight:700;letter-spacing:.15em;color:var(--gold-light);text-shadow:0 0 20px rgba(201,146,26,0.4);">
-     📖 MAGIAS &amp; TÉCNICAS
+   <!-- Efeitos de Aura & Círculo Arcano -->
+   <div class="arcane-aura-bg"></div>
+   <div class="arcane-rune-ring"></div>
+
+   <div class="tree-header" style="margin-bottom:24px;position:relative;z-index:2;">
+    <h2 style="font-family:'Cinzel Decorative','Cinzel',serif;font-size:clamp(26px,5vw,36px);font-weight:900;letter-spacing:.16em;background:linear-gradient(180deg,#fff3d1,#5a8be8,#1a2860);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 30px rgba(90,139,232,0.4);">
+     📖 GRIMÓRIO DE MAGIAS &amp; TÉCNICAS
     </h2>
-    <p style="font-size:14px;font-style:italic;opacity:.6;margin-top:4px;">
-     Referência completa — gerais e exclusivas
-        de especialização
+    <p style="font-size:14px;font-style:italic;color:rgba(245,234,214,0.6);margin-top:6px;">
+     Compêndio de encantamentos arcanos, escolas místicas e artes marciais ancestrais
     </p>
    </div>
-   <div class="spell-filter-bar">
-    <button class="filter-btn active" onclick="filterSpells(&#39;all&#39;, this)">
-     TODAS
+
+   <!-- BUSCA MÁGICA EM TEMPO REAL (ORÁCULO DO GRIMÓRIO) -->
+   <div class="spell-search-container">
+    <div class="spell-search-box">
+     <span class="spell-search-icon">🔮</span>
+     <input type="text" id="spell-search-input" class="spell-search-input" placeholder="Consultar feitiço, técnica marcial, escola ou efeito..." oninput="searchSpells(this.value)">
+     <span class="spell-count-badge" id="spell-count-badge">Todas visíveis</span>
+    </div>
+   </div>
+
+   <!-- FILTROS RÚNICOS -->
+   <div class="spell-filter-bar" style="position:relative;z-index:2;">
+    <button class="filter-btn active" onclick="filterSpells('all', this)">
+     ✦ TODAS
     </button>
-    <button class="filter-btn magica" onclick="filterSpells(&#39;magica&#39;, this)">
+    <button class="filter-btn magica" onclick="filterSpells('magica', this)">
      🔵 MAGIAS
     </button>
-    <button class="filter-btn tecnica" onclick="filterSpells(&#39;tecnica&#39;, this)">
+    <button class="filter-btn tecnica" onclick="filterSpells('tecnica', this)">
      🟡 TÉCNICAS
     </button>
-    <button class="filter-btn" onclick="filterSpells(&#39;geral&#39;, this)">
-     GERAIS
+    <button class="filter-btn" onclick="filterSpells('geral', this)">
+     📜 GERAIS
     </button>
-    <button class="filter-btn" onclick="filterSpells(&#39;exclusiva&#39;, this)">
-     EXCLUSIVAS
+    <button class="filter-btn" onclick="filterSpells('exclusiva', this)">
+     ⚡ EXCLUSIVAS
     </button>
-    <button class="filter-btn" onclick="filterSpells(&#39;signature&#39;, this)">
+    <button class="filter-btn" onclick="filterSpells('signature', this)">
      ⭐ ASSINATURA
     </button>
    </div>
@@ -17791,37 +18833,104 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
     </table>
    </div>
   </div>
-  <p>
-   Compêndio de Classes — Sistema Homebrew de Mesa
+  <p style="text-align:center;font-size:12px;color:rgba(245,234,214,0.3);font-family:'Share Tech Mono',monospace;margin:40px 0 20px;">
+   Livro do Jogador — Sistema Homebrew de Mesa
   </p>
   <script>
-   function showTab(tab) {
+    // ════════════ ESTADO E SISTEMA DE ÁUDIO IMERSIVO ════════════
+    let currentSpellFilter = 'all';
+    const audioCache = {};
+
+    function playAudioSafe(paths, volume = 0.3) {
+      if (!Array.isArray(paths)) paths = [paths];
+      for (const p of paths) {
+        if (!audioCache[p]) {
+          const snd = new Audio(p);
+          snd.volume = volume;
+          audioCache[p] = snd;
+        }
+        const a = audioCache[p];
+        a.currentTime = 0;
+        const prom = a.play();
+        if (prom !== undefined) {
+          prom.catch(() => {
+            // Se o arquivo não existir ou for bloqueado pelo navegador, ignora graciosamente
+          });
+        }
+        break;
+      }
+    }
+
+    function playPageTurn() {
+      playAudioSafe(['sons/pagina.mp3', 'sons/folhear.mp3', 'stone.mp3'], 0.22);
+    }
+
+    function playMagicCast() {
+      playAudioSafe(['sons/magia.mp3', 'sons/feitico.mp3', 'stone.mp3'], 0.2);
+    }
+
+    function showTab(tab) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('tab-' + tab).classList.add('active');
-      document.querySelector('.tab-btn.' + tab).classList.add('active');
+      const sec = document.getElementById('tab-' + tab);
+      if (sec) sec.classList.add('active');
+      const btn = document.querySelector('.tab-btn.' + tab);
+      if (btn) btn.classList.add('active');
+      playPageTurn();
+      if (tab === 'feiticos') {
+        setTimeout(updateSpellVisibility, 50);
+      }
+    }
+
+    // ════════════ ORÁCULO DO GRIMÓRIO (FILTROS + BUSCA) ════════════
+    function updateSpellVisibility() {
+      const input = document.getElementById('spell-search-input');
+      const query = (input ? input.value : '').toLowerCase().trim();
+      const cards = document.querySelectorAll('#tab-feiticos .spell-card');
+      let visibleCount = 0;
+      let totalCount = cards.length;
+
+      cards.forEach(card => {
+        const type = card.dataset.type || '';
+        const scope = card.dataset.scope || '';
+        const isSig = card.classList.contains('signature');
+        const text = card.innerText.toLowerCase();
+
+        let matchesFilter = false;
+        if (currentSpellFilter === 'all') matchesFilter = true;
+        else if (currentSpellFilter === 'magica') matchesFilter = (type === 'magica');
+        else if (currentSpellFilter === 'tecnica') matchesFilter = (type === 'tecnica');
+        else if (currentSpellFilter === 'geral') matchesFilter = (scope === 'geral');
+        else if (currentSpellFilter === 'exclusiva') matchesFilter = (scope === 'exclusiva');
+        else if (currentSpellFilter === 'signature') matchesFilter = isSig;
+
+        const matchesQuery = !query || text.includes(query);
+
+        const show = matchesFilter && matchesQuery;
+        card.classList.toggle('hidden', !show);
+        if (show) visibleCount++;
+      });
+
+      const badge = document.getElementById('spell-count-badge');
+      if (badge) {
+        if (query) {
+          badge.textContent = `${visibleCount} de ${totalCount} encontrados`;
+        } else {
+          badge.textContent = `${visibleCount} encantamentos visíveis`;
+        }
+      }
     }
 
     function filterSpells(filter, btn) {
+      currentSpellFilter = filter;
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
+      playMagicCast();
+      updateSpellVisibility();
+    }
 
-      const cards = document.querySelectorAll('#tab-feiticos .spell-card');
-      cards.forEach(card => {
-        const type = card.dataset.type;
-        const scope = card.dataset.scope;
-        const isSig = card.classList.contains('signature');
-
-        let show = false;
-        if (filter === 'all') show = true;
-        else if (filter === 'magica') show = type === 'magica';
-        else if (filter === 'tecnica') show = type === 'tecnica';
-        else if (filter === 'geral') show = scope === 'geral';
-        else if (filter === 'exclusiva') show = scope === 'exclusiva';
-        else if (filter === 'signature') show = isSig;
-
-        card.classList.toggle('hidden', !show);
-      });
+    function searchSpells(val) {
+      updateSpellVisibility();
     }
 
     function filterRelics(filter, btn) {
@@ -17830,6 +18939,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       document.querySelectorAll('#tab-reliquias .relic-card').forEach(card => {
         card.classList.toggle('hidden', filter !== 'all' && card.dataset.tier !== filter);
       });
+      playPageTurn();
     }
 
     function filterItems(filter, btn) {
@@ -17843,20 +18953,251 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
           p.classList.toggle('item-panel-hidden', p.dataset.category !== filter);
         }
       });
+      playPageTurn();
     }
 
-    // --- Sistema de Som dos Cards de Classe ---
-    /*
-    const cardHoverSound = new Audio('stone.mp3');
-    // cardHoverSound.volume = 0.5; // Descomente e altere para ajustar o volume se achar muito alto
+    // ════════════ ARQUITETURA EXPANSÍVEL DE SUBCLASSES & ESPECIALIZAÇÕES ════════════
+    function initSubclassTrees() {
+      document.querySelectorAll('.tree-level').forEach((treeLevel) => {
+        const rows = treeLevel.querySelectorAll('.tree-row');
+        if (!rows.length) return;
 
-    document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        cardHoverSound.currentTime = 0; // Reinicia o áudio para tocar desde o início
-        cardHoverSound.play().catch(err => console.log("Erro ao tocar áudio:", err));
+        // Injeta a Barra de Ferramentas / Navegador de Subclasses no topo do Arquétipo
+        const parentSection = treeLevel.closest('.section');
+        
+        if (parentSection && !parentSection.querySelector('.subclass-toolbar')) {
+          const toolbar = document.createElement('div');
+          toolbar.className = 'subclass-toolbar';
+
+          const pillsContainer = document.createElement('div');
+          pillsContainer.className = 'subclass-nav-pills';
+
+          rows.forEach((row, rIdx) => {
+            const subCard = row.querySelector('.card.tier-sub');
+            if (!subCard) return;
+            const emoji = subCard.querySelector('.card-emoji')?.textContent.trim() || '🛡️';
+            const title = subCard.querySelector('.card-title')?.textContent.trim() || `Subclasse ${rIdx+1}`;
+
+            const pill = document.createElement('button');
+            pill.className = 'subclass-pill';
+            pill.setAttribute('type', 'button');
+            pill.innerHTML = `<span>${emoji}</span> <span>${title}</span>`;
+            pill.addEventListener('click', () => {
+              toggleRowExpansion(row, true);
+            });
+            pillsContainer.appendChild(pill);
+          });
+
+          const toggleAllBtn = document.createElement('button');
+          toggleAllBtn.className = 'subclass-toggle-all-btn';
+          toggleAllBtn.setAttribute('type', 'button');
+          toggleAllBtn.textContent = '✦ Expandir Todas';
+          toggleAllBtn.addEventListener('click', () => {
+            const allExpanded = Array.from(rows).every(r => r.classList.contains('expanded'));
+            rows.forEach(r => toggleRowExpansion(r, !allExpanded, true));
+            toggleAllBtn.textContent = allExpanded ? '✦ Expandir Todas' : '▲ Recolher Todas';
+            if (!allExpanded) {
+              playMagicCast();
+              if (rows.length > 0) {
+                setTimeout(() => {
+                  const topbar = document.querySelector('.dark-topbar');
+                  const topbarHeight = topbar ? topbar.offsetHeight : 65;
+                  const rect = rows[0].getBoundingClientRect();
+                  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                  window.scrollTo({
+                    top: Math.max(0, currentScroll + rect.top - topbarHeight - 16),
+                    behavior: 'smooth'
+                  });
+                }, 80);
+              }
+            } else {
+              playPageTurn();
+            }
+          });
+
+          toolbar.appendChild(pillsContainer);
+          toolbar.appendChild(toggleAllBtn);
+          treeLevel.parentNode.insertBefore(toolbar, treeLevel);
+        }
+
+        // Configura cada fileira com botão expansor e conduíte rúnico
+        rows.forEach(row => {
+          const subCard = row.querySelector('.card.tier-sub');
+          const branch = row.querySelector('.tree-branch');
+          const splitArrow = row.querySelector('.split-arrow');
+          if (!subCard || !branch) return;
+
+          const specCards = branch.querySelectorAll('.card.tier-spec');
+          const specCount = specCards.length;
+
+          // Adiciona o trigger no card da subclasse se não existir
+          let trigger = subCard.querySelector('.subclass-expand-bar');
+          if (!trigger) {
+            trigger = document.createElement('div');
+            trigger.className = 'subclass-expand-bar';
+            trigger.innerHTML = `
+              <span class="sub-exp-sparkle">✦</span>
+              <span class="sub-exp-label">Ver Especializações (${specCount})</span>
+              <span class="sub-exp-icon">▼</span>
+            `;
+            const inner = subCard.querySelector('.card-inner') || subCard;
+            inner.appendChild(trigger);
+
+            trigger.addEventListener('click', (e) => {
+              e.stopPropagation();
+              toggleRowExpansion(row);
+            });
+          }
+
+          // Aprimora o split-arrow para agir como conduíte de poder
+          if (splitArrow) {
+            splitArrow.innerHTML = `
+              <div class="nexus-line"></div>
+              <div class="nexus-badge">
+                <span class="nexus-glow-dot"></span>
+                <span class="nexus-text">Especializações (${specCount})</span>
+                <span class="nexus-arrow">▼</span>
+              </div>
+            `;
+            splitArrow.addEventListener('click', (e) => {
+              e.stopPropagation();
+              toggleRowExpansion(row);
+            });
+          }
+
+          // Clicar no header do card da subclasse também alterna
+          const cardHeader = subCard.querySelector('.card-header');
+          if (cardHeader) {
+            cardHeader.style.cursor = 'pointer';
+            cardHeader.title = 'Clique para expandir/recolher especializações';
+            cardHeader.addEventListener('click', () => toggleRowExpansion(row));
+          }
+        });
       });
+    }
+
+    function toggleRowExpansion(row, forceState, skipScroll = false) {
+      const isExpanded = (forceState !== undefined) ? forceState : !row.classList.contains('expanded');
+      
+      // Ao expandir individualmente, recolhe as outras subclasses do mesmo bloco para manter o foco e evitar desalinhamento
+      if (isExpanded && !skipScroll) {
+        const parentLevel = row.closest('.tree-level');
+        if (parentLevel) {
+          parentLevel.querySelectorAll('.tree-row.expanded').forEach(sib => {
+            if (sib !== row) {
+              toggleRowExpansion(sib, false, true);
+            }
+          });
+        }
+      }
+
+      row.classList.toggle('expanded', isExpanded);
+
+      const subCard = row.querySelector('.card.tier-sub');
+      const branch = row.querySelector('.tree-branch');
+      const splitArrow = row.querySelector('.split-arrow');
+      const trigger = subCard ? subCard.querySelector('.subclass-expand-bar') : null;
+      const specCount = branch ? branch.querySelectorAll('.card.tier-spec').length : 2;
+
+      if (trigger) {
+        trigger.classList.toggle('active', isExpanded);
+        const label = trigger.querySelector('.sub-exp-label');
+        if (label) label.textContent = isExpanded ? 'Recolher Especializações' : `Ver Especializações (${specCount})`;
+      }
+      if (splitArrow) {
+        const badge = splitArrow.querySelector('.nexus-badge');
+        if (badge) badge.classList.toggle('active', isExpanded);
+        const text = splitArrow.querySelector('.nexus-text');
+        if (text) text.textContent = isExpanded ? 'Recolher' : `Especializações (${specCount})`;
+        const arrow = splitArrow.querySelector('.nexus-arrow');
+        if (arrow) arrow.textContent = isExpanded ? '▲' : '▼';
+      }
+
+      // Sincroniza estado ativo da pílula na barra de ferramentas
+      const parentSection = row.closest('.section');
+      if (parentSection) {
+        const allRows = Array.from(parentSection.querySelectorAll('.tree-row'));
+        const rowIndex = allRows.indexOf(row);
+        const pills = parentSection.querySelectorAll('.subclass-pill');
+        if (pills[rowIndex]) {
+          pills[rowIndex].classList.toggle('active', isExpanded);
+        }
+      }
+
+      if (isExpanded) {
+        playMagicCast();
+
+        // ════════════ ACOMPANHAMENTO DINÂMICO DE SCROLL PRECISO ════════════
+        if (!skipScroll) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              const topbar = document.querySelector('.dark-topbar');
+              const topbarHeight = topbar ? topbar.offsetHeight : 65;
+              const rect = row.getBoundingClientRect();
+              const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+              
+              // Posiciona confortavelmente o topo da subclasse abaixo da topbar fixa
+              const targetY = currentScroll + rect.top - topbarHeight - 16;
+
+              window.scrollTo({
+                top: Math.max(0, targetY),
+                behavior: 'smooth'
+              });
+            }, 60);
+          });
+        }
+      } else {
+        playPageTurn();
+      }
+    }
+
+    // Inicialização e Efeitos Tácteis
+    document.addEventListener('DOMContentLoaded', () => {
+      updateSpellVisibility();
+      initSubclassTrees();
+
+      let lastCardSound = 0;
+      document.querySelectorAll('.card, #tab-feiticos .spell-card, .relic-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          const now = Date.now();
+          if (now - lastCardSound > 150) {
+            lastCardSound = now;
+            if (card.classList.contains('spell-card')) {
+              playMagicCast();
+            } else {
+              playPageTurn();
+            }
+          }
+        });
+      });
+
+      // Easter egg 5 cliques no dinossauro do topo
+      const brandLogo = document.querySelector('.topbar-brand');
+      let dinoClicks = 0;
+      let dinoTimer = null;
+      if (brandLogo) {
+        brandLogo.addEventListener('click', (e) => {
+          dinoClicks++;
+          clearTimeout(dinoTimer);
+          dinoTimer = setTimeout(() => { dinoClicks = 0; }, 3000);
+          if (dinoClicks >= 5) {
+            e.preventDefault();
+            dinoClicks = 0;
+            playAudioSafe(['sons/easter_egg.mp3', 'easter_egg.mp3'], 0.9);
+            const img = brandLogo.querySelector('.topbar-logo');
+            if (img) {
+              img.style.transition = 'transform 0.5s ease, filter 0.5s ease';
+              img.style.transform = 'scale(1.4) rotate(360deg)';
+              img.style.filter = 'drop-shadow(0 0 20px #ffd700)';
+              setTimeout(() => {
+                img.style.transform = '';
+                img.style.filter = '';
+              }, 4000);
+            }
+          }
+        });
+      }
     });
-    */
   </script>
  
 

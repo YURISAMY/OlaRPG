@@ -4,30 +4,32 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ficha de Personagem — Sistema RPG</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
   :root {
     --parchment: #f5ead6;
     --gold: #c9921a;
-    --gold-light: #e8b84b;
+    --gold-light: #f3c358;
     --gold-dim: #7a5510;
-    --bg: #0d0d0d;
-    --surface: #111114;
-    --surface2: #18181c;
-    --border: rgba(255,255,255,0.06);
-    --border-gold: rgba(201,146,26,0.2);
-    --text: rgba(245,234,214,0.85);
-    --text-dim: rgba(245,234,214,0.45);
-    --text-faint: rgba(245,234,214,0.25);
+    --bg: #07080b;
+    --surface: rgba(14, 16, 23, 0.88);
+    --surface2: rgba(20, 23, 33, 0.94);
+    --border: rgba(201, 146, 26, 0.18);
+    --border-gold: rgba(201, 146, 26, 0.35);
+    --text: rgba(245, 234, 214, 0.88);
+    --text-dim: rgba(245, 234, 214, 0.55);
+    --text-faint: rgba(245, 234, 214, 0.3);
 
-    --hp-color: #c94040;
+    --hp-color: #d83a3a;
     --st-color: #c9921a;
-    --fo-color: #4060c9;
+    --fo-color: #4a77e5;
 
-    --marcial: #c94040;
-    --arcano: #4060c9;
-    --agil: #3a9050;
-    --semblante: #c06de0;
+    --marcial: #d83a3a;
+    --arcano: #4a77e5;
+    --agil: #3ca358;
+    --semblante: #c56de0;
     --estranho: #c040c0;
 
     --accent: var(--gold);
@@ -36,46 +38,143 @@
   * { margin:0; padding:0; box-sizing:border-box; }
 
   body {
-    background: var(--bg);
+    background-color: var(--bg);
     background-image:
-      radial-gradient(ellipse at 15% 10%, rgba(201,146,26,0.04) 0%, transparent 45%),
-      radial-gradient(ellipse at 85% 90%, rgba(64,96,201,0.04) 0%, transparent 45%);
+      radial-gradient(circle at 50% -10%, rgba(201, 146, 26, 0.1) 0%, transparent 60%),
+      radial-gradient(ellipse at 10% 25%, rgba(216, 58, 58, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 75%, rgba(74, 119, 229, 0.06) 0%, transparent 50%),
+      linear-gradient(to bottom, rgba(7, 8, 11, 0.82), rgba(7, 8, 11, 0.98));
+    background-attachment: fixed;
     min-height: 100vh;
     font-family: 'Crimson Pro', serif;
     color: var(--text);
-    padding: 32px 20px 80px;
+    padding: 0 0 80px;
+    position: relative;
+  }
+
+  /* ════════════ TOPBAR DARK FANTASY ════════════ */
+  .dark-topbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(8, 9, 13, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(201, 146, 26, 0.25);
+    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.7);
+  }
+  .topbar-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  .topbar-brand:hover {
+    transform: scale(1.02);
+  }
+  .topbar-logo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    padding: 2px;
+    background: #14110e;
+    box-shadow: 0 0 8px rgba(201, 146, 26, 0.3);
+  }
+  .topbar-title {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    background: linear-gradient(180deg, #fff3d1, #e8b84b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .topbar-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 2px 0;
+  }
+  .topbar-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 6px 12px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .topbar-link:hover {
+    color: var(--parchment);
+    background: rgba(201, 146, 26, 0.09);
+    border-color: rgba(201, 146, 26, 0.3);
+  }
+  .topbar-link.active {
+    color: var(--gold-light);
+    background: rgba(201, 146, 26, 0.14);
+    border-color: rgba(201, 146, 26, 0.45);
+    box-shadow: inset 0 0 10px rgba(201, 146, 26, 0.12);
+  }
+  .topbar-link .link-icon {
+    font-size: 13px;
   }
 
   /* ── HEADER ── */
   .page-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin: 28px 0 34px;
+    padding: 0 20px;
   }
   .page-header::before {
     content: '';
     display: block;
     width: 60%;
+    max-width: 480px;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 0 auto 20px;
+    margin: 0 auto 16px;
   }
   .page-header h1 {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(22px, 4vw, 40px);
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-size: clamp(26px, 4.5vw, 42px);
     font-weight: 900;
-    color: var(--gold-light);
-    letter-spacing: 0.15em;
-    text-shadow: 0 0 30px rgba(201,146,26,0.35);
+    letter-spacing: 0.16em;
+    background: linear-gradient(180deg, #fff3d1 0%, #e8b84b 50%, #9e6f14 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 25px rgba(201, 146, 26, 0.35);
   }
   .page-header p {
-    font-size: 13px;
-    color: var(--text-faint);
+    font-size: 13.5px;
+    color: var(--text-dim);
     font-style: italic;
     margin-top: 6px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
   }
   .page-header::after {
-    content: '✦';
+    content: '⚔ ✦ ⚔';
     display: block;
     margin-top: 14px;
     color: var(--gold-dim);
@@ -88,22 +187,30 @@
     display: grid;
     grid-template-columns: 300px 1fr;
     grid-template-rows: auto;
-    gap: 16px;
+    gap: 18px;
     max-width: 1100px;
     margin: 0 auto;
+    padding: 0 20px;
   }
-  .col-left { display: flex; flex-direction: column; gap: 16px; }
-  .col-right { display: flex; flex-direction: column; gap: 16px; }
+  .col-left { display: flex; flex-direction: column; gap: 18px; }
+  .col-right { display: flex; flex-direction: column; gap: 18px; }
   .col-full { grid-column: 1 / -1; }
 
   /* ── PANEL ── */
   .panel {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 18px 20px;
+    border-radius: 3px;
+    padding: 20px 22px;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .panel:hover {
+    border-color: rgba(201, 146, 26, 0.32);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
   }
   .panel::before {
     content: '';
@@ -111,14 +218,14 @@
     top: 0; left: 0; right: 0;
     height: 2px;
     background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.4;
+    opacity: 0.6;
   }
   .panel-title {
     font-family: 'Cinzel', serif;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.2em;
-    color: var(--gold-dim);
+    letter-spacing: 0.22em;
+    color: var(--gold);
     text-transform: uppercase;
     margin-bottom: 14px;
     display: flex;
@@ -129,7 +236,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: var(--border);
+    background: linear-gradient(90deg, rgba(201, 146, 26, 0.3), transparent);
   }
 
   /* ── INPUTS ── */
@@ -301,31 +408,43 @@
     opacity: 0.6;
   }
   .resource-bar-bg {
-    height: 6px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 3px;
+    height: 9px;
+    background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
     overflow: hidden;
+    padding: 1px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
   }
   .resource-bar-fill {
     height: 100%;
     border-radius: 3px;
-    transition: width 0.3s ease;
+    transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .resource-block.hp .resource-name { color: var(--hp-color); }
+  .resource-block.hp .resource-name { color: var(--hp-color); text-shadow: 0 0 10px rgba(216, 58, 58, 0.4); }
   .resource-block.hp .resource-current { color: var(--hp-color); border-color: var(--hp-color); }
   .resource-block.hp .resource-max { color: var(--hp-color); border-color: var(--hp-color); }
-  .resource-block.hp .resource-bar-fill { background: var(--hp-color); }
+  .resource-block.hp .resource-bar-fill {
+    background: linear-gradient(90deg, #8b1e1e, #e53935);
+    box-shadow: 0 0 10px rgba(229, 57, 53, 0.5);
+  }
 
-  .resource-block.st .resource-name { color: var(--st-color); }
+  .resource-block.st .resource-name { color: var(--st-color); text-shadow: 0 0 10px rgba(201, 146, 26, 0.4); }
   .resource-block.st .resource-current { color: var(--st-color); border-color: var(--st-color); }
   .resource-block.st .resource-max { color: var(--st-color); border-color: var(--st-color); }
-  .resource-block.st .resource-bar-fill { background: var(--st-color); }
+  .resource-block.st .resource-bar-fill {
+    background: linear-gradient(90deg, #996e10, #f3c358);
+    box-shadow: 0 0 10px rgba(243, 195, 88, 0.5);
+  }
 
-  .resource-block.fo .resource-name { color: var(--fo-color); }
+  .resource-block.fo .resource-name { color: var(--fo-color); text-shadow: 0 0 10px rgba(74, 119, 229, 0.4); }
   .resource-block.fo .resource-current { color: var(--fo-color); border-color: var(--fo-color); }
   .resource-block.fo .resource-max { color: var(--fo-color); border-color: var(--fo-color); }
-  .resource-block.fo .resource-bar-fill { background: var(--fo-color); }
+  .resource-block.fo .resource-bar-fill {
+    background: linear-gradient(90deg, #1e3a99, #4a77e5);
+    box-shadow: 0 0 10px rgba(74, 119, 229, 0.5);
+  }
 
   .rec-row {
     display: flex;
@@ -353,39 +472,45 @@
   }
   .attr-box {
     text-align: center;
-    padding: 10px 6px;
-    background: rgba(0,0,0,0.25);
-    border: 1px solid var(--border);
+    padding: 12px 6px;
+    background: rgba(8, 9, 14, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 3px;
     position: relative;
-    transition: border-color 0.2s;
+    transition: all 0.25s ease;
   }
-  .attr-box:hover { border-color: var(--border-gold); }
+  .attr-box:hover {
+    border-color: rgba(201, 146, 26, 0.45);
+    background: rgba(20, 23, 33, 0.85);
+    box-shadow: 0 0 14px rgba(201, 146, 26, 0.18);
+    transform: translateY(-1px);
+  }
   .attr-name {
     font-family: 'Share Tech Mono', monospace;
-    font-size: 9px;
-    color: var(--text-faint);
-    letter-spacing: 0.15em;
+    font-size: 9.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.16em;
     margin-bottom: 4px;
     text-transform: uppercase;
   }
   .attr-value {
     font-family: 'Cinzel', serif;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: 700;
-    color: var(--text);
+    color: var(--gold-light);
     background: transparent;
     border: none;
     width: 100%;
     text-align: center;
     outline: none;
     line-height: 1;
+    text-shadow: 0 0 14px rgba(201, 146, 26, 0.25);
   }
   .attr-mod {
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
     color: var(--gold-dim);
-    margin-top: 2px;
+    margin-top: 4px;
     min-height: 16px;
   }
 
@@ -1763,6 +1888,34 @@
   <canvas id="fx-nevoa-canvas"></canvas>
   <div class="fog-vignette"></div>
 </div>
+
+<!-- BARRA DE NAVEGAÇÃO DARK FANTASY -->
+<nav class="dark-topbar">
+  <div class="topbar-inner">
+    <a href="index.html" class="topbar-brand" title="Voltar ao Salão Principal">
+      <img src="jacaroa.png" alt="Logo" class="topbar-logo" onerror="this.style.display='none'">
+      <span class="topbar-title">OLARPG</span>
+    </a>
+    <div class="topbar-links">
+      <a href="Ficha final.html" class="topbar-link active">
+        <span class="link-icon">🩸</span>
+        <span class="link-text">Ficha</span>
+      </a>
+      <a href="Livro base.html" class="topbar-link">
+        <span class="link-icon">📜</span>
+        <span class="link-text">Livro de Regras</span>
+      </a>
+      <a href="bestiario.html" class="topbar-link">
+        <span class="link-icon">💀</span>
+        <span class="link-text">Bestiário</span>
+      </a>
+      <a href="forja.html" class="topbar-link">
+        <span class="link-icon">⚒️</span>
+        <span class="link-text">A Forja</span>
+      </a>
+    </div>
+  </div>
+</nav>
 
 <div class="page-header">
   <h1>FICHA DE PERSONAGEM</h1>

@@ -4,13 +4,17 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bestiário — Sistema RPG</title>
-  <link href="file:///C:/Users/yuri/Downloads/bestiario_files/css2" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
       --parchment: #f5ead6;
       --gold: #c9921a;
-      --gold-light: #e8b84b;
+      --gold-light: #f3c358;
       --gold-dim: #7a5510;
+      --bestiary-accent: #b45be8;
+      --bestiary-glow: rgba(180, 91, 232, 0.25);
     }
 
     * {
@@ -20,45 +24,140 @@
     }
 
     body {
-      background: #0d0d0d;
+      background: #08080b;
       background-image:
-        radial-gradient(ellipse at 20% 20%, rgba(139, 32, 32, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(26, 40, 96, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(26, 64, 32, 0.06) 0%, transparent 60%);
+        radial-gradient(circle at 50% -10%, rgba(180, 91, 232, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 25%, rgba(139, 32, 32, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(61, 104, 209, 0.08) 0%, transparent 50%),
+        linear-gradient(to bottom, rgba(8, 8, 11, 0.85), rgba(8, 8, 11, 0.98));
+      background-attachment: fixed;
       min-height: 100vh;
       font-family: 'Crimson Pro', serif;
       color: var(--parchment);
-      padding: 40px 20px 80px;
+      padding: 0 0 80px;
+    }
+
+    /* ════════════ TOPBAR DARK FANTASY ════════════ */
+    .dark-topbar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: rgba(8, 9, 13, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(180, 91, 232, 0.25);
+      box-shadow: 0 4px 22px rgba(0, 0, 0, 0.7);
+    }
+    .topbar-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+    .topbar-brand:hover {
+      transform: scale(1.02);
+    }
+    .topbar-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--gold);
+      padding: 2px;
+      background: #14110e;
+      box-shadow: 0 0 8px rgba(201, 146, 26, 0.3);
+    }
+    .topbar-title {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      background: linear-gradient(180deg, #fff3d1, #b45be8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .topbar-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 2px 0;
+    }
+    .topbar-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: 'Cinzel', serif;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(245, 234, 214, 0.55);
+      padding: 6px 12px;
+      border-radius: 3px;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .topbar-link:hover {
+      color: var(--parchment);
+      background: rgba(180, 91, 232, 0.1);
+      border-color: rgba(180, 91, 232, 0.3);
+    }
+    .topbar-link.active {
+      color: #c97bf5;
+      background: rgba(180, 91, 232, 0.15);
+      border-color: rgba(180, 91, 232, 0.45);
+      box-shadow: inset 0 0 10px rgba(180, 91, 232, 0.15);
+    }
+    .topbar-link .link-icon {
+      font-size: 13px;
     }
 
     .header {
       text-align: center;
-      margin-bottom: 60px;
+      margin: 36px 20px 48px;
     }
 
     .header::before {
       content: '';
       display: block;
-      width: 80%;
+      width: 60%;
+      max-width: 480px;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 0 auto 24px;
+      background: linear-gradient(90deg, transparent, var(--bestiary-accent), transparent);
+      margin: 0 auto 20px;
     }
 
     .header h1 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(28px, 5vw, 52px);
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: clamp(30px, 5.5vw, 54px);
       font-weight: 900;
-      letter-spacing: 0.12em;
-      color: var(--gold-light);
-      text-shadow: 0 0 40px rgba(201, 146, 26, 0.4), 0 2px 4px rgba(0, 0, 0, 0.8);
+      letter-spacing: 0.18em;
+      background: linear-gradient(180deg, #fff3d1 0%, #c97bf5 50%, #68239e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(180, 91, 232, 0.45);
       margin-bottom: 8px;
     }
 
     .header p {
-      font-size: 16px;
-      color: rgba(245, 234, 214, 0.5);
+      font-size: 14.5px;
+      color: rgba(245, 234, 214, 0.55);
       font-style: italic;
+      letter-spacing: 0.05em;
     }
 
     .header::after {
@@ -1084,6 +1183,34 @@
 </head>
 
 <body>
+
+  <!-- BARRA DE NAVEGAÇÃO DARK FANTASY -->
+  <nav class="dark-topbar">
+    <div class="topbar-inner">
+      <a href="index.html" class="topbar-brand" title="Voltar ao Salão Principal">
+        <img src="jacaroa.png" alt="Logo" class="topbar-logo" onerror="this.style.display='none'">
+        <span class="topbar-title">OLARPG</span>
+      </a>
+      <div class="topbar-links">
+        <a href="Ficha final.html" class="topbar-link">
+          <span class="link-icon">🩸</span>
+          <span class="link-text">Ficha</span>
+        </a>
+        <a href="Livro base.html" class="topbar-link">
+          <span class="link-icon">📜</span>
+          <span class="link-text">Livro de Regras</span>
+        </a>
+        <a href="bestiario.html" class="topbar-link active">
+          <span class="link-icon">💀</span>
+          <span class="link-text">Bestiário</span>
+        </a>
+        <a href="forja.html" class="topbar-link">
+          <span class="link-icon">⚒️</span>
+          <span class="link-text">A Forja</span>
+        </a>
+      </div>
+    </div>
+  </nav>
 
   <div class="header">
     <h1>Bestiário</h1>
