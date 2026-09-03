@@ -3278,6 +3278,101 @@
     .criatura-card.hidden {
       display: none !important;
     }
+  
+    /* ════════════ AÇÕES DE EXPORTAÇÃO / INTEGRAÇÃO COM A FICHA ════════════ */
+    .spell-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      z-index: 5;
+    }
+    .spell-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 6px 10px;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+      user-select: none;
+    }
+    .spell-btn .btn-icon {
+      font-size: 12px;
+    }
+    .spell-btn-add {
+      background: rgba(201, 146, 26, 0.12);
+      color: var(--gold-light);
+      border: 1px solid rgba(201, 146, 26, 0.35);
+    }
+    .spell-btn-add:hover {
+      background: rgba(201, 146, 26, 0.26);
+      border-color: var(--gold);
+      box-shadow: 0 0 12px rgba(201, 146, 26, 0.35);
+      transform: translateY(-1px);
+    }
+    .spell-btn-add.success {
+      background: rgba(46, 204, 113, 0.22) !important;
+      color: #38ef7d !important;
+      border-color: rgba(46, 204, 113, 0.6) !important;
+      box-shadow: 0 0 12px rgba(46, 204, 113, 0.4) !important;
+    }
+    .spell-btn-copy {
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(245, 234, 214, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      flex: 0 0 auto;
+    }
+    .spell-btn-copy:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: var(--text);
+      border-color: rgba(255, 255, 255, 0.28);
+      transform: translateY(-1px);
+    }
+    .spell-btn-copy.success {
+      background: rgba(90, 139, 232, 0.22) !important;
+      color: #8bb3f7 !important;
+      border-color: rgba(90, 139, 232, 0.6) !important;
+      box-shadow: 0 0 12px rgba(90, 139, 232, 0.4) !important;
+    }
+
+    /* Notificação Toast Flutuante no Livro */
+    .livro-toast {
+      position: fixed;
+      bottom: 26px;
+      right: 26px;
+      z-index: 10000;
+      background: rgba(14, 16, 23, 0.96);
+      border: 1px solid var(--gold);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 16px rgba(201, 146, 26, 0.25);
+      color: var(--parchment);
+      padding: 12px 18px;
+      border-radius: 4px;
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px) scale(0.96);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .livro-toast.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
   </style>
  </head>
  <body>
@@ -19090,7 +19185,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       if (btn) btn.classList.add('active');
       playPageTurn();
       if (tab === 'feiticos') {
-        setTimeout(updateSpellVisibility, 50);
+        setTimeout(() => { updateSpellVisibility(); initSpellCardActions(); }, 50);
       }
     }
 
@@ -19410,6 +19505,182 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
         });
       }
     });
+  
+    // ════════════ INTEGRAÇÃO: ENVIAR PARA FICHA / EXPORTAR CÓDIGO ════════════
+    function getSpellDataFromCard(card) {
+      const nameEl = card.querySelector('.spell-name');
+      const costEl = card.querySelector('.spell-cost-badge');
+      const descEl = card.querySelector('.spell-desc');
+      const tags = Array.from(card.querySelectorAll('.spell-tag')).map(t => t.textContent.trim()).filter(Boolean);
+
+      const name = nameEl ? nameEl.textContent.trim() : 'Habilidade';
+      const custo = costEl ? costEl.textContent.trim() : '';
+      const rawDesc = descEl ? descEl.textContent.trim() : '';
+
+      const scope = card.dataset.scope || (card.classList.contains('exclusiva') ? 'exclusiva' : 'geral');
+      const type = card.dataset.type || (card.classList.contains('tecnica') ? 'tecnica' : 'magica');
+      const isSignature = card.classList.contains('signature') || !!card.querySelector('.signature-tag') || name.startsWith('⭐');
+
+      // Determinar categoria da ficha
+      let categoria = 'magiasGerais';
+      let recurso = 'fo';
+      if (scope === 'exclusiva' || card.classList.contains('exclusiva')) {
+        categoria = 'exclusivas';
+        recurso = custo.includes('🟡') ? 'st' : 'fo';
+      } else if (type === 'tecnica' || card.classList.contains('tecnica')) {
+        categoria = 'tecnicasGerais';
+        recurso = 'st';
+      } else {
+        categoria = 'magiasGerais';
+        recurso = 'fo';
+      }
+
+      let tipo = 'padrao';
+      if (isSignature) {
+        tipo = 'assinatura';
+      } else if (tags.some(t => t.toLowerCase().includes('rápida') || t.toLowerCase().includes('rapida'))) {
+        tipo = 'rapida';
+      }
+
+      // Prefixar tag de escola ou classe se não presente na descrição
+      const schoolTag = tags.find(t => {
+        const lower = t.toLowerCase();
+        return !['magia geral', 'técnica geral', 'exclusiva', 'assinatura', '1x por combate'].includes(lower);
+      });
+      let formattedDesc = rawDesc;
+      if (schoolTag && !rawDesc.toLowerCase().includes(schoolTag.toLowerCase())) {
+        formattedDesc = `[${schoolTag}] ${rawDesc}`;
+      }
+
+      return {
+        name,
+        tipo,
+        custo,
+        desc: formattedDesc,
+        recurso,
+        categoria,
+        tags
+      };
+    }
+
+    function showLivroToast(msg) {
+      let toast = document.getElementById('livro-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'livro-toast';
+        toast.className = 'livro-toast';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = msg;
+      toast.classList.add('show');
+      clearTimeout(window._livroToastTimer);
+      window._livroToastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function sendSpellToSheet(btn) {
+      const card = btn.closest('.spell-card');
+      if (!card) return;
+      const spell = getSpellDataFromCard(card);
+
+      // 1. BroadcastChannel (tempo real entre abas)
+      try {
+        const channel = new BroadcastChannel('olarpg_channel');
+        channel.postMessage({ type: 'ADD_SPELL', spell: spell, ts: Date.now() });
+        channel.close();
+      } catch (e) {
+        console.warn('BroadcastChannel error:', e);
+      }
+
+      // 2. LocalStorage queue & trigger (garante persistência mesmo se ficha abrir depois)
+      try {
+        const queueKey = 'olarpg_pending_spells';
+        const queue = JSON.parse(localStorage.getItem(queueKey) || '[]');
+        // Evita duplicatas idênticas pendentes na fila
+        if (!queue.some(s => s.name === spell.name)) {
+          queue.push(spell);
+          localStorage.setItem(queueKey, JSON.stringify(queue));
+        }
+        localStorage.setItem('olarpg_spell_trigger', JSON.stringify({ spell: spell, ts: Date.now() }));
+      } catch (e) {
+        console.warn('LocalStorage error:', e);
+      }
+
+      if (typeof playMagicCast === 'function') {
+        playMagicCast();
+      }
+
+      btn.classList.add('success');
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<span class="btn-icon">✓</span> Na Ficha!';
+      showLivroToast(`✨ <b>${spell.name}</b> enviada para a Ficha!`);
+      setTimeout(() => {
+        btn.classList.remove('success');
+        btn.innerHTML = originalHtml;
+      }, 2200);
+    }
+
+    function copySpellCode(btn) {
+      const card = btn.closest('.spell-card');
+      if (!card) return;
+      const spell = getSpellDataFromCard(card);
+      const jsonStr = JSON.stringify(spell);
+      let code = '';
+      try {
+        const bytes = new TextEncoder().encode(jsonStr);
+        const binString = Array.from(bytes, b => String.fromCharCode(b)).join('');
+        code = 'OLARPG:' + btoa(binString);
+      } catch (e) {
+        code = 'OLARPG:' + btoa(unescape(encodeURIComponent(jsonStr)));
+      }
+
+      const onSuccess = () => {
+        btn.classList.add('success');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<span class="btn-icon">✓</span> Copiado!';
+        showLivroToast(`📋 Código de <b>${spell.name}</b> copiado!`);
+        setTimeout(() => {
+          btn.classList.remove('success');
+          btn.innerHTML = originalHtml;
+        }, 2000);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code).then(onSuccess).catch(() => {
+          prompt('Copie o código abaixo:', code);
+        });
+      } else {
+        prompt('Copie o código abaixo:', code);
+      }
+    }
+
+    function initSpellCardActions() {
+      const cards = document.querySelectorAll('.spell-card');
+      cards.forEach(card => {
+        if (card.querySelector('.spell-actions')) return;
+        const body = card.querySelector('.spell-card-body') || card;
+        const actions = document.createElement('div');
+        actions.className = 'spell-actions';
+        actions.innerHTML = `
+          <button type="button" class="spell-btn spell-btn-add" onclick="sendSpellToSheet(this)" title="Enviar diretamente para a Ficha de Personagem">
+            <span class="btn-icon">➕</span> Enviar para Ficha
+          </button>
+          <button type="button" class="spell-btn spell-btn-copy" onclick="copySpellCode(this)" title="Copiar código para importar ou compartilhar">
+            <span class="btn-icon">📋</span> Código
+          </button>
+        `;
+        body.appendChild(actions);
+      });
+    }
+
+    // Inicialização automática das ações
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSpellCardActions);
+    } else {
+      initSpellCardActions();
+    }
+
   </script>
  
 

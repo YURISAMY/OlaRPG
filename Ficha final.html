@@ -2548,7 +2548,17 @@
 
     <!-- MAGIAS E TÉCNICAS -->
     <div class="panel">
-      <div class="panel-title">Magias &amp; Técnicas Conhecidas</div>
+      <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <span>Magias &amp; Técnicas Conhecidas</span>
+        <div style="display:flex;gap:6px;">
+          <button type="button" class="add-btn" onclick="openImportSpellModal()" title="Importar magia ou técnica por código">
+            📥 Importar Código
+          </button>
+          <a href="Livro base.html" target="_blank" class="add-btn" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;" title="Abrir Livro de Regras em nova aba">
+            📖 Livro Base ↗
+          </a>
+        </div>
+      </div>
 
       <div class="sub-label">Magias Gerais</div>
       <div class="list-area" id="list-magias-gerais"><div class="empty-state">Nenhum item adicionado.</div></div>
@@ -5059,9 +5069,208 @@ function syncRestoreConnection() {
     }
   });
 })();
+
+// ════════════ INTEGRAÇÃO COM LIVRO BASE: RECEPTOR & IMPORTADOR ════════════
+function parseSpellCodeString(str) {
+  if (!str) return null;
+  str = str.trim();
+  try {
+    if (str.startsWith('OLARPG:')) {
+      const b64 = str.substring(7).trim();
+      let json = '';
+      try {
+        const binString = atob(b64);
+        const bytes = Uint8Array.from(binString, m => m.charCodeAt(0));
+        json = new TextDecoder().decode(bytes);
+      } catch (e2) {
+        json = decodeURIComponent(escape(atob(b64)));
+      }
+      return JSON.parse(json);
+    }
+    // Tentativa direta com JSON
+    if (str.startsWith('{') && str.endsWith('}')) {
+      return JSON.parse(str);
+    }
+  } catch (err) {
+    console.warn('Erro ao decodificar código de habilidade:', err);
+  }
+  return null;
+}
+
+function importSpellToActiveFicha(spell, showToast = true) {
+  if (!spell || !spell.name) return false;
+  if (!state) return false;
+
+  let cat = spell.categoria || 'magiasGerais';
+  if (!['magiasGerais', 'tecnicasGerais', 'exclusivas'].includes(cat)) {
+    cat = 'magiasGerais';
+  }
+
+  if (!Array.isArray(state[cat])) {
+    state[cat] = [];
+  }
+
+  // Verificar se já existe na ficha
+  const jaExiste = state[cat].some(it => it.name.trim().toLowerCase() === spell.name.trim().toLowerCase());
+  if (jaExiste) {
+    if (showToast) {
+      syncShowToast(`⚠️ <b>${spell.name}</b> já está na sua lista!`, 'warn');
+    }
+    return false;
+  }
+
+  const newItem = {
+    name: spell.name.trim(),
+    tipo: spell.tipo || 'padrao',
+    custo: (spell.custo || '').trim(),
+    desc: (spell.desc || '').trim(),
+    recurso: spell.recurso || (cat === 'tecnicasGerais' ? 'st' : 'fo')
+  };
+
+  state[cat].push(newItem);
+  renderMagias();
+  save();
+  if (typeof syncPushState === 'function') syncPushState(true);
+
+  const catNomes = {
+    magiasGerais: 'Magias Gerais',
+    tecnicasGerais: 'Técnicas Gerais',
+    exclusivas: 'Exclusivas'
+  };
+  const catLabel = catNomes[cat] || 'Habilidades';
+
+  if (typeof playAudio === 'function') {
+    playAudio('stone.mp3', 0.5);
+  }
+
+  if (showToast) {
+    syncShowToast(`✨ <b>${newItem.name}</b> adicionada a <i>${catLabel}</i>!`);
+  }
+  return true;
+}
+
+function openImportSpellModal() {
+  const modal = document.getElementById('import-spell-modal');
+  const input = document.getElementById('import-spell-code-input');
+  if (input) input.value = '';
+  if (modal) modal.classList.add('open');
+}
+
+function closeImportSpellModal() {
+  const modal = document.getElementById('import-spell-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+function pasteFromClipboardImport() {
+  const input = document.getElementById('import-spell-code-input');
+  if (navigator.clipboard && navigator.clipboard.readText) {
+    navigator.clipboard.readText().then(text => {
+      if (input) input.value = text.trim();
+    }).catch(() => {
+      alert('Permissão para área de transferência negada. Use Ctrl+V para colar no campo.');
+    });
+  } else {
+    alert('Use Ctrl+V para colar no campo de texto.');
+  }
+}
+
+function confirmImportSpell() {
+  const input = document.getElementById('import-spell-code-input');
+  const val = input ? input.value.trim() : '';
+  if (!val) {
+    alert('Por favor, cole um código válido exportado do Livro Base.');
+    return;
+  }
+  const spell = parseSpellCodeString(val);
+  if (!spell || !spell.name) {
+    alert('Código inválido ou corrompido. Certifique-se de copiar o código correto no Livro Base.');
+    return;
+  }
+  const sucesso = importSpellToActiveFicha(spell, true);
+  if (sucesso) {
+    closeImportSpellModal();
+  }
+}
+
+function initSpellReceiver() {
+  // 1. BroadcastChannel (tempo real instantâneo entre abas abertas)
+  try {
+    const channel = new BroadcastChannel('olarpg_channel');
+    channel.onmessage = (event) => {
+      if (event.data && event.data.type === 'ADD_SPELL' && event.data.spell) {
+        importSpellToActiveFicha(event.data.spell, true);
+      }
+    };
+  } catch (e) {
+    console.warn('BroadcastChannel não suportado neste navegador:', e);
+  }
+
+  // 2. Storage Event (fallback para navegadores/protocolos)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'olarpg_spell_trigger' && e.newValue) {
+      try {
+        const data = JSON.parse(e.newValue);
+        if (data && data.spell) {
+          importSpellToActiveFicha(data.spell, true);
+        }
+      } catch (err) {}
+    }
+  });
+
+  // 3. Fila de itens pendentes (se a magia foi enviada enquanto a ficha estava em segundo plano ou fechada)
+  function processPendingQueue() {
+    try {
+      const queueKey = 'olarpg_pending_spells';
+      const raw = localStorage.getItem(queueKey);
+      if (raw) {
+        const queue = JSON.parse(raw);
+        if (Array.isArray(queue) && queue.length > 0) {
+          let count = 0;
+          queue.forEach(s => {
+            if (importSpellToActiveFicha(s, true)) count++;
+          });
+          localStorage.removeItem(queueKey);
+        }
+      }
+    } catch (err) {}
+  }
+
+  window.addEventListener('focus', processPendingQueue);
+  processPendingQueue();
+}
+
+// Iniciar receptor
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initSpellReceiver);
+} else {
+  initSpellReceiver();
+}
+
 </script>
 
 
+
+
+<!-- MODAL DE IMPORTAÇÃO DE MAGIA/TÉCNICA -->
+<div class="edit-modal-overlay" id="import-spell-modal">
+  <div class="edit-modal" style="width:480px;">
+    <div class="edit-modal-title">📥 Importar Magia ou Técnica</div>
+    <p style="font-size:13px;color:var(--text-dim);margin:10px 0 14px;line-height:1.5;">
+      Cole abaixo o código exportado do <b>Livro de Regras</b> ou use o botão para colar da sua área de transferência.
+    </p>
+    <div class="field" style="margin-bottom:12px;">
+      <label>Código da Habilidade</label>
+      <textarea id="import-spell-code-input" rows="4" style="width:100%;font-family:'Share Tech Mono',monospace;font-size:12px;background:rgba(0,0,0,0.4);border:1px solid var(--border-gold);color:var(--text);padding:8px;border-radius:3px;resize:vertical;" placeholder="Ex: OLARPG:eyJ..."></textarea>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:8px;margin-top:16px;">
+      <button type="button" class="action-btn secondary" onclick="pasteFromClipboardImport()">📋 Colar Clipboard</button>
+      <div style="display:flex;gap:8px;">
+        <button type="button" class="action-btn secondary" onclick="closeImportSpellModal()">Cancelar</button>
+        <button type="button" class="action-btn" onclick="confirmImportSpell()">+ Adicionar à Ficha</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- EDIT MODAL -->
 <div class="edit-modal-overlay" id="edit-modal-overlay" onclick="closeEditModal(event)">
