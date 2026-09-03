@@ -126,6 +126,91 @@
       font-size: 13px;
     }
 
+    /* ════════════ CONTROLE DE VOLUME MASTER DARK FANTASY ════════════ */
+    .rpg-volume-widget {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 10px;
+      background: rgba(16, 17, 24, 0.85);
+      border: 1px solid rgba(180, 91, 232, 0.35);
+      border-radius: 16px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+      user-select: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-left: 6px;
+    }
+    .rpg-volume-widget:hover {
+      border-color: rgba(180, 91, 232, 0.65);
+      box-shadow: 0 0 10px rgba(180, 91, 232, 0.3);
+    }
+    .rpg-volume-btn {
+      background: none;
+      border: none;
+      color: var(--gold-light, #f5ead6);
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      line-height: 1;
+      transition: transform 0.15s;
+    }
+    .rpg-volume-btn:hover {
+      transform: scale(1.15);
+    }
+    .rpg-volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 65px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    .rpg-volume-slider:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .rpg-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #c97bf5;
+      border: 1px solid #e2b0ff;
+      box-shadow: 0 0 6px rgba(180, 91, 232, 0.7);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .rpg-volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+      background: #dfa6ff;
+    }
+    .rpg-volume-slider::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #c97bf5;
+      border: 1px solid #e2b0ff;
+      box-shadow: 0 0 6px rgba(180, 91, 232, 0.7);
+      cursor: pointer;
+    }
+    .rpg-volume-pct {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px;
+      color: rgba(245, 234, 214, 0.65);
+      min-width: 26px;
+      text-align: right;
+    }
+    @media (max-width: 680px) {
+      .rpg-volume-slider { width: 45px; }
+      .rpg-volume-widget { padding: 3px 6px; gap: 5px; }
+    }
+
     .header {
       text-align: center;
       margin: 36px 20px 48px;
@@ -1388,6 +1473,13 @@
           <span class="link-icon">⚒️</span>
           <span class="link-text">A Forja</span>
         </a>
+        <div class="rpg-volume-widget" id="rpgVolumeWidget" title="Volume Geral do Áudio">
+          <button type="button" class="rpg-volume-btn" id="rpgVolumeBtn" aria-label="Mutar/Desmutar som">
+            <span id="rpgVolumeIcon">🔊</span>
+          </button>
+          <input type="range" class="rpg-volume-slider" id="rpgVolumeSlider" min="0" max="100" value="35" title="Ajustar volume geral">
+          <span class="rpg-volume-pct" id="rpgVolumePct">35%</span>
+        </div>
       </div>
     </div>
   </nav>
@@ -5768,18 +5860,137 @@
       addBattleLog('🔄', 'ordem de turno reiniciada.');
     }
 
+    /* ════════════ GERENCIADOR DE VOLUME MASTER GLOBAL ════════════ */
+    (function initMasterVolumeManager() {
+      const STORAGE_KEY = 'rpg_master_volume';
+      const MUTED_KEY = 'rpg_master_muted';
+
+      let currentVolume = 0.35; // Padrão inicial de 35%
+      let isMuted = false;
+
+      try {
+        const savedVol = localStorage.getItem(STORAGE_KEY);
+        if (savedVol !== null) {
+          const parsed = parseFloat(savedVol);
+          if (!isNaN(parsed) && parsed >= 0 && parsed <= 1) {
+            currentVolume = parsed;
+          }
+        }
+        const savedMuted = localStorage.getItem(MUTED_KEY);
+        if (savedMuted === 'true') {
+          isMuted = true;
+        }
+      } catch (e) {}
+
+      window.getMasterVolume = function() {
+        if (isMuted) return 0;
+        return currentVolume;
+      };
+
+      window.setMasterVolume = function(val, playPreview = false) {
+        const num = Math.max(0, Math.min(1, parseFloat(val) || 0));
+        currentVolume = num;
+        if (currentVolume > 0) {
+          isMuted = false;
+        }
+        try {
+          localStorage.setItem(STORAGE_KEY, currentVolume.toString());
+          localStorage.setItem(MUTED_KEY, isMuted ? 'true' : 'false');
+        } catch (e) {}
+        updateVolumeUI();
+
+        if (playPreview && currentVolume > 0) {
+          try {
+            const preview = new Audio('sons/folhear.mp3');
+            preview.volume = Math.max(0, Math.min(1, 0.25 * currentVolume));
+            preview.play().catch(() => {});
+          } catch (e) {}
+        }
+      };
+
+      window.toggleMasterMute = function() {
+        isMuted = !isMuted;
+        try {
+          localStorage.setItem(MUTED_KEY, isMuted ? 'true' : 'false');
+        } catch (e) {}
+        updateVolumeUI();
+      };
+
+      function updateVolumeUI() {
+        const slider = document.getElementById('rpgVolumeSlider');
+        const pct = document.getElementById('rpgVolumePct');
+        const icon = document.getElementById('rpgVolumeIcon');
+        const btn = document.getElementById('rpgVolumeBtn');
+
+        const effectiveVol = isMuted ? 0 : currentVolume;
+        const pctVal = Math.round(effectiveVol * 100);
+
+        if (slider) {
+          slider.value = isMuted ? 0 : Math.round(currentVolume * 100);
+        }
+        if (pct) {
+          pct.textContent = pctVal + '%';
+        }
+        if (icon) {
+          if (effectiveVol === 0) {
+            icon.textContent = '🔇';
+          } else if (effectiveVol < 0.3) {
+            icon.textContent = '🔈';
+          } else if (effectiveVol < 0.7) {
+            icon.textContent = '🔉';
+          } else {
+            icon.textContent = '🔊';
+          }
+        }
+        if (btn) {
+          btn.title = isMuted ? 'Desmutar som (atualmente mudo)' : 'Mutar som';
+        }
+      }
+
+      function bindControls() {
+        updateVolumeUI();
+        const slider = document.getElementById('rpgVolumeSlider');
+        const btn = document.getElementById('rpgVolumeBtn');
+
+        if (slider) {
+          slider.addEventListener('input', function() {
+            isMuted = false;
+            window.setMasterVolume(this.value / 100, false);
+          });
+          slider.addEventListener('change', function() {
+            window.setMasterVolume(this.value / 100, true);
+          });
+        }
+
+        if (btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.toggleMasterMute();
+          });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindControls);
+      } else {
+        bindControls();
+      }
+    })();
+
     /* ── AUDIO SUPPORT ── */
     const audioCache = {};
     function playAudioSafe(paths, volume = 0.3) {
+      const master = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
+      if (master <= 0) return;
       if (!Array.isArray(paths)) paths = [paths];
       for (const p of paths) {
         if (!audioCache[p]) {
           const snd = new Audio(p);
-          snd.volume = volume;
           audioCache[p] = snd;
         }
         const a = audioCache[p];
         a.currentTime = 0;
+        a.volume = Math.max(0, Math.min(1, volume * master));
         const prom = a.play();
         if (prom !== undefined) {
           prom.catch(() => {});

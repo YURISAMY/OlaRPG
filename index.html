@@ -531,6 +531,86 @@
       opacity: 0.6;
       border-color: rgba(255, 255, 255, 0.1);
     }
+
+    /* ════════════ CONTROLE DE VOLUME MASTER DARK FANTASY ════════════ */
+    .rpg-volume-widget {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(16, 17, 24, 0.85);
+      border: 1px solid rgba(201, 146, 26, 0.35);
+      border-radius: 20px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
+      user-select: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .rpg-volume-widget:hover {
+      border-color: rgba(201, 146, 26, 0.65);
+      box-shadow: 0 0 12px rgba(201, 146, 26, 0.3);
+    }
+    .rpg-volume-btn {
+      background: none;
+      border: none;
+      color: var(--gold-light, #f5ead6);
+      cursor: pointer;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      line-height: 1;
+      transition: transform 0.15s;
+    }
+    .rpg-volume-btn:hover {
+      transform: scale(1.15);
+    }
+    .rpg-volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 80px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+    .rpg-volume-slider:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .rpg-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--gold, #c9921a);
+      border: 1px solid #ffcc66;
+      box-shadow: 0 0 6px rgba(201, 146, 26, 0.7);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .rpg-volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.25);
+      background: #ffaa33;
+    }
+    .rpg-volume-slider::-moz-range-thumb {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--gold, #c9921a);
+      border: 1px solid #ffcc66;
+      box-shadow: 0 0 6px rgba(201, 146, 26, 0.7);
+      cursor: pointer;
+    }
+    .rpg-volume-pct {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: rgba(245, 234, 214, 0.75);
+      min-width: 32px;
+      text-align: right;
+    }
   </style>
 </head>
 <body>
@@ -686,35 +766,154 @@
     <footer class="footer">
       <div class="footer-flourish">◆ ✦ ◆</div>
       <div class="footer-info">OlaRPG &bull; Sistema Proprietário de Mesa &bull; Módulo de Campanha</div>
-      <div>
-        <button id="soundToggle" class="sound-toggle" type="button" title="Ativar ou desativar som tátil de pedra">
-          <span>🔊</span> <span id="soundStatus">Som Tátil: Ativo</span>
-        </button>
+      <div style="margin-top: 14px;">
+        <div class="rpg-volume-widget" id="rpgVolumeWidget" title="Volume Geral do Áudio">
+          <button type="button" class="rpg-volume-btn" id="rpgVolumeBtn" aria-label="Mutar/Desmutar som">
+            <span id="rpgVolumeIcon">🔊</span>
+          </button>
+          <input type="range" class="rpg-volume-slider" id="rpgVolumeSlider" min="0" max="100" value="35" title="Ajustar volume geral">
+          <span class="rpg-volume-pct" id="rpgVolumePct">35%</span>
+        </div>
       </div>
     </footer>
 
   </div>
 
-  <!-- SCRIPT DE ÁUDIO TÁTIL (stone.mp3) -->
+  <!-- SCRIPT DE ÁUDIO TÁTIL & VOLUME MASTER -->
   <script>
+    /* ════════════ GERENCIADOR DE VOLUME MASTER GLOBAL ════════════ */
+    (function initMasterVolumeManager() {
+      const STORAGE_KEY = 'rpg_master_volume';
+      const MUTED_KEY = 'rpg_master_muted';
+
+      let currentVolume = 0.35; // Padrão inicial de 35%
+      let isMuted = false;
+
+      try {
+        const savedVol = localStorage.getItem(STORAGE_KEY);
+        if (savedVol !== null) {
+          const parsed = parseFloat(savedVol);
+          if (!isNaN(parsed) && parsed >= 0 && parsed <= 1) {
+            currentVolume = parsed;
+          }
+        }
+        const savedMuted = localStorage.getItem(MUTED_KEY);
+        if (savedMuted === 'true') {
+          isMuted = true;
+        }
+      } catch (e) {}
+
+      window.getMasterVolume = function() {
+        if (isMuted) return 0;
+        return currentVolume;
+      };
+
+      window.setMasterVolume = function(val, playPreview = false) {
+        const num = Math.max(0, Math.min(1, parseFloat(val) || 0));
+        currentVolume = num;
+        if (currentVolume > 0) {
+          isMuted = false;
+        }
+        try {
+          localStorage.setItem(STORAGE_KEY, currentVolume.toString());
+          localStorage.setItem(MUTED_KEY, isMuted ? 'true' : 'false');
+        } catch (e) {}
+        updateVolumeUI();
+
+        if (playPreview && currentVolume > 0) {
+          try {
+            const preview = new Audio('stone.mp3');
+            preview.volume = Math.max(0, Math.min(1, 0.25 * currentVolume));
+            preview.play().catch(() => {});
+          } catch (e) {}
+        }
+      };
+
+      window.toggleMasterMute = function() {
+        isMuted = !isMuted;
+        try {
+          localStorage.setItem(MUTED_KEY, isMuted ? 'true' : 'false');
+        } catch (e) {}
+        updateVolumeUI();
+      };
+
+      function updateVolumeUI() {
+        const slider = document.getElementById('rpgVolumeSlider');
+        const pct = document.getElementById('rpgVolumePct');
+        const icon = document.getElementById('rpgVolumeIcon');
+        const btn = document.getElementById('rpgVolumeBtn');
+
+        const effectiveVol = isMuted ? 0 : currentVolume;
+        const pctVal = Math.round(effectiveVol * 100);
+
+        if (slider) {
+          slider.value = isMuted ? 0 : Math.round(currentVolume * 100);
+        }
+        if (pct) {
+          pct.textContent = pctVal + '%';
+        }
+        if (icon) {
+          if (effectiveVol === 0) {
+            icon.textContent = '🔇';
+          } else if (effectiveVol < 0.3) {
+            icon.textContent = '🔈';
+          } else if (effectiveVol < 0.7) {
+            icon.textContent = '🔉';
+          } else {
+            icon.textContent = '🔊';
+          }
+        }
+        if (btn) {
+          btn.title = isMuted ? 'Desmutar som (atualmente mudo)' : 'Mutar som';
+        }
+      }
+
+      function bindControls() {
+        updateVolumeUI();
+        const slider = document.getElementById('rpgVolumeSlider');
+        const btn = document.getElementById('rpgVolumeBtn');
+
+        if (slider) {
+          slider.addEventListener('input', function() {
+            isMuted = false;
+            window.setMasterVolume(this.value / 100, false);
+          });
+          slider.addEventListener('change', function() {
+            window.setMasterVolume(this.value / 100, true);
+          });
+        }
+
+        if (btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.toggleMasterMute();
+          });
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindControls);
+      } else {
+        bindControls();
+      }
+    })();
+
     (function() {
-      let soundEnabled = true;
       let stoneAudio = null;
 
       try {
         stoneAudio = new Audio('stone.mp3');
-        stoneAudio.volume = 0.25;
       } catch (e) {
         console.warn('Áudio não suportado ou arquivo não encontrado.');
       }
 
       function playTactileSound() {
-        if (!soundEnabled || !stoneAudio) return;
+        const master = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
+        if (master <= 0 || !stoneAudio) return;
         try {
           stoneAudio.currentTime = 0;
-          stoneAudio.play().catch(function() {
-            // Navegadores podem bloquear áudio antes da primeira interação
-          });
+          stoneAudio.volume = Math.max(0, Math.min(1, 0.22 * master));
+          stoneAudio.play().catch(function() {});
         } catch (err) {}
       }
 
@@ -726,35 +925,19 @@
         });
       });
 
-      // Toggle de som no rodapé
-      const soundBtn = document.getElementById('soundToggle');
-      const soundStatus = document.getElementById('soundStatus');
-
-      if (soundBtn && soundStatus) {
-        soundBtn.addEventListener('click', function() {
-          soundEnabled = !soundEnabled;
-          if (soundEnabled) {
-            soundBtn.classList.remove('muted');
-            soundStatus.textContent = 'Som Tátil: Ativo';
-            playTactileSound();
-          } else {
-            soundBtn.classList.add('muted');
-            soundStatus.textContent = 'Som Tátil: Silenciado';
-          }
-        });
-      }
-
       // ════════════ EASTER EGG: 5 CLIQUES NO DINOSSAURO ════════════
       const crest = document.querySelector('.crest-frame');
       let dinoClicks = 0;
       let dinoResetTimer = null;
 
       function playEasterEggSound() {
+        const master = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
+        if (master <= 0) return;
         const audioPaths = ['sons/easter_egg.mp3', 'easter_egg.mp3'];
         let played = false;
         for (const p of audioPaths) {
           const snd = new Audio(p);
-          snd.volume = 0.85;
+          snd.volume = Math.max(0, Math.min(1, 0.85 * master));
           const prom = snd.play();
           if (prom !== undefined) {
             prom.then(() => {
@@ -763,7 +946,7 @@
               // Fallback
               if (!played) {
                 const fb = new Audio('easter_egg.mp3');
-                fb.volume = 0.85;
+                fb.volume = Math.max(0, Math.min(1, 0.85 * master));
                 fb.play().catch(() => {});
               }
             });
