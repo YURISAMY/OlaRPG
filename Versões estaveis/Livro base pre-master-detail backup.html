@@ -2102,661 +2102,6 @@
       line-height: 1.5;
     }
 
-
-    /* ═══════════════════════════════════════════════════════════════ */
-    /* MASTER-DETAIL (LISTA & PAINEL DE DETALHES DE MAGIAS/TÉCNICAS)   */
-    /* ═══════════════════════════════════════════════════════════════ */
-    
-    /* Barra Superior de Controles do Grimório */
-    .spell-master-header-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin: 16px 0 20px;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .spell-filter-group-left {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-    }
-    
-    .spell-active-category-title {
-      font-family: 'Cinzel Decorative', 'Cinzel', serif;
-      font-size: clamp(16px, 3.2vw, 21px);
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #ffd700;
-      text-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
-      text-align: center;
-      margin: 12px 0 18px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-    }
-    .spell-active-category-title::before,
-    .spell-active-category-title::after {
-      content: '';
-      height: 1px;
-      flex: 0 1 60px;
-      background: linear-gradient(90deg, transparent, rgba(201, 146, 26, 0.6));
-    }
-    .spell-active-category-title::after {
-      background: linear-gradient(90deg, rgba(201, 146, 26, 0.6), transparent);
-    }
-
-    /* Seletor de Escola & Alternador de Modo */
-    
-    .spell-sort-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(14, 17, 26, 0.85);
-      padding: 5px 12px;
-      border: 1px solid rgba(201, 146, 26, 0.35);
-      border-radius: 4px;
-      color: rgba(245, 234, 214, 0.75);
-      font-family: 'Cinzel', serif;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .spell-sort-btn:hover {
-      background: rgba(201, 146, 26, 0.2);
-      color: var(--gold-light);
-      border-color: var(--gold-light);
-    }
-    .spell-sort-btn.active {
-      background: rgba(90, 139, 232, 0.25);
-      color: #9abaff;
-      border-color: #5a8be8;
-      box-shadow: 0 0 10px rgba(90, 139, 232, 0.35);
-    }
-    .spell-th.clickable {
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-    .spell-th.clickable:hover {
-      color: #fff;
-    }
-
-    .spell-school-select-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(14, 17, 26, 0.85);
-      padding: 5px 12px;
-      border: 1px solid rgba(201, 146, 26, 0.35);
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-    .spell-school-select-label {
-      font-family: 'Cinzel', serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--gold-light);
-      letter-spacing: 0.05em;
-    }
-    .spell-school-select {
-      background: rgba(10, 12, 18, 0.95);
-      color: var(--parchment);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 3px;
-      padding: 4px 8px;
-      font-family: 'Cinzel', serif;
-      font-size: 11.5px;
-      outline: none;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-    .spell-school-select:focus,
-    .spell-school-select:hover {
-      border-color: var(--gold-light);
-    }
-    .spell-school-select option {
-      background: #0d1017;
-      color: #f5ead6;
-      padding: 6px;
-    }
-
-    .spell-view-toggle {
-      display: inline-flex;
-      background: rgba(10, 12, 18, 0.85);
-      border: 1px solid rgba(201, 146, 26, 0.3);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .view-toggle-btn {
-      padding: 6px 12px;
-      font-family: 'Cinzel', serif;
-      font-size: 11px;
-      font-weight: 700;
-      color: rgba(245, 234, 214, 0.6);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .view-toggle-btn:hover {
-      color: var(--parchment);
-      background: rgba(255, 255, 255, 0.04);
-    }
-    .view-toggle-btn.active {
-      background: rgba(201, 146, 26, 0.22);
-      color: var(--gold-light);
-      box-shadow: inset 0 0 8px rgba(201, 146, 26, 0.25);
-    }
-
-    /* Container Master-Detail Principal */
-    .spell-master-detail-container {
-      display: grid;
-      grid-template-columns: minmax(0, 1.42fr) minmax(360px, 0.98fr);
-      gap: 22px;
-      align-items: start;
-      margin-bottom: 40px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Coluna Esquerda: Tabela / Lista */
-    .spell-master-list-wrapper {
-      background: rgba(11, 14, 22, 0.9);
-      border: 1px solid rgba(201, 146, 26, 0.25);
-      border-radius: 6px;
-      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(12px);
-      display: flex;
-      flex-direction: column;
-      height: 720px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .spell-master-table-header {
-      display: grid;
-      grid-template-columns: 2.5fr 0.9fr 1.7fr 0.9fr;
-      align-items: center;
-      padding: 13px 18px;
-      background: rgba(18, 22, 34, 0.96);
-      border-bottom: 1px solid rgba(201, 146, 26, 0.35);
-      font-family: 'Cinzel', serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      color: var(--gold-light);
-      user-select: none;
-      flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-    }
-    .spell-th {
-      display: flex;
-      align-items: center;
-    }
-    .spell-th.th-actions {
-      justify-content: flex-end;
-    }
-
-    .spell-master-list-body {
-      overflow-y: auto;
-      flex: 1;
-      padding: 8px 10px 14px;
-      scroll-behavior: smooth;
-    }
-    .spell-master-list-body::-webkit-scrollbar {
-      width: 7px;
-    }
-    .spell-master-list-body::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.35);
-    }
-    .spell-master-list-body::-webkit-scrollbar-thumb {
-      background: rgba(201, 146, 26, 0.35);
-      border-radius: 4px;
-    }
-    .spell-master-list-body::-webkit-scrollbar-thumb:hover {
-      background: var(--gold);
-    }
-
-    /* Linha de Feitiço */
-    .spell-list-row {
-      display: grid;
-      grid-template-columns: 2.5fr 0.9fr 1.7fr 0.9fr;
-      align-items: center;
-      padding: 10px 14px;
-      margin: 4px 0;
-      border-radius: 5px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      background: rgba(14, 18, 28, 0.65);
-      cursor: pointer;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      user-select: none;
-      position: relative;
-    }
-    .spell-list-row:hover {
-      background: rgba(24, 32, 50, 0.88);
-      border-color: rgba(90, 139, 232, 0.35);
-      transform: translateX(2px);
-    }
-    /* Linha Selecionada / Ativa (Conforme Mockup com Brilho Neon Azul) */
-    .spell-list-row.active {
-      background: rgba(18, 28, 52, 0.94) !important;
-      border: 1.5px solid #5a8be8 !important;
-      box-shadow: 0 0 16px rgba(90, 139, 232, 0.55), inset 0 0 10px rgba(90, 139, 232, 0.2) !important;
-      transform: scale(1.005);
-      z-index: 2;
-    }
-
-    .spell-col-name {
-      font-family: 'Cinzel', serif;
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--parchment);
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding-right: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .spell-list-row.active .spell-col-name {
-      color: #ffffff;
-      text-shadow: 0 0 12px rgba(90, 139, 232, 0.8);
-    }
-    .spell-col-name .sig-star {
-      color: #ffd700;
-      font-size: 14px;
-      filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
-    }
-
-    .spell-col-cost {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11.5px;
-      white-space: nowrap;
-    }
-    .spell-cost-pill {
-      display: inline-block;
-      padding: 3px 9px;
-      border-radius: 4px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-    .spell-cost-pill.cost-blue {
-      background: radial-gradient(circle at 30% 30%, #3d68d1, #101c3d);
-      color: #b0c8ff;
-      border: 1px solid #5a8be8;
-      box-shadow: 0 0 8px rgba(90, 139, 232, 0.35);
-    }
-    .spell-cost-pill.cost-yellow {
-      background: radial-gradient(circle at 30% 30%, #c9921a, #4a3405);
-      color: #fff1c0;
-      border: 1px solid #e8b84b;
-      box-shadow: 0 0 8px rgba(201, 146, 26, 0.35);
-    }
-    .spell-cost-pill.cost-sig {
-      background: radial-gradient(circle at 30% 30%, #ffd700, #5a4400);
-      color: #fffde0;
-      border: 1px solid #ffe040;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.45);
-    }
-
-    .spell-col-tags {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-      align-items: center;
-      overflow: hidden;
-    }
-    .spell-tag-pill {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 0.06em;
-      padding: 2px 6px;
-      border-radius: 2px;
-      text-transform: uppercase;
-      white-space: nowrap;
-      box-shadow: inset 0 0 3px rgba(0,0,0,0.4);
-    }
-    .spell-tag-pill.tag-escola {
-      background: rgba(201, 146, 26, 0.14);
-      color: var(--gold-light);
-      border: 1px solid rgba(201, 146, 26, 0.32);
-    }
-    .spell-tag-pill.tag-controle {
-      background: rgba(30, 80, 160, 0.25);
-      color: #7ba3f5;
-      border: 1px solid rgba(90, 139, 232, 0.35);
-    }
-    .spell-tag-pill.tag-cura {
-      background: rgba(30, 140, 90, 0.22);
-      color: #5deb9b;
-      border: 1px solid rgba(46, 204, 113, 0.35);
-    }
-    .spell-tag-pill.tag-dano {
-      background: rgba(180, 50, 50, 0.22);
-      color: #ff8585;
-      border: 1px solid rgba(216, 58, 58, 0.35);
-    }
-    .spell-tag-pill.tag-sig {
-      background: rgba(255, 215, 0, 0.16);
-      color: #ffd700;
-      border: 1px solid rgba(255, 215, 0, 0.4);
-    }
-
-    .spell-col-actions {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-      justify-content: flex-end;
-    }
-    .spell-row-btn {
-      font-family: 'Cinzel', serif;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 3px;
-      cursor: pointer;
-      transition: all 0.18s;
-      white-space: nowrap;
-      user-select: none;
-    }
-    .spell-row-btn.btn-ficha {
-      background: rgba(201, 146, 26, 0.14);
-      color: var(--gold-light);
-      border: 1px solid rgba(201, 146, 26, 0.38);
-    }
-    .spell-row-btn.btn-ficha:hover {
-      background: rgba(201, 146, 26, 0.3);
-      border-color: var(--gold);
-      box-shadow: 0 0 10px rgba(201, 146, 26, 0.4);
-      transform: translateY(-1px);
-    }
-    .spell-row-btn.btn-ficha.success {
-      background: rgba(46, 204, 113, 0.25) !important;
-      color: #38ef7d !important;
-      border-color: rgba(46, 204, 113, 0.6) !important;
-    }
-    .spell-row-btn.btn-codigo {
-      background: rgba(255, 255, 255, 0.04);
-      color: rgba(245, 234, 214, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-    }
-    .spell-row-btn.btn-codigo:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
-    }
-    .spell-row-btn.btn-codigo.success {
-      background: rgba(90, 139, 232, 0.25) !important;
-      color: #8bb3f7 !important;
-      border-color: rgba(90, 139, 232, 0.6) !important;
-    }
-
-    /* Divisor de Escola/Seção na Tabela */
-    .spell-list-group-divider {
-      padding: 10px 14px 6px;
-      margin-top: 10px;
-      font-family: 'Cinzel', serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      color: rgba(201, 146, 26, 0.85);
-      text-transform: uppercase;
-      border-bottom: 1px dashed rgba(201, 146, 26, 0.25);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .spell-list-group-divider::before {
-      content: '✦';
-      color: var(--gold-light);
-    }
-
-    /* Coluna Direita: Painel de Detalhes */
-    .spell-detail-pane {
-      position: sticky;
-      top: 85px;
-      background: rgba(12, 15, 24, 0.96);
-      border: 1px solid rgba(201, 146, 26, 0.35);
-      border-radius: 6px;
-      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(90, 139, 232, 0.1);
-      backdrop-filter: blur(14px);
-      padding: 24px;
-      max-height: calc(100vh - 110px);
-      overflow-y: auto;
-      position: relative;
-    }
-    .spell-detail-pane::-webkit-scrollbar {
-      width: 6px;
-    }
-    .spell-detail-pane::-webkit-scrollbar-thumb {
-      background: rgba(201, 146, 26, 0.3);
-      border-radius: 3px;
-    }
-
-    /* Marca d'água arcana SVG */
-    .spell-detail-watermark {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      width: 165px;
-      height: 165px;
-      pointer-events: none;
-      color: rgba(201, 146, 26, 0.12);
-      z-index: 1;
-    }
-
-    .spell-detail-close-btn {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      background: none;
-      border: none;
-      color: rgba(245, 234, 214, 0.5);
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 10;
-      display: none;
-      transition: color 0.2s;
-    }
-    .spell-detail-close-btn:hover {
-      color: #fff;
-    }
-
-    /* Botões de Ação do Painel */
-    .spell-detail-actions-bar {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 3;
-    }
-    .spell-detail-actions-bar.bottom {
-      margin-top: 24px;
-      margin-bottom: 0;
-      padding-top: 18px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .spell-detail-btn-add {
-      flex: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background: linear-gradient(180deg, rgba(201, 146, 26, 0.22), rgba(100, 65, 10, 0.3));
-      border: 1px solid rgba(201, 146, 26, 0.55);
-      color: #fff4d1;
-      font-family: 'Cinzel', serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.22s;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-    }
-    .spell-detail-btn-add:hover {
-      background: linear-gradient(180deg, rgba(201, 146, 26, 0.35), rgba(130, 85, 15, 0.45));
-      border-color: var(--gold-light);
-      box-shadow: 0 0 18px rgba(201, 146, 26, 0.45);
-      transform: translateY(-1px);
-    }
-    .spell-detail-btn-add.success {
-      background: rgba(46, 204, 113, 0.25) !important;
-      color: #38ef7d !important;
-      border-color: rgba(46, 204, 113, 0.7) !important;
-    }
-
-    .spell-detail-btn-copy {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: rgba(245, 234, 214, 0.85);
-      font-family: 'Cinzel', serif;
-      font-size: 11.5px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .spell-detail-btn-copy:hover {
-      background: rgba(255, 255, 255, 0.09);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-1px);
-    }
-    .spell-detail-btn-copy.success {
-      background: rgba(90, 139, 232, 0.25) !important;
-      color: #8bb3f7 !important;
-      border-color: rgba(90, 139, 232, 0.7) !important;
-    }
-
-    /* Conteúdo do Feitiço */
-    .spell-detail-title {
-      font-family: 'Cinzel', serif;
-      font-size: 24px;
-      font-weight: 700;
-      color: #fff3d1;
-      letter-spacing: 0.05em;
-      line-height: 1.3;
-      margin: 0 0 10px;
-      text-shadow: 0 0 16px rgba(201, 146, 26, 0.35);
-      position: relative;
-      z-index: 2;
-    }
-    .spell-detail-meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-      position: relative;
-      z-index: 2;
-    }
-    .spell-detail-divider {
-      height: 1px;
-      background: linear-gradient(90deg, rgba(201, 146, 26, 0.5), rgba(90, 139, 232, 0.2), transparent);
-      margin: 16px 0;
-      position: relative;
-      z-index: 2;
-    }
-    .spell-detail-body {
-      font-size: 13.5px;
-      line-height: 1.7;
-      color: rgba(245, 234, 214, 0.85);
-      position: relative;
-      z-index: 2;
-    }
-    .spell-detail-body p {
-      margin-bottom: 12px;
-    }
-    .spell-detail-warn {
-      margin-top: 14px;
-      padding: 8px 12px;
-      background: rgba(180, 60, 60, 0.12);
-      border-left: 3px solid rgba(216, 58, 58, 0.6);
-      border-radius: 0 4px 4px 0;
-      font-size: 12px;
-      color: rgba(255, 140, 140, 0.9);
-      font-style: italic;
-      line-height: 1.5;
-    }
-    .dice-highlight {
-      color: #9abaff;
-      font-family: 'Share Tech Mono', monospace;
-      font-weight: 700;
-      background: rgba(90, 139, 232, 0.14);
-      padding: 1px 5px;
-      border-radius: 3px;
-      border: 1px solid rgba(90, 139, 232, 0.3);
-    }
-    .spell-detail-empty-placeholder {
-      text-align: center;
-      padding: 60px 20px;
-      color: rgba(245, 234, 214, 0.5);
-      font-family: 'Cinzel', serif;
-      font-size: 14px;
-    }
-    .spell-detail-empty-icon {
-      font-size: 40px;
-      margin-bottom: 12px;
-      opacity: 0.6;
-    }
-
-    /* Responsividade */
-    @media (max-width: 992px) {
-      .spell-master-detail-container {
-        grid-template-columns: 1fr;
-      }
-      .spell-master-list-wrapper {
-        height: 580px;
-      }
-      .spell-master-table-header,
-      .spell-list-row {
-        grid-template-columns: 2.4fr 0.9fr 1.3fr;
-      }
-      .spell-col-actions,
-      .spell-th.th-actions {
-        display: none;
-      }
-      .spell-detail-pane {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: auto;
-        max-height: 80vh;
-        z-index: 9999;
-        border-radius: 12px 12px 0 0;
-        transform: translateY(105%);
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.9);
-      }
-      .spell-detail-pane.mobile-open {
-        transform: translateY(0);
-      }
-      .spell-detail-close-btn {
-        display: block;
-      }
-    }
-
     .tab-btn.base.active {
       color: var(--gold-light);
       border-bottom-color: var(--gold-light);
@@ -10731,81 +10076,27 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
     </div>
    </div>
 
-   
-
-   <!-- BARRA DE CONTROLES AVANÇADOS DO GRIMÓRIO (Escolas & Alternador de Modo) -->
-   <div class="spell-master-header-controls">
-     <div class="spell-filter-group-left">
-       <div class="spell-school-select-wrap">
-         <span class="spell-school-select-label">🏛️ Categoria / Escola:</span>
-         <select id="spell-school-select" class="spell-school-select" onchange="filterSpellCategory(this.value)">
-           <option value="all">✦ Todas as Habilidades</option>
-           <option value="magias">🔵 Magias (Gasto de Mana 🔵)</option>
-           <option value="tecnicas">🟡 Técnicas (Gasto de Stamina 🟡 &amp; Híbridas)</option>
-           <optgroup label="── Escolas Arcanas &amp; Estilos ──" id="optgroup-escolas">
-           </optgroup>
-           <optgroup label="── Especializações ──" id="optgroup-especializacoes">
-           </optgroup>
-         </select>
-       </div>
-       <button type="button" class="spell-sort-btn" id="spell-sort-btn" onclick="toggleAlphabeticalSort()" title="Ordenar alfabeticamente de A a Z">
-         🔤 <span id="sort-btn-label">Ordem A-Z: Desligada</span>
-       </button>
-     </div>
-     <div class="spell-view-toggle">
-       <button type="button" class="view-toggle-btn active" id="view-mode-list-btn" onclick="setSpellViewMode('list')">📋 Lista &amp; Detalhes</button>
-       <button type="button" class="view-toggle-btn" id="view-mode-cards-btn" onclick="setSpellViewMode('cards')">🗂️ Grade de Cards</button>
-     </div>
+   <!-- FILTROS RÚNICOS -->
+   <div class="spell-filter-bar" style="position:relative;z-index:2;">
+    <button class="filter-btn active" onclick="filterSpells('all', this)">
+     ✦ TODAS
+    </button>
+    <button class="filter-btn magica" onclick="filterSpells('magica', this)">
+     🔵 MAGIAS
+    </button>
+    <button class="filter-btn tecnica" onclick="filterSpells('tecnica', this)">
+     🟡 TÉCNICAS
+    </button>
+    <button class="filter-btn" onclick="filterSpells('geral', this)">
+     📜 GERAIS
+    </button>
+    <button class="filter-btn" onclick="filterSpells('exclusiva', this)">
+     ⚡ EXCLUSIVAS
+    </button>
+    <button class="filter-btn" onclick="filterSpells('signature', this)">
+     ⭐ ASSINATURA
+    </button>
    </div>
-
-   <!-- TÍTULO DINÂMICO DE CATEGORIA / ESCOLA ATIVA (Conforme Mockup) -->
-   <div class="spell-active-category-title" id="spell-active-category-title">
-     ESCOLA DE DESTRUIÇÃO - VISTA DETALHADA
-   </div>
-
-   <!-- ════════════ LAYOUT MASTER-DETAIL (LISTA + PAINEL DE DETALHES) ════════════ -->
-   <div class="spell-master-detail-container" id="spell-master-detail-container">
-     <!-- Coluna Esquerda: Tabela Lista -->
-     <div class="spell-master-list-wrapper">
-       <div class="spell-master-table-header">
-         <div class="spell-th th-name clickable" onclick="toggleAlphabeticalSort()" title="Clique para alternar ordenação A-Z">Nome da Magia <span id="th-sort-icon" style="font-size:10px;margin-left:4px;opacity:0.7;">⇅</span></div>
-         <div class="spell-th th-cost">Custo</div>
-         <div class="spell-th th-tags">Tipo / Tags</div>
-         <div class="spell-th th-actions">Ações</div>
-       </div>
-       <div class="spell-master-list-body" id="spell-master-list-body">
-         <!-- Linhas inseridas dinamicamente via JS -->
-       </div>
-     </div>
-
-     <!-- Coluna Direita: Painel de Detalhes -->
-     <aside class="spell-detail-pane" id="spell-detail-pane">
-       <!-- Marca d'água arcana SVG da Rosa dos Ventos / Estrela de 8 pontas -->
-       <div class="spell-detail-watermark" aria-hidden="true">
-         <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-           <circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.35"/>
-           <circle cx="100" cy="100" r="70" stroke="currentColor" stroke-width="1" opacity="0.5"/>
-           <circle cx="100" cy="100" r="45" stroke="currentColor" stroke-width="1" stroke-dasharray="2 4" opacity="0.45"/>
-           <path d="M100 5 L112 75 L185 75 L125 115 L150 185 L100 140 L50 185 L75 115 L15 75 L88 75 Z" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.55"/>
-           <path d="M100 20 L108 80 L168 80 L120 115 L138 170 L100 135 L62 170 L80 115 L32 80 L92 80 Z" stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.3"/>
-           <line x1="100" y1="0" x2="100" y2="200" stroke="currentColor" stroke-width="0.8" opacity="0.25"/>
-           <line x1="0" y1="100" x2="200" y2="100" stroke="currentColor" stroke-width="0.8" opacity="0.25"/>
-           <polygon points="100,65 135,100 100,135 65,100" stroke="currentColor" stroke-width="1" fill="none" opacity="0.4"/>
-         </svg>
-       </div>
-       <button type="button" class="spell-detail-close-btn" id="spell-detail-close-btn" onclick="closeSpellDetail()" title="Fechar detalhes">&times;</button>
-       
-       <div class="spell-detail-content" id="spell-detail-content">
-         <div class="spell-detail-empty-placeholder">
-           <div class="spell-detail-empty-icon">🔮</div>
-           Selecione um encantamento ou técnica na lista para visualizar os detalhes arcanos.
-         </div>
-       </div>
-     </aside>
-   </div>
-
-   <!-- CONTEÚDO ORIGINAL DE CARDS (Preservado e acessível para alternância de modo) -->
-   <div id="spell-cards-view-container" class="spell-cards-view-container" style="display:none;">
    <!-- ── MAGIAS GERAIS ── -->
    <div class="spell-section-header magica">
     <h3>
@@ -15398,7 +14689,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
      </div>
     </div>
    </div>
-     </div> <!-- end spell-cards-view-container -->
   </div>
 
 
@@ -19854,41 +19144,36 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       }
     })();
 
+    const audioCache = {};
+
     function playAudioSafe(paths, volume = 0.3) {
       const master = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
       if (master <= 0) return;
       if (!Array.isArray(paths)) paths = [paths];
       for (const p of paths) {
-        try {
+        if (!audioCache[p]) {
           const snd = new Audio(p);
-          snd.volume = Math.max(0, Math.min(1, volume * master));
-          const prom = snd.play();
-          if (prom !== undefined) {
-            prom.catch(() => {});
-          }
-        } catch(e) {}
+          audioCache[p] = snd;
+        }
+        const a = audioCache[p];
+        a.currentTime = 0;
+        a.volume = Math.max(0, Math.min(1, volume * master));
+        const prom = a.play();
+        if (prom !== undefined) {
+          prom.catch(() => {
+            // Se o arquivo não existir ou for bloqueado pelo navegador, ignora graciosamente
+          });
+        }
         break;
       }
     }
 
-    let lastPageTurnTime = 0;
     function playPageTurn() {
-      const now = Date.now();
-      if (now - lastPageTurnTime < 250) return;
-      lastPageTurnTime = now;
-      playAudioSafe(['sons/folhear 2.mp3', 'folhear 2.mp3', 'sons/folhear.mp3'], 0.5);
+      playAudioSafe(['sons/pagina.mp3', 'sons/folhear.mp3', 'stone.mp3'], 0.22);
     }
 
     function playMagicCast() {
-      playAudioSafe(['sons/magia.mp3', 'sons/feitico.mp3'], 0.25);
-    }
-
-    function playSpellSelectSound() {
-      playAudioSafe(['sons/confirm sound 1.mp3', 'confirm sound 1.mp3'], 0.45);
-    }
-
-    function playAddToSheetSound() {
-      playAudioSafe(['sons/confirm sound 2.mp3', 'confirm sound 2.mp3'], 0.5);
+      playAudioSafe(['sons/magia.mp3', 'sons/feitico.mp3', 'stone.mp3'], 0.2);
     }
 
     function showTab(tab) {
@@ -19900,531 +19185,38 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       if (btn) btn.classList.add('active');
       playPageTurn();
       if (tab === 'feiticos') {
-        setTimeout(() => { initSpellMasterDetail(); updateSpellVisibility(); initSpellCardActions(); }, 50);
+        setTimeout(() => { updateSpellVisibility(); initSpellCardActions(); }, 50);
       }
     }
 
     // ════════════ ORÁCULO DO GRIMÓRIO (FILTROS + BUSCA) ════════════
-    
-        // ════════════ SISTEMA MASTER-DETAIL DO GRIMÓRIO (LISTA & DETALHES) ════════════
-    let allSpellsIndex = [];
-    let currentSpellCategoryFilter = 'all';
-    let currentSpellViewMode = 'list';
-    let selectedSpellId = null;
-    let isMasterDetailInitialized = false;
-    let isAlphabeticalSort = false;
-
-    function initSpellMasterDetail() {
-      if (isMasterDetailInitialized && allSpellsIndex.length > 0) return;
-      
-      const cards = document.querySelectorAll('#tab-feiticos .spell-card');
-      if (!cards.length) return;
-
-      allSpellsIndex = [];
-      const escolasSet = new Set();
-      const especSet = new Set();
-
-      cards.forEach((card, idx) => {
-        const id = idx;
-        card.dataset.spellIndexId = id;
-        
-        const nameEl = card.querySelector('.spell-name');
-        const costEl = card.querySelector('.spell-cost-badge');
-        const descEl = card.querySelector('.spell-desc');
-        const warnEl = card.querySelector('.spell-warn');
-        const tags = Array.from(card.querySelectorAll('.spell-tag')).map(t => t.textContent.trim()).filter(Boolean);
-
-        const name = nameEl ? nameEl.textContent.trim() : 'Feitiço';
-        const custo = costEl ? costEl.textContent.trim() : '';
-        const descHtml = descEl ? descEl.innerHTML.trim() : '';
-        const warnText = warnEl ? warnEl.textContent.trim() : '';
-        const type = card.dataset.type || (card.classList.contains('tecnica') ? 'tecnica' : 'magica');
-        const scope = card.dataset.scope || (card.classList.contains('exclusiva') ? 'exclusiva' : 'geral');
-        const isSig = card.classList.contains('signature') || name.startsWith('⭐');
-
-        // Determinar escola e especialização
-        let school = '';
-        let especializacao = '';
-
-        const exclTag = card.querySelector('.spell-tag.exclusiva-tag');
-        if (exclTag) {
-          especializacao = exclTag.textContent.trim();
-          especSet.add(especializacao);
-        }
-
-        // Identificação precisa da Escola ou Estilo Marcial
-        const schoolTagEl = card.querySelector('.spell-tag.escola');
-        const rawSchool = (schoolTagEl ? schoolTagEl.textContent : '').trim();
-        const rsl = rawSchool.toLowerCase();
-
-        if (rsl.includes('destrui')) school = 'Escola de Destruição';
-        else if (rsl.includes('prote')) school = 'Escola de Proteção';
-        else if (rsl.includes('cura')) school = 'Escola de Cura';
-        else if (rsl.includes('suporte')) school = 'Escola de Suporte';
-        else if (rsl.includes('controle')) school = (type === 'magica' ? 'Escola de Controle' : 'Estilo de Controle');
-        else if (rsl.includes('ofensivo')) school = 'Estilo Ofensivo';
-        else if (rsl.includes('defensivo')) school = 'Estilo Defensivo';
-        else if (rsl.includes('mobilidade')) school = 'Estilo de Mobilidade';
-        else if (rsl.includes('híbrid') || rsl.includes('hibrid')) school = 'Estilo Híbrido';
-        else {
-          // Fallback buscando no cabeçalho anterior do DOM
-          let prev = card.closest('.spell-grid');
-          if (prev) {
-            let sib = prev.previousElementSibling;
-            while (sib) {
-              if (sib.classList && sib.classList.contains('spell-section-header')) {
-                const h3 = sib.querySelector('h3');
-                if (h3) {
-                  const headerText = h3.textContent.trim();
-                  if (headerText.includes('Destruição')) school = 'Escola de Destruição';
-                  else if (headerText.includes('Proteção')) school = 'Escola de Proteção';
-                  else if (headerText.includes('Controle')) school = (type === 'magica' ? 'Escola de Controle' : 'Estilo de Controle');
-                  else if (headerText.includes('Suporte')) school = 'Escola de Suporte';
-                  else if (headerText.includes('Cura')) school = 'Escola de Cura';
-                  else if (headerText.includes('Ofensivo')) school = 'Estilo Ofensivo';
-                  else if (headerText.includes('Defensivo')) school = 'Estilo Defensivo';
-                  else if (headerText.includes('Mobilidade')) school = 'Estilo de Mobilidade';
-                  else if (headerText.includes('Híbrido')) school = 'Estilo Híbrido';
-                  else school = headerText;
-                  break;
-                }
-              }
-              sib = sib.previousElementSibling;
-            }
-          }
-          if (!school) school = (type === 'tecnica' ? 'Técnicas Marciais' : 'Magias Gerais');
-        }
-        
-        if (!especializacao && (school.includes('Escola') || school.includes('Estilo'))) {
-          escolasSet.add(school);
-        }
-
-        // Nome normalizado para ordenação alfabética
-        const normalizedName = name.replace(/^[^a-zA-Z0-9À-ÿ]+/, '').trim().toLowerCase();
-
-        allSpellsIndex.push({
-          id,
-          name,
-          normalizedName,
-          custo,
-          type,
-          scope,
-          isSig,
-          tags,
-          school,
-          especializacao,
-          descHtml,
-          warnText,
-          cardElement: card,
-          searchText: (name + ' ' + custo + ' ' + school + ' ' + especializacao + ' ' + tags.join(' ') + ' ' + (descEl ? descEl.textContent : '')).toLowerCase()
-        });
-      });
-
-      // Preenche o Select com a hierarquia solicitada
-      const optEscolas = document.getElementById('optgroup-escolas');
-      const optEspec = document.getElementById('optgroup-especializacoes');
-      
-      if (optEscolas && optEscolas.children.length === 0) {
-        const orderEscolas = [
-          'Escola de Destruição', 'Escola de Proteção', 'Escola de Controle', 
-          'Escola de Suporte', 'Escola de Cura', 'Estilo Ofensivo', 
-          'Estilo Defensivo', 'Estilo de Controle', 'Estilo de Mobilidade', 'Estilo Híbrido'
-        ];
-        
-        orderEscolas.forEach(sch => {
-          const opt = document.createElement('option');
-          opt.value = 'escola:' + sch;
-          opt.textContent = sch;
-          optEscolas.appendChild(opt);
-        });
-
-        // Qualquer outra escola encontrada que não esteja na lista prioritária
-        escolasSet.forEach(sch => {
-          if (!orderEscolas.includes(sch)) {
-            const opt = document.createElement('option');
-            opt.value = 'escola:' + sch;
-            opt.textContent = sch;
-            optEscolas.appendChild(opt);
-          }
-        });
-      }
-
-      if (optEspec && optEspec.children.length === 0) {
-        const sortedEspec = Array.from(especSet).sort((a, b) => a.localeCompare(b));
-        sortedEspec.forEach(esp => {
-          const opt = document.createElement('option');
-          opt.value = 'espec:' + esp;
-          opt.textContent = esp;
-          optEspec.appendChild(opt);
-        });
-      }
-
-      isMasterDetailInitialized = true;
-      updateSpellVisibility();
-      
-      // Pré-seleciona a primeira magia visível
-      if (allSpellsIndex.length > 0) {
-        selectSpellRow(0, false);
-      }
-    }
-
-    function toggleAlphabeticalSort() {
-      isAlphabeticalSort = !isAlphabeticalSort;
-      const btn = document.getElementById('spell-sort-btn');
-      const label = document.getElementById('sort-btn-label');
-      const thIcon = document.getElementById('th-sort-icon');
-
-      if (btn) btn.classList.toggle('active', isAlphabeticalSort);
-      if (label) label.textContent = isAlphabeticalSort ? 'Ordem A-Z: Ativa' : 'Ordem A-Z: Desligada';
-      if (thIcon) thIcon.textContent = isAlphabeticalSort ? '▲ A-Z' : '⇅';
-
-      playSpellSelectSound();
-      updateSpellVisibility();
-    }
-
-    function renderSpellMasterTable(spellsList) {
-      const body = document.getElementById('spell-master-list-body');
-      if (!body) return;
-
-      if (!spellsList.length) {
-        body.innerHTML = `
-          <div style="text-align:center;padding:48px 16px;color:rgba(245,234,214,0.5);font-family:'Cinzel',serif;">
-            <div style="font-size:28px;margin-bottom:8px;">🔮</div>
-            Nenhum feitiço ou técnica encontrado com os filtros atuais.
-          </div>
-        `;
-        return;
-      }
-
-      // Ordenação: Alfabética ou Natural do Livro
-      let displaySpells = [...spellsList];
-      if (isAlphabeticalSort) {
-        displaySpells.sort((a, b) => a.normalizedName.localeCompare(b.normalizedName));
-      }
-
-      let html = '';
-      let lastGroup = '';
-
-      displaySpells.forEach(spell => {
-        // Se não estiver em ordem alfabética e visualizando tudo, agrupa por escola/origem
-        if (!isAlphabeticalSort && currentSpellCategoryFilter === 'all' && spell.school !== lastGroup) {
-          lastGroup = spell.school;
-          html += `<div class="spell-list-group-divider"><span>${spell.school}</span></div>`;
-        }
-
-        const isActive = (selectedSpellId === spell.id);
-        const activeClass = isActive ? 'active' : '';
-
-        // Badges de custo
-        let costClass = 'cost-blue';
-        if (spell.custo.includes('🟡')) costClass = 'cost-yellow';
-        if (spell.isSig) costClass = 'cost-sig';
-
-        // Tags resumidas
-        let tagsHtml = '';
-        spell.tags.slice(0, 3).forEach(t => {
-          let tagClass = 'tag-escola';
-          const tl = t.toLowerCase();
-          if (tl.includes('controle')) tagClass = 'tag-controle';
-          else if (tl.includes('cura') || tl.includes('restauração')) tagClass = 'tag-cura';
-          else if (tl.includes('dano') || tl.includes('destruição')) tagClass = 'tag-dano';
-          else if (tl.includes('assinatura')) tagClass = 'tag-sig';
-          tagsHtml += `<span class="spell-tag-pill ${tagClass}">${t}</span>`;
-        });
-
-        const starIcon = spell.isSig ? '<span class="sig-star">⭐</span> ' : '';
-
-        html += `
-          <div class="spell-list-row ${activeClass}" id="spell-row-${spell.id}" onclick="selectSpellRow(${spell.id})">
-            <div class="spell-col-name" title="${spell.name}">
-              ${starIcon}<span>${spell.name}</span>
-            </div>
-            <div class="spell-col-cost">
-              <span class="spell-cost-pill ${costClass}">${spell.custo || '—'}</span>
-            </div>
-            <div class="spell-col-tags">
-              ${tagsHtml}
-            </div>
-            <div class="spell-col-actions">
-              <button type="button" class="spell-row-btn btn-ficha" onclick="event.stopPropagation(); sendSpellToSheetFromData(${spell.id}, this)" title="Adicionar à Ficha">
-                + FICHA
-              </button>
-            </div>
-          </div>
-        `;
-      });
-
-      body.innerHTML = html;
-    }
-
-    function selectSpellRow(spellId, shouldPlaySound = true) {
-      const spell = allSpellsIndex.find(s => s.id === spellId);
-      if (!spell) return;
-
-      selectedSpellId = spellId;
-
-      // Atualiza classe ativa nas linhas
-      document.querySelectorAll('.spell-list-row').forEach(r => r.classList.remove('active'));
-      const activeRow = document.getElementById('spell-row-' + spellId);
-      if (activeRow) {
-        activeRow.classList.add('active');
-      }
-
-      // Preenche o painel de detalhes
-      renderSpellDetailPane(spell);
-
-      // Em mobile, abre a gaveta
-      const pane = document.getElementById('spell-detail-pane');
-      if (pane && window.innerWidth <= 992) {
-        pane.classList.add('mobile-open');
-      }
-
-      // Som 1 de confirmação ao clicar em qualquer magia da lista
-      if (shouldPlaySound) {
-        playSpellSelectSound();
-      }
-    }
-
-    function closeSpellDetail() {
-      const pane = document.getElementById('spell-detail-pane');
-      if (pane) {
-        pane.classList.remove('mobile-open');
-      }
-    }
-
-    function renderSpellDetailPane(spell) {
-      const container = document.getElementById('spell-detail-content');
-      if (!container) return;
-
-      let formattedDesc = spell.descHtml;
-      try {
-        formattedDesc = formattedDesc.replace(/\b(\d+d\d+(?:\s*[\+\-]\s*\d+)?)\b/g, '<span class="dice-highlight">$1</span>');
-      } catch (e) {
-        formattedDesc = spell.descHtml;
-      }
-
-      let costClass = 'cost-blue';
-      if (spell.custo.includes('🟡')) costClass = 'cost-yellow';
-      if (spell.isSig) costClass = 'cost-sig';
-
-      let tagsHtml = '';
-      spell.tags.forEach(t => {
-        tagsHtml += `<span class="spell-tag-pill tag-escola">${t}</span>`;
-      });
-
-      const warnHtml = spell.warnText ? `
-        <div class="spell-detail-warn">
-          ⚠️ ${spell.warnText}
-        </div>
-      ` : '';
-
-      container.innerHTML = `
-        <!-- Botão Único de Ação no Topo -->
-        <div class="spell-detail-actions-bar">
-          <button type="button" class="spell-detail-btn-add" onclick="sendSpellToSheetFromData(${spell.id}, this)">
-            ➕ ADICIONAR À FICHA
-          </button>
-        </div>
-
-        <!-- Cabeçalho do Feitiço -->
-        <h3 class="spell-detail-title">
-          ${spell.isSig ? '⭐ ' : ''}${spell.name}
-        </h3>
-        
-        <div class="spell-detail-meta">
-          <span class="spell-cost-pill ${costClass}">${spell.custo ? 'Custo: ' + spell.custo : 'Sem Custo'}</span>
-          <span class="spell-tag-pill tag-escola">🏛️ ${spell.school}</span>
-          ${tagsHtml}
-        </div>
-
-        <div class="spell-detail-divider"></div>
-
-        <!-- Descrição & Regras -->
-        <div class="spell-detail-body">
-          ${formattedDesc}
-          ${warnHtml}
-        </div>
-      `;
-    }
-
-    function filterSpellCategory(catVal) {
-      currentSpellCategoryFilter = catVal;
-      playSpellSelectSound();
-      updateSpellVisibility();
-    }
-
-    function filterSpells(filter, btn) {
-      const select = document.getElementById('spell-school-select');
-
-      if (filter === 'all') {
-        currentSpellCategoryFilter = 'all';
-        if (select) select.value = 'all';
-      } else if (filter === 'magica') {
-        currentSpellCategoryFilter = 'magias';
-        if (select) select.value = 'magias';
-      } else if (filter === 'tecnica') {
-        currentSpellCategoryFilter = 'tecnicas';
-        if (select) select.value = 'tecnicas';
-      } else if (filter === 'signature') {
-        currentSpellCategoryFilter = 'signature';
-      } else if (filter === 'geral') {
-        currentSpellCategoryFilter = 'geral';
-      } else if (filter === 'exclusiva') {
-        currentSpellCategoryFilter = 'exclusiva';
-      }
-
-      playSpellSelectSound();
-      updateSpellVisibility();
-    }
-
-    function setSpellViewMode(mode) {
-      currentSpellViewMode = mode;
-      const listBtn = document.getElementById('view-mode-list-btn');
-      const cardsBtn = document.getElementById('view-mode-cards-btn');
-      const masterDetailContainer = document.getElementById('spell-master-detail-container');
-      const cardsContainer = document.getElementById('spell-cards-view-container');
-
-      if (mode === 'list') {
-        if (listBtn) listBtn.classList.add('active');
-        if (cardsBtn) cardsBtn.classList.remove('active');
-        if (masterDetailContainer) masterDetailContainer.style.display = 'grid';
-        if (cardsContainer) cardsContainer.style.display = 'none';
-      } else {
-        if (listBtn) listBtn.classList.remove('active');
-        if (cardsBtn) cardsBtn.classList.add('active');
-        if (masterDetailContainer) masterDetailContainer.style.display = 'none';
-        if (cardsContainer) cardsContainer.style.display = 'block';
-      }
-      playPageTurn();
-    }
-
-    function updateSpellCategoryHeader(visibleCount) {
-      const headerEl = document.getElementById('spell-active-category-title');
-      if (!headerEl) return;
-
-      let title = 'GRIMÓRIO DE MAGIAS & TÉCNICAS - VISTA DETALHADA';
-
-      if (currentSpellCategoryFilter === 'magias') {
-        title = 'MAGIAS (GASTO DE MANA 🔵) - VISTA DETALHADA';
-      } else if (currentSpellCategoryFilter === 'tecnicas') {
-        title = 'TÉCNICAS (GASTO DE STAMINA 🟡 & HÍBRIDAS) - VISTA DETALHADA';
-      } else if (currentSpellCategoryFilter.startsWith('escola:')) {
-        const sch = currentSpellCategoryFilter.replace('escola:', '').toUpperCase();
-        title = `${sch} - VISTA DETALHADA`;
-      } else if (currentSpellCategoryFilter.startsWith('espec:')) {
-        const esp = currentSpellCategoryFilter.replace('espec:', '').toUpperCase();
-        title = `ESPECIALIZAÇÃO: ${esp} - VISTA DETALHADA`;
-      } else if (currentSpellCategoryFilter === 'signature') {
-        title = 'HABILIDADES DE ASSINATURA - VISTA DETALHADA';
-      }
-
-      headerEl.textContent = title;
-    }
-
-    function sendSpellToSheetFromData(spellId, btn) {
-      const spell = allSpellsIndex.find(s => s.id === spellId);
-      if (!spell) return;
-      
-      const spellData = getSpellDataFromCard(spell.cardElement);
-
-      // BroadcastChannel
-      try {
-        const channel = new BroadcastChannel('olarpg_channel');
-        channel.postMessage({ type: 'ADD_SPELL', spell: spellData, ts: Date.now() });
-        channel.close();
-      } catch (e) {
-        console.warn('BroadcastChannel error:', e);
-      }
-
-      // LocalStorage
-      try {
-        const queueKey = 'olarpg_pending_spells';
-        const queue = JSON.parse(localStorage.getItem(queueKey) || '[]');
-        if (!queue.some(s => s.name === spellData.name)) {
-          queue.push(spellData);
-          localStorage.setItem(queueKey, JSON.stringify(queue));
-        }
-        localStorage.setItem('olarpg_spell_trigger', JSON.stringify({ spell: spellData, ts: Date.now() }));
-      } catch (e) {
-        console.warn('LocalStorage error:', e);
-      }
-
-      // Som 2 de confirmação ao adicionar à ficha
-      playAddToSheetSound();
-
-      btn.classList.add('success');
-      const originalHtml = btn.innerHTML;
-      btn.innerHTML = '✓ Na Ficha!';
-      showLivroToast(`✨ <b>${spellData.name}</b> enviada para a Ficha!`);
-      setTimeout(() => {
-        btn.classList.remove('success');
-        btn.innerHTML = originalHtml;
-      }, 2200);
-    }
-
     function updateSpellVisibility() {
-      if (!isMasterDetailInitialized && document.querySelectorAll('#tab-feiticos .spell-card').length) {
-        initSpellMasterDetail();
-        return;
-      }
-
       const input = document.getElementById('spell-search-input');
       const query = (input ? input.value : '').toLowerCase().trim();
       const cards = document.querySelectorAll('#tab-feiticos .spell-card');
       let visibleCount = 0;
-      let totalCount = allSpellsIndex.length || cards.length;
-      const visibleSpells = [];
+      let totalCount = cards.length;
 
-      allSpellsIndex.forEach(spell => {
-        let matchesCategory = false;
+      cards.forEach(card => {
+        const type = card.dataset.type || '';
+        const scope = card.dataset.scope || '';
+        const isSig = card.classList.contains('signature');
+        const text = card.innerText.toLowerCase();
 
-        if (currentSpellCategoryFilter === 'all') {
-          matchesCategory = true;
-        } else if (currentSpellCategoryFilter === 'magias') {
-          // Apenas as que gastam mana (🔵)
-          matchesCategory = spell.custo.includes('🔵');
-        } else if (currentSpellCategoryFilter === 'tecnicas') {
-          // Apenas as que gastam stamina (🟡) ou escola híbrida
-          matchesCategory = spell.custo.includes('🟡') || spell.school.toLowerCase().includes('híbrido') || spell.school.toLowerCase().includes('hibrid');
-        } else if (currentSpellCategoryFilter.startsWith('escola:')) {
-          const targetSchool = currentSpellCategoryFilter.replace('escola:', '').trim().toLowerCase();
-          const spellSchool = (spell.school || '').toLowerCase();
-          matchesCategory = (spellSchool === targetSchool || spellSchool.includes(targetSchool) || targetSchool.includes(spellSchool));
-        } else if (currentSpellCategoryFilter.startsWith('espec:')) {
-          const targetEspec = currentSpellCategoryFilter.replace('espec:', '').trim().toLowerCase();
-          matchesCategory = (spell.especializacao && spell.especializacao.toLowerCase().includes(targetEspec)) || 
-                            spell.tags.some(t => t.toLowerCase().includes(targetEspec));
-        } else if (currentSpellCategoryFilter === 'signature') {
-          matchesCategory = spell.isSig;
-        } else if (currentSpellCategoryFilter === 'geral') {
-          matchesCategory = (spell.scope === 'geral');
-        } else if (currentSpellCategoryFilter === 'exclusiva') {
-          matchesCategory = (spell.scope === 'exclusiva');
-        }
+        let matchesFilter = false;
+        if (currentSpellFilter === 'all') matchesFilter = true;
+        else if (currentSpellFilter === 'magica') matchesFilter = (type === 'magica');
+        else if (currentSpellFilter === 'tecnica') matchesFilter = (type === 'tecnica');
+        else if (currentSpellFilter === 'geral') matchesFilter = (scope === 'geral');
+        else if (currentSpellFilter === 'exclusiva') matchesFilter = (scope === 'exclusiva');
+        else if (currentSpellFilter === 'signature') matchesFilter = isSig;
 
-        let matchesQuery = !query || spell.searchText.includes(query);
+        const matchesQuery = !query || text.includes(query);
 
-        const show = matchesCategory && matchesQuery;
-        if (spell.cardElement) {
-          spell.cardElement.classList.toggle('hidden', !show);
-        }
-        if (show) {
-          visibleCount++;
-          visibleSpells.push(spell);
-        }
+        const show = matchesFilter && matchesQuery;
+        card.classList.toggle('hidden', !show);
+        if (show) visibleCount++;
       });
-
-      // Renderiza a tabela do Master-Detail
-      renderSpellMasterTable(visibleSpells);
-      updateSpellCategoryHeader(visibleCount);
-
-      // Se a magia atualmente selecionada não estiver mais visível, seleciona a primeira visível
-      if (visibleSpells.length > 0) {
-        const isCurrentVisible = visibleSpells.some(s => s.id === selectedSpellId);
-        if (!isCurrentVisible) {
-          selectSpellRow(visibleSpells[0].id, false);
-        }
-      }
 
       const badge = document.getElementById('spell-count-badge');
       if (badge) {
@@ -20435,8 +19227,6 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
         }
       }
     }
-
-
 
     function filterSpells(filter, btn) {
       currentSpellFilter = filter;
@@ -20670,10 +19460,23 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
 
     // Inicialização e Efeitos Tácteis
     document.addEventListener('DOMContentLoaded', () => {
-      initSpellMasterDetail();
       updateSpellVisibility();
       initSubclassTrees();
 
+      let lastCardSound = 0;
+      document.querySelectorAll('.card, #tab-feiticos .spell-card, .relic-card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          const now = Date.now();
+          if (now - lastCardSound > 150) {
+            lastCardSound = now;
+            if (card.classList.contains('spell-card')) {
+              playMagicCast();
+            } else {
+              playPageTurn();
+            }
+          }
+        });
+      });
 
       // Easter egg 5 cliques no dinossauro do topo
       const brandLogo = document.querySelector('.topbar-brand');

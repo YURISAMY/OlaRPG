@@ -9,10 +9,14 @@ Usage: uv run server.py
 import json
 import os
 import pathlib
+import sys
 import threading
 import time
 import socketserver
 import http.server
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 
 ROOT = pathlib.Path(__file__).resolve().parent
 PORT = 8080
@@ -22,8 +26,13 @@ lr_changed = threading.Event()
 
 
 class HTTPHandler(http.server.SimpleHTTPRequestHandler):
-    """Serves static files with livereload polling."""
+    """Serves static files with livereload polling and no-cache."""
     directory = str(ROOT)
+
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+        self.send_header("Pragma", "no-cache")
+        super().end_headers()
 
     def do_GET(self):
         if self.path == "/__livereload__":
