@@ -2970,11 +2970,12 @@ function recoverTurn() {
   void btn.offsetWidth; // reflow to restart animation
   btn.classList.add('rec-btn-flash');
 
+  // Áudio de recuperação de turno
+  playAudio('sons/turn_restore.mp3', 0.7);
+
   save();
   // refresh use buttons to reflect new resource values
-  renderSkills();
-  renderPassivas();
-  renderMagias();
+  refreshUseButtons();
 }
 
 function updateRecPreview() {
