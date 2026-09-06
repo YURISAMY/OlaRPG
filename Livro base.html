@@ -20719,16 +20719,20 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       const isSignature = card.classList.contains('signature') || !!card.querySelector('.signature-tag') || name.startsWith('⭐');
 
       // Determinar categoria da ficha
-      let categoria = 'magiasGerais';
+      const isHybrid = tags.some(t => /h[íi]brid/i.test(t)) || /h[íi]brid/i.test(rawDesc);
+      let categoria = 'magias';
       let recurso = 'fo';
       if (scope === 'exclusiva' || card.classList.contains('exclusiva')) {
-        categoria = 'exclusivas';
+        categoria = custo.includes('🟡') ? 'tecnicas' : 'magias';
         recurso = custo.includes('🟡') ? 'st' : 'fo';
-      } else if (type === 'tecnica' || card.classList.contains('tecnica')) {
-        categoria = 'tecnicasGerais';
+      } else if (isHybrid || custo.includes('🔵')) {
+        categoria = 'magias';
+        recurso = 'fo';
+      } else if (type === 'tecnica' || card.classList.contains('tecnica') || custo.includes('🟡')) {
+        categoria = 'tecnicas';
         recurso = 'st';
       } else {
-        categoria = 'magiasGerais';
+        categoria = 'magias';
         recurso = 'fo';
       }
 

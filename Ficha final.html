@@ -2468,88 +2468,10 @@
     </div>
   </div>
 
-  <!-- HABILIDADES DA CLASSE -->
-    <div class="panel">
-      <div class="panel-title">Habilidades da Classe</div>
-
-      <div class="sub-label">Skills Base</div>
-      <div class="list-area" id="list-skills-base"><div class="empty-state">Nenhum item adicionado.</div></div>
-      <div class="add-form">
-        <div class="add-form-row">
-          <input class="flex2" type="text" id="new-skill-name" placeholder="Nome da habilidade">
-          <select id="new-skill-tipo" class="flex1">
-            <option value="passiva">Passiva</option>
-            <option value="rapida">Rápida</option>
-            <option value="padrao">Padrão</option>
-          </select>
-          <input class="flex1" type="text" id="new-skill-custo" placeholder="Custo">
-        </div>
-        <div class="add-form-row">
-          <select id="new-skill-recurso" class="flex1" style="max-width:140px;">
-            <option value="">Nenhum</option>
-            <option value="st">🟡 Stamina</option>
-            <option value="fo">🔵 Foco</option>
-          </select>
-          <textarea class="flex2" id="new-skill-desc" placeholder="Descrição (opcional)" rows="2"></textarea>
-          <button class="add-btn" onclick="addSkill(&#39;base&#39;)">+ Adicionar</button>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="sub-label">Habilidades da Especialização</div>
-      <div class="list-area" id="list-skills-spec"><div class="empty-state">Nenhum item adicionado.</div></div>
-      <div class="add-form">
-        <div class="add-form-row">
-          <input class="flex2" type="text" id="new-specskill-name" placeholder="Nome da habilidade">
-          <select id="new-specskill-tipo" class="flex1">
-            <option value="passiva">Passiva</option>
-            <option value="rapida">Rápida</option>
-            <option value="padrao">Padrão</option>
-            <option value="assinatura">⭐ Assinatura</option>
-          </select>
-          <input class="flex1" type="text" id="new-specskill-custo" placeholder="Custo">
-        </div>
-        <div class="add-form-row">
-          <select id="new-specskill-recurso" class="flex1" style="max-width:140px;">
-            <option value="">Nenhum</option>
-            <option value="st">🟡 Stamina</option>
-            <option value="fo">🔵 Foco</option>
-          </select>
-          <textarea class="flex2" id="new-specskill-desc" placeholder="Descrição (opcional)" rows="2"></textarea>
-          <button class="add-btn" onclick="addSkill(&#39;spec&#39;)">+ Adicionar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PASSIVAS -->
-    <div class="panel">
-      <div class="panel-title">Passivas Escolhidas</div>
-      <div class="list-area" id="list-passivas"><div class="empty-state">Nenhum item adicionado.</div></div>
-      <div class="add-form">
-        <div class="add-form-row">
-          <input class="flex2" type="text" id="new-passiva-name" placeholder="Nome da passiva">
-          <input class="flex1" type="text" id="new-passiva-origem" placeholder="Origem (ex: Marcial)">
-        </div>
-        <div class="add-form-row">
-          <input class="flex1" type="text" id="new-passiva-custo" placeholder="Custo (ex: 1🟡)">
-          <select id="new-passiva-recurso" class="flex1" style="max-width:140px;">
-            <option value="st">🟡 Stamina</option>
-            <option value="fo">🔵 Foco</option>
-            <option value="">Sem recurso</option>
-          </select>
-        </div>
-        <div class="add-form-row">
-          <textarea class="flex2" id="new-passiva-desc" placeholder="Descrição (opcional)" rows="2"></textarea>
-          <button class="add-btn" onclick="addPassiva()">+ Adicionar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MAGIAS E TÉCNICAS -->
+  <!-- MAGIAS, HABILIDADES E PASSIVAS -->
     <div class="panel">
       <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-        <span>Magias &amp; Técnicas Conhecidas</span>
+        <span>Magias, Habilidades e Passivas</span>
         <div style="display:flex;gap:6px;">
           <button type="button" class="add-btn" onclick="openImportSpellModal()" title="Importar magia ou técnica por código">
             📥 Importar Código
@@ -2560,63 +2482,74 @@
         </div>
       </div>
 
-      <div class="sub-label">Magias Gerais</div>
-      <div class="list-area" id="list-magias-gerais"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <!-- SEÇÃO 1: MAGIAS -->
+      <div class="sub-label">🔮 Magias</div>
+      <div class="list-area" id="list-magias"><div class="empty-state">Nenhum item adicionado.</div></div>
       <div class="add-form">
         <div class="add-form-row">
-          <input class="flex2" type="text" id="new-magia-g-name" placeholder="Nome da magia">
-          <select id="new-magia-g-tipo" class="flex1">
-            <option value="padrao">Padrão</option>
-            <option value="rapida">Rápida</option>
-          </select>
-          <input class="flex1" type="text" id="new-magia-g-custo" placeholder="Custo">
-        </div>
-        <div class="add-form-row">
-          <textarea class="flex1" id="new-magia-g-desc" placeholder="Escola / Descrição" rows="2"></textarea>
-          <button class="add-btn" onclick="addMagia(&#39;gerais&#39;)">+ Adicionar</button>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="sub-label">Técnicas Gerais</div>
-      <div class="list-area" id="list-tecnicas-gerais"><div class="empty-state">Nenhum item adicionado.</div></div>
-      <div class="add-form">
-        <div class="add-form-row">
-          <input class="flex2" type="text" id="new-tec-g-name" placeholder="Nome da técnica">
-          <select id="new-tec-g-tipo" class="flex1">
-            <option value="padrao">Padrão</option>
-            <option value="rapida">Rápida</option>
-          </select>
-          <input class="flex1" type="text" id="new-tec-g-custo" placeholder="Custo">
-        </div>
-        <div class="add-form-row">
-          <textarea class="flex1" id="new-tec-g-desc" placeholder="Estilo / Descrição" rows="2"></textarea>
-          <button class="add-btn" onclick="addMagia(&#39;tecnicas&#39;)">+ Adicionar</button>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="sub-label">Exclusivas da Especialização</div>
-      <div class="list-area" id="list-exclusivas"><div class="empty-state">Nenhum item adicionado.</div></div>
-      <div class="add-form">
-        <div class="add-form-row">
-          <input class="flex2" type="text" id="new-excl-name" placeholder="Nome">
-          <select id="new-excl-tipo" class="flex1">
+          <input class="flex2" type="text" id="new-magia-name" placeholder="Nome da magia">
+          <select id="new-magia-tipo" class="flex1">
             <option value="padrao">Padrão</option>
             <option value="rapida">Rápida</option>
             <option value="assinatura">⭐ Assinatura</option>
           </select>
-          <input class="flex1" type="text" id="new-excl-custo" placeholder="Custo">
+          <input class="flex1" type="text" id="new-magia-custo" placeholder="Custo (ex: 3🔵)">
         </div>
         <div class="add-form-row">
-          <textarea class="flex1" id="new-excl-desc" placeholder="Descrição" rows="2"></textarea>
-          <select id="new-excl-recurso" class="flex1" style="max-width:140px;">
+          <select id="new-magia-recurso" class="flex1" style="max-width:140px;">
             <option value="fo">🔵 Foco</option>
-            <option value="st">🟡 Stamina</option>
           </select>
-          <button class="add-btn" onclick="addMagia(&#39;exclusivas&#39;)">+ Adicionar</button>
+          <textarea class="flex2" id="new-magia-desc" placeholder="Escola / Descrição" rows="2"></textarea>
+          <button class="add-btn" onclick="addMagia()">+ Adicionar</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- SEÇÃO 2: HABILIDADES & TÉCNICAS -->
+      <div class="sub-label">⚔ Habilidades &amp; Técnicas</div>
+      <div class="list-area" id="list-tecnicas"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-tecnica-name" placeholder="Nome da habilidade ou técnica">
+          <select id="new-tecnica-tipo" class="flex1">
+            <option value="padrao">Padrão</option>
+            <option value="rapida">Rápida</option>
+            <option value="assinatura">⭐ Assinatura</option>
+          </select>
+          <input class="flex1" type="text" id="new-tecnica-custo" placeholder="Custo (ex: 2🟡)">
+        </div>
+        <div class="add-form-row">
+          <select id="new-tecnica-recurso" class="flex1" style="max-width:140px;">
+            <option value="st">🟡 Stamina</option>
+            <option value="">Sem recurso</option>
+          </select>
+          <textarea class="flex2" id="new-tecnica-desc" placeholder="Estilo / Descrição" rows="2"></textarea>
+          <button class="add-btn" onclick="addTecnica()">+ Adicionar</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- SEÇÃO 3: PASSIVAS -->
+      <div class="sub-label">📜 Passivas</div>
+      <div class="list-area" id="list-passivas"><div class="empty-state">Nenhum item adicionado.</div></div>
+      <div class="add-form">
+        <div class="add-form-row">
+          <input class="flex2" type="text" id="new-passiva-name" placeholder="Nome da passiva">
+          <input class="flex1" type="text" id="new-passiva-origem" placeholder="Origem (ex: Marcial, Raça)">
+        </div>
+        <div class="add-form-row">
+          <input class="flex1" type="text" id="new-passiva-custo" placeholder="Custo (ex: 1🟡 ou opcional)">
+          <select id="new-passiva-recurso" class="flex1" style="max-width:140px;">
+            <option value="">Sem recurso</option>
+            <option value="st">🟡 Stamina</option>
+            <option value="fo">🔵 Foco</option>
+          </select>
+        </div>
+        <div class="add-form-row">
+          <textarea class="flex2" id="new-passiva-desc" placeholder="Descrição da passiva" rows="2"></textarea>
+          <button class="add-btn" onclick="addPassiva()">+ Adicionar</button>
         </div>
       </div>
     </div>
@@ -2802,13 +2735,10 @@ let state = {
   attrs: { for:10, des:10, con:10, int:10, car:10, sab:10 },
   profAttrs: [],   // atributos que recebem bônus de proficiência
   resources: { hpCur:20, hpMax:20, stCur:12, stMax:12, foCur:10, foMax:10, recSt:2, recFo:2 },
-  skillsBase: [],
-  skillsSpec: [],
-  itens: [],
+  magias: [],
+  tecnicas: [],
   passivas: [],
-  magiasGerais: [],
-  tecnicasGerais: [],
-  exclusivas: [],
+  itens: [],
   artefatos: [
     { name:'', effect:'', raridade:'comum' },
     { name:'', effect:'', raridade:'comum' },
@@ -3011,9 +2941,9 @@ function updateMod(attr) {
 
 // ─── RECOVERY ─────────────────────────────────────────────────────────
 function refreshUseButtons() {
-  renderSkills();
-  renderPassivas();
   renderMagias();
+  renderTecnicas();
+  renderPassivas();
   renderComboEditor();
 }
 
@@ -3197,29 +3127,10 @@ function renderList(listId, items, removeCallback) {
   }).join('');
 }
 
-function addSkill(type) {
-  const prefix = type === 'base' ? 'new-skill' : 'new-specskill';
-  const name = document.getElementById(prefix + '-name').value.trim();
-  if (!name) return;
-  const item = {
-    name,
-    tipo: document.getElementById(prefix + '-tipo').value,
-    custo: document.getElementById(prefix + '-custo').value.trim(),
-    recurso: document.getElementById(prefix + '-recurso').value,
-    desc: document.getElementById(prefix + '-desc').value.trim()
-  };
-  if (type === 'base') state.skillsBase.push(item);
-  else state.skillsSpec.push(item);
-  document.getElementById(prefix + '-name').value = '';
-  document.getElementById(prefix + '-custo').value = '';
-  document.getElementById(prefix + '-recurso').value = '';
-  document.getElementById(prefix + '-desc').value = '';
-  renderSkills();
-  save();
-}
-
-function removeSkillBase(i) { state.skillsBase.splice(i, 1); renderSkills(); save(); }
-function removeSkillSpec(i) { state.skillsSpec.splice(i, 1); renderSkills(); save(); }
+// Funções de compatibilidade para chamadas legadas
+function addSkill(type) { addTecnica(); }
+function removeSkillBase(i) { removeTecnica(i); }
+function removeSkillSpec(i) { removeTecnica(i); }
 
 /* ════════════ GERENCIADOR DE VOLUME MASTER GLOBAL ════════════ */
 (function initMasterVolumeManager() {
@@ -3386,51 +3297,136 @@ function playSkillAudio(recurso, cost) {
   }
 }
 
-function useSkill(listKey, index) {
-  const map = { skillsBase:'skillsBase', skillsSpec:'skillsSpec' };
-  const items = state[map[listKey]];
-  const item = items[index];
-  if (!item || !item.recurso || !item.custo) return;
-  const resIcon = item.recurso === 'st' ? '🟡' : '🔵';
-  const cost = parseCost(item.custo, resIcon);
-  const { cur } = getCurAndMaxByResource(item.recurso);
-  const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
-  const { cur: stCur } = getCurAndMaxByResource('st');
-  if (cost !== null && cur >= cost && stCur >= foTax) {
-    spendResource(item.recurso, cost);
-    if (foTax > 0) spendResource('st', foTax);
-    refreshUseButtons();
-    syncPushState(true); // envia o novo HP/ST/FO já, antes do aviso, pra evitar sobrescrever com valor antigo
-    syncLogAction('skill', item.name, item.custo, item.desc);
-    playSkillAudio(item.recurso, cost);
+// ─── GERENCIADOR E MIGRAÇÃO DAS HABILIDADES, MAGIAS E PASSIVAS ───
+function migrarEstruturaHabilidades(st) {
+  if (!st) return st;
+  if (!Array.isArray(st.magias)) st.magias = [];
+  if (!Array.isArray(st.tecnicas)) st.tecnicas = [];
+  if (!Array.isArray(st.passivas)) st.passivas = [];
+
+  const jaTem = (arr, nome) => arr.some(it => (it.name || '').trim().toLowerCase() === nome.trim().toLowerCase());
+
+  // 1. Migrar magiasGerais -> magias
+  if (Array.isArray(st.magiasGerais)) {
+    st.magiasGerais.forEach(item => {
+      if (item && item.name && !jaTem(st.magias, item.name)) {
+        item.recurso = item.recurso || 'fo';
+        st.magias.push(item);
+      }
+    });
+    delete st.magiasGerais;
   }
+
+  // 2. Migrar tecnicasGerais -> magias (se foco ou híbrido) ou tecnicas
+  if (Array.isArray(st.tecnicasGerais)) {
+    st.tecnicasGerais.forEach(item => {
+      if (!item || !item.name) return;
+      const isHybrid = /h[íi]brid/i.test(item.desc || '') || item.recurso === 'fo' || (item.custo && item.custo.includes('🔵'));
+      if (isHybrid) {
+        item.recurso = 'fo';
+        if (!jaTem(st.magias, item.name)) st.magias.push(item);
+      } else {
+        item.recurso = item.recurso || 'st';
+        if (!jaTem(st.tecnicas, item.name)) st.tecnicas.push(item);
+      }
+    });
+    delete st.tecnicasGerais;
+  }
+
+  // 3. Migrar exclusivas -> passivas, magias ou tecnicas
+  if (Array.isArray(st.exclusivas)) {
+    st.exclusivas.forEach(item => {
+      if (!item || !item.name) return;
+      if (item.tipo === 'passiva') {
+        if (!jaTem(st.passivas, item.name)) st.passivas.push(item);
+      } else if (item.recurso === 'fo' || (item.custo && item.custo.includes('🔵')) || /h[íi]brid/i.test(item.desc || '')) {
+        item.recurso = 'fo';
+        if (!jaTem(st.magias, item.name)) st.magias.push(item);
+      } else {
+        item.recurso = item.recurso || 'st';
+        if (!jaTem(st.tecnicas, item.name)) st.tecnicas.push(item);
+      }
+    });
+    delete st.exclusivas;
+  }
+
+  // 4. Migrar skillsBase -> passivas, magias ou tecnicas
+  if (Array.isArray(st.skillsBase)) {
+    st.skillsBase.forEach(item => {
+      if (!item || !item.name) return;
+      if (item.tipo === 'passiva') {
+        if (!jaTem(st.passivas, item.name)) st.passivas.push(item);
+      } else if (item.recurso === 'fo' || (item.custo && item.custo.includes('🔵')) || /h[íi]brid/i.test(item.desc || '')) {
+        item.recurso = 'fo';
+        if (!jaTem(st.magias, item.name)) st.magias.push(item);
+      } else {
+        item.recurso = item.recurso || 'st';
+        if (!jaTem(st.tecnicas, item.name)) st.tecnicas.push(item);
+      }
+    });
+    delete st.skillsBase;
+  }
+
+  // 5. Migrar skillsSpec -> passivas, magias ou tecnicas
+  if (Array.isArray(st.skillsSpec)) {
+    st.skillsSpec.forEach(item => {
+      if (!item || !item.name) return;
+      if (item.tipo === 'passiva') {
+        if (!jaTem(st.passivas, item.name)) st.passivas.push(item);
+      } else if (item.recurso === 'fo' || (item.custo && item.custo.includes('🔵')) || /h[íi]brid/i.test(item.desc || '')) {
+        item.recurso = 'fo';
+        if (!jaTem(st.magias, item.name)) st.magias.push(item);
+      } else {
+        item.recurso = item.recurso || 'st';
+        if (!jaTem(st.tecnicas, item.name)) st.tecnicas.push(item);
+      }
+    });
+    delete st.skillsSpec;
+  }
+
+  return st;
 }
 
-function _renderSkillsWithBtns(listId, items, removeCallback, listKey) {
+function _renderAbilityList(listId, items, listKey, useFnName, removeFnName) {
   const el = document.getElementById(listId);
-  if (!items.length) {
+  if (!el) return;
+  if (!items || !items.length) {
     el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
     return;
   }
   const resIconMap = { st:'🟡', fo:'🔵' };
   el.innerHTML = items.map((item, i) => {
-    const tipo = item.tipo || 'passiva';
+    const tipo = item.tipo || (listKey === 'passivas' ? 'passiva' : 'padrao');
     const tagClass = tipo === 'assinatura' ? 'assinatura' : tipo;
     const tipoLabel = { passiva:'Passiva', rapida:'Rápida', padrao:'Padrão', assinatura:'⭐ Assinatura' }[tipo] || tipo;
+    const recurso = item.recurso || (listKey === 'magias' ? 'fo' : (item.custo && item.custo.includes('🔵') ? 'fo' : 'st'));
+    const resIcon = resIconMap[recurso] || (recurso === 'st' ? '🟡' : '🔵');
+
     let useBtn = '';
-    if (item.custo && item.recurso && tipo !== 'passiva') {
-      const resIcon = resIconMap[item.recurso] || '🔵';
+    if (item.custo && recurso && tipo !== 'passiva') {
       const cost = parseCost(item.custo, resIcon);
-      const { cur } = getCurAndMaxByResource(item.recurso);
-      const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+      const { cur } = getCurAndMaxByResource(recurso);
+      const foTax = recurso === 'fo' ? Math.ceil(cost / 3) : 0;
       const { cur: stCur } = getCurAndMaxByResource('st');
       const canUse = cost !== null && cur >= cost && stCur >= foTax;
       useBtn = `<button class="list-use-btn ${canUse ? '' : 'insufficient'}"
-        onclick="useSkill('${listKey}', ${i})"
+        onclick="${useFnName}(${i})"
+        title="${canUse ? 'Usar (-' + cost + resIcon + (foTax ? ' / -' + foTax + '🟡' : '') + ')' : 'Recurso insuficiente'}">
+        Usar
+      </button>`;
+    } else if (listKey === 'passivas' && item.custo && item.recurso) {
+      const cost = parseCost(item.custo, resIcon);
+      const { cur } = getCurAndMaxByResource(recurso);
+      const foTax = recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+      const { cur: stCur } = getCurAndMaxByResource('st');
+      const canUse = cost !== null && cur >= cost && stCur >= foTax;
+      useBtn = `<button class="list-use-btn ${canUse ? '' : 'insufficient'}"
+        onclick="usePassiva(${i})"
         title="${canUse ? 'Usar (-' + cost + resIcon + (foTax ? ' / -' + foTax + '🟡' : '') + ')' : 'Recurso insuficiente'}">
         Usar
       </button>`;
     }
+
     return `<div class="list-item" data-index="${i}">
       <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
       <div class="list-item-content">
@@ -3439,27 +3435,47 @@ function _renderSkillsWithBtns(listId, items, removeCallback, listKey) {
         <div class="list-item-tags">
           <span class="tag ${tagClass}">${tipoLabel}</span>
           ${item.custo ? `<span class="tag custo">${item.custo}</span>` : ''}
+          ${item.origem ? `<span class="tag passiva">${item.origem}</span>` : ''}
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
         <button class="list-edit-btn" onclick="editGenericSkill('${listKey}', ${i})" title="Editar">✎</button>
         ${useBtn}
-        <button class="list-remove" onclick="${removeCallback}(${i})">x</button>
+        <button class="list-remove" onclick="${removeFnName}(${i})">x</button>
       </div>
     </div>`;
   }).join('');
-  _makeDraggable(el, listKey, renderSkills);
+  _makeDraggable(el, listKey, () => {
+    if (listKey === 'magias') renderMagias();
+    else if (listKey === 'tecnicas') renderTecnicas();
+    else if (listKey === 'passivas') renderPassivas();
+  });
 }
 
-function renderSkills() {
-  _renderSkillsWithBtns('list-skills-base', state.skillsBase, 'removeSkillBase', 'skillsBase');
-  _renderSkillsWithBtns('list-skills-spec', state.skillsSpec, 'removeSkillSpec', 'skillsSpec');
+function renderMagias() {
+  _renderAbilityList('list-magias', state.magias || [], 'magias', 'useMagia', 'removeMagia');
   renderComboSkillSelect();
 }
 
+function renderTecnicas() {
+  _renderAbilityList('list-tecnicas', state.tecnicas || [], 'tecnicas', 'useTecnica', 'removeTecnica');
+  renderComboSkillSelect();
+}
+
+function renderPassivas() {
+  _renderAbilityList('list-passivas', state.passivas || [], 'passivas', 'usePassiva', 'removePassiva');
+  renderComboSkillSelect();
+}
+
+function renderSkills() {
+  renderTecnicas();
+}
+
+// ─── AÇÕES DE PASSIVAS ───
 function addPassiva() {
   const name = document.getElementById('new-passiva-name').value.trim();
   if (!name) return;
+  if (!state.passivas) state.passivas = [];
   state.passivas.push({
     name,
     tipo: 'passiva',
@@ -3472,59 +3488,20 @@ function addPassiva() {
   document.getElementById('new-passiva-origem').value = '';
   document.getElementById('new-passiva-desc').value = '';
   document.getElementById('new-passiva-custo').value = '';
-  document.getElementById('new-passiva-recurso').value = 'st';
+  document.getElementById('new-passiva-recurso').value = '';
   renderPassivas();
   save();
 }
-function removePassiva(i) { state.passivas.splice(i, 1); renderPassivas(); save(); }
 
-function _renderPassivaWithBtns() {
-  const el = document.getElementById('list-passivas');
-  const items = state.passivas;
-  if (!items.length) {
-    el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
-    return;
-  }
-  const resIconMap = { st:'🟡', fo:'🔵' };
-  el.innerHTML = items.map((item, i) => {
-    const tagClass = 'passiva';
-    let useBtn = '';
-    if (item.custo && item.recurso) {
-      const resIcon = resIconMap[item.recurso] || '🔵';
-      const cost = parseCost(item.custo, resIcon);
-      const { cur } = getCurAndMaxByResource(item.recurso);
-      const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
-      const { cur: stCur } = getCurAndMaxByResource('st');
-      const canUse = cost !== null && cur >= cost && stCur >= foTax;
-      useBtn = `<button class="list-use-btn ${canUse ? '' : 'insufficient'}"
-        onclick="usePassiva(${i})"
-        title="${canUse ? 'Usar (-' + cost + resIcon + (foTax ? ' / -' + foTax + '🟡' : '') + ')' : 'Recurso insuficiente'}">
-        Usar
-      </button>`;
-    }
-    return `<div class="list-item" data-index="${i}">
-      <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
-      <div class="list-item-content">
-        <div class="list-item-name">${item.name}</div>
-        ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
-        <div class="list-item-tags">
-          <span class="tag ${tagClass}">Passiva</span>
-          ${item.custo ? `<span class="tag custo">${item.custo}</span>` : ''}
-          ${item.origem ? `<span class="tag passiva">${item.origem}</span>` : ''}
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-        <button class="list-edit-btn" onclick="editPassiva(${i})" title="Editar">✎</button>
-        ${useBtn}
-        <button class="list-remove" onclick="removePassiva(${i})">x</button>
-      </div>
-    </div>`;
-  }).join('');
-  _makeDraggable(el, 'passivas', renderPassivas);
+function removePassiva(i) {
+  if (!state.passivas) return;
+  state.passivas.splice(i, 1);
+  renderPassivas();
+  save();
 }
 
-function usePassiva(index) {
-  const item = state.passivas[index];
+function usePassiva(i) {
+  const item = state.passivas && state.passivas[i];
   if (!item || !item.recurso || !item.custo) return;
   const resIcon = item.recurso === 'st' ? '🟡' : '🔵';
   const cost = parseCost(item.custo, resIcon);
@@ -3537,10 +3514,9 @@ function usePassiva(index) {
     refreshUseButtons();
     syncPushState(true);
     syncLogAction('passiva', item.name, item.custo, item.desc);
+    playSkillAudio(item.recurso, cost);
   }
 }
-
-function renderPassivas() { _renderPassivaWithBtns(); renderComboSkillSelect(); }
 
 function addItem() {
   const name = document.getElementById('new-item-name').value.trim();
@@ -3612,28 +3588,102 @@ function useItem(index) {
 
 function renderItens() { _renderItensWithBtns(); }
 
+// ─── AÇÕES DE MAGIAS ───
 function addMagia(type) {
-  const prefixes = { gerais:'new-magia-g', tecnicas:'new-tec-g', exclusivas:'new-excl' };
-  const p = prefixes[type];
-  const name = document.getElementById(p + '-name').value.trim();
+  const nameInput = document.getElementById('new-magia-name');
+  if (!nameInput) return;
+  const name = nameInput.value.trim();
   if (!name) return;
-  // Magias->Foco, Técnicas->Stamina, Exclusivas->selecionado
-  let recurso = 'fo';
-  if (type === 'tecnicas') recurso = 'st';
-  if (type === 'exclusivas') recurso = document.getElementById('new-excl-recurso').value;
-  const item = { name, tipo: document.getElementById(p+'-tipo').value, custo: document.getElementById(p+'-custo').value.trim(), desc: document.getElementById(p+'-desc').value.trim(), recurso };
-  if (type === 'gerais') state.magiasGerais.push(item);
-  else if (type === 'tecnicas') state.tecnicasGerais.push(item);
-  else state.exclusivas.push(item);
-  document.getElementById(p+'-name').value = '';
-  document.getElementById(p+'-custo').value = '';
-  document.getElementById(p+'-desc').value = '';
+  const tipo = document.getElementById('new-magia-tipo').value;
+  let custo = document.getElementById('new-magia-custo').value.trim();
+  const recurso = 'fo';
+  if (custo && !custo.includes('🔵') && !custo.includes('🟡') && !isNaN(custo)) {
+    custo += '🔵';
+  }
+  const desc = document.getElementById('new-magia-desc').value.trim();
+  if (!state.magias) state.magias = [];
+  state.magias.push({ name, tipo, custo, recurso, desc });
+  nameInput.value = '';
+  document.getElementById('new-magia-custo').value = '';
+  document.getElementById('new-magia-desc').value = '';
   renderMagias();
   save();
 }
-function removeMagiaGeral(i) { state.magiasGerais.splice(i,1); renderMagias(); save(); }
-function removeTecnicaGeral(i) { state.tecnicasGerais.splice(i,1); renderMagias(); save(); }
-function removeExclusiva(i) { state.exclusivas.splice(i,1); renderMagias(); save(); }
+
+function removeMagia(i) {
+  if (!state.magias) return;
+  state.magias.splice(i, 1);
+  renderMagias();
+  save();
+}
+
+function useMagia(i) {
+  const item = state.magias && state.magias[i];
+  if (!item || !item.custo) return;
+  const recurso = item.recurso || 'fo';
+  const resIcon = recurso === 'st' ? '🟡' : '🔵';
+  const cost = parseCost(item.custo, resIcon);
+  const { cur } = getCurAndMaxByResource(recurso);
+  const foTax = recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+  const { cur: stCur } = getCurAndMaxByResource('st');
+  if (cost !== null && cur >= cost && stCur >= foTax) {
+    spendResource(recurso, cost);
+    if (foTax > 0) spendResource('st', foTax);
+    refreshUseButtons();
+    syncPushState(true);
+    syncLogAction('magia', item.name, item.custo, item.desc);
+    playSkillAudio(recurso, cost);
+  }
+}
+
+// ─── AÇÕES DE HABILIDADES & TÉCNICAS ───
+function addTecnica() {
+  const nameInput = document.getElementById('new-tecnica-name');
+  if (!nameInput) return;
+  const name = nameInput.value.trim();
+  if (!name) return;
+  const tipo = document.getElementById('new-tecnica-tipo').value;
+  let custo = document.getElementById('new-tecnica-custo').value.trim();
+  const recurso = document.getElementById('new-tecnica-recurso').value;
+  if (recurso === 'st' && custo && !custo.includes('🟡') && !custo.includes('🔵') && !isNaN(custo)) {
+    custo += '🟡';
+  }
+  const desc = document.getElementById('new-tecnica-desc').value.trim();
+  if (!state.tecnicas) state.tecnicas = [];
+  state.tecnicas.push({ name, tipo, custo, recurso, desc });
+  nameInput.value = '';
+  document.getElementById('new-tecnica-custo').value = '';
+  document.getElementById('new-tecnica-desc').value = '';
+  renderTecnicas();
+  save();
+}
+
+function removeTecnica(i) {
+  if (!state.tecnicas) return;
+  state.tecnicas.splice(i, 1);
+  renderTecnicas();
+  save();
+}
+
+function useTecnica(i) {
+  const item = state.tecnicas && state.tecnicas[i];
+  if (!item) return;
+  const recurso = item.recurso || (item.custo && item.custo.includes('🔵') ? 'fo' : 'st');
+  const resIcon = recurso === 'fo' ? '🔵' : '🟡';
+  const cost = parseCost(item.custo, resIcon);
+  if (cost === null || !recurso) return;
+  const { cur } = getCurAndMaxByResource(recurso);
+  const foTax = recurso === 'fo' ? Math.ceil(cost / 3) : 0;
+  const { cur: stCur } = getCurAndMaxByResource('st');
+  if (cur >= cost && stCur >= foTax) {
+    spendResource(recurso, cost);
+    if (foTax > 0) spendResource('st', foTax);
+    refreshUseButtons();
+    syncPushState(true);
+    syncLogAction('skill', item.name, item.custo, item.desc);
+    playSkillAudio(recurso, cost);
+  }
+}
 
 function parseCost(custo, resIcon) {
   if (!custo) return null;
@@ -3661,79 +3711,6 @@ function spendResource(recurso, amount) {
     el.value = Math.max(0, (parseFloat(el.value)||0) - amount);
     updateBar('fo'); save();
   }
-}
-
-function useMagia(listKey, index) {
-  const map = { magiasGerais:'magiasGerais', tecnicasGerais:'tecnicasGerais', exclusivas:'exclusivas' };
-  const items = state[map[listKey]];
-  const item = items[index];
-  if (!item || !item.recurso || !item.custo) return;
-  const resIcon = item.recurso === 'st' ? '🟡' : '🔵';
-  const cost = parseCost(item.custo, resIcon);
-  const { cur } = getCurAndMaxByResource(item.recurso);
-  const foTax = item.recurso === 'fo' ? Math.ceil(cost / 3) : 0;
-  const { cur: stCur } = getCurAndMaxByResource('st');
-  if (cost !== null && cur >= cost && stCur >= foTax) {
-    spendResource(item.recurso, cost);
-    if (foTax > 0) spendResource('st', foTax);
-    refreshUseButtons();
-    syncPushState(true);
-    syncLogAction('magia', item.name, item.custo, item.desc);
-    playSkillAudio(item.recurso, cost);
-  }
-}
-
-function _renderMagiaWithBtns(listId, items, removeCallback, listKey) {
-  const el = document.getElementById(listId);
-  if (!items.length) {
-    el.innerHTML = '<div class="empty-state">Nenhum item adicionado.</div>';
-    return;
-  }
-  const resIconMap = { st:'🟡', fo:'🔵' };
-  el.innerHTML = items.map((item, i) => {
-    const tipo = item.tipo || 'padrao';
-    const tagClass = tipo === 'assinatura' ? 'assinatura' : tipo;
-    const tipoLabel = { passiva:'Passiva', rapida:'Rápida', padrao:'Padrão', assinatura:'⭐ Assinatura' }[tipo] || tipo;
-    const recurso = item.recurso || 'fo';
-    const resIcon = resIconMap[recurso] || '🔵';
-    let useBtn = '';
-    if (item.custo) {
-      const cost = parseCost(item.custo, resIcon);
-      const { cur } = getCurAndMaxByResource(recurso);
-      const foTax = recurso === 'fo' ? Math.ceil(cost / 3) : 0;
-      const { cur: stCur } = getCurAndMaxByResource('st');
-      const canUse = cost !== null && cur >= cost && stCur >= foTax;
-      useBtn = `<button class="list-use-btn ${canUse ? '' : 'insufficient'}"
-        onclick="useMagia('${listKey}', ${i})"
-        title="${canUse ? 'Usar (-' + cost + resIcon + (foTax ? ' / -' + foTax + '🟡' : '') + ')' : 'Recurso insuficiente'}">
-        Usar
-      </button>`;
-    }
-    return `<div class="list-item" data-index="${i}">
-      <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
-      <div class="list-item-content">
-        <div class="list-item-name">${item.name}</div>
-        ${item.desc ? `<div class="list-item-detail">${item.desc}</div>` : ''}
-        <div class="list-item-tags">
-          <span class="tag ${tagClass}">${tipoLabel}</span>
-          ${item.custo ? `<span class="tag custo">${item.custo}</span>` : ''}
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
-        <button class="list-edit-btn" onclick="editGenericSkill('${listKey}', ${i})" title="Editar">✎</button>
-        ${useBtn}
-        <button class="list-remove" onclick="${removeCallback}(${i})">x</button>
-      </div>
-    </div>`;
-  }).join('');
-  _makeDraggable(el, listKey, () => renderMagias());
-}
-
-function renderMagias() {
-  _renderMagiaWithBtns('list-magias-gerais', state.magiasGerais, 'removeMagiaGeral', 'magiasGerais');
-  _renderMagiaWithBtns('list-tecnicas-gerais', state.tecnicasGerais, 'removeTecnicaGeral', 'tecnicasGerais');
-  _renderMagiaWithBtns('list-exclusivas', state.exclusivas, 'removeExclusiva', 'exclusivas');
-  renderComboSkillSelect();
 }
 
 
@@ -3793,14 +3770,11 @@ function _enableDragOnList(listId, stateKey, renderFn) {
 // state.comboAtivo = id | null
 
 function _getAllSkills() {
-  // Retorna todas as habilidades de todas as seções com custo parseado
+  // Retorna todas as habilidades das 3 seções com custo parseado
   const SECTIONS = [
-    { arr: state.skillsBase,     label: 'Classe (Base)' },
-    { arr: state.skillsSpec,     label: 'Classe (Esp.)' },
-    { arr: state.passivas,       label: 'Passivas' },
-    { arr: state.magiasGerais,   label: 'Magias' },
-    { arr: state.tecnicasGerais, label: 'Técnicas' },
-    { arr: state.exclusivas,     label: 'Exclusivas' },
+    { arr: state.magias,   label: 'Magias' },
+    { arr: state.tecnicas, label: 'Habilidades/Técnicas' },
+    { arr: state.passivas, label: 'Passivas' },
   ];
   const skills = [];
   SECTIONS.forEach(({ arr, label }) => {
@@ -4156,10 +4130,11 @@ function applyState() {
   document.getElementById('char-notes').value = state.notes||'';
   document.getElementById('char-historia').value = state.historia||'';
 
-  renderSkills();
+  migrarEstruturaHabilidades(state);
+  renderMagias();
+  renderTecnicas();
   renderPassivas();
   renderItens();
-  renderMagias();
   updateProfBonus();
   updateCD();
   if (!state.combos) state.combos = [];
@@ -4184,8 +4159,10 @@ function getDefaultState() {
     attrs: { for:10, des:10, con:10, int:10, car:10, sab:10 },
     profAttrs: [],
     resources: { hpCur:20, hpMax:20, stCur:12, stMax:12, foCur:10, foMax:10, recSt:2, recFo:2 },
-    skillsBase: [], skillsSpec: [], itens: [], passivas: [],
-    magiasGerais: [], tecnicasGerais: [], exclusivas: [],
+    magias: [],
+    tecnicas: [],
+    passivas: [],
+    itens: [],
     artefatos: [
       { name:'', effect:'', raridade:'comum' },
       { name:'', effect:'', raridade:'comum' },
@@ -4420,19 +4397,23 @@ function importJSON(event) {
 
 // ─── GENERIC EDIT FUNCTIONS ──────────────────────────────────────────
 function editGenericSkill(listKey, idx) {
+  if (listKey === 'passivas') {
+    editPassiva(idx);
+    return;
+  }
   const list = getListByType(listKey);
   if (!list || idx >= list.length) return;
   const item = list[idx];
   const fields = [
     {key:'name', label:'Nome', type:'text', placeholder:'Nome'},
     {key:'desc', label:'Descrição', type:'textarea', placeholder:'Descrição (opcional)'},
-    {key:'tipo', label:'Tipo', type:'select', options:['passiva','rapida','padrao','assinatura']},
-    {key:'custo', label:'Custo', type:'text', placeholder:'Ex: 3🟡'},
+    {key:'tipo', label:'Tipo', type:'select', options:['padrao','rapida','assinatura']},
+    {key:'custo', label:'Custo', type:'text', placeholder: listKey === 'magias' ? 'Ex: 3🔵' : 'Ex: 2🟡'},
   ];
   if (listKey !== 'itens') {
     fields.push({key:'recurso', label:'Recurso', type:'select', options:['','st','fo']});
   }
-  openEditModal('Editar: ' + (item.name || 'Item'), item, fields, listKey, idx);
+  openEditModal('Editar: ' + (item.name || 'Habilidade'), item, fields, listKey, idx);
 }
 
 function editPassiva(idx) {
@@ -4508,18 +4489,18 @@ function saveEditModal() {
 
 function getListByType(listKey) {
   const map = {
-    skillsBase: 'skillsBase', skillsSpec: 'skillsSpec',
-    passivas: 'passivas', itens: 'itens',
-    magiasGerais: 'magiasGerais', tecnicasGerais: 'tecnicasGerais', exclusivas: 'exclusivas'
+    magias: 'magias', tecnicas: 'tecnicas', passivas: 'passivas', itens: 'itens',
+    skillsBase: 'tecnicas', skillsSpec: 'tecnicas',
+    magiasGerais: 'magias', tecnicasGerais: 'tecnicas', exclusivas: 'magias'
   };
   return state[map[listKey]] || null;
 }
 
 function renderAll() {
-  renderSkills();
+  renderMagias();
+  renderTecnicas();
   renderPassivas();
   renderItens();
-  renderMagias();
 }
 
 function openSkillEdit(listKey, idx) {
@@ -4813,6 +4794,8 @@ const FX_DURATIONS = { glitch: 1500, estatico: 2100, nevoa: 6500 };
 const FX_NOISE_W = 160, FX_NOISE_H = 90; // resolução baixa de propósito: fica "granulado" e roda liso
 let fxEstaticoCtx = null, fxEstaticoAnimId = null, fxEstaticoStopAt = 0;
 
+let fxChiadoAudio = null;
+
 function fxEstaticoStart(duracaoMs) {
   const canvas = document.getElementById('fx-estatico-canvas');
   if (!canvas) return;
@@ -4824,6 +4807,32 @@ function fxEstaticoStart(duracaoMs) {
   fxEstaticoStopAt = performance.now() + duracaoMs;
   if (fxEstaticoAnimId) cancelAnimationFrame(fxEstaticoAnimId);
   fxEstaticoLoop();
+
+  // Tocar som de chiado sincronizado com o efeito de estático
+  try {
+    if (fxChiadoAudio) {
+      fxChiadoAudio.pause();
+      fxChiadoAudio.currentTime = 0;
+    }
+    fxChiadoAudio = new Audio('sons/chiado.mp3');
+    const master = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
+    fxChiadoAudio.volume = Math.max(0, Math.min(1, 0.65 * master));
+    fxChiadoAudio.play().catch(() => {});
+    setTimeout(() => {
+      if (fxChiadoAudio) {
+        let v = fxChiadoAudio.volume;
+        const fInterval = setInterval(() => {
+          v -= 0.1;
+          if (v <= 0.05) {
+            clearInterval(fInterval);
+            if (fxChiadoAudio) { fxChiadoAudio.pause(); fxChiadoAudio = null; }
+          } else if (fxChiadoAudio) {
+            fxChiadoAudio.volume = Math.max(0, v);
+          }
+        }, 50);
+      }
+    }, duracaoMs);
+  } catch (e) {}
 }
 
 function fxEstaticoLoop() {
@@ -5101,17 +5110,32 @@ function importSpellToActiveFicha(spell, showToast = true) {
   if (!spell || !spell.name) return false;
   if (!state) return false;
 
-  let cat = spell.categoria || 'magiasGerais';
-  if (!['magiasGerais', 'tecnicasGerais', 'exclusivas'].includes(cat)) {
-    cat = 'magiasGerais';
+  // Determinar categoria (magias, tecnicas, passivas)
+  // Regra especial: Técnicas do Estilo Híbrido ou habilidades que gastam mana (🔵) vão para magias
+  const isHybrid = (spell.tags && spell.tags.some(t => /h[íi]brid/i.test(t))) || /h[íi]brid/i.test(spell.desc || '');
+  const isMana = spell.recurso === 'fo' || (spell.custo && spell.custo.includes('🔵')) || isHybrid;
+  const isPassive = spell.tipo === 'passiva' || (spell.categoria && spell.categoria === 'passivas');
+
+  let cat = 'tecnicas';
+  let recursoPadrao = 'st';
+
+  if (isPassive) {
+    cat = 'passivas';
+    recursoPadrao = spell.recurso || '';
+  } else if (isMana) {
+    cat = 'magias';
+    recursoPadrao = 'fo';
+  } else {
+    cat = 'tecnicas';
+    recursoPadrao = spell.recurso || 'st';
   }
 
   if (!Array.isArray(state[cat])) {
     state[cat] = [];
   }
 
-  // Verificar se já existe na ficha
-  const jaExiste = state[cat].some(it => it.name.trim().toLowerCase() === spell.name.trim().toLowerCase());
+  // Verificar se já existe na lista de destino
+  const jaExiste = state[cat].some(it => (it.name || '').trim().toLowerCase() === spell.name.trim().toLowerCase());
   if (jaExiste) {
     if (showToast) {
       syncShowToast(`⚠️ <b>${spell.name}</b> já está na sua lista!`, 'warn');
@@ -5121,21 +5145,24 @@ function importSpellToActiveFicha(spell, showToast = true) {
 
   const newItem = {
     name: spell.name.trim(),
-    tipo: spell.tipo || 'padrao',
+    tipo: spell.tipo || (isPassive ? 'passiva' : 'padrao'),
     custo: (spell.custo || '').trim(),
     desc: (spell.desc || '').trim(),
-    recurso: spell.recurso || (cat === 'tecnicasGerais' ? 'st' : 'fo')
+    recurso: recursoPadrao
   };
 
   state[cat].push(newItem);
-  renderMagias();
+  if (cat === 'magias') renderMagias();
+  else if (cat === 'tecnicas') renderTecnicas();
+  else renderPassivas();
+
   save();
   if (typeof syncPushState === 'function') syncPushState(true);
 
   const catNomes = {
-    magiasGerais: 'Magias Gerais',
-    tecnicasGerais: 'Técnicas Gerais',
-    exclusivas: 'Exclusivas'
+    magias: 'Magias',
+    tecnicas: 'Habilidades & Técnicas',
+    passivas: 'Passivas'
   };
   const catLabel = catNomes[cat] || 'Habilidades';
 

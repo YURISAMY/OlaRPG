@@ -5767,18 +5767,33 @@
 
     const FX_NOME = { glitch: 'Glitch', estatico: 'Estático', nevoa: 'Névoa' };
 
+    function tocarChiado() {
+      try {
+        const audio = new Audio('sons/chiado.mp3');
+        const master = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
+        audio.volume = Math.max(0, Math.min(1, 0.65 * master));
+        audio.play().catch(e => console.warn('Erro ao tocar chiado:', e));
+      } catch (e) {}
+    }
+
     function dispararEfeitoJogador(id, tipo) {
       if (!playersRef) return;
       const p = sessionPlayers[id];
       playersRef.child(id).update({
         effect: { tipo, ts: Date.now() }
       });
+      if (tipo === 'estatico') {
+        tocarChiado();
+      }
       addBattleLog('🎭', 'ativou o efeito <strong>' + (FX_NOME[tipo] || tipo) + '</strong> em <span class="log-skill-name">' + (p?.name || 'Jogador') + '</span>');
     }
 
     function dispararEfeitoMesa(tipo) {
       if (!currentSessionCode || !syncDb) return;
       syncDb.ref('sessions/' + currentSessionCode + '/broadcastEffect').set({ tipo, ts: Date.now() }).catch(e => console.error('Erro ao disparar efeito:', e));
+      if (tipo === 'estatico') {
+        tocarChiado();
+      }
       addBattleLog('🎭', 'ativou o efeito <strong>' + (FX_NOME[tipo] || tipo) + '</strong> pra mesa toda.');
     }
 
