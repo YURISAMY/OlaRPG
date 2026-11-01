@@ -4777,6 +4777,7 @@ function collectState() {
     ouro: document.getElementById('char-ouro').value,
     arquetipo: document.getElementById('char-arquetipo').value,
     subclasse: document.getElementById('char-subclasse').value,
+    raca: document.getElementById('char-raca').value,
     especializacao: document.getElementById('char-especializacao').value,
     multi: document.getElementById('char-multi').value,
     jogador: document.getElementById('char-jogador').value,
@@ -4876,6 +4877,10 @@ function applyState() {
 // ─── SISTEMA DE MÚLTIPLAS FICHAS ─────────────────────────────────────
 const FICHAS_KEY   = 'rpg-fichas-v2';
 const ATIVA_KEY    = 'rpg-ficha-ativa';
+let _fichaCarregada = false;   // só vira true depois que a ficha salva foi lida do navegador
+let _fichaIdDaAba = null;      // ficha que ESTA aba está editando
+let _localRev = 0;             // conta alterações locais (para saber se o envio ao servidor está em dia)
+let _pushPendente = false;     // há envio ao servidor aguardando o atraso de 350 ms
 const LEGACY_KEY   = 'rpg-ficha';
 
 function gerarId() {
@@ -4920,7 +4925,7 @@ function carregarFichas() {
       const nome = dadosLegados.char?.name || 'Personagem';
       fichas[id] = { nome, dados: dadosLegados };
       salvarFichas(fichas);
-      localStorage.setItem(ATIVA_KEY, id);
+      setIdAtivo(id);
       return fichas;
     }
   } catch(e) {}
@@ -4929,28 +4934,78 @@ function carregarFichas() {
   const id = gerarId();
   fichas[id] = { nome: 'Personagem 1', dados: getDefaultState() };
   salvarFichas(fichas);
-  localStorage.setItem(ATIVA_KEY, id);
+  setIdAtivo(id);
   return fichas;
 }
 
+let _avisoSalvarTs = 0;
 function salvarFichas(fichas) {
-  try { localStorage.setItem(FICHAS_KEY, JSON.stringify(fichas)); } catch(e) {}
+  try {
+    localStorage.setItem(FICHAS_KEY, JSON.stringify(fichas));
+    return true;
+  } catch(e) {
+    // Antes a falha era silenciosa: a pessoa achava que estava salvo e perdia tudo ao sair.
+    if (Date.now() - _avisoSalvarTs > 60000) {
+      _avisoSalvarTs = Date.now();
+      try { syncShowToast('⚠️ <b>Não foi possível salvar</b> neste navegador (modo anônimo, armazenamento cheio ou bloqueado). Use <i>Exportar</i> para guardar sua ficha.', 'warn'); } catch(_) {}
+    }
+    return false;
+  }
+}
+
+function setIdAtivo(id) {
+  _fichaIdDaAba = id;
+  try { localStorage.setItem(ATIVA_KEY, id); } catch(e) {}
 }
 
 function getIdAtivo() {
+  if (_fichaIdDaAba) return _fichaIdDaAba;
   return localStorage.getItem(ATIVA_KEY) || Object.keys(carregarFichas())[0];
+}
+
+// Outra aba/janela gravou esta ficha depois da última vez que esta aba a leu?
+function abaDesatualizada() {
+  try {
+    const f = carregarFichas()[getIdAtivo()];
+    return !!(f && f.dados && (f.dados._savedAt || 0) > (state._savedAt || 0));
+  } catch (e) { return false; }
+}
+
+// Grava o state desta aba na ficha ativa. Retorna 'ok' | 'fail' | 'missing' | 'stale'.
+// Uma aba em segundo plano com dados antigos NÃO sobrescreve o que outra aba gravou depois.
+function gravarEstadoAtivo(nome) {
+  const fichas = carregarFichas();
+  const id = getIdAtivo();
+  if (!fichas[id]) return 'missing';
+  const guardado = (fichas[id].dados && fichas[id].dados._savedAt) || 0;
+  if (document.hidden && guardado > (state._savedAt || 0)) return 'stale';
+  state._savedAt = Math.max(Date.now(), guardado + 1);
+  fichas[id].dados = JSON.parse(JSON.stringify(state));
+  if (nome) fichas[id].nome = nome;
+  return salvarFichas(fichas) ? 'ok' : 'fail';
+}
+
+// Ao voltar para a aba, se outra aba gravou algo mais novo, adota o que está salvo
+function recarregarSeOutraAbaGravou() {
+  try {
+    if (document.hidden) return;
+    const fichas = carregarFichas();
+    const dados = fichas[getIdAtivo()] && fichas[getIdAtivo()].dados;
+    if (!dados || !((dados._savedAt || 0) > (state._savedAt || 0))) return;
+    state = { ...getDefaultState(), ...dados };
+    applyState();
+    renderFichasTabs();
+  } catch (e) { console.warn('Falha ao recarregar ficha:', e); }
 }
 
 function save() {
   collectState();
-  const fichas = carregarFichas();
-  const id = getIdAtivo();
-  if (!fichas[id]) return;
-  fichas[id].dados = JSON.parse(JSON.stringify(state));
+  _localRev++;
+  if (state.sessionCode) state.syncDirty = true; // alteração local ainda não confirmada pelo servidor
   // Sincroniza nome da aba com o nome do personagem
   const nomePers = (state.char?.name || '').trim();
-  if (nomePers) fichas[id].nome = nomePers;
-  salvarFichas(fichas);
+  const r = gravarEstadoAtivo(nomePers);
+  if (r === 'missing' || r === 'stale') return;
   renderFichasTabs();
   syncPushState();
 }
@@ -4959,12 +5014,15 @@ function loadFromStorage() {
   const fichas = carregarFichas();
   let id = getIdAtivo();
   if (!fichas[id]) id = Object.keys(fichas)[0];
-  localStorage.setItem(ATIVA_KEY, id);
+  setIdAtivo(id);
   const dados = fichas[id]?.dados || getDefaultState();
   state = { ...getDefaultState(), ...dados };
   applyState();
   renderFichasTabs();
   syncRestoreConnection();
+  _fichaCarregada = true;
+  // Magias enviadas pelo Livro enquanto a ficha estava fechada: só agora é seguro aplicar
+  if (typeof window._processarFilaPendente === 'function') window._processarFilaPendente();
 }
 
 function renderFichasTabs() {
@@ -5000,7 +5058,7 @@ function renderFichasTabs() {
 
 function trocarFicha(id) {
   save(); // salva a ficha atual antes de trocar
-  localStorage.setItem(ATIVA_KEY, id);
+  setIdAtivo(id);
   const fichas = carregarFichas();
   const dados = fichas[id]?.dados || getDefaultState();
   state = { ...getDefaultState(), ...dados };
@@ -5016,7 +5074,7 @@ function novaFicha() {
   const num = Object.keys(fichas).length + 1;
   fichas[id] = { nome: 'Personagem ' + num, dados: getDefaultState() };
   salvarFichas(fichas);
-  localStorage.setItem(ATIVA_KEY, id);
+  setIdAtivo(id);
   state = getDefaultState();
   applyState();
   renderFichasTabs();
@@ -5038,7 +5096,7 @@ function duplicarFicha() {
     dados: dadosCopia
   };
   salvarFichas(fichas);
-  localStorage.setItem(ATIVA_KEY, novoId);
+  setIdAtivo(novoId);
   state = { ...getDefaultState(), ...fichas[novoId].dados };
   applyState();
   renderFichasTabs();
@@ -5056,7 +5114,7 @@ function deletarFicha(id) {
   delete fichas[id];
   salvarFichas(fichas);
   const novoId = Object.keys(fichas)[0];
-  localStorage.setItem(ATIVA_KEY, novoId);
+  setIdAtivo(novoId);
   state = { ...getDefaultState(), ...fichas[novoId].dados };
   applyState();
   renderFichasTabs();
@@ -5115,7 +5173,7 @@ function importJSON(event) {
       importado.sessionCode = '';
       fichas[id] = { nome: nomeChar, dados: importado };
       salvarFichas(fichas);
-      localStorage.setItem(ATIVA_KEY, id);
+      setIdAtivo(id);
       state = { ...getDefaultState(), ...importado };
       applyState();
       renderFichasTabs();
@@ -5390,29 +5448,32 @@ function syncConnect() {
 
   if (syncRef) syncRef.off();
   syncRef = db.ref('sessions/' + code + '/players/' + state.syncId);
+  let primeiraLeitura = true;
 
   // Escuta alterações vindas do Mestre (dano, cura, ajustes, sussurros)
   syncRef.on('value', (snapshot) => {
     const data = snapshot.val();
+    const primeira = primeiraLeitura; primeiraLeitura = false;
     if (!data) return; // ainda não existe — o push inicial abaixo vai criar
+    // Se a ficha tinha alterações que não chegaram ao servidor (ex.: fechou a página antes do envio),
+    // vale o que está na ficha — não o dado antigo que ainda está no servidor.
+    const manterLocal = primeira && !!state.syncDirty;
     syncApplyingRemote = true;
     try {
       const hpEl = document.getElementById('hp-cur');
-      if (hpEl && data.hpCur !== undefined && String(data.hpCur) !== hpEl.value) {
+      if (!manterLocal && hpEl && data.hpCur !== undefined && String(data.hpCur) !== hpEl.value) {
         hpEl.value = data.hpCur; updateBar('hp');
       }
       const stEl = document.getElementById('st-cur');
-      if (stEl && data.stCur !== undefined && String(data.stCur) !== stEl.value) {
+      if (!manterLocal && stEl && data.stCur !== undefined && String(data.stCur) !== stEl.value) {
         stEl.value = data.stCur; updateBar('st');
       }
       const foEl = document.getElementById('fo-cur');
-      if (foEl && data.foCur !== undefined && String(data.foCur) !== foEl.value) {
+      if (!manterLocal && foEl && data.foCur !== undefined && String(data.foCur) !== foEl.value) {
         foEl.value = data.foCur; updateBar('fo');
       }
       collectState();
-      const fichas = carregarFichas();
-      const id = getIdAtivo();
-      if (fichas[id]) { fichas[id].dados = JSON.parse(JSON.stringify(state)); salvarFichas(fichas); }
+      gravarEstadoAtivo();
 
       // Evento de combate (dano/cura enviado pelo Mestre) — mostra só o nome do atacante, nunca o HP dele
       if (data.lastEvent && data.lastEvent.ts && data.lastEvent.ts !== syncLastEventSeen) {
@@ -5454,6 +5515,7 @@ function syncConnect() {
     } finally {
       syncApplyingRemote = false;
     }
+    if (manterLocal) syncPushState(true);
   }, (err) => {
     console.error('Erro de sincronização:', err);
     syncSetStatus('offline', 'erro — verifique o código');
@@ -5694,11 +5756,7 @@ function dispararEfeitoVisual(tipo) {
 }
 
 function salvarFichaAtivaSilencioso() {
-  const fichas = carregarFichas();
-  const id = getIdAtivo();
-  if (!fichas[id]) return;
-  fichas[id].dados = JSON.parse(JSON.stringify(state));
-  salvarFichas(fichas);
+  gravarEstadoAtivo();
 }
 
 // Registra o uso de uma habilidade/magia/passiva pro Mestre ver no log de batalha
@@ -5718,8 +5776,12 @@ function syncPushState(immediate) {
   if (syncApplyingRemote) return;
   if (!state.sessionCode || !syncRef) return;
   if (syncPushTimer) clearTimeout(syncPushTimer);
+  _pushPendente = true;
   const doPush = () => {
+    _pushPendente = false;
     if (!syncRef) return;
+    if (document.hidden && abaDesatualizada()) return; // aba antiga em segundo plano não manda dado velho
+    const rev = _localRev;
     const payload = {
       name: (state.char && state.char.name) || 'Personagem',
       hpCur: parseFloat(document.getElementById('hp-cur')?.value) || 0,
@@ -5732,10 +5794,26 @@ function syncPushState(immediate) {
       initiative: (state.battleInitiative === null || state.battleInitiative === undefined) ? null : state.battleInitiative,
       updatedAt: Date.now()
     };
-    syncRef.update(payload).catch(e => console.error('Erro ao enviar dados:', e));
+    syncRef.update(payload).then(() => {
+      // servidor confirmou: se nada mudou nesse meio tempo, não há mais pendência
+      if (rev === _localRev && state.syncDirty) { state.syncDirty = false; salvarFichaAtivaSilencioso(); }
+    }).catch(e => console.error('Erro ao enviar dados:', e));
   };
   if (immediate) doPush(); else syncPushTimer = setTimeout(doPush, 350);
 }
+
+// Ao sair/esconder a página, envia na hora o que ainda esperava o atraso de 350 ms
+function flushAoSair() {
+  if (!_pushPendente) return;
+  if (syncPushTimer) clearTimeout(syncPushTimer);
+  syncPushState(true);
+}
+window.addEventListener('pagehide', flushAoSair);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) flushAoSair(); else recarregarSeOutraAbaGravou();
+});
+window.addEventListener('focus', recarregarSeOutraAbaGravou);
+window.addEventListener('pageshow', (e) => { if (e.persisted) recarregarSeOutraAbaGravou(); });
 
 let lastTurnOrderData = [];
 
@@ -5840,6 +5918,17 @@ function parseSpellCodeString(str) {
 function importSpellToActiveFicha(spell, showToast = true, playSound = true) {
   if (!spell || !spell.name) return false;
   if (!state) return false;
+  if (!_fichaCarregada) return false; // ficha ainda não foi lida: importar agora sobrescreveria os dados salvos
+
+  // Se outra aba gravou esta ficha depois da última leitura desta aba, adota o que está salvo
+  // ANTES de acrescentar a magia — senão a magia nova entraria numa cópia velha e se perderia.
+  if (abaDesatualizada()) {
+    try {
+      const salvo = carregarFichas()[getIdAtivo()].dados;
+      state = { ...getDefaultState(), ...salvo };
+      applyState();
+    } catch (e) { console.warn('Falha ao atualizar ficha antes de importar:', e); }
+  }
 
   // Determinar categoria (magias, tecnicas, passivas)
   // Regra especial: Técnicas do Estilo Híbrido ou habilidades que gastam mana (🔵) vão para magias
@@ -6035,7 +6124,7 @@ function initSpellReceiver() {
   // 3. Fila de itens pendentes (enviados enquanto a ficha estava em segundo plano ou fechada)
   function processPendingQueue() {
     try {
-      if (!state) return;
+      if (!state || !_fichaCarregada) return; // antes do carregamento a fila fica guardada
       const queueKey = 'olarpg_pending_spells';
       const raw = localStorage.getItem(queueKey);
       if (!raw) return;
@@ -6048,6 +6137,7 @@ function initSpellReceiver() {
     } catch (err) {}
   }
 
+  window._processarFilaPendente = processPendingQueue;
   window.addEventListener('focus', processPendingQueue);
   processPendingQueue();
 }
