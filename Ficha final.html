@@ -1450,6 +1450,157 @@
     animation: healPop 0.4s ease-out;
   }
   .heal-result small { font-size: 8px; opacity: 0.6; margin-left: 1px; }
+
+  /* ── ESTADO: MORRENDO ── */
+  #dying-vignette {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 40;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+  }
+  #dying-vignette::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 42%, rgba(110, 8, 8, 0.38) 78%, rgba(60, 0, 0, 0.7) 100%);
+  }
+  #dying-vignette::after {
+    content: ''; position: absolute; inset: 0; opacity: 0;
+    background: radial-gradient(ellipse at center, transparent 25%, rgba(200, 25, 25, 0.55) 100%);
+  }
+  #dying-vignette.flash::after { animation: dyingFlash 1.2s ease-out; }
+  body.is-dying #dying-vignette,
+  body.is-stable #dying-vignette,
+  body.is-dead #dying-vignette { opacity: 1; }
+  body.is-dying #dying-vignette::before { animation: heartbeat 2.2s ease-in-out infinite; }
+  body.is-stable #dying-vignette::before {
+    background: radial-gradient(ellipse at center, transparent 45%, rgba(120, 80, 10, 0.3) 100%);
+    animation: breathe 6s ease-in-out infinite;
+  }
+  body.is-dead #dying-vignette::before {
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.75) 100%);
+  }
+  @keyframes heartbeat {   /* lub-dub */
+    0%   { opacity: 0.55; }
+    10%  { opacity: 1; }
+    20%  { opacity: 0.6; }
+    30%  { opacity: 0.9; }
+    45%, 100% { opacity: 0.5; }
+  }
+  @keyframes breathe { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.6; } }
+  @keyframes dyingFlash { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+
+  .dying-glow {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    border-radius: 3px;
+    transition: opacity 1.2s ease;
+  }
+  .dying-glow::before {
+    content: ''; position: absolute; inset: 0; border-radius: 3px;
+    box-shadow: inset 0 0 26px rgba(216, 58, 58, 0.55), inset 0 0 2px rgba(216, 58, 58, 0.8);
+  }
+  .panel.is-dying .dying-glow, .panel.is-stable .dying-glow, .panel.is-dead .dying-glow { opacity: 1; }
+  .panel.is-dying .dying-glow::before { animation: heartbeat 2.2s ease-in-out infinite; }
+  .panel.is-stable .dying-glow::before {
+    box-shadow: inset 0 0 22px rgba(201, 146, 26, 0.35);
+    animation: breathe 6s ease-in-out infinite;
+  }
+  .panel.is-dead .dying-glow::before { box-shadow: inset 0 0 26px rgba(0, 0, 0, 0.85); }
+  .panel.is-dying .panel-title { color: var(--hp-color); text-shadow: 0 0 10px rgba(216, 58, 58, 0.5); }
+  .panel.is-stable .panel-title { color: var(--gold-light); }
+  .panel.is-dead .panel-title { color: var(--text-dim); }
+  .resource-block.hp.dying .resource-current { color: #9a5a5a; border-color: #9a5a5a; }
+  @media (prefers-reduced-motion: reduce) {
+    body.is-dying #dying-vignette::before,
+    .panel.is-dying .dying-glow::before { animation: none; opacity: 0.8; }
+    body.is-stable #dying-vignette::before,
+    .panel.is-stable .dying-glow::before { animation: none; opacity: 0.5; }
+  }
+
+  /* ── TESTES DE MORTE ── */
+  .death-box {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 10px 12px;
+    background: rgba(40, 6, 6, 0.35);
+    border: 1px solid rgba(216, 58, 58, 0.28);
+    border-radius: 3px;
+  }
+  .death-box.show { display: block; animation: deathIn 0.6s ease-out; }
+  @keyframes deathIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .panel.is-dead .death-box { background: rgba(0, 0, 0, 0.35); border-color: rgba(255, 255, 255, 0.12); }
+  .death-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--hp-color);
+  }
+  .death-reset { background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 14px; }
+  .death-reset:hover { color: var(--text); }
+  .death-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .death-lbl { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .death-lbl.ok { color: var(--heal-color); }
+  .death-lbl.bad { color: var(--hp-color); }
+  .death-pips { display: flex; gap: 6px; }
+  .death-pip {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid;
+    font-size: 12px;
+    color: transparent;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .death-pip.ok  { border-color: rgba(82, 194, 122, 0.35); }
+  .death-pip.bad { border-color: rgba(216, 58, 58, 0.35); }
+  .death-pip.ok.on  { background: rgba(82, 194, 122, 0.18); border-color: var(--heal-color); color: var(--heal-color); box-shadow: 0 0 10px rgba(82, 194, 122, 0.4); }
+  .death-pip.bad.on { background: rgba(216, 58, 58, 0.18); border-color: var(--hp-color); color: var(--hp-color); box-shadow: 0 0 10px rgba(216, 58, 58, 0.4); }
+  .death-btn {
+    width: 100%;
+    margin-top: 6px;
+    padding: 9px 0;
+    background: rgba(216, 58, 58, 0.08);
+    border: 1px solid rgba(216, 58, 58, 0.35);
+    border-radius: 3px;
+    color: #e07070;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .death-btn:hover:not(:disabled) { background: rgba(216, 58, 58, 0.18); box-shadow: 0 0 14px rgba(216, 58, 58, 0.2); }
+  .death-btn:active:not(:disabled) { transform: scale(0.98); }
+  .death-btn:disabled { opacity: 0.4; cursor: default; }
+  .death-result {
+    margin-top: 8px;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+  }
+  .death-result:empty { display: none; }
+  .death-result.rolling { font-family: 'Cinzel', serif; font-size: 18px; color: #e07070; }
+  .death-roll {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 22px; font-weight: 700;
+    margin-bottom: 2px;
+    animation: healPop 0.4s ease-out;
+  }
+  .death-result.ok .death-roll   { color: var(--heal-color); text-shadow: 0 0 12px rgba(82, 194, 122, 0.5); }
+  .death-result.bad .death-roll  { color: var(--hp-color); text-shadow: 0 0 12px rgba(216, 58, 58, 0.5); }
+  .death-result.crit .death-roll { color: var(--gold-light); text-shadow: 0 0 14px rgba(243, 195, 88, 0.6); }
+  .death-status { text-align: center; font-style: italic; font-size: 13px; color: var(--text-dim); margin-top: 6px; }
+  .death-status:empty { display: none; }
+  .death-legend { margin-top: 8px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 9px; line-height: 1.6; color: var(--text-faint); letter-spacing: 0.05em; }
   @keyframes healPop {
     0%   { transform: scale(0.6); opacity: 0; }
     70%  { transform: scale(1.12); opacity: 1; }
@@ -2205,6 +2356,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
 <body>
+<div id="dying-vignette"></div>
 
 <!-- EFEITOS VISUAIS IMERSIVOS (disparados pelo Mestre) -->
 <div class="fx-overlay fx-glitch" id="fx-glitch"></div>
@@ -2388,6 +2540,7 @@
     <!-- RECURSOS -->
     <div class="panel" id="panel-recursos">
       <div class="panel-title">Recursos</div>
+      <div class="dying-glow"></div>
 
       <div class="resource-block hp">
         <div class="resource-header">
@@ -2399,6 +2552,17 @@
           </div>
         </div>
         <div class="resource-bar-bg"><div class="resource-bar-fill" id="hp-bar" style="width:100%;background:var(--hp-color)"></div></div>
+      </div>
+
+      <!-- TESTES DE MORTE (aparece com HP 0) -->
+      <div class="death-box" id="death-box">
+        <div class="death-head"><span>Testes de Morte</span><button type="button" class="death-reset" onclick="deathReset()" title="Zerar marcadores">↺</button></div>
+        <div class="death-row"><span class="death-lbl ok">Sucessos</span><span class="death-pips" id="death-pips-s"></span></div>
+        <div class="death-row"><span class="death-lbl bad">Falhas</span><span class="death-pips" id="death-pips-f"></span></div>
+        <button type="button" class="death-btn" id="death-btn" onclick="rollDeathSave()">🎲 ROLAR TESTE (d20)</button>
+        <div class="death-result" id="death-result"></div>
+        <div class="death-status" id="death-status"></div>
+        <div class="death-legend">10+ sucesso · 9 ou menos falha · 1 natural = 2 falhas · 20 natural = levanta com 1 HP<br>Clique nos marcadores para ajustar à mão</div>
       </div>
 
       <div class="resource-block st" style="margin-top:14px;">
@@ -3418,11 +3582,144 @@ function healApply(dice, flat) {
 }
 healRender();
 
+// ─── ESTADO DE MORRENDO + TESTES DE MORTE ───────────────────────────────
+var _dyingMode = 'alive';
+var _dyingPrev = null;     // null = ainda não renderizou (não pisca ao carregar a ficha)
+var _deathHold = false;    // mantém o quadro visível um instante após levantar com 20 natural
+var deathRolling = false;
+
+function deathState() {
+  if (!state.deathSaves || typeof state.deathSaves !== 'object') state.deathSaves = { s: 0, f: 0 };
+  state.deathSaves.s = Math.max(0, Math.min(3, parseInt(state.deathSaves.s) || 0));
+  state.deathSaves.f = Math.max(0, Math.min(3, parseInt(state.deathSaves.f) || 0));
+  return state.deathSaves;
+}
+
+function updateDyingState() {
+  const hpEl = document.getElementById('hp-cur');
+  if (!hpEl || hpEl.value === '') return;        // campo vazio durante a digitação: ignora
+  const hp = parseFloat(hpEl.value) || 0;
+  const ds = deathState();
+  const dying = hp <= 0;
+  if (!dying && (ds.s || ds.f)) { ds.s = 0; ds.f = 0; }   // curou: zera os marcadores
+
+  const mode = !dying ? 'alive' : ds.f >= 3 ? 'dead' : ds.s >= 3 ? 'stable' : 'dying';
+  const changed = mode !== _dyingMode;
+  _dyingMode = mode;
+
+  const panel = document.getElementById('panel-recursos');
+  ['is-dying', 'is-stable', 'is-dead'].forEach(c => {
+    document.body.classList.toggle(c, c === 'is-' + mode);
+    if (panel) panel.classList.toggle(c, c === 'is-' + mode);
+  });
+  const hpBlock = document.querySelector('.resource-block.hp');
+  if (hpBlock) hpBlock.classList.toggle('dying', dying);
+
+  const title = document.querySelector('#panel-recursos .panel-title');
+  if (title) title.textContent = { alive: 'Recursos', dying: '☠ Morrendo', stable: '☠ Estabilizado', dead: '☠ Morto' }[mode];
+
+  const box = document.getElementById('death-box');
+  if (box) box.classList.toggle('show', mode !== 'alive' || _deathHold);
+
+  // pisca vermelho ao cair (só quando estava vivo e acabou de chegar a 0)
+  if (changed && _dyingPrev === 'alive' && mode === 'dying') {
+    const v = document.getElementById('dying-vignette');
+    if (v) { v.classList.remove('flash'); void v.offsetWidth; v.classList.add('flash'); setTimeout(() => v.classList.remove('flash'), 1300); }
+  }
+  _dyingPrev = mode;
+  renderDeath();
+}
+
+function renderDeath() {
+  const ds = deathState();
+  [['s', 'ok', '✓', 'sucesso'], ['f', 'bad', '✕', 'falha']].forEach(([k, cls, glyph, nome]) => {
+    const wrap = document.getElementById('death-pips-' + k);
+    if (!wrap) return;
+    wrap.innerHTML = [0, 1, 2].map(i =>
+      `<button type="button" class="death-pip ${cls}${ds[k] > i ? ' on' : ''}" onclick="deathTogglePip('${k}',${i})" title="Marcar/desmarcar ${nome}">${glyph}</button>`).join('');
+  });
+  const over = ds.s >= 3 || ds.f >= 3;
+  const btn = document.getElementById('death-btn');
+  if (btn) btn.disabled = over || deathRolling || _dyingMode === 'alive';
+  const st = document.getElementById('death-status');
+  if (st) st.textContent = _dyingMode === 'dead' ? 'Seu personagem morreu.'
+    : _dyingMode === 'stable' ? 'Estabilizado — inconsciente, mas fora de perigo.' : '';
+}
+
+function deathTogglePip(kind, i) {
+  const ds = deathState();
+  ds[kind] = (ds[kind] === i + 1) ? i : i + 1;
+  updateDyingState();
+  save();
+}
+
+function deathReset() {
+  const ds = deathState();
+  ds.s = 0; ds.f = 0;
+  const r = document.getElementById('death-result'); if (r) r.textContent = '';
+  updateDyingState();
+  save();
+}
+
+function rollDeathSave() {
+  if (deathRolling || _dyingMode !== 'dying') return;
+  deathRolling = true;
+  const btn = document.getElementById('death-btn');
+  const res = document.getElementById('death-result');
+  btn.disabled = true;
+  res.className = 'death-result rolling';
+  let ticks = 0;
+  const timer = setInterval(() => {
+    res.textContent = '🎲 ' + (1 + Math.floor(Math.random() * 20));
+    if (++ticks >= 9) {
+      clearInterval(timer);
+      deathRolling = false;
+      deathResolve(1 + Math.floor(Math.random() * 20));
+    }
+  }, 60);
+}
+
+function deathResolve(roll) {
+  const ds = deathState();
+  const res = document.getElementById('death-result');
+  let msg, cls;
+  if (roll === 20) {
+    cls = 'crit'; msg = '20 natural — você se levanta com 1 HP!';
+  } else if (roll === 1) {
+    ds.f = Math.min(3, ds.f + 2); cls = 'bad'; msg = 'Falha crítica (2 falhas)';
+  } else if (roll >= 10) {
+    ds.s = Math.min(3, ds.s + 1); cls = 'ok'; msg = 'Sucesso';
+  } else {
+    ds.f = Math.min(3, ds.f + 1); cls = 'bad'; msg = 'Falha';
+  }
+  if (roll !== 20) {
+    if (ds.f >= 3) msg += ' — morreu';
+    else if (ds.s >= 3) msg += ' — estabilizado';
+  }
+  res.className = 'death-result ' + cls;
+  res.innerHTML = `<span class="death-roll">${roll}</span>${msg}`;
+
+  if (roll === 20) {
+    _deathHold = true;                       // deixa o resultado visível por um instante
+    setTimeout(() => { _deathHold = false; updateDyingState(); }, 2800);
+    const hpEl = document.getElementById('hp-cur');
+    const hpMax = parseFloat(document.getElementById('hp-max').value) || 1;
+    hpEl.value = 1;
+    updateBar('hp');                         // sai do estado de morrendo e zera os marcadores
+    resourceFx('hp', 1, 0, Math.min(100, 100 / hpMax), 'heal');
+  } else {
+    updateDyingState();
+  }
+  save();
+}
+updateDyingState();
+
 function updateBar(type) {
   const cur = parseFloat(document.getElementById(type+'-cur').value) || 0;
   const max = parseFloat(document.getElementById(type+'-max').value) || 1;
   const pct = Math.min(100, Math.max(0, (cur / max) * 100));
   document.getElementById(type+'-bar').style.width = pct + '%';
+  if (type === 'hp') updateDyingState();
 }
 
 // ─── ARQUETIPO ────────────────────────────────────────────────────────
@@ -4602,7 +4899,8 @@ function getDefaultState() {
       { name:'', effect:'', raridade:'comum' }
     ],
     statuses: [], notes: '', historia: '', pericias: {},
-    sessionCode: '', syncId: null, battleInitiative: null
+    sessionCode: '', syncId: null, battleInitiative: null,
+    deathSaves: { s: 0, f: 0 }
   };
 }
 
