@@ -4000,6 +4000,26 @@
       box-shadow: 0 0 12px rgba(90, 139, 232, 0.4) !important;
     }
 
+    /* ── ENVIO DE SUBCLASSE / ESPECIALIZAÇÃO PARA A FICHA ── */
+    .subclass-send-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(201, 146, 26, 0.25);
+    }
+    .subclass-send-btn { white-space: normal; text-align: center; line-height: 1.3; }
+    .subclass-send-hint {
+      text-align: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.06em;
+      color: rgba(245, 234, 214, 0.4);
+    }
+    .skill-send-btn { flex: none; margin-left: 6px; }
+    .skill-send-btn.push { margin-left: auto; }
+
     /* Notificação Toast Flutuante no Livro */
     .livro-toast {
       position: fixed;
@@ -20473,6 +20493,158 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       playPageTurn();
     }
 
+    // ════════════ ENVIO DE SUBCLASSES / ESPECIALIZAÇÕES PARA A FICHA ════════════
+    // Subclasse: um botão envia TODAS as habilidades (passivas + ativas) de uma vez.
+    // Especialização: cada habilidade tem o seu próprio botão (o jogador escolhe uma por nível).
+
+    function cleanSkillText(el) {
+      if (!el) return '';
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('.subskill-line').forEach(n => n.insertAdjacentText('beforebegin', ' §§ '));
+      return clone.textContent
+        .replace(/\s+/g, ' ')
+        .replace(/\s+([.,;:!?])/g, '$1')
+        .replace(/\s*§§\s*/g, '\n')
+        .trim();
+    }
+
+    // Converte uma .skill dos cards de subclasse/especialização no formato que a Ficha entende
+    function getTreeSkillData(skillEl) {
+      const card = skillEl.closest('.card');
+      const typeEl = skillEl.querySelector('.skill-type');
+      // O tipo vem do selo (.skill-type), não da classe da .skill — algumas divergem no HTML
+      const typeCls = (typeEl && ['passive', 'quick', 'standard'].find(c => typeEl.classList.contains(c))) || 'standard';
+      const isPassive = typeCls === 'passive';
+
+      const name = (skillEl.querySelector('.skill-name')?.textContent || 'Habilidade')
+        .replace(/\s+/g, ' ').replace(/[:\s]+$/, '').trim();
+      const custo = isPassive ? '' : (skillEl.querySelector('.skill-cost')?.textContent || '').replace(/\s+/g, ' ').trim();
+
+      let desc = cleanSkillText(skillEl.querySelector('.skill-desc'));
+      const req = (skillEl.querySelector('.skill-req')?.textContent || '').replace(/\s+/g, ' ').trim();
+      if (req) desc += (desc ? '\n' : '') + req;
+
+      let recurso = '';
+      if (!isPassive) {
+        if (custo.includes('🔵')) recurso = 'fo';
+        else if (custo.includes('🟡')) recurso = 'st';
+        else recurso = (card && card.classList.contains('arcano')) ? 'fo' : 'st';
+      }
+
+      return {
+        name,
+        tipo: isPassive ? 'passiva' : (typeCls === 'quick' ? 'rapida' : 'padrao'),
+        custo,
+        desc,
+        recurso,
+        categoria: isPassive ? 'passivas' : (recurso === 'fo' ? 'magias' : 'tecnicas'),
+        tags: [],
+        origem: (card?.querySelector('.card-title')?.textContent || '').replace(/\s+/g, ' ').trim()
+      };
+    }
+
+    // Envia 1 ou várias habilidades. Com 1 usa o mesmo formato de sempre (ADD_SPELL);
+    // com várias manda um único pacote (ADD_SPELLS_BATCH) para a Ficha mostrar um aviso só.
+    function dispatchToSheet(items, label) {
+      const ts = Date.now();
+      const multi = items.length > 1;
+      try {
+        const channel = new BroadcastChannel('olarpg_channel');
+        channel.postMessage(multi
+          ? { type: 'ADD_SPELLS_BATCH', spells: items, label, ts }
+          : { type: 'ADD_SPELL', spell: items[0], ts });
+        channel.close();
+      } catch (e) {
+        console.warn('BroadcastChannel error:', e);
+      }
+      try {
+        const queueKey = 'olarpg_pending_spells';
+        const queue = JSON.parse(localStorage.getItem(queueKey) || '[]');
+        items.forEach(it => { if (!queue.some(s => s.name === it.name)) queue.push(it); });
+        localStorage.setItem(queueKey, JSON.stringify(queue));
+        localStorage.setItem('olarpg_spell_trigger', JSON.stringify(multi
+          ? { spells: items, label, ts }
+          : { spell: items[0], ts }));
+      } catch (e) {
+        console.warn('LocalStorage error:', e);
+      }
+    }
+
+    function flashSendButton(btn, okHtml) {
+      btn.classList.add('success');
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = okHtml;
+      setTimeout(() => {
+        btn.classList.remove('success');
+        btn.innerHTML = originalHtml;
+      }, 2200);
+    }
+
+    function sendSubclassToSheet(btn) {
+      const card = btn.closest('.card');
+      if (!card) return;
+      const skills = Array.from(card.querySelectorAll('.card-skills .skill'));
+      if (!skills.length) return;
+      const items = skills.map(getTreeSkillData);
+      const nome = (card.querySelector('.card-title')?.textContent || 'Subclasse').replace(/\s+/g, ' ').trim();
+
+      dispatchToSheet(items, nome);
+      playAddToSheetSound();
+      flashSendButton(btn, `<span class="btn-icon">✓</span> ${items.length} na Ficha!`);
+      showLivroToast(`✨ <b>${nome}</b> — ${items.length} habilidade${items.length > 1 ? 's' : ''} enviada${items.length > 1 ? 's' : ''} para a Ficha!`);
+    }
+
+    function sendSkillToSheet(btn) {
+      const skillEl = btn.closest('.skill');
+      if (!skillEl) return;
+      const item = getTreeSkillData(skillEl);
+
+      dispatchToSheet([item], item.origem);
+      playAddToSheetSound();
+      flashSendButton(btn, '✓ Na Ficha!');
+      showLivroToast(`✨ <b>${item.name}</b> enviada para a Ficha!`);
+    }
+
+    function initSheetSendButtons() {
+      // Subclasses: botão único que leva todas as habilidades
+      document.querySelectorAll('.card.tier-sub').forEach(card => {
+        if (card.dataset.sendInit) return;
+        const holder = card.querySelector('.card-skills');
+        const total = holder ? holder.querySelectorAll('.skill').length : 0;
+        if (!holder || !total) return;
+        card.dataset.sendInit = '1';
+
+        const wrap = document.createElement('div');
+        wrap.className = 'subclass-send-wrap';
+        wrap.innerHTML = `
+          <button type="button" class="spell-btn spell-btn-add subclass-send-btn" title="Adiciona todas as habilidades desta subclasse à Ficha de uma vez">
+            <span class="btn-icon">➕</span> Enviar subclasse para a Ficha (${total})
+          </button>
+          <div class="subclass-send-hint">Passivas e habilidades de uma só vez</div>`;
+        wrap.querySelector('button').addEventListener('click', (e) => {
+          e.stopPropagation();
+          sendSubclassToSheet(e.currentTarget);
+        });
+        holder.insertAdjacentElement('afterend', wrap);
+      });
+
+      // Especializações: um botão por habilidade
+      document.querySelectorAll('.card.tier-spec .skill').forEach(sk => {
+        const header = sk.querySelector('.skill-header');
+        if (!header || header.querySelector('.skill-send-btn')) return;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'spell-row-btn btn-ficha skill-send-btn' + (header.querySelector('.skill-cost') ? '' : ' push');
+        b.textContent = '+ FICHA';
+        b.title = 'Adicionar esta habilidade à Ficha';
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          sendSkillToSheet(e.currentTarget);
+        });
+        header.appendChild(b);
+      });
+    }
+
     // ════════════ ARQUITETURA EXPANSÍVEL DE SUBCLASSES & ESPECIALIZAÇÕES ════════════
     function initSubclassTrees() {
       document.querySelectorAll('.tree-level').forEach((treeLevel) => {
@@ -20673,6 +20845,7 @@ até o final do turno dele. Não funciona contra inimigos sem mente.
       initSpellMasterDetail();
       updateSpellVisibility();
       initSubclassTrees();
+      initSheetSendButtons();
 
 
       // Easter egg 5 cliques no dinossauro do topo

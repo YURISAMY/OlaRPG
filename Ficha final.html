@@ -5837,7 +5837,7 @@ function parseSpellCodeString(str) {
   return null;
 }
 
-function importSpellToActiveFicha(spell, showToast = true) {
+function importSpellToActiveFicha(spell, showToast = true, playSound = true) {
   if (!spell || !spell.name) return false;
   if (!state) return false;
 
@@ -5897,7 +5897,7 @@ function importSpellToActiveFicha(spell, showToast = true) {
   };
   const catLabel = catNomes[cat] || 'Habilidades';
 
-  if (typeof playAudio === 'function') {
+  if (playSound && typeof playAudio === 'function') {
     playAudio('stone.mp3', 0.5);
   }
 
@@ -5950,13 +5950,65 @@ function confirmImportSpell() {
   }
 }
 
+// Evita processar duas vezes a mesma entrega (BroadcastChannel e evento storage chegam juntos)
+const _recentSpellDeliveries = {};
+function isDuplicateSpellDelivery(spells) {
+  const key = spells.map(sp => (sp.name || '').trim().toLowerCase()).join('|');
+  const now = Date.now();
+  Object.keys(_recentSpellDeliveries).forEach(k => { if (now - _recentSpellDeliveries[k] > 5000) delete _recentSpellDeliveries[k]; });
+  if (_recentSpellDeliveries[key]) return true;
+  _recentSpellDeliveries[key] = now;
+  return false;
+}
+
+// Tira da fila pendente o que já foi entregue ao vivo (senão apareceria de novo ao focar a aba)
+function dropFromPendingQueue(spells) {
+  try {
+    const queueKey = 'olarpg_pending_spells';
+    const raw = localStorage.getItem(queueKey);
+    if (!raw) return;
+    const names = new Set(spells.map(sp => (sp.name || '').trim().toLowerCase()));
+    const rest = (JSON.parse(raw) || []).filter(sp => !names.has((sp.name || '').trim().toLowerCase()));
+    if (rest.length) localStorage.setItem(queueKey, JSON.stringify(rest));
+    else localStorage.removeItem(queueKey);
+  } catch (err) {}
+}
+
+// Importa várias habilidades de uma vez (ex.: subclasse inteira) com um único aviso e um único som
+function importSpellBatchToActiveFicha(spells, label) {
+  if (!Array.isArray(spells) || !spells.length || !state) return;
+  let added = 0, skipped = 0;
+  spells.forEach(sp => {
+    if (importSpellToActiveFicha(sp, false, false)) added++; else skipped++;
+  });
+  if (added > 0 && typeof playAudio === 'function') playAudio('stone.mp3', 0.5);
+
+  const esc = (t) => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const origem = label ? `<b>${esc(label)}</b> — ` : '';
+  if (added > 0) {
+    const plural = added > 1;
+    syncShowToast(`✨ ${origem}${added} habilidade${plural ? 's' : ''} adicionada${plural ? 's' : ''} à ficha!` +
+      (skipped ? ` <i>(${skipped} já ${skipped > 1 ? 'estavam' : 'estava'} na lista)</i>` : ''));
+  } else {
+    syncShowToast(`⚠️ ${origem}tudo isso já está na sua ficha!`, 'warn');
+  }
+}
+
 function initSpellReceiver() {
   // 1. BroadcastChannel (tempo real instantâneo entre abas abertas)
   try {
     const channel = new BroadcastChannel('olarpg_channel');
     channel.onmessage = (event) => {
-      if (event.data && event.data.type === 'ADD_SPELL' && event.data.spell) {
-        importSpellToActiveFicha(event.data.spell, true);
+      const msg = event.data;
+      if (!msg) return;
+      if (msg.type === 'ADD_SPELLS_BATCH' && Array.isArray(msg.spells)) {
+        if (isDuplicateSpellDelivery(msg.spells)) return;
+        importSpellBatchToActiveFicha(msg.spells, msg.label);
+        dropFromPendingQueue(msg.spells);
+      } else if (msg.type === 'ADD_SPELL' && msg.spell) {
+        if (isDuplicateSpellDelivery([msg.spell])) return;
+        importSpellToActiveFicha(msg.spell, true);
+        dropFromPendingQueue([msg.spell]);
       }
     };
   } catch (e) {
@@ -5965,30 +6017,33 @@ function initSpellReceiver() {
 
   // 2. Storage Event (fallback para navegadores/protocolos)
   window.addEventListener('storage', (e) => {
-    if (e.key === 'olarpg_spell_trigger' && e.newValue) {
-      try {
-        const data = JSON.parse(e.newValue);
-        if (data && data.spell) {
-          importSpellToActiveFicha(data.spell, true);
-        }
-      } catch (err) {}
-    }
+    if (e.key !== 'olarpg_spell_trigger' || !e.newValue) return;
+    try {
+      const data = JSON.parse(e.newValue);
+      if (data && Array.isArray(data.spells)) {
+        if (isDuplicateSpellDelivery(data.spells)) return;
+        importSpellBatchToActiveFicha(data.spells, data.label);
+        dropFromPendingQueue(data.spells);
+      } else if (data && data.spell) {
+        if (isDuplicateSpellDelivery([data.spell])) return;
+        importSpellToActiveFicha(data.spell, true);
+        dropFromPendingQueue([data.spell]);
+      }
+    } catch (err) {}
   });
 
-  // 3. Fila de itens pendentes (se a magia foi enviada enquanto a ficha estava em segundo plano ou fechada)
+  // 3. Fila de itens pendentes (enviados enquanto a ficha estava em segundo plano ou fechada)
   function processPendingQueue() {
     try {
+      if (!state) return;
       const queueKey = 'olarpg_pending_spells';
       const raw = localStorage.getItem(queueKey);
-      if (raw) {
-        const queue = JSON.parse(raw);
-        if (Array.isArray(queue) && queue.length > 0) {
-          let count = 0;
-          queue.forEach(s => {
-            if (importSpellToActiveFicha(s, true)) count++;
-          });
-          localStorage.removeItem(queueKey);
-        }
+      if (!raw) return;
+      const queue = JSON.parse(raw);
+      localStorage.removeItem(queueKey);
+      if (Array.isArray(queue) && queue.length > 0) {
+        if (queue.length === 1) importSpellToActiveFicha(queue[0], true);
+        else importSpellBatchToActiveFicha(queue);
       }
     } catch (err) {}
   }
