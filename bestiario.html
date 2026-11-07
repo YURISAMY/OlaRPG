@@ -4940,6 +4940,13 @@
             <button class="fx-btn" onclick="dispararEfeitoMesa('glitch')">⚡ Glitch</button>
             <button class="fx-btn" onclick="dispararEfeitoMesa('estatico')">📺 Estático</button>
             <button class="fx-btn" onclick="dispararEfeitoMesa('nevoa')">🌫️ Névoa</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('chamas')">🔥 Chamas</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('galaxia')">✨ Galáxia</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('olhos')">👁️ Olhos</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('coracao')">💓 Coração</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('morcegos')">🦇 Morcegos</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('vidro')">🪟 Tela quebrando</button>
+            <button class="fx-btn" onclick="dispararEfeitoMesa('impacto')">🩸 Impacto</button>
           </div>
 
           <div class="command-deck-actions" id="battle-actions" style="display: none;">
@@ -5678,6 +5685,13 @@
         html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'glitch\')">⚡ Glitch</button>';
         html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'estatico\')">📺 Estático</button>';
         html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'nevoa\')">🌫️ Névoa</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'chamas\')">🔥 Chamas</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'galaxia\')">✨ Galáxia</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'olhos\')">👁️ Olhos</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'coracao\')">💓 Coração</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'morcegos\')">🦇 Morcegos</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'vidro\')">🪟 Tela quebrando</button>';
+        html += '<button class="fx-btn" onclick="dispararEfeitoJogador(\'' + id + '\',\'impacto\')">🩸 Impacto</button>';
         html += '</div>';
 
         html += '</div>';
@@ -5796,11 +5810,16 @@
       if (qtd === 0) return;
       const novoHp = Math.max(0, (p.hpCur || 0) - qtd);
       const atacante = atacanteSelect ? atacanteSelect.value : '';
-      playersRef.child(id).update({
+      const ts = Date.now();
+      const golpePesado = (p.hpMax || 0) > 0 && qtd > (p.hpMax * LIMITE_GOLPE_PESADO);
+      const upd = {
         hpCur: novoHp,
-        lastEvent: { stat: 'hp', amount: -qtd, source: atacante || null, ts: Date.now() }
-      });
-      addBattleLog(atacante || '⚔️', 'causou ' + qtd + ' de dano em <span class="log-skill-name">' + (p.name || 'Jogador') + '</span> (' + novoHp + '/' + (p.hpMax || 0) + ' HP)');
+        lastEvent: { stat: 'hp', amount: -qtd, source: atacante || null, ts }
+      };
+      if (golpePesado) upd.effect = { tipo: 'impacto', ts };
+      playersRef.child(id).update(upd);
+      if (golpePesado) limparEfeitoDepois(playersRef.child(id).child('effect'), ts);
+      addBattleLog(atacante || '⚔️', 'causou ' + qtd + ' de dano em <span class="log-skill-name">' + (p.name || 'Jogador') + '</span> (' + novoHp + '/' + (p.hpMax || 0) + ' HP)' + (golpePesado ? ' 🩸 <strong>golpe pesado</strong>' : ''));
     }
 
     function aplicarCuraJogador(id) {
@@ -5831,7 +5850,19 @@
       addBattleLog('🤫', 'sussurrou algo para <span class="log-skill-name">' + (p?.name || 'Jogador') + '</span> (privado)');
     }
 
-    const FX_NOME = { glitch: 'Glitch', estatico: 'Estático', nevoa: 'Névoa' };
+    const FX_NOME = { glitch: 'Glitch', estatico: 'Estático', nevoa: 'Névoa', chamas: 'Chamas', galaxia: 'Galáxia', olhos: 'Olhos', coracao: 'Coração', morcegos: 'Morcegos', vidro: 'Tela quebrando', impacto: 'Impacto' };
+    // Golpe pesado: dano acima dessa fração do HP máximo do jogador dispara o efeito de impacto com sangue na tela dele.
+    const LIMITE_GOLPE_PESADO = 0.25;
+    // Depois de um tempo o efeito é apagado do servidor, pra não sobrar um "último efeito" pra quem conectar depois.
+    const FX_LIMPAR_MS = 9000;
+    function limparEfeitoDepois(ref, ts) {
+      setTimeout(() => {
+        ref.once('value').then(snap => {
+          const v = snap.val();
+          if (v && v.ts === ts) ref.remove();
+        }).catch(() => {});
+      }, FX_LIMPAR_MS);
+    }
 
     function tocarChiado() {
       try {
@@ -5845,9 +5876,11 @@
     function dispararEfeitoJogador(id, tipo) {
       if (!playersRef) return;
       const p = sessionPlayers[id];
+      const ts = Date.now();
       playersRef.child(id).update({
-        effect: { tipo, ts: Date.now() }
+        effect: { tipo, ts }
       });
+      limparEfeitoDepois(playersRef.child(id).child('effect'), ts);
       if (tipo === 'estatico') {
         tocarChiado();
       }
@@ -5856,7 +5889,10 @@
 
     function dispararEfeitoMesa(tipo) {
       if (!currentSessionCode || !syncDb) return;
-      syncDb.ref('sessions/' + currentSessionCode + '/broadcastEffect').set({ tipo, ts: Date.now() }).catch(e => console.error('Erro ao disparar efeito:', e));
+      const ts = Date.now();
+      const fxRef = syncDb.ref('sessions/' + currentSessionCode + '/broadcastEffect');
+      fxRef.set({ tipo, ts }).catch(e => console.error('Erro ao disparar efeito:', e));
+      limparEfeitoDepois(fxRef, ts);
       if (tipo === 'estatico') {
         tocarChiado();
       }
