@@ -1445,6 +1445,263 @@
 <!-- Firebase (sincronização em tempo real com os jogadores) -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<style>
+/* ══════════════ GAVETA DE DADOS + 20 NATURAL ══════════════ */
+.dx-drawer {
+  --dx-rgb: 180,91,232;
+  --dx-lite: #d9b0f7;
+  --dx-w: min(236px, 86vw);
+  position: fixed;
+  top: var(--dx-top, 64px);
+  right: 0;
+  z-index: 1100;
+  display: flex;
+  align-items: flex-start;
+  transform: translateX(var(--dx-w));
+  transition: transform 0.38s cubic-bezier(0.22, 0.9, 0.3, 1);
+  font-family: 'Crimson Pro', serif;
+}
+.dx-drawer.open { transform: translateX(0); }
+
+.dx-handle {
+  flex: none;
+  width: 34px;
+  height: 56px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  color: var(--dx-lite);
+  background: rgba(10, 11, 16, 0.92);
+  border: 1px solid rgba(var(--dx-rgb), 0.5);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  box-shadow: -4px 4px 18px rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: background 0.2s, border-color 0.2s;
+}
+.dx-handle:hover { background: rgba(24, 20, 14, 0.96); border-color: rgba(var(--dx-rgb), 0.85); }
+.dx-handle:focus-visible, .dx-die-btn:focus-visible { outline: 2px solid var(--dx-lite); outline-offset: 2px; }
+.dx-handle svg { display: block; }
+.dx-arrow { transition: transform 0.38s cubic-bezier(0.22, 0.9, 0.3, 1); }
+.dx-drawer.open .dx-arrow { transform: rotate(180deg); }
+
+.dx-panel {
+  width: var(--dx-w);
+  padding: 12px 12px 10px;
+  background: linear-gradient(180deg, rgba(20, 22, 31, 0.97), rgba(10, 11, 16, 0.97));
+  border: 1px solid rgba(var(--dx-rgb), 0.42);
+  border-right: none;
+  border-radius: 0 0 0 12px;
+  box-shadow: -8px 10px 30px rgba(0, 0, 0, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.dx-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--dx-lite);
+  margin: 0 0 9px 2px;
+}
+.dx-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.dx-die-btn {
+  width: 49px;
+  padding: 5px 0 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  cursor: pointer;
+  color: var(--dx-lite);
+  background: rgba(var(--dx-rgb), 0.07);
+  border: 1px solid rgba(var(--dx-rgb), 0.25);
+  border-radius: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11.5px;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.dx-die-btn svg { display: block; }
+.dx-die-btn:hover {
+  background: rgba(var(--dx-rgb), 0.18);
+  border-color: rgba(var(--dx-rgb), 0.7);
+  box-shadow: 0 0 12px rgba(var(--dx-rgb), 0.28);
+  transform: translateY(-1px);
+}
+.dx-die-btn:active { transform: translateY(1px) scale(0.97); }
+.dx-die-btn.dx-d20 { border-color: rgba(243, 195, 88, 0.55); color: #f3c358; }
+.dx-die-btn.rolling svg { animation: dxTumble 0.62s ease-in-out; }
+@keyframes dxTumble {
+  0%   { transform: rotate(0) scale(1); }
+  30%  { transform: rotate(150deg) scale(1.18); }
+  65%  { transform: rotate(300deg) scale(0.92); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+.dx-result {
+  margin-top: 10px;
+  min-height: 66px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-top: 1px solid rgba(var(--dx-rgb), 0.2);
+  padding-top: 8px;
+}
+.dx-res-lab { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: rgba(245, 234, 214, 0.5); }
+.dx-res-num {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 38px;
+  line-height: 1.05;
+  color: var(--dx-lite);
+  min-width: 2ch;
+  text-align: center;
+}
+.dx-result.rolling .dx-res-num { opacity: 0.72; filter: blur(0.6px); }
+.dx-result.crit .dx-res-num { color: #ffe9a8; text-shadow: 0 0 14px rgba(255, 190, 70, 0.9), 0 0 32px rgba(255, 160, 30, 0.55); }
+.dx-result.fail .dx-res-num { color: #e26a6a; text-shadow: 0 0 12px rgba(216, 58, 58, 0.5); }
+
+.dx-history { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin-top: 6px; min-height: 18px; }
+.dx-chip {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 9px;
+  color: rgba(245, 234, 214, 0.65);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(var(--dx-rgb), 0.18);
+}
+.dx-chip.crit { color: #ffe9a8; border-color: rgba(243, 195, 88, 0.6); }
+
+/* ── CENA DO 20 NATURAL ── */
+#dx-nat20 {
+  --S: min(46vmin, 340px);
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: none;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#dx-nat20.on { display: block; }
+#dx-nat20 .dx-dark {
+  position: absolute;
+  inset: 0;
+  --r: 128%;
+  background: radial-gradient(circle farthest-corner at 50% 50%,
+    rgba(2, 1, 0, 0) calc(var(--r) - 30%), rgba(2, 1, 0, 0.97) var(--r));
+}
+#dx-nat20 .dx-rays {
+  position: absolute;
+  left: 50%; top: 46%;
+  width: 170vmax; height: 170vmax;
+  margin: -85vmax 0 0 -85vmax;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 224, 140, 0.2) 0deg 2.5deg, rgba(255, 224, 140, 0) 2.5deg 12deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0, rgba(0, 0, 0, 0.55) 14%, transparent 34%);
+  mask-image: radial-gradient(circle, #000 0, rgba(0, 0, 0, 0.55) 14%, transparent 34%);
+  opacity: 0;
+}
+#dx-nat20.hit .dx-rays { animation: dxRaysIn 1.4s ease-out both, dxSpin 46s linear infinite; }
+#dx-nat20 .dx-halo {
+  position: absolute;
+  left: 50%; top: 46%;
+  width: calc(var(--S) * 2.7); height: calc(var(--S) * 2.7);
+  margin: calc(var(--S) * -1.35) 0 0 calc(var(--S) * -1.35);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 220, 130, 0.6) 0, rgba(255, 175, 55, 0.24) 28%, rgba(255, 150, 30, 0) 62%);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+#dx-nat20.hit .dx-halo { animation: dxHaloIn 0.7s ease-out both, dxHaloPulse 3.4s ease-in-out 0.7s infinite; }
+#dx-nat20 .dx-ring {
+  position: absolute;
+  left: 50%; top: 46%;
+  width: var(--S); height: var(--S);
+  margin: calc(var(--S) / -2) 0 0 calc(var(--S) / -2);
+  border-radius: 50%;
+  border: 3px solid rgba(255, 228, 160, 0.9);
+  box-shadow: 0 0 24px rgba(255, 190, 70, 0.8), inset 0 0 24px rgba(255, 190, 70, 0.5);
+  opacity: 0;
+}
+#dx-nat20.hit .dx-ring { animation: dxRing 1.2s cubic-bezier(0.15, 0.7, 0.3, 1) both; }
+#dx-nat20.hit .dx-ring.r2 { animation-delay: 0.16s; border-width: 2px; }
+
+#dx-nat20 .dx-stage {
+  position: absolute;
+  left: 50%; top: 46%;
+  width: var(--S); height: var(--S);
+  margin: calc(var(--S) / -2) 0 0 calc(var(--S) / -2);
+  perspective: 900px;
+}
+#dx-nat20.p2 .dx-stage { animation: dxPulse 1.1s ease-out; }
+#dx-nat20 .dx-die-wrap { width: 100%; height: 100%; opacity: 0; }
+#dx-nat20.hit .dx-die-wrap { animation: dxDieIn 1.05s cubic-bezier(0.2, 0.9, 0.25, 1) both; }
+#dx-nat20 .dx-die {
+  display: block;
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 0 20px rgba(255, 200, 80, 0.85)) drop-shadow(0 0 56px rgba(255, 165, 40, 0.55));
+}
+#dx-nat20.hit .dx-die { animation: dxFloat 3.6s ease-in-out 1.05s infinite; }
+#dx-nat20 .dx-cap {
+  position: absolute;
+  left: -30%; right: -30%;
+  top: calc(100% + 16px);
+  text-align: center;
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-weight: 900;
+  font-size: clamp(22px, 5.2vmin, 40px);
+  letter-spacing: 0.22em;
+  padding-left: 0.22em;
+  color: #ffeab8;
+  text-shadow: 0 0 14px rgba(255, 190, 70, 0.95), 0 0 42px rgba(255, 160, 30, 0.6);
+  opacity: 0;
+}
+#dx-nat20.hit .dx-cap { animation: dxCap 1.3s ease-out 0.75s both; }
+#dx-nat20 canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#dx-nat20 .dx-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 46%, #fffbe8 0, rgba(255, 224, 140, 0.85) 22%, rgba(255, 200, 80, 0) 62%);
+  opacity: 0;
+  pointer-events: none;
+}
+#dx-nat20.hit .dx-flash { animation: dxFlash 0.95s ease-out both; }
+#dx-nat20.p2 .dx-flash { animation: dxFlash2 1s ease-out both; }
+
+@keyframes dxRaysIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes dxSpin { to { transform: rotate(360deg); } }
+@keyframes dxHaloIn { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+@keyframes dxHaloPulse { 0%, 100% { opacity: 0.78; transform: scale(0.96); } 50% { opacity: 1; transform: scale(1.05); } }
+@keyframes dxRing { 0% { opacity: 1; transform: scale(0.35); } 100% { opacity: 0; transform: scale(3.4); } }
+@keyframes dxDieIn {
+  0%   { opacity: 0; transform: scale(0.12) rotateZ(-38deg) rotateX(35deg); }
+  18%  { opacity: 1; }
+  48%  { transform: scale(1.2) rotateZ(7deg) rotateX(-12deg); }
+  72%  { transform: scale(0.96) rotateZ(-2deg) rotateX(4deg); }
+  100% { opacity: 1; transform: scale(1) rotateZ(0) rotateX(0); }
+}
+@keyframes dxFloat {
+  0%, 100% { transform: translateY(0) rotateY(-7deg) rotateX(3deg); }
+  50%      { transform: translateY(-12px) rotateY(7deg) rotateX(-3deg); }
+}
+@keyframes dxCap { from { opacity: 0; transform: translateY(10px); letter-spacing: 0.5em; } to { opacity: 1; transform: none; letter-spacing: 0.22em; } }
+@keyframes dxFlash { 0% { opacity: 0.95; } 100% { opacity: 0; } }
+@keyframes dxFlash2 { 0% { opacity: 0.55; } 100% { opacity: 0; } }
+@keyframes dxPulse { 0% { transform: scale(1); } 22% { transform: scale(1.08); } 100% { transform: scale(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  #dx-nat20 .dx-die, #dx-nat20 .dx-rays { animation: none !important; }
+  .dx-drawer, .dx-arrow { transition: none; }
+}
+</style>
 </head>
 
 <body>
@@ -6194,5 +6451,395 @@
   </script>
 
 
+
+
+<!-- ══════════════ GAVETA DE DADOS + 20 NATURAL ══════════════ -->
+<div class="dx-drawer" id="dx-drawer">
+  <button type="button" class="dx-handle" id="dx-handle" aria-expanded="false" aria-controls="dx-panel" title="Abrir/fechar dados">
+    <svg width="20" height="20" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5"/><polygon points="20,12 28,26 12,26" stroke-width="1.6" opacity=".8"/></svg>
+    <svg class="dx-arrow" width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 1.5 3 5l4 3.5"/></svg>
+  </button>
+  <div class="dx-panel" id="dx-panel">
+    <p class="dx-title">Dados</p>
+    <div class="dx-grid" id="dx-grid"></div>
+    <div class="dx-result" id="dx-result" aria-live="polite">
+      <span class="dx-res-lab" id="dx-res-lab">escolha um dado</span>
+      <span class="dx-res-num" id="dx-res-num">–</span>
+    </div>
+    <div class="dx-history" id="dx-history"></div>
+  </div>
+</div>
+
+<div id="dx-nat20" aria-hidden="true">
+  <div class="dx-dark"></div>
+  <div class="dx-rays"></div>
+  <div class="dx-halo"></div>
+  <div class="dx-ring"></div>
+  <div class="dx-ring r2"></div>
+  <div class="dx-stage">
+    <div class="dx-die-wrap">
+      <svg class="dx-die" viewBox="0 0 200 200" aria-hidden="true">
+        <defs>
+          <radialGradient id="dxBody" cx="50%" cy="42%" r="65%">
+            <stop offset="0" stop-color="#3a2a0e"/><stop offset="0.6" stop-color="#1b1307"/><stop offset="1" stop-color="#0c0803"/>
+          </radialGradient>
+          <linearGradient id="dxEdge" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fff0c2"/><stop offset="0.5" stop-color="#f3c358"/><stop offset="1" stop-color="#b7790f"/>
+          </linearGradient>
+          <linearGradient id="dxNum" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#fffbe9"/><stop offset="1" stop-color="#f3c358"/>
+          </linearGradient>
+        </defs>
+        <polygon points="100,10 177.9,55 177.9,145 100,190 22.1,145 22.1,55" fill="url(#dxBody)"/>
+        <g fill="rgba(255,214,120,0.17)">
+          <polygon points="100,47 100,10 177.9,55"/><polygon points="150.2,129 177.9,145 100,190"/><polygon points="49.8,129 22.1,145 22.1,55"/>
+        </g>
+        <g fill="rgba(255,214,120,0.07)">
+          <polygon points="100,47 22.1,55 100,10"/><polygon points="150.2,129 177.9,55 177.9,145"/><polygon points="49.8,129 100,190 22.1,145"/>
+          <polygon points="100,47 150.2,129 177.9,55"/><polygon points="150.2,129 49.8,129 100,190"/><polygon points="49.8,129 100,47 22.1,55"/>
+        </g>
+        <polygon points="100,47 150.2,129 49.8,129" fill="rgba(255,226,150,0.12)"/>
+        <g stroke="url(#dxEdge)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" fill="none">
+          <polygon points="100,10 177.9,55 177.9,145 100,190 22.1,145 22.1,55" stroke-width="5"/>
+          <polygon points="100,47 150.2,129 49.8,129"/>
+          <path d="M100 47V10M100 47 22.1 55M100 47l77.9 8M150.2 129l27.7 16M150.2 129l-50.2 61M150.2 129l27.7-74M49.8 129l-27.7 16M49.8 129l50.2 61M49.8 129 22.1 55"/>
+        </g>
+        <text x="100" y="118" text-anchor="middle" font-family="'Cinzel Decorative','Cinzel',serif" font-weight="900" font-size="40" fill="url(#dxNum)" stroke="#5a3a05" stroke-width="0.8">20</text>
+      </svg>
+    </div>
+    <div class="dx-cap">20 natural</div>
+  </div>
+  <canvas id="dx-canvas"></canvas>
+  <div class="dx-flash"></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── CONFIG ─────────────────────────────────────────────── */
+  var AUDIO_SRC = 'sons/nat20.mp3';   // áudio da cena (pasta sons/, como os outros)
+  // Linha do tempo (segundos, contados do início do áudio já cortado):
+  var T_HIT  = 2.00;   // "golpe" do áudio: o dado aparece
+  var T_P2   = 5.55;   // segunda onda do áudio: pulso extra
+  var T_FADE = 6.35;   // início do decaimento do áudio: a cena some junto
+  var T_END  = 7.80;   // fim do áudio
+  var DICE = [4, 6, 8, 10, 12, 20, 100];
+
+  /* ── UTIL ───────────────────────────────────────────────── */
+  function $(id) { return document.getElementById(id); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function rnd(n) {                       // inteiro 1..n, sem viés
+    var c = window.crypto || window.msCrypto;
+    if (c && c.getRandomValues) {
+      var lim = Math.floor(4294967296 / n) * n, a = new Uint32Array(1), v;
+      do { c.getRandomValues(a); v = a[0]; } while (v >= lim);
+      return (v % n) + 1;
+    }
+    return Math.floor(Math.random() * n) + 1;
+  }
+  function masterVol() {
+    var m = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
+    return clamp(+m || 0, 0, 1);
+  }
+
+  /* ── GAVETA ─────────────────────────────────────────────── */
+  var drawer = $('dx-drawer'), handle = $('dx-handle'), grid = $('dx-grid');
+  var resBox = $('dx-result'), resNum = $('dx-res-num'), resLab = $('dx-res-lab'), histEl = $('dx-history');
+  var history = [], busy = false;
+
+  var ICONS = {
+    4:   '<polygon points="20,6 35,33 5,33"/>',
+    6:   '<rect x="8" y="8" width="24" height="24" rx="3.5"/>',
+    8:   '<polygon points="20,3 35,20 20,37 5,20"/><path d="M5 20h30" opacity=".5"/>',
+    10:  '<polygon points="20,3 34,16 20,37 6,16"/><path d="M6 16h28" opacity=".5"/>',
+    12:  '<polygon points="20,4 35,15 29,33 11,33 5,15"/>',
+    20:  '<polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5"/><polygon points="20,12 28,26 12,26" opacity=".7"/>',
+    100: '<circle cx="20" cy="20" r="15"/><path d="M14 26 26 14" opacity=".7"/><circle cx="15.2" cy="15.2" r="2.4" opacity=".7"/><circle cx="24.8" cy="24.8" r="2.4" opacity=".7"/>'
+  };
+
+  DICE.forEach(function (n) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dx-die-btn' + (n === 20 ? ' dx-d20' : '');
+    b.setAttribute('aria-label', 'Rolar d' + n);
+    b.title = 'Rolar d' + n;
+    b.innerHTML = '<svg width="30" height="30" viewBox="0 0 40 40" fill="rgba(255,255,255,.05)" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">' + ICONS[n] + '</svg><span>d' + n + '</span>';
+    b.addEventListener('click', function () { roll(n, b); });
+    grid.appendChild(b);
+  });
+
+  function setOpen(open) {
+    drawer.classList.toggle('open', open);
+    handle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  handle.addEventListener('click', function () { setOpen(!drawer.classList.contains('open')); });
+
+  function placeDrawer() {                 // fica logo abaixo da barra superior
+    var nav = document.querySelector('.dark-topbar');
+    var top = nav ? Math.ceil(nav.getBoundingClientRect().bottom) + 10 : 64;
+    drawer.style.setProperty('--dx-top', Math.max(top, 10) + 'px');
+  }
+  placeDrawer();
+  window.addEventListener('resize', placeDrawer);
+  window.addEventListener('load', placeDrawer);
+
+  function renderHistory() {
+    histEl.innerHTML = '';
+    history.forEach(function (h) {
+      var s = document.createElement('span');
+      s.className = 'dx-chip' + (h.crit ? ' crit' : '');
+      s.textContent = 'd' + h.n + ': ' + h.v;
+      histEl.appendChild(s);
+    });
+  }
+
+  function roll(sides, btn) {
+    if (busy || natActive) return;
+    busy = true;
+    var final = rnd(sides);
+    var isNat = (sides === 20 && final === 20);
+    resLab.textContent = 'd' + sides;
+    resBox.className = 'dx-result rolling';
+    btn.classList.remove('rolling'); void btn.offsetWidth; btn.classList.add('rolling');
+    var ticks = 0, TOTAL = 11;
+    var timer = setInterval(function () {
+      resNum.textContent = rnd(sides);
+      if (++ticks >= TOTAL) {
+        clearInterval(timer);
+        resNum.textContent = final;
+        resBox.className = 'dx-result' + (isNat ? ' crit' : (sides === 20 && final === 1 ? ' fail' : ''));
+        history.unshift({ n: sides, v: final, crit: isNat });
+        if (history.length > 8) history.pop();
+        renderHistory();
+        busy = false;
+        if (isNat) setTimeout(nat20, 380);
+      }
+    }, 55);
+  }
+
+  /* ── 20 NATURAL ─────────────────────────────────────────── */
+  var ov = $('dx-nat20'), dark = ov.querySelector('.dx-dark'), cv = $('dx-canvas'), ctx = cv.getContext('2d');
+  var aud = null;
+  try { aud = new Audio(AUDIO_SRC); aud.preload = 'auto'; } catch (e) { aud = null; }
+
+  var natActive = false, anchored = false, skipping = false, hitDone = false, p2Done = false;
+  var clock0 = 0, lastNow = 0, skipT0 = 0, raf = 0;
+  var W = 0, H = 0, DPR = 1, parts = [], spawnAcc = 0, moteAcc = 0;
+  var R0 = 128;                           // raio inicial da luz (em %): a escuridão entra pelas bordas
+
+  if (aud) {
+    // ancora o relógio da cena no instante em que o som realmente começa a tocar
+    aud.addEventListener('playing', function () {
+      if (natActive && !anchored && aud.currentTime < 0.6) {
+        clock0 = performance.now() - aud.currentTime * 1000;
+        anchored = true;
+      }
+    });
+  }
+
+  /* sprites pré-renderizados (estrela de 4 pontas e brilho redondo) */
+  function makeSprite(kind) {
+    var s = 96, h = s / 2, c = document.createElement('canvas');
+    c.width = c.height = s;
+    var g = c.getContext('2d'), grd = g.createRadialGradient(h, h, 0, h, h, h);
+    if (kind === 'star') {
+      grd.addColorStop(0, 'rgba(255,250,225,.5)');
+      grd.addColorStop(0.28, 'rgba(255,214,120,.2)');
+      grd.addColorStop(1, 'rgba(255,190,60,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, s, s);
+      var r = h * 0.96, k = 0.1;
+      g.fillStyle = '#fff6d8';
+      g.beginPath();
+      g.moveTo(h, h - r);
+      g.quadraticCurveTo(h + r * k, h - r * k, h + r, h);
+      g.quadraticCurveTo(h + r * k, h + r * k, h, h + r);
+      g.quadraticCurveTo(h - r * k, h + r * k, h - r, h);
+      g.quadraticCurveTo(h - r * k, h - r * k, h, h - r);
+      g.closePath(); g.fill();
+    } else {
+      grd.addColorStop(0, 'rgba(255,242,195,.95)');
+      grd.addColorStop(0.3, 'rgba(255,205,95,.42)');
+      grd.addColorStop(1, 'rgba(255,170,40,0)');
+      g.fillStyle = grd; g.fillRect(0, 0, s, s);
+    }
+    return c;
+  }
+  var SPR = { star: makeSprite('star'), dot: makeSprite('dot') }, SPR_S = 96;
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  }
+  function dieSize() { return Math.min(Math.min(W, H) * 0.46, 340); }
+
+  function addPart(p) { if (parts.length < 700) parts.push(p); }
+
+  function burst(n, speedMin, speedMax, sMin, sMax, lifeMin, lifeMax) {
+    var cx = W / 2, cy = H * 0.46, u = Math.min(W, H) / 800;
+    for (var i = 0; i < n; i++) {
+      var a = rand(0, Math.PI * 2), sp = rand(speedMin, speedMax) * u;
+      addPart({
+        kind: Math.random() < 0.72 ? 'star' : 'dot',
+        x: cx + Math.cos(a) * rand(0, dieSize() * 0.3), y: cy + Math.sin(a) * rand(0, dieSize() * 0.3),
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: rand(1.1, 1.9), g: 38 * u,
+        size: rand(sMin, sMax) * (0.6 + u * 0.5), rot: rand(0, 6.28), vr: rand(-1.4, 1.4),
+        life: rand(lifeMin, lifeMax), age: 0, tw: rand(0, 6.28), tws: rand(5, 11), a: rand(0.75, 1)
+      });
+    }
+  }
+  function ambient() {                    // brilhos que nascem em volta do dado e sobem devagar
+    var cx = W / 2, cy = H * 0.46, S = dieSize(), a = rand(0, 6.28), r = S * rand(0.28, 0.85);
+    addPart({
+      kind: Math.random() < 0.8 ? 'star' : 'dot',
+      x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r * 0.9,
+      vx: rand(-8, 8), vy: rand(-34, -10), drag: 0.2, g: 0,
+      size: rand(6, 17), rot: rand(0, 6.28), vr: rand(-0.9, 0.9),
+      life: rand(1.3, 2.6), age: 0, tw: rand(0, 6.28), tws: rand(6, 13), a: rand(0.65, 1)
+    });
+  }
+  function mote(t) {                      // grãos de luz que convergem pro centro enquanto o som cresce
+    var cx = W / 2, cy = H * 0.46, a = rand(0, 6.28), d = Math.min(W, H) * rand(0.42, 0.78);
+    var life = Math.max(0.35, T_HIT - t - rand(0, 0.15));
+    addPart({
+      kind: 'dot', x: cx + Math.cos(a) * d, y: cy + Math.sin(a) * d * 0.8,
+      vx: -Math.cos(a) * d / life, vy: -Math.sin(a) * d * 0.8 / life, drag: 0, g: 0,
+      size: rand(3, 7), rot: 0, vr: 0, life: life, age: 0, tw: rand(0, 6.28), tws: rand(8, 14), a: rand(0.35, 0.7)
+    });
+  }
+
+  function stepParts(dt) {
+    for (var i = parts.length - 1; i >= 0; i--) {
+      var p = parts[i];
+      p.age += dt;
+      if (p.age >= p.life) { parts.splice(i, 1); continue; }
+      var k = Math.exp(-p.drag * dt);
+      p.vx *= k; p.vy = p.vy * k + p.g * dt;
+      p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+    }
+  }
+  function drawParts() {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i];
+      var env = Math.min(p.age / 0.08, 1) * Math.min(1, (p.life - p.age) / (p.life * 0.38));
+      var tw = 0.55 + 0.45 * Math.sin(p.tw + p.age * p.tws);
+      var alpha = clamp(env * tw * p.a, 0, 1);
+      if (alpha < 0.01) continue;
+      var sz = p.size * (p.kind === 'star' ? 0.7 + 0.3 * tw : 1) * DPR;
+      var sc = sz / SPR_S, cs = Math.cos(p.rot) * sc, sn = Math.sin(p.rot) * sc;
+      ctx.globalAlpha = alpha;
+      ctx.setTransform(cs, sn, -sn, cs, p.x * DPR, p.y * DPR);
+      ctx.drawImage(SPR[p.kind], -SPR_S / 2, -SPR_S / 2);
+    }
+    ctx.globalAlpha = 1;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+  }
+
+  function ease(p) { return p * p * (3 - 2 * p); }
+
+  function frame() {
+    if (!natActive) return;
+    var now = performance.now();
+    var dt = Math.min(0.05, (now - lastNow) / 1000); lastNow = now;
+    var t = (now - clock0) / 1000;
+    var skipP = 0;
+    if (skipping) skipP = clamp((now - skipT0) / 380, 0, 1);
+
+    // volume acompanha o controle geral (e a saída rápida, se o jogador tocar pra pular)
+    if (aud) { try { aud.volume = clamp(masterVol() * (1 - skipP), 0, 1); } catch (e) {} }
+
+    // 1) escurece de fora pra dentro, crescendo junto com o áudio
+    var pr = clamp(t / (T_HIT - 0.08), 0, 1);
+    dark.style.setProperty('--r', (R0 * (1 - Math.pow(pr, 1.35))).toFixed(2) + '%');
+
+    // 2) grãos de luz convergindo antes do golpe
+    if (t > 0.7 && t < T_HIT - 0.1) {
+      moteAcc += dt * (6 + 34 * clamp((t - 0.7) / (T_HIT - 0.8), 0, 1));
+      while (moteAcc >= 1) { mote(t); moteAcc -= 1; }
+    }
+
+    // 3) o golpe: dado + clarão + chuva de estrelas
+    if (!hitDone && t >= T_HIT) {
+      hitDone = true;
+      ov.classList.add('hit');
+      burst(150, 160, 760, 8, 26, 1.6, 3.2);
+      setTimeout(function () { if (natActive) burst(80, 80, 420, 6, 18, 1.4, 2.6); }, 140);
+    }
+
+    // 4) brilho contínuo enquanto o som sustenta
+    if (hitDone && t < T_FADE - 0.4) {
+      spawnAcc += dt * 46;
+      while (spawnAcc >= 1) { ambient(); spawnAcc -= 1; }
+    }
+
+    // 5) segunda onda do áudio
+    if (!p2Done && t >= T_P2) {
+      p2Done = true;
+      ov.classList.add('p2');
+      burst(70, 100, 520, 6, 20, 1.3, 2.4);
+    }
+
+    // 6) decaimento: a cena inteira some junto com o som
+    var o = 1 - ease(clamp((t - T_FADE) / (T_END - T_FADE), 0, 1));
+    if (skipping) o = Math.min(o, 1 - skipP);
+    ov.style.opacity = o.toFixed(3);
+
+    stepParts(dt);
+    drawParts();
+
+    if (t >= T_END || (skipping && skipP >= 1)) { endNat20(); return; }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function nat20() {
+    if (natActive) return;
+    natActive = true; anchored = false; skipping = false; hitDone = false; p2Done = false;
+    parts.length = 0; spawnAcc = 0; moteAcc = 0;
+    ov.classList.remove('hit', 'p2');
+    ov.style.opacity = '1';
+    dark.style.setProperty('--r', R0 + '%');
+    ov.classList.add('on');
+    resize();
+    clock0 = lastNow = performance.now();
+    if (aud) {
+      try {
+        aud.pause(); aud.currentTime = 0; aud.volume = masterVol();
+        var pl = aud.play(); if (pl && pl.catch) pl.catch(function () {});
+      } catch (e) {}
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function endNat20() {
+    natActive = false;
+    cancelAnimationFrame(raf);
+    ov.classList.remove('on', 'hit', 'p2');
+    ov.style.opacity = '';
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
+    parts.length = 0;
+    if (aud) { try { aud.pause(); aud.currentTime = 0; } catch (e) {} }
+  }
+
+  function skipNat20() {
+    if (!natActive || skipping) return;
+    skipping = true; skipT0 = performance.now();
+  }
+  ov.addEventListener('click', skipNat20);
+  window.addEventListener('resize', function () { if (natActive) resize(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (natActive) skipNat20(); else if (drawer.classList.contains('open')) setOpen(false);
+  });
+
+  // disponível para outros botões da página (ex.: teste de morte, iniciativa)
+  window.dxRoll = function (sides) { var b = grid.querySelector('.dx-die-btn:nth-child(' + (DICE.indexOf(sides) + 1) + ')'); if (b) roll(sides, b); };
+  window.dxNat20 = nat20;
+})();
+</script>
 
 </body></html>
