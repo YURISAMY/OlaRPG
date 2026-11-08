@@ -3270,6 +3270,10 @@
       color: #e26a6a;
     }
   </style>
+<style>
+.battle-edit{width:52px;background:rgba(0,0,0,.35);border:1px solid rgba(201,146,26,.45);color:inherit;border-radius:3px;padding:1px 4px;font:inherit;text-align:center}
+.battle-edit:focus{outline:1px solid var(--gold,#c9921a)}
+</style>
 </head>
 
 <body>
@@ -8045,7 +8049,8 @@
 
         // CA and attributes
         html += '<div class="battle-meta">';
-        html += '<span class="battle-meta-ca">🛡️ CA: ' + m.ca + '</span>';
+        html += '<span class="battle-meta-ca">🛡️ CA: <input class="battle-edit" type="number" min="0" value="' + m.ca + '" onchange="editarCA(\'' + m.id + '\', this.value)" title="Editar CA"></span>';
+        html += '<span class="battle-meta-ca">❤️ HP máx: <input class="battle-edit" type="number" min="1" value="' + m.maxHp + '" onchange="editarMaxHp(\'' + m.id + '\', this.value)" title="Editar HP máximo"></span>';
         // Recovery display
         let recParts = [];
         if (m.recSt > 0) recParts.push(m.recSt + '🟡');
@@ -8131,6 +8136,56 @@
       entries.appendChild(entry);
       entries.parentElement.scrollTop = entries.parentElement.scrollHeight;
       document.getElementById('battle-log').style.display = 'block';
+    }
+
+    /* ── ATAQUES DOS JOGADORES (resolvidos aqui, pra CA e HP dos monstros nunca irem pra Ficha) ── */
+    const _atkBusy = {};
+    function _esc(t) { return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function processarAtaques() {
+      if (!playersRef) return;
+      Object.entries(sessionPlayers || {}).forEach(([id, p]) => {
+        const a = p && p.atk;
+        if (!a || !a.nonce || _atkBusy[a.nonce]) return;
+        if (p.atkResult && p.atkResult.nonce === a.nonce) return;       // já resolvido
+        _atkBusy[a.nonce] = 1;
+        if (!a.ts || Date.now() - a.ts > 600000) return;                 // ataque velho: ignora
+        const m = battleMonsters.find(x => x.id === a.targetId);
+        const nome = p.name || 'Jogador';
+        if (!m) { playersRef.child(id).child('atkResult').set({ nonce: a.nonce, invalid: true, target: String(a.targetName || '?') }); return; }
+        const ca = m.ca || 0, d20 = parseInt(a.d20) || 0, total = parseInt(a.total) || 0;
+        const hit = d20 === 20 || (d20 !== 1 && total >= ca);
+        const dmg = hit ? Math.max(0, parseInt(a.dmg) || 0) : 0;
+        if (hit) m.hp = Math.max(0, m.hp - dmg);
+        saveBattleState(); renderBattle();
+        const alvo = m.displayName || m.name;
+        addBattleLog(nome, 'atacou <span class="log-skill-name">' + _esc(alvo) + '</span> com ' + _esc(a.weapon) + (a.skill ? ' (' + _esc(a.skill) + ')' : '') +
+          ' — d20 ' + d20 + ' = <b>' + total + '</b> vs CA ' + ca + ': ' +
+          (hit ? '<b>ACERTOU</b> · ' + dmg + ' de dano ' + (a.dmgText ? '(' + _esc(a.dmgText) + ') ' : '') + '· HP ' + m.hp + '/' + m.maxHp : 'errou'));
+        playersRef.child(id).child('atkResult').set({ nonce: a.nonce, hit: hit, dmg: dmg, target: alvo, killed: hit && m.hp === 0 });
+      });
+    }
+
+    function editarCA(id, v) {
+      const m = battleMonsters.find(x => x.id === id); if (!m) return;
+      m.ca = Math.max(0, parseInt(v) || 0);
+      saveBattleState(); renderBattle();
+    }
+    function editarMaxHp(id, v) {
+      const m = battleMonsters.find(x => x.id === id); if (!m) return;
+      const novo = Math.max(1, parseInt(v) || 1), cheio = m.hp >= m.maxHp;
+      m.maxHp = novo; m.hp = cheio ? novo : Math.min(m.hp, novo);      // se estava cheio, acompanha o novo máximo
+      saveBattleState(); renderBattle();
+    }
+
+    // Recuperação de ST/FO de um monstro só (usada quando o turno dele começa)
+    function recuperarRecursosMonstro(m) {
+      const parts = [];
+      const htmlMaxSt = findHtmlMax(m.name, 'st'), htmlMaxFo = findHtmlMax(m.name, 'fo');
+      if (htmlMaxSt > 0 && m.maxSt !== htmlMaxSt) m.maxSt = htmlMaxSt;
+      if (htmlMaxFo > 0 && m.maxFo !== htmlMaxFo) m.maxFo = htmlMaxFo;
+      if ((m.recSt || 0) > 0 && m.st < m.maxSt) { const g = Math.min(m.recSt, m.maxSt - m.st); m.st += g; parts.push('+' + g + '🟡'); }
+      if ((m.recFo || 0) > 0 && m.fo < m.maxFo) { const g = Math.min(m.recFo, m.maxFo - m.fo); m.fo += g; parts.push('+' + g + '🔵'); }
+      return parts;
     }
 
     /* ── NEXT TURN ── */
@@ -8272,6 +8327,7 @@
         sessionPlayers = snapshot.val() || {};
         syncSetStatus('online', '🟢 sincronizado: ' + code);
         detectarNovasAcoes();
+        processarAtaques();
         renderPlayers();
       }, (err) => {
         console.error('Erro de sincronização:', err);
@@ -8457,7 +8513,7 @@
       if (!currentSessionCode || !syncDb) return;
       if (turnOrderPushTimer) clearTimeout(turnOrderPushTimer);
       turnOrderPushTimer = setTimeout(() => {
-        const payload = combatants.map(c => ({ type: c.type, name: c.name }));
+        const payload = combatants.map(c => ({ type: c.type, name: c.name, id: c.refId }));
         syncDb.ref('sessions/' + currentSessionCode + '/turnOrder').set(payload).catch(e => console.error('Erro ao enviar ordem de turno:', e));
       }, 250);
     }
@@ -8712,6 +8768,14 @@
       currentTurnKey = next.key;
       salvarEstadoTurno();
       pushTurnToFirebase(next);
+      if (next.type === 'monster') {
+        const mm = battleMonsters.find(x => x.id === next.refId);
+        if (mm) {
+          const parts = recuperarRecursosMonstro(mm);
+          saveBattleState(); renderBattle();
+          if (parts.length) addBattleLog('🔄 Turno', (mm.displayName || mm.name) + ': ' + parts.join(' / '));
+        }
+      }
       renderTurnOrder();
       addBattleLog('⚔', 'Rodada <strong>' + roundNumber + '</strong> — turno de <span class="log-skill-name">' + next.name + '</span>');
     }

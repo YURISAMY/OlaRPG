@@ -5681,6 +5681,39 @@
       color: #e26a6a;
     }
   </style>
+<style>
+.wpn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.wpn-grid .full{grid-column:1/-1}
+.wpn-grid .field{margin:0}
+.wpn-grid select,.wpn-grid input[type=text],.wpn-grid input[type=number]{width:100%;box-sizing:border-box}
+.wpn-grid select{background:rgba(0,0,0,.28);border:1px solid var(--border-gold);color:inherit;padding:7px 8px;border-radius:3px;font:inherit}
+.wpn-check{display:flex;align-items:center;gap:8px;font-size:13px;opacity:.85;cursor:pointer}
+.wpn-preview{font-size:12px;letter-spacing:.03em;color:var(--gold-light);opacity:.85;margin:2px 0 12px;text-align:center}
+#wpn-atk-btn.wpn-armed{animation:wpnPulse .8s infinite alternate;border-color:#e0605a;color:#ffb3ad}
+.turn-order-mini-item.targetable{cursor:pointer;border-color:#e0605a;background:rgba(224,96,90,.14);color:#ffd2cf;animation:wpnPulse .9s infinite alternate;font-family:inherit}
+.turn-order-mini-item.targetable:hover{background:rgba(224,96,90,.3)}
+.turn-order-mini-title.armed{color:#ff9d96}
+@keyframes wpnPulse{from{box-shadow:0 0 0 rgba(224,96,90,0)}to{box-shadow:0 0 14px rgba(224,96,90,.65)}}
+</style>
+<style>
+#wpn-fab{position:fixed;top:calc(var(--dx-top,64px) + 66px);right:0;z-index:1090;display:flex;flex-direction:row-reverse;align-items:flex-start;gap:6px;pointer-events:none}
+#wpn-fab>*{pointer-events:auto}
+#wpn-fab-btn{width:34px;height:56px;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:#ffb3ad;font-size:19px;line-height:1;
+  background:rgba(10,11,16,.92);border:1px solid rgba(224,96,90,.55);border-right:none;border-radius:10px 0 0 10px;box-shadow:-4px 4px 18px rgba(0,0,0,.55)}
+#wpn-fab-btn span{font:700 7px/1 'Cinzel',serif;letter-spacing:.08em}
+#wpn-fab-btn.wpn-armed{animation:wpnPulse .8s infinite alternate;background:rgba(80,20,18,.95)}
+#wpn-fab-targets{display:none;max-height:60vh;overflow:auto;min-width:150px;max-width:62vw;padding:8px;background:rgba(10,11,16,.96);border:1px solid rgba(224,96,90,.55);border-radius:8px;box-shadow:-4px 4px 18px rgba(0,0,0,.55)}
+#wpn-fab-targets .wpn-fab-title{font:700 10px 'Cinzel',serif;letter-spacing:.1em;color:#ff9d96;margin-bottom:6px;text-align:center}
+#wpn-fab-targets button{display:block;width:100%;margin-top:5px;padding:7px 10px;cursor:pointer;text-align:left;color:#ffd2cf;background:rgba(224,96,90,.14);border:1px solid #e0605a;border-radius:4px;font:inherit;font-size:13px}
+#wpn-fab-targets button:hover{background:rgba(224,96,90,.32)}
+#wpn-fab{transition:right .38s cubic-bezier(.22,.9,.3,1)}
+body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
+@media (max-width:640px){body:has(.dx-drawer.open) #wpn-fab{display:none}}
+#wpn-fab-targets .wpn-fab-weapon{font-size:11px;opacity:.75;text-align:center;margin-bottom:2px}
+#wpn-fab-targets .wpn-fab-empty{font-size:12px;opacity:.7;padding:6px 2px}
+.dx-drawer{pointer-events:none}
+.dx-drawer>.dx-handle,.dx-drawer>.dx-panel{pointer-events:auto}
+</style>
 </head>
 
 <body>
@@ -5797,6 +5830,7 @@
     <span id="turn-active-label">—</span>
   </div>
   <div class="turn-banner" id="turn-banner">🎯 SUA VEZ DE JOGAR!</div>
+  <div id="wpn-fab"><div id="wpn-fab-targets"></div><button type="button" id="wpn-fab-btn" onclick="wpnFabToggle()" title="Atacar (atalho)">⚔<span>ATACAR</span></button></div>
   <div class="turn-order-mini" id="turn-order-mini"></div>
   <div class="party-roster" id="party-roster"></div>
 
@@ -6286,69 +6320,23 @@
 
 
 
-      <!-- COMBOS -->
-      <div class="panel col-full" id="panel-combos">
-        <div class="panel-title">Combos de Turno</div>
-        <div class="combos-layout">
-
-          <!-- sidebar: lista de combos salvos -->
-          <div class="combo-sidebar">
-            <button class="add-btn" style="width:100%;" onclick="novoCombo()">＋ Novo Combo</button>
-            <div id="combo-list-container">
-              <div class="combo-empty-state">Nenhum combo criado.</div>
-            </div>
-          </div>
-
-          <!-- editor do combo ativo -->
-          <div class="combo-editor" id="combo-editor-area">
-            <div class="combo-empty-state" id="combo-no-selection">
-              Selecione ou crie um combo para editar.
-            </div>
-            <div id="combo-editor-content" style="display:none; flex-direction:column; gap:12px;">
-
-              <div class="combo-editor-header">
-                <input class="combo-name-input" type="text" id="combo-name-input" placeholder="Nome do combo"
-                  maxlength="40" oninput="renomearComboAtivo()">
-              </div>
-
-              <div class="combo-skill-selector">
-                <select id="combo-skill-select">
-                  <option value="">— Selecionar habilidade —</option>
-                </select>
-                <button class="add-btn" onclick="adicionarStepCombo()">＋ Adicionar</button>
-              </div>
-
-              <div class="combo-steps" id="combo-steps-list">
-              </div>
-
-              <div class="combo-totals" id="combo-totals">
-                <span class="combo-total-label">ST</span>
-                <span class="combo-total-val st" id="combo-total-st">0</span>
-                <span style="color:var(--border-gold);margin:0 2px;">/</span>
-                <span class="combo-total-val" id="combo-total-st-max"
-                  style="font-size:12px;color:var(--gold-dim);">0</span>
-                &nbsp;&nbsp;
-                <span class="combo-total-label">FO</span>
-                <span class="combo-total-val fo" id="combo-total-fo">0</span>
-                <span style="color:var(--border-gold);margin:0 2px;">/</span>
-                <span class="combo-total-val" id="combo-total-fo-max"
-                  style="font-size:12px;color:var(--gold-dim);">0</span>
-                <span class="combo-status-tag empty" id="combo-status-tag">SEM STEPS</span>
-              </div>
-
-              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                <button class="combo-execute-btn" id="combo-execute-btn" onclick="executarCombo()">
-                  ⚔ Executar Combo
-                </button>
-                <span style="font-size:10px;color:var(--gold-dim);font-style:italic;">
-                  Desconta os recursos ao confirmar
-                </span>
-              </div>
-
-            </div>
-          </div>
-
+      <!-- ARMA EQUIPADA -->
+      <div class="panel" id="panel-arma">
+        <div class="panel-title">⚔ Arma Equipada</div>
+        <div class="wpn-grid">
+          <div class="field full"><label>Arma</label><input type="text" id="wpn-name" placeholder="Ex.: Espada longa" oninput="wpnChanged()"></div>
+          <div class="field"><label>Dano</label><input type="text" id="wpn-dano" placeholder="1d8" oninput="wpnChanged()"></div>
+          <div class="field"><label>Modificação da arma</label>
+            <select id="wpn-mod" onchange="wpnChanged()"><option value="0">Comum (+0)</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option></select></div>
+          <div class="field"><label>Atributo de ataque</label>
+            <select id="wpn-attr" onchange="wpnChanged()"><option value="for">Força</option><option value="des">Destreza</option><option value="con">Constituição</option><option value="int">Inteligência</option><option value="sab">Sabedoria</option><option value="car">Carisma</option></select></div>
+          <div class="field"><label>Skill atrelada</label><input type="text" id="wpn-skill" placeholder="(opcional)" oninput="wpnChanged()"></div>
+          <div class="field"><label>Bônus extra de ataque</label><input type="number" id="wpn-batk" value="0" oninput="wpnChanged()"></div>
+          <div class="field"><label>Bônus extra de dano</label><input type="number" id="wpn-bdano" value="0" oninput="wpnChanged()"></div>
+          <label class="wpn-check full"><input type="checkbox" id="wpn-addattr" checked onchange="wpnChanged()"> Somar o modificador do atributo ao dano</label>
         </div>
+        <div class="wpn-preview" id="wpn-preview"></div>
+        <button class="rec-btn" id="wpn-atk-btn" onclick="wpnAtacar()">⚔ ATACAR</button>
       </div>
 
       <!-- MAGIAS, HABILIDADES E PASSIVAS -->
@@ -6444,6 +6432,71 @@
             <textarea class="flex2" id="new-passiva-desc" placeholder="Descrição da passiva" rows="2"></textarea>
             <button class="add-btn" onclick="addPassiva()">+ Adicionar</button>
           </div>
+        </div>
+      </div>
+
+      <!-- COMBOS -->
+      <div class="panel col-full" id="panel-combos">
+        <div class="panel-title">Combos de Turno</div>
+        <div class="combos-layout">
+
+          <!-- sidebar: lista de combos salvos -->
+          <div class="combo-sidebar">
+            <button class="add-btn" style="width:100%;" onclick="novoCombo()">＋ Novo Combo</button>
+            <div id="combo-list-container">
+              <div class="combo-empty-state">Nenhum combo criado.</div>
+            </div>
+          </div>
+
+          <!-- editor do combo ativo -->
+          <div class="combo-editor" id="combo-editor-area">
+            <div class="combo-empty-state" id="combo-no-selection">
+              Selecione ou crie um combo para editar.
+            </div>
+            <div id="combo-editor-content" style="display:none; flex-direction:column; gap:12px;">
+
+              <div class="combo-editor-header">
+                <input class="combo-name-input" type="text" id="combo-name-input" placeholder="Nome do combo"
+                  maxlength="40" oninput="renomearComboAtivo()">
+              </div>
+
+              <div class="combo-skill-selector">
+                <select id="combo-skill-select">
+                  <option value="">— Selecionar habilidade —</option>
+                </select>
+                <button class="add-btn" onclick="adicionarStepCombo()">＋ Adicionar</button>
+              </div>
+
+              <div class="combo-steps" id="combo-steps-list">
+              </div>
+
+              <div class="combo-totals" id="combo-totals">
+                <span class="combo-total-label">ST</span>
+                <span class="combo-total-val st" id="combo-total-st">0</span>
+                <span style="color:var(--border-gold);margin:0 2px;">/</span>
+                <span class="combo-total-val" id="combo-total-st-max"
+                  style="font-size:12px;color:var(--gold-dim);">0</span>
+                &nbsp;&nbsp;
+                <span class="combo-total-label">FO</span>
+                <span class="combo-total-val fo" id="combo-total-fo">0</span>
+                <span style="color:var(--border-gold);margin:0 2px;">/</span>
+                <span class="combo-total-val" id="combo-total-fo-max"
+                  style="font-size:12px;color:var(--gold-dim);">0</span>
+                <span class="combo-status-tag empty" id="combo-status-tag">SEM STEPS</span>
+              </div>
+
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <button class="combo-execute-btn" id="combo-execute-btn" onclick="executarCombo()">
+                  ⚔ Executar Combo
+                </button>
+                <span style="font-size:10px;color:var(--gold-dim);font-style:italic;">
+                  Desconta os recursos ao confirmar
+                </span>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -8312,11 +8365,107 @@
       state.statuses = [...document.querySelectorAll('.status-btn.active')].map(b => b.textContent);
       state.notes = document.getElementById('char-notes').value;
       state.historia = document.getElementById('char-historia').value;
+      state.weapon = wpnRead();
       // pericias already updated via togglePericia
       // profAttrs already updated via toggleProfAttr
     }
 
+    /* ── ARMA EQUIPADA + ATAQUE AUTOMÁTICO ── */
+    let wpnArmed = false, wpnFabOpen = false, wpnPending = null, wpnResRef = null;
+    function _wv(id) { const e = document.getElementById(id); return e ? e.value : ''; }
+    function wpnRead() {
+      const c = document.getElementById('wpn-addattr');
+      return { name: _wv('wpn-name'), dano: _wv('wpn-dano'), mod: parseInt(_wv('wpn-mod')) || 0, attr: _wv('wpn-attr') || 'for',
+        skill: _wv('wpn-skill'), bAtk: parseInt(_wv('wpn-batk')) || 0, bDano: parseInt(_wv('wpn-bdano')) || 0, addAttr: c ? c.checked : true };
+    }
+    function wpnApply(w) {
+      w = w || {};
+      const set = (id, v) => { const e = document.getElementById(id); if (e) e.value = v; };
+      set('wpn-name', w.name || ''); set('wpn-dano', w.dano || ''); set('wpn-mod', w.mod || 0); set('wpn-attr', w.attr || 'for');
+      set('wpn-skill', w.skill || ''); set('wpn-batk', w.bAtk || 0); set('wpn-bdano', w.bDano || 0);
+      const c = document.getElementById('wpn-addattr'); if (c) c.checked = w.addAttr !== false;
+      wpnPreview();
+    }
+    function _sg(n) { return (n < 0 ? '−' : '+') + Math.abs(n); }
+    function wpnPreview() {
+      const el = document.getElementById('wpn-preview'); if (!el) return;
+      const w = wpnRead(), bonus = getModValue(w.attr) + w.mod + w.bAtk;
+      const flat = w.mod + (w.addAttr ? getModValue(w.attr) : 0) + w.bDano;
+      el.textContent = 'Ataque: d20 ' + _sg(bonus) + '  ·  Dano: ' + (w.dano.trim() || '—') + (flat ? ' ' + _sg(flat) : '');
+    }
+    function wpnChanged() { wpnPreview(); save(); }
+    function wpnRollDamage(expr, mult) {
+      let diceTot = 0, flat = 0, neg = false; const parts = [], groups = []; const re = /([+-]?)\s*(?:(\d*)d(\d+)|(\d+))/gi; let m;
+      while ((m = re.exec(expr || ''))) {
+        const sg = m[1] === '-' ? -1 : 1;
+        if (m[3]) {
+          const n = Math.min(parseInt(m[2] || '1', 10) * (mult || 1), 20), s = Math.min(parseInt(m[3], 10), 1000), rs = [];
+          for (let i = 0; i < n; i++) rs.push(1 + Math.floor(Math.random() * s));
+          diceTot += sg * rs.reduce((a, b) => a + b, 0); parts.push((sg < 0 ? '−' : '') + '[' + rs.join(',') + ']');
+          if (sg < 0) neg = true; else groups.push({ sides: s, dice: rs });
+        } else { const v = sg * parseInt(m[4], 10); flat += v; parts.push(_sg(v)); }
+      }
+      return { total: diceTot + flat, flat: flat, groups: groups, neg: neg, text: parts.join(' ') };
+    }
+    function wpnToast(msg) { if (window.dxToast) window.dxToast(msg); }
+    function wpnSetBtn() {
+      const b = document.getElementById('wpn-atk-btn'); if (!b) return;
+      b.classList.toggle('wpn-armed', wpnArmed);
+      b.textContent = wpnArmed ? '🎯 ESCOLHA O ALVO NA ORDEM DE TURNO (cancelar)' : '⚔ ATACAR';
+    }
+    function wpnDisarm() { wpnArmed = false; wpnSetBtn(); renderTurnOrderMini(lastTurnOrderData); }
+    function wpnAtacar() {
+      if (wpnArmed) { wpnDisarm(); return; }
+      if (!state.sessionCode || !syncRef) { wpnToast('Conecte-se à mesa pra atacar.'); return; }
+      if (!(lastTurnOrderData || []).some(c => c.type === 'monster' && c.id)) { wpnToast('Nenhum alvo em combate ainda.'); return; }
+      if (!wpnRead().dano.trim()) { wpnToast('Defina o dano da arma primeiro.'); return; }
+      wpnArmed = true; wpnSetBtn(); renderTurnOrderMini(lastTurnOrderData);
+    }
+    function wpnAtacarAlvo(id, name) {
+      if (!(wpnArmed || wpnFabOpen) || !syncRef) return;
+      if (window.dxCineBusy && window.dxCineBusy()) { wpnToast('Espere a animação terminar.'); return; }
+      const w = wpnRead(); wpnDisarm();
+      const d20 = 1 + Math.floor(Math.random() * 20), attrM = getModValue(w.attr), bonus = attrM + w.mod + w.bAtk;
+      const dm = wpnRollDamage(w.dano, d20 === 20 ? 2 : 1), extra = w.mod + (w.addAttr ? attrM : 0) + w.bDano;
+      const dmg = Math.max(0, dm.total + extra);
+      const nonce = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      wpnPending = { nonce: nonce, d20: d20, groups: dm.neg ? [] : dm.groups, flat: dm.flat + extra, label: (d20 === 20 ? 'Dano crítico · ' : 'Dano · ') + (w.name || 'Arma') };
+      const send = () => {
+        if (!syncRef) return;
+        syncRef.child('atk').set({ nonce: nonce, targetId: id, targetName: name, d20: d20, total: d20 + bonus, dmg: dmg, dmgText: dm.text,
+          weapon: w.name || 'Arma', skill: w.skill || '', ts: Date.now() }).catch(e => console.error('Erro ao enviar ataque:', e));
+      };
+      const label = 'Ataque · ' + (w.name || 'Arma');
+      if (window.dxAttackRoll) window.dxAttackRoll(d20, label, bonus, send);
+      else { if (window.dxPublishRoll) window.dxPublishRoll(20, d20, label, bonus); send(); }
+    }
+    function wpnWhenIdle(fn, tries) {
+      if (window.dxCineBusy && window.dxCineBusy() && (tries || 0) < 60) { setTimeout(() => wpnWhenIdle(fn, (tries || 0) + 1), 500); return; }
+      fn();
+    }
+    function wpnOnResult(snap) {
+      const r = snap.val();
+      if (!r || !wpnPending || r.nonce !== wpnPending.nonce) return;
+      const p = wpnPending; wpnPending = null;
+      let msg;
+      if (r.invalid) msg = 'O alvo não está mais em combate.';
+      else if (r.hit) msg = (p.d20 === 20 ? '💥 CRÍTICO! ' : '🎯 Acertou ') + r.target + ' — ' + r.dmg + ' de dano' + (r.killed ? ' · derrotado 💀' : '') + '.';
+      else msg = (p.d20 === 1 ? '💀 Falha crítica! ' : '❌ Errou ') + r.target + '.';
+      setTimeout(() => wpnWhenIdle(() => {
+        wpnToast(msg);
+        if (r.hit && !r.invalid && window.dxPublishDamage && p.groups && p.groups.length) window.dxPublishDamage(p.groups, p.flat, p.label);
+      }), (p.d20 === 20 || p.d20 === 1) ? 900 : 0);
+    }
+    function wpnFabToggle() {
+      if (wpnFabOpen) { wpnFabOpen = false; if (wpnArmed) wpnDisarm(); else renderTurnOrderMini(lastTurnOrderData); return; }
+      if (!state.sessionCode || !syncRef) { wpnToast('Conecte-se à mesa pra atacar.'); return; }
+      if (!wpnRead().dano.trim()) { wpnToast('Defina o dano da arma primeiro.'); return; }
+      wpnFabOpen = true; renderTurnOrderMini(lastTurnOrderData);
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && (wpnArmed || wpnFabOpen)) { wpnFabOpen = false; wpnDisarm(); } });
+
     function applyState() {
+      wpnApply(state.weapon);
       const codeInput = document.getElementById('session-code-input');
       if (codeInput) codeInput.value = state.sessionCode || '';
       atualizarDisplayIniciativa();
@@ -8411,6 +8560,7 @@
           { name: '', effect: '', raridade: 'comum' }
         ],
         statuses: [], notes: '', historia: '', pericias: {},
+        weapon: { name: '', dano: '', mod: 0, attr: 'for', skill: '', bAtk: 0, bDano: 0, addAttr: true },
         sessionCode: '', syncId: null, battleInitiative: null,
         deathSaves: { s: 0, f: 0 }
       };
@@ -8934,7 +9084,7 @@
       _pushPendente = false;
 
       // para de escutar ANTES de apagar, assim a própria remoção não dispara o aviso de "expulso"
-      if (syncRef) { syncRef.off(); syncRef = null; }
+      if (wpnResRef) { wpnResRef.off(); wpnResRef = null; } if (syncRef) { syncRef.off(); syncRef = null; }
       if (turnRef) { turnRef.off(); turnRef = null; }
       if (turnOrderRef) { turnOrderRef.off(); turnOrderRef = null; }
       if (rosterRef) { rosterRef.off(); rosterRef = null; }
@@ -8967,6 +9117,7 @@
     let turnOrderRef = null;
     let rosterRef = null;
     let currentActiveTurnName = null;
+    let _turnFirst = true, _turnTsSeen = null;
 
     function syncConnect() {
       const code = (state.sessionCode || '').trim().toUpperCase();
@@ -8980,6 +9131,8 @@
 
       if (syncRef) syncRef.off();
       syncRef = db.ref('sessions/' + code + '/players/' + state.syncId);
+      if (wpnResRef) wpnResRef.off();
+      wpnResRef = syncRef.child('atkResult'); wpnResRef.on('value', wpnOnResult);
       let primeiraLeitura = true;
       let jaExistiuNaMesa = false; // vira true quando a ficha aparece no servidor; depois disso, sumir = expulsão
 
@@ -9064,11 +9217,13 @@
       // Escuta o turno atual de batalha (pra saber quando é a vez do jogador)
       if (turnRef) turnRef.off();
       turnRef = db.ref('sessions/' + code + '/turn');
+      _turnFirst = true; _turnTsSeen = null;
       turnRef.on('value', (snapshot) => {
         const data = snapshot.val();
         const bar = document.getElementById('turn-status-bar');
         const banner = document.getElementById('turn-banner');
         if (!data) {
+          _turnFirst = false; _turnTsSeen = null;
           bar.style.display = 'none';
           banner.style.display = 'none';
           currentActiveTurnName = null;
@@ -9079,6 +9234,10 @@
         document.getElementById('turn-round-label').textContent = 'Rodada ' + (data.round || 1);
         document.getElementById('turn-active-label').textContent = 'Turno de: ' + (data.activeName || '—');
         const isMyTurn = data.activeType === 'player' && data.activeId === state.syncId;
+        // início do MEU turno: recuperação automática (ignora a primeira leitura, pra não repetir ao recarregar a página)
+        if (_turnFirst) { _turnFirst = false; _turnTsSeen = data.ts; }
+        else if (isMyTurn && data.ts !== _turnTsSeen) { _turnTsSeen = data.ts; setTimeout(recoverTurn, 600); }
+        else _turnTsSeen = data.ts;
         banner.style.display = isMyTurn ? 'block' : 'none';
         currentActiveTurnName = data.activeName || null;
         renderTurnOrderMini(lastTurnOrderData);
@@ -10260,7 +10419,23 @@
 
     let lastTurnOrderData = [];
 
+    function wpnRenderFab(list) {
+      const t = document.getElementById('wpn-fab-targets'), b = document.getElementById('wpn-fab-btn'); if (!t || !b) return;
+      const open = wpnArmed || wpnFabOpen;
+      b.classList.toggle('wpn-armed', open);
+      if (!open) { t.style.display = 'none'; t.innerHTML = ''; return; }
+      const w = wpnRead();
+      let html = '<div class="wpn-fab-title">🎯 ESCOLHA O ALVO</div>' + (w.name ? '<div class="wpn-fab-weapon">⚔ ' + String(w.name).replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</div>' : ''), n = 0;
+      (list || []).forEach(c => {
+        if (c.type !== 'monster' || !c.id) return;
+        const nm = String(c.name).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+        html += '<button type="button" data-tid="' + String(c.id).replace(/"/g, '') + '" data-tname="' + nm + '" onclick="wpnAtacarAlvo(this.dataset.tid, this.dataset.tname)">👹 ' + nm + '</button>'; n++;
+      });
+      if (!n) html += '<div class="wpn-fab-empty">Nenhum alvo em combate.</div>';
+      t.innerHTML = html; t.style.display = 'block';
+    }
     function renderTurnOrderMini(list) {
+      wpnRenderFab(list);
       const el = document.getElementById('turn-order-mini');
       if (!el) return;
       if (!list || list.length === 0) {
@@ -10269,11 +10444,14 @@
         return;
       }
       el.style.display = 'block';
-      let html = '<div class="turn-order-mini-title">⚔ ORDEM DE TURNO</div><div class="turn-order-mini-list">';
+      let html = '<div class="turn-order-mini-title' + (wpnArmed ? ' armed' : '') + '">' + (wpnArmed ? '🎯 ESCOLHA O ALVO' : '⚔ ORDEM DE TURNO') + '</div><div class="turn-order-mini-list">';
       list.forEach((c, i) => {
         const isActive = currentActiveTurnName && c.name === currentActiveTurnName;
         const icon = c.type === 'monster' ? '👹' : '🧑';
-        html += '<span class="turn-order-mini-item ' + c.type + (isActive ? ' active-turn' : '') + '">' + (i + 1) + '. ' + icon + ' ' + c.name + '</span>';
+        if (wpnArmed && c.type === 'monster' && c.id) {
+          const nm = String(c.name).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+          html += '<button type="button" class="turn-order-mini-item targetable" data-tid="' + String(c.id).replace(/"/g, '') + '" data-tname="' + nm + '" onclick="wpnAtacarAlvo(this.dataset.tid, this.dataset.tname)">🎯 ' + nm + '</button>';
+        } else html += '<span class="turn-order-mini-item ' + c.type + (isActive ? ' active-turn' : '') + '">' + (i + 1) + '. ' + icon + ' ' + c.name + '</span>';
       });
       html += '</div>';
       el.innerHTML = html;
@@ -10294,7 +10472,7 @@
     }
 
     function syncRestoreConnection() {
-      if (syncRef) { syncRef.off(); syncRef = null; }
+      if (wpnResRef) { wpnResRef.off(); wpnResRef = null; } if (syncRef) { syncRef.off(); syncRef = null; }
       if (turnRef) { turnRef.off(); turnRef = null; }
       if (turnOrderRef) { turnOrderRef.off(); turnOrderRef = null; }
       if (rosterRef) { rosterRef.off(); rosterRef = null; }
@@ -11542,11 +11720,45 @@
       window.dxRoll = function (sides) { var b = grid.querySelector('.dx-die-btn:nth-child(' + (DICE.indexOf(sides) + 1) + ')'); if (b) roll(sides, b); };
       window.dxNat20 = nat20;
       // outros botões da página (iniciativa, teste de morte) usam isto: um dado só, sem modificadores
-      window.dxPublishRoll = function (die, value, label) {
+      window.dxPublishRoll = function (die, value, label, mod) {
         die = +die; value = +value;
         if (DICE.indexOf(die) < 0 || !(value >= 1 && value <= die)) return;
-        publish({ die: die, dice: [value], mod: 0, flat: 0, attr: '', label: label });
+        publish({ die: die, dice: [value], mod: mod | 0, flat: 0, attr: '', label: label });
       };
+      window.dxToast = function (m) { toast(null, m); };
+      // d20 de ataque com valor já sorteado: passa pelo mesmo caminho do d20 da gaveta (animação do número, "?", 20/1 natural, mesa)
+      window.dxAttackRoll = function (value, label, mod, done) {
+        value = +value; mod = mod | 0;
+        var r = { die: 20, dice: [value], mod: mod, flat: 0, attr: '', label: label };
+        if (!(value >= 1 && value <= 20)) return;
+        if (busy || natActive || critBusy() || preBusy) { publish(r); if (done) done(); return; }
+        busy = true;
+        var res = mk(20, [value], mod, 0, '', label), ticks = 0;
+        resLab.textContent = formula(res);
+        resBox.className = 'dx-result rolling';
+        var timer = setInterval(function () {
+          var t = rnd(20); showDice([t], 20, false); resNum.textContent = t + mod;
+          if (++ticks >= 11) {
+            clearInterval(timer);
+            if (isNat(res) || isFail(res)) { showDice(['?'], 20, false); resNum.textContent = '?'; resBox.className = 'dx-result'; pendingDrawer = true; }
+            else { showDice([value], 20, true); resNum.textContent = res.total; resBox.className = 'dx-result'; }
+            busy = false;
+            publish(r);
+            if (done) done();
+          }
+        }, 55);
+      };
+      // dano: cada grupo de dados vira uma linha no histórico (o bônus fixo vai na primeira)
+      window.dxPublishDamage = function (groups, flat, label) {
+        var n = 0;
+        (groups || []).forEach(function (g) {
+          if (DICE.indexOf(g.sides) < 0 || !g.dice || !g.dice.length || g.dice.length > 20 || (g.sides === 20 && g.dice.length === 1)) return;
+          publish({ die: g.sides, dice: g.dice, mod: 0, flat: n === 0 ? clamp(flat | 0, -999, 999) : 0, attr: '', label: label });
+          n++;
+        });
+        return n;
+      };
+      window.dxCineBusy = function () { return !!(natActive || critBusy() || preBusy || cineQ.length || curEntry); };
     })();
   </script>
 
