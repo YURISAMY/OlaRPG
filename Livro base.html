@@ -4774,9 +4774,15 @@
           <strong>PADRÃO (4🟡)</strong> — Golpe básico com a arma em mãos, fincar escudo ou manipular mecanismos
           pesados.
         </div>
+
         <div class="mechanic-row">
           <strong>NÃO AGIR (0🟡)</strong> — Descansa o turno. Em troca, <strong>recupera 2🟡 de stamina extra</strong>
           no início do próximo turno.
+        </div>
+
+        <div class="mechanic-row">
+          <strong>ATAQUE DE OPORTUNIDADE (3🟡)</strong> — Caso um alvo adjascente a você, decida se afastar,
+          <strong>Você realiza um ataque contra esse alvo.</strong> Esse golpe não proca outros efeitos ao contato.
         </div>
         <div class="mechanic-row">
           <strong>MOVIMENTO (Grátis / 2🟡)</strong> — Anda 6 blocos de graça. Pode gastar 2🟡 para andar mais 6 blocos
@@ -4789,10 +4795,12 @@
         <div class="mechanic-row">
           <strong>ESCONDER-SE (2🟡)</strong> — Oculta-se atrás de cobertura parcial ou sombras com teste de Furtividade.
         </div>
+
         <div class="mechanic-row">
-          <strong>DESVIAR (2🟡)</strong> — Esquiva reativa de um golpe, <strong>reduzindo o dano sofrido em
+          <strong>BLOQUEAR (2🟡)</strong> — Defende um golpe, <strong>reduzindo o dano sofrido em
             1d6</strong>.
         </div>
+
         <div class="mechanic-row">
           <strong>USAR ITEM (1🟡 / 2🟡)</strong> — Ingerir uma poção custa 1🟡 (2🟡 para aplicar em um aliado).
           Arremessar bombas ou frascos custa 2🟡.
@@ -8531,8 +8539,7 @@
                     </span>
                   </div>
                   <div class="skill-desc">
-                    Atinge todos em área 2x2 blocos dentro do alcance. Dano da arma -1 dado em
-                    cada um. Não funciona em adjacentes.
+                    Atinge todos em área 2x2 blocos dentro do alcance, com modificador de -2 de dano (min de 1).
                   </div>
                 </div>
               </div>
@@ -8876,7 +8883,7 @@
                   </div>
                   <div class="skill-desc">
                     Atacar fora do campo de visão de um inimigo que ainda não agiu nesta rodada
-                    causa o dobro do dano.
+                    causa +1d6 de dano. O dano extra aumenta em mais um 1d6 nos niveis 7 e 11.
                   </div>
                 </div>
                 <div class="skill-divider">
@@ -8884,18 +8891,18 @@
                 <div class="skill quick">
                   <div class="skill-header">
                     <span class="skill-name">
-                      Desaparecer
+                      Guerreiro esguio
                     </span>
                     <span class="skill-type quick">
                       Rápida
                     </span>
                     <span class="skill-cost">
-                      3🟡
+                      2🟡
                     </span>
                   </div>
                   <div class="skill-desc">
-                    Some de vista e reposiciona até 4 blocos. Inimigos perdem sua localização. 1x
-                    por turno.
+                    Caso um ataque de oportunidade seja realizado contra você, pode automaticamente desviar desse golpe.
+                    Não sofre mais ataques de oportunidade nesse turno.
                   </div>
                 </div>
                 <div class="skill-divider">
@@ -8903,18 +8910,18 @@
                 <div class="skill standard">
                   <div class="skill-header">
                     <span class="skill-name">
-                      Execução
+                      Trapacear
                     </span>
                     <span class="skill-type standard">
                       Padrão
                     </span>
                     <span class="skill-cost">
-                      4🟡
+                      2🟡
                     </span>
                   </div>
                   <div class="skill-desc">
-                    Só com alvo abaixo de 25% HP. Dano fixo 3x arma, ignorando reduções. Se matar:
-                    +3🟡 e Desaparecer grátis.
+                    Seu proximo ataque nesse turno, inflinge um dos seguintes efeitos no alvo: Cego, Retardado,
+                    Sangramento ou Lento.
                   </div>
                 </div>
               </div>
@@ -8965,6 +8972,8 @@
                   </div>
                   <div class="skill-divider">
                   </div>
+
+
                   <div class="skill standard">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -8974,12 +8983,12 @@
                         Padrão
                       </span>
                       <span class="skill-cost">
-                        5🟡
+                        6🟡
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Dano da arma x2 + 2d6 fixo. Abaixo de 30% HP: causa o triplo em vez do
-                      dobro.
+                      Dano da arma x2. Se o alvo morrer, o dano excedente pode ser causado a um alvo
+                      adjascente.
                     </div>
                     <span class="skill-req">
                       🔒 Req: Nível 8
@@ -8987,20 +8996,26 @@
                   </div>
                   <div class="skill-divider">
                   </div>
-                  <div class="skill passive">
+
+                  <div class="skill quick">
                     <div class="skill-header">
                       <span class="skill-name">
-                        Sem Rastro
+                        Sombra
                       </span>
-                      <span class="skill-type passive">
-                        Passiva
+                      <span class="skill-type quick">
+                        Rápida
+                      </span>
+                      <span class="skill-cost">
+                        3🔵
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Ao matar um inimigo, some automaticamente sem custar 🟡. Inimigos próximos
-                      levam 1 turno para perceber.
+                      Durante um combate pode deixar uma sombra em um local a sua escolha próximo a você. Até o final do
+                      combate pode usar a sombra uma unica vez para instanteneamente voltar para o local. Não é possivel
+                      ter mais de 2 sombras.
                     </div>
                   </div>
+
                   <div class="skill passive">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9011,10 +9026,11 @@
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Enquanto escondido, seu movimento não gera som nem rastro. Inimigos sem percepção mágica nunca
-                      detectam sua passagem.
+                      Enquanto escondido, seu movimento não gera som nem rastro. Inimigos sem percepção mágica devem
+                      passar num teste de percepção vs (10 + mod de furtividade).
                     </div>
                   </div>
+
                   <div class="skill quick">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9032,6 +9048,8 @@
                       do mesmo veneno.
                     </div>
                   </div>
+
+
                   <div class="skill standard">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9045,13 +9063,15 @@
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Golpe Fatal melhorado: se matar, ninguém vê ou ouve. Inimigos levam 2 turnos para perceber a morte
-                      do aliado.
+                      Golpe Fatal melhorado: se matar, ninguém vê ou ouve. Inimigos levam 2 turnos (não necessariamente
+                      seus) para perceber a morte do aliado.
                     </div>
                     <span class="skill-req">
                       🔒 Req: Nível 8
                     </span>
                   </div>
+
+
                   <div class="skill passive">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9062,8 +9082,7 @@
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Ao usar Marca da Morte, o alvo também tem -1 dado em todos os ataques contra você — ele sabe que
-                      está sendo caçado.
+                      Ao usar Marca da Morte, o alvo também tem -1 dado em todos os ataques contra você.
                     </div>
                     <span class="skill-req">
                       🔒 Req: Nível 7
@@ -9107,12 +9126,14 @@
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Em 1 minuto imita alguém observado por 10+ minutos. Dura até agir
-                      incompativelmente com o disfarce.
+                      Em 1 minuto imita alguém observado por 10 minutos. Dura até agir
+                      incompativelmente com o disfarce (se falhar em testes e afins).
                     </div>
                   </div>
                   <div class="skill-divider">
                   </div>
+
+
                   <div class="skill passive">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9123,12 +9144,14 @@
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Inimigos com 1-2 alvos nunca escolhem você primeiro, a menos que seja o
+                      Inimigos com 2 ou mais alvos nunca escolhem você primeiro, a menos que seja o
                       único disponível.
                     </div>
                   </div>
                   <div class="skill-divider">
                   </div>
+
+
                   <div class="skill quick">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9142,10 +9165,11 @@
                       </span>
                     </div>
                     <div class="skill-desc">
-                      Toca inimigo adjacente fora do campo de visão dele. Fica incapacitado por 1
-                      turno sem dano. Nocauteia sem matar.
+                      Realiza um teste de luta contra um alvo, se passar a CA do alvo, ele fica incapacitado por 1
+                      turno. Não causa dano, e só pode ser usado em criaturas do seu tamanho ou inferior.
                     </div>
                   </div>
+
                   <div class="skill passive">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9160,6 +9184,7 @@
                       voz alta. Disfarce dura sem prazo.
                     </div>
                   </div>
+
                   <div class="skill passive">
                     <div class="skill-header">
                       <span class="skill-name">
@@ -9252,8 +9277,8 @@
                     </span>
                   </div>
                   <div class="skill-desc">
-                    Metade do dano + status à escolha: Cego (próximo ataque erra), Tonto (perde
-                    ação rápida) ou Provocado (deve te atacar).
+                    Metade do dano da arma + efeito à escolha nessa rodada: próximo ataque erra, sem ação rápida ou deve
+                    te atacar.
                   </div>
                 </div>
                 <div class="skill-divider">
@@ -9970,7 +9995,7 @@
                         ate o fim do turno deles. <span class="subskill-req">🔒 Req: Nível 8</span></span>
                       <span class="subskill-line"><span class="subskill-badge passive">Passiva</span><strong>Olhos do
                           Ceu:</strong> em voo a 2+ blocos de altura, enxerga toda a area sem bloqueios; aliados em 6
-                        blocos de visao direta ganham +1 dado em ataques de oportunidade (Nível 10: aura 10 blocos).
+                        blocos de visao direta ganham +1 dado em ataques (Nível 10: aura 10 blocos).
                         <span class="subskill-req">🔒 Req: Nível 9</span></span>
                       <span class="subskill-line"><span class="subskill-badge standard">Padrão 3🔵</span><strong>Vento
                           Cortante:</strong> mergulha em linha reta por ate 3 blocos, causando 2d6 de dano cortante em
@@ -18191,7 +18216,7 @@
               Adaga
             </td>
             <td>
-              1d4 perfurante. Duas mãos livres — pode usar duas, atacando duas vezes por 4🟡.
+              1d4 perfurante. Pode usar duas, atacando duas vezes por 4🟡.
             </td>
             <td>
               5 PO
@@ -18216,18 +18241,21 @@
               Chicote
             </td>
             <td>
-              1d4 cortante. Alcance 2 blocos. Pode derrubar ou puxar 1 bloco como efeito secundário (grátis).
+              1d4 cortante. Alcance 2 blocos. Com mais 2🟡 pode derrubar ou puxar o alvo caso ele falhe em um teste de
+              atletismo com cd 8 + mod proeficiciencia + mod de ataque.
             </td>
             <td>
               6 PO
             </td>
           </tr>
+
           <tr data-cat="armas">
             <td>
               Soco Inglês
             </td>
             <td>
-              1d4 contundente. Bônus: aplica Tonto no crítico (1 turno).
+              1d4 contundente. aplica Tonto no crítico (1 turno). pode gastar mais 2🟡 para dar outro soco após o
+              primeiro.
             </td>
             <td>
               3 PO
@@ -18238,28 +18266,34 @@
               MÉDIAS — Corpo a Corpo
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Espada Curta
             </td>
             <td>
-              1d6 cortante. Versátil — pode usar força ou destreza para combater com ela.
+              1d6 cortante. +1 para acertar, e Versátil — pode usar força ou destreza para combater com ela.
             </td>
             <td>
               8 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Machado de Mão
             </td>
             <td>
-              1d6 cortante. Pode ser arremessado (alcance 3 blocos).
+              1d6 cortante. Pode gastar + 1🟡 para causar lento como efeito.
             </td>
             <td>
               6 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Maça
@@ -18271,34 +18305,27 @@
               6 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Lança Curta
             </td>
             <td>
-              1d6 perfurante. Alcance 2 blocos. Pode ser usada montado sem penalidade.
+              1d6 perfurante. Alcance 2 blocos, pode ser usada com duas mãos para causar 1d8.
             </td>
             <td>
               5 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Martelo de Guerra
             </td>
             <td>
-              1d8 contundente. Duas mãos. Empurra o alvo 1 bloco no crítico.
-            </td>
-            <td>
-              10 PO
-            </td>
-          </tr>
-          <tr data-cat="armas">
-            <td>
-              Espada Longa
-            </td>
-            <td>
-              1d8 cortante em uma mão. 1d10 em duas mãos. Padrão de todo aventureiro.
+              1d8 contundente com uma mão. Duas mãos vira 1d10. derruba o alvo no crítico.
             </td>
             <td>
               10 PO
@@ -18307,10 +18334,22 @@
 
           <tr data-cat="armas">
             <td>
-              Cimitarra
+              Espada Longa
             </td>
             <td>
-              1d6 dano cortante. Versátil — pode segurar com duas mãos para +1 de dano fixo.
+              1d8 cortante em uma mão. 1d10 em duas mãos. Se critar, da 1d4 de sangramento por 2 turnos.
+            </td>
+            <td>
+              10 PO
+            </td>
+          </tr>
+
+          <tr data-cat="armas">
+            <td>
+              Katana
+            </td>
+            <td>
+              1d8 dano cortante. O primeiro golpe dessa arma tem +3 pra acertar no combate.
             </td>
             <td>
               10 PO
@@ -18322,29 +18361,31 @@
               Rapieira
             </td>
             <td>
-              1d8 perfurante. Usa Destreza para atacar em vez de Força. Ideal para duelistas.
+              1d8 perfurante. Usa Destreza para atacar em vez de Força. ignora 2 de redução de dano.
             </td>
             <td>
               18 PO
             </td>
           </tr>
+
           <tr data-cat="armas">
             <td>
               Clava Reforçada
             </td>
             <td>
-              1d8 contundente. Duas mãos. Barata e eficaz.
+              1d8 contundente. Duas mãos. Se critar causa "Tonto" no alvo.
             </td>
             <td>
               2 PO
             </td>
           </tr>
+
           <tr data-cat="armas">
             <td>
               Foice de Guerra
             </td>
             <td>
-              1d6 cortante. Pode atingir dois alvos adjacentes no mesmo ataque por +2🟡.
+              1d6 cortante. Pode atingir 3 alvos adjacentes no mesmo ataque por +2🟡.
             </td>
             <td>
               9 PO
@@ -18355,6 +18396,8 @@
               PESADAS — Corpo a Corpo
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Machado Grande
@@ -18366,13 +18409,15 @@
               <span class="item-tag pesado">
                 2 Mãos
               </span>
-              1d12 cortante.
-              Duas mãos. Pesado — penalidade de -2 em testes de Furtividade.
+              1d12 cortante. Pode gastar 2🟡 para puxar alvos a até 3 blocos de distancia se ganhar num teste de força
+              vs força.
             </td>
             <td>
               20 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Espadão
@@ -18384,13 +18429,14 @@
               <span class="item-tag pesado">
                 2 Mãos
               </span>
-              2d6 cortante. Duas
-              mãos. Pesado — requer Força 13+.
+              2d6 cortante. Duas mãos. Se critar derruba.
             </td>
             <td>
               35 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Martelo Pesado
@@ -18402,13 +18448,14 @@
               <span class="item-tag pesado">
                 2 Mãos
               </span>
-              2d6 contundente.
-              Duas mãos. Pesado — acerta automaticamente criaturas com armadura de placa.
+              2d6 contundente. Ao saltar, caso caia adjascente a um alvo, causa 1d4 de dano.
             </td>
             <td>
               30 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Alabarda
@@ -18417,13 +18464,14 @@
               <span class="item-tag pesado">
                 2 Mãos
               </span>
-              1d10 cortante. Duas mãos. Alcance 2 blocos. Permite ataque de
-              oportunidade gratuito.
+              1d10 cortante. Duas mãos. Alcance 2 blocos. Permite ataque de oportunidade gratuito.
             </td>
             <td>
               14 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Lança Longa
@@ -18432,70 +18480,57 @@
               <span class="item-tag pesado">
                 2 Mãos
               </span>
-              1d10 perfurante. Duas mãos. Alcance 3 blocos. Pode manter
-              inimigos à distância.
+              1d12 perfurante. Duas mãos. Alcance 3 blocos. Se um inimigo a sua frente se aproximar, pode realizar um
+              ataque de oportunidade por 3🟡.
             </td>
             <td>
               10 PO
             </td>
           </tr>
-          <tr data-cat="armas">
-            <td>
-              Tridente
-            </td>
-            <td>
-              <span class="item-tag pesado">
-                2 Mãos
-              </span>
-              1d8 perfurante. Duas mãos. Pode prender (Imobilizado 1 turno)
-              ao invés de causar dano, por 3🟡.
-            </td>
-            <td>
-              12 PO
-            </td>
-          </tr>
-          <tr class="item-divider-row">
-            <td colspan="3">
-              DISTÂNCIA
-            </td>
-          </tr>
+
+
           <tr data-cat="armas">
             <td>
               Arco Curto
             </td>
             <td>
-              1d6 perfurante. Alcance 8 blocos. Requer munição.
+              1d6 perfurante. Alcance 10 blocos. Por 2🟡 de stamina, pode dar um segundo tiro a até 5 blocos.
             </td>
             <td>
               15 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Arco Longo
             </td>
             <td>
               <span class="item-tag pesado">
-                Pesado
+                Medio
               </span>
-              1d8 perfurante. Alcance 15 blocos. Requer munição. Pesado —
-              não funciona em espaços fechados pequenos.
+              1d10 perfurante. Alcance 15 blocos. Pode gastar 2🟡 para aumentar em 1d6 o dano do ataque. Não funciona em
+              espaços fechados.
             </td>
             <td>
               30 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Besta Leve
             </td>
             <td>
-              1d8 perfurante. Alcance 10 blocos. Recarregar custa 1🟡.
+              1d8 perfurante. Alcance 12 blocos. Recarregar custa 1🟡.
             </td>
             <td>
               20 PO
             </td>
           </tr>
+
           <tr data-cat="armas">
             <td>
               Besta Pesada
@@ -18504,13 +18539,13 @@
               <span class="item-tag pesado">
                 Pesado
               </span>
-              1d10 perfurante. Alcance 12 blocos. Recarregar custa ação
-              padrão inteira.
+              2d10 + 3 perfurante. Alcance 20 blocos. Recarregar custa 2🟡.
             </td>
             <td>
               45 PO
             </td>
           </tr>
+
           <tr data-cat="armas">
             <td>
               Zarabatana
@@ -18519,27 +18554,30 @@
               <span class="item-tag furtivo">
                 Furtivo
               </span>
-              1d4 perfurante. Alcance 5 blocos. Silenciosa — não quebra
-              furtividade.
+              1d4 perfurante. Alcance 5 blocos. Causa 1d4 de dano de veneno por 1🟡 por 2 turnos.
             </td>
             <td>
               7 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Funda
             </td>
             <td>
-              1d4 contundente. Alcance 6 blocos. Munição gratuita (pedras).
+              1d4 contundente. Pode usar itens arremeçaveis usando ela como auxilio, para acertar a até 10 blocos de
+              distancia.
             </td>
             <td>
               1 PO
             </td>
           </tr>
+
           <tr data-cat="armas">
             <td>
-              Dardos (x5)
+              Dardos
             </td>
             <td>
               <span class="item-tag consumivel">
@@ -18549,7 +18587,7 @@
               3 por ação padrão.
             </td>
             <td>
-              1 PO
+              1 PO (por 3 dardos)
             </td>
           </tr>
           <tr class="item-divider-row">
@@ -18557,28 +18595,20 @@
               ARMAS ESPECIAIS
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Tonfa
             </td>
             <td>
-              1d6 contundente. Fornece +1 CA enquanto empunhada. Permite bloquear gratuitamente 1x por turno.
+              1d6 contundente. Permite bloquear gratuitamente 1x por turno.
             </td>
             <td>
               10 PO
             </td>
           </tr>
-          <tr data-cat="armas">
-            <td>
-              Corrente de Combate
-            </td>
-            <td>
-              1d6 contundente. Alcance 2 blocos. Pode Prender (Imobilizado) em vez de causar dano por 2🟡.
-            </td>
-            <td>
-              8 PO
-            </td>
-          </tr>
+
           <tr data-cat="armas">
             <td>
               Garra de Caçador
@@ -18591,6 +18621,8 @@
               15 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Bordão
@@ -18606,13 +18638,15 @@
               5 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Nunchaku
             </td>
             <td>
-              1d6 contundente. Dois ataques por padrão por 4🟡. Difícil de desarmar — testes para desarmar têm
-              desvantagem.
+              1d6 contundente. Pode usar 2 nunchaku se tiver 14+ destreza. Difícil de desarmar — testes para desarmar
+              têm desvantagem.
             </td>
             <td>
               8 PO
@@ -18623,6 +18657,8 @@
               ARMAS MÁGICAS — Raras, preços aproximados
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Lâmina do Eco
@@ -18631,13 +18667,14 @@
               <span class="item-tag magico">
                 Mágico
               </span>
-              1d8 cortante. Mágica. Uma vez por combate, repete o último
+              1d8 cortante. Mágica. Uma vez por combate, por 2🔵 repete o último
               ataque gratuitamente com metade do dano.
             </td>
             <td>
               350 PO
             </td>
           </tr>
+
           <tr data-cat="armas">
             <td>
               Punhal Sombrio
@@ -18646,13 +18683,15 @@
               <span class="item-tag magico">
                 Mágico
               </span>
-              1d4 perfurante. Mágico. Ataques feitos de furtividade causam
+              1d4 perfurante. Mágico. Ataques feitos de furtividade com essa arma causam
               +1d6 de dano adicional.
             </td>
             <td>
               180 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Martelo Trovejante
@@ -18668,6 +18707,8 @@
               280 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Arco do Caçador Eterno
@@ -18676,13 +18717,15 @@
               <span class="item-tag magico">
                 Mágico
               </span>
-              1d8 perfurante. Mágico. Munição ilimitada (flechas de
-              energia). +1d4 de dano contra criaturas marcadas.
+              1d10 perfurante. Mágico. flechas de
+              energia. +1d4 de dano de energia.
             </td>
             <td>
               320 PO
             </td>
           </tr>
+
+
           <tr data-cat="armas">
             <td>
               Espada Sagrada
@@ -18691,8 +18734,7 @@
               <span class="item-tag magico">
                 Mágico
               </span>
-              1d8 cortante. Mágica. Causa +1d6 de dano sagrado contra
-              mortos-vivos e demônios.
+              1d8 cortante. Causa +1d6 de dano sagrado. O dobro contra demonios e mortos vivos.
             </td>
             <td>
               300 PO
@@ -18709,6 +18751,7 @@
         CA = Classe de Armadura. Redução de Dano (RD) se aplica após o acerto.
       </p>
     </div>
+
     <div class="item-panel" data-category="armaduras" id="panel-armaduras">
       <table class="item-table">
         <thead>
@@ -18730,6 +18773,8 @@
               LEVES — Des completa à CA
             </td>
           </tr>
+
+
           <tr data-cat="armaduras">
             <td>
               Roupa Reforçada
@@ -18738,13 +18783,19 @@
               <span class="item-tag ca">
                 CA 11+Des
               </span>
+              <span class="item-tag reducao">
+                RD 2
+              </span>
               CA 11 + Des. Praticamente invisível — sem penalidades de
               nenhum tipo.
+
             </td>
             <td>
               5 PO
             </td>
           </tr>
+
+
           <tr data-cat="armaduras">
             <td>
               Couro
@@ -18753,6 +18804,9 @@
               <span class="item-tag ca">
                 CA 11+Des
               </span>
+              <span class="item-tag reducao">
+                RD 2
+              </span>
               CA 11 + Des. Proteção básica, discreta. Padrão de ladrões e
               exploradores.
             </td>
@@ -18760,6 +18814,7 @@
               10 PO
             </td>
           </tr>
+
           <tr data-cat="armaduras">
             <td>
               Couro Batido
@@ -18767,6 +18822,9 @@
             <td>
               <span class="item-tag ca">
                 CA 12+Des
+              </span>
+              <span class="item-tag reducao">
+                RD 2
               </span>
               CA 12 + Des. Mais espesso, ainda silencioso.
             </td>
@@ -18782,6 +18840,9 @@
             <td>
               <span class="item-tag ca">
                 CA 13+Des
+              </span>
+              <span class="item-tag reducao">
+                RD 2
               </span>
               CA 13 + Des. Tratado quimicamente. Sem penalidade em
               Furtividade.
@@ -19081,7 +19142,6 @@
               <span class="item-tag reducao">
                 RD 2
               </span>
-              .
               Mágica. Desvantagem em Furtividade. Resistência a um elemento à escolha.
             </td>
             <td>
