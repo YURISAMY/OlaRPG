@@ -2728,6 +2728,111 @@
   #dx-nat20 .dx-die, #dx-nat20 .dx-rays { animation: none !important; }
   .dx-drawer, .dx-arrow { transition: none; }
 }
+
+/* ── CENA DA FALHA CRÍTICA ── */
+#dx-crit {
+  --S: min(44vmin, 320px);
+  position: fixed;
+  inset: 0;
+  z-index: 10050;
+  display: none;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#dx-crit.on { display: block; }
+#dx-crit .cf-grade {
+  position: absolute; inset: 0; opacity: 0;
+  background: rgba(10, 0, 2, 0.68);
+  -webkit-backdrop-filter: grayscale(0.95) brightness(0.3) contrast(1.2);
+  backdrop-filter: grayscale(0.95) brightness(0.3) contrast(1.2);
+}
+#dx-crit .cf-vig {
+  position: absolute; inset: 0; opacity: 0; --vr: 140%;
+  background: radial-gradient(ellipse farthest-corner at 50% 46%,
+    rgba(30, 0, 4, 0) calc(var(--vr) - 55%), rgba(46, 0, 6, 0.55) calc(var(--vr) - 22%), rgba(8, 0, 1, 0.97) var(--vr));
+}
+#dx-crit .cf-shake { position: absolute; inset: 0; will-change: transform; }
+#dx-crit .cf-eclipse {
+  position: absolute; left: 50%; top: 46%;
+  width: calc(var(--S) * 2.3); height: calc(var(--S) * 2.3);
+  margin: calc(var(--S) * -1.15) 0 0 calc(var(--S) * -1.15);
+  opacity: 0;
+}
+#dx-crit .cf-corona {
+  width: 100%; height: 100%; border-radius: 50%;
+  background: radial-gradient(circle closest-side, #000 0, #000 38%, #ffd2b4 39.3%, #ff4a2e 41.2%,
+    rgba(190, 16, 16, 0.72) 47%, rgba(110, 0, 0, 0.34) 62%, rgba(60, 0, 0, 0) 100%);
+}
+#dx-crit.shatter .cf-corona { animation: cfBreathe 2.6s ease-in-out infinite; }
+#dx-crit .cf-cracks { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+#dx-crit .cf-cracks g { filter: drop-shadow(0 0 4px rgba(255, 30, 20, 0.85)); transition: filter 1s ease-in; }
+#dx-crit .cf-cracks path { fill: none; stroke: #ff6a4a; stroke-linecap: round; stroke-linejoin: round; transition-property: stroke-dashoffset, stroke; }
+#dx-crit.swell .cf-cracks g { filter: drop-shadow(0 0 7px rgba(255, 40, 25, 1)) drop-shadow(0 0 20px rgba(255, 20, 10, 0.8)); }
+#dx-crit.swell .cf-cracks path { stroke: #ffb594; }
+#dx-crit .cf-ring {
+  position: absolute; left: 50%; top: 46%;
+  width: var(--S); height: var(--S);
+  margin: calc(var(--S) / -2) 0 0 calc(var(--S) / -2);
+  border-radius: 50%;
+  border: 3px solid rgba(255, 90, 60, 0.9);
+  box-shadow: 0 0 28px rgba(255, 40, 20, 0.8), inset 0 0 28px rgba(255, 40, 20, 0.5);
+  opacity: 0;
+}
+#dx-crit .cf-stage {
+  position: absolute; left: 50%; top: 46%;
+  width: var(--S); height: var(--S);
+  margin: calc(var(--S) / -2) 0 0 calc(var(--S) / -2);
+}
+#dx-crit .cf-die-wrap { width: 100%; height: 100%; opacity: 0; will-change: transform; }
+#dx-crit .cf-die {
+  display: block; width: 100%; height: 100%; overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(180, 20, 20, 0.5)) drop-shadow(0 0 30px rgba(90, 0, 0, 0.6));
+}
+#dx-crit.swell .cf-die { animation: cfDieGlow 1s ease-in forwards; }
+#dx-crit .cf-shard { transform-box: fill-box; transform-origin: center; }
+#dx-crit.shatter .cf-shard {
+  transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.7);
+  opacity: 0;
+  transition: transform 2.1s cubic-bezier(0.1, 0.75, 0.25, 1), opacity 1.5s ease-in 0.35s;
+}
+#dx-crit .cf-dcracks path { fill: none; stroke: #ff5a3a; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+#dx-crit.swell .cf-dcracks path { stroke: #ffa684; stroke-width: 3; }
+#dx-crit.shatter .cf-dcracks { opacity: 0; transition: opacity 0.12s; }
+#dx-crit .cf-cap {
+  position: absolute; left: -30%; right: -30%;
+  top: calc(100% + 18px);
+  text-align: center;
+  font-family: 'Cinzel Decorative', 'Cinzel', serif;
+  font-weight: 900;
+  font-size: clamp(20px, 4.8vmin, 36px);
+  letter-spacing: 0.16em;
+  padding-left: 0.16em;
+  color: #eadfd2;
+  text-shadow: 0 0 12px rgba(255, 40, 30, 0.9), 0 0 36px rgba(160, 0, 0, 0.8), 0 2px 0 #2a0204;
+  opacity: 0;
+}
+#dx-crit .cf-cap span { display: inline-block; animation: cfTremble 0.14s steps(1) infinite; }
+#dx-crit.shatter .cf-cap { animation: cfCap 1.4s ease-out 0.45s both; }
+#dx-crit canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#dx-crit .cf-flash {
+  position: absolute; inset: 0; opacity: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 46%, rgba(255, 236, 222, 0.92) 0, rgba(255, 70, 40, 0.6) 18%, rgba(120, 0, 0, 0) 55%);
+}
+
+@keyframes cfBreathe { 0%, 100% { opacity: 0.86; transform: scale(0.97); } 50% { opacity: 1; transform: scale(1.03); } }
+@keyframes cfDieGlow {
+  from { filter: drop-shadow(0 0 10px rgba(180, 20, 20, 0.5)) drop-shadow(0 0 30px rgba(90, 0, 0, 0.6)); }
+  to   { filter: drop-shadow(0 0 26px rgba(255, 50, 30, 0.95)) drop-shadow(0 0 70px rgba(200, 10, 10, 0.7)); }
+}
+@keyframes cfCap { from { opacity: 0; filter: blur(10px); transform: scale(1.15); } to { opacity: 1; filter: none; transform: none; } }
+@keyframes cfTremble { 0% { transform: translate(0.6px, -0.4px); } 50% { transform: translate(-0.6px, 0.5px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  #dx-crit .cf-cap span, #dx-crit.shatter .cf-corona { animation: none !important; }
+}
+#dx-crit .cf-dcracks path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.3s ease-out, stroke 0.6s, stroke-width 0.6s; }
+#dx-crit .cf-dcracks.on path { stroke-dashoffset: 0; }
 </style>
 </head>
 <body>
@@ -7640,10 +7745,11 @@ if (document.readyState === 'loading') {
   }
 
   function roll(sides, btn) {
-    if (busy || natActive) return;
+    if (busy || natActive || (window.dxCritActive && window.dxCritActive())) return;
     busy = true;
     var final = rnd(sides);
     var isNat = (sides === 20 && final === 20);
+    var isFail = (sides === 20 && final === 1);
     resLab.textContent = 'd' + sides;
     resBox.className = 'dx-result rolling';
     btn.classList.remove('rolling'); void btn.offsetWidth; btn.classList.add('rolling');
@@ -7659,6 +7765,7 @@ if (document.readyState === 'loading') {
         renderHistory();
         busy = false;
         if (isNat) setTimeout(nat20, 380);
+        else if (isFail && window.dxCritFail) setTimeout(window.dxCritFail, 380);
       }
     }, 55);
   }
@@ -7883,6 +7990,377 @@ if (document.readyState === 'loading') {
   // disponível para outros botões da página (ex.: teste de morte, iniciativa)
   window.dxRoll = function (sides) { var b = grid.querySelector('.dx-die-btn:nth-child(' + (DICE.indexOf(sides) + 1) + ')'); if (b) roll(sides, b); };
   window.dxNat20 = nat20;
+})();
+</script>
+
+<!-- ══════════════ FALHA CRÍTICA (1 natural) ══════════════ -->
+<div id="dx-crit" aria-hidden="true">
+  <div class="cf-grade"></div>
+  <div class="cf-vig"></div>
+  <div class="cf-shake" id="cf-shake">
+    <div class="cf-eclipse"><div class="cf-corona"></div></div>
+    <svg class="cf-cracks" id="cf-cracks" aria-hidden="true"></svg>
+    <div class="cf-ring"></div>
+    <div class="cf-stage">
+      <div class="cf-die-wrap">
+        <svg class="cf-die" viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <radialGradient id="cfBody" gradientUnits="userSpaceOnUse" cx="100" cy="90" r="115">
+              <stop offset="0" stop-color="#2b2220"/><stop offset="0.65" stop-color="#150e0d"/><stop offset="1" stop-color="#080504"/>
+            </radialGradient>
+            <linearGradient id="cfEdge" gradientUnits="userSpaceOnUse" x1="20" y1="10" x2="180" y2="190">
+              <stop offset="0" stop-color="#d8cbbd"/><stop offset="0.5" stop-color="#8a4a42"/><stop offset="1" stop-color="#2a0c0a"/>
+            </linearGradient>
+          </defs>
+          <g class="cf-shard"><polygon points="100,47 150.2,129 49.8,129" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/><text x="100" y="118" text-anchor="middle" font-family="'Cinzel Decorative','Cinzel',serif" font-weight="900" font-size="44" fill="#eadfd2" stroke="#3a0507" stroke-width="0.8">1</text></g>
+          <g class="cf-shard"><polygon points="100,47 150.2,129 177.9,55" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="150.2,129 49.8,129 100,190" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="49.8,129 100,47 22.1,55" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="100,47 22.1,55 100,10" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="100,47 100,10 177.9,55" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="150.2,129 177.9,55 177.9,145" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="150.2,129 177.9,145 100,190" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="49.8,129 100,190 22.1,145" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-shard"><polygon points="49.8,129 22.1,145 22.1,55" fill="url(#cfBody)" stroke="url(#cfEdge)" stroke-width="3" stroke-linejoin="round"/></g>
+          <g class="cf-dcracks">
+            <path pathLength="1" d="M100 47 L93 66 L104 84 L96 104 L108 129 L101 150"/>
+            <path pathLength="1" d="M96 104 L72 112 L58 126 L44 128"/>
+            <path pathLength="1" d="M104 84 L128 92 L142 112 L152 128 L170 138"/>
+            <path pathLength="1" d="M93 66 L74 58 L52 62 L30 56"/>
+            <path pathLength="1" d="M100 47 L108 28 L100 10"/>
+            <path pathLength="1" d="M108 129 L128 152 L124 172"/>
+          </g>
+        </svg>
+      </div>
+      <div class="cf-cap"><span>Falha crítica</span></div>
+    </div>
+  </div>
+  <canvas id="cf-canvas"></canvas>
+  <div class="cf-flash"></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── CONFIG ─────────────────────────────────────────────── */
+  var AUDIO_SRC = 'sons/critical_failure.mp3';
+  // Linha do tempo (s) contada do início do áudio já cortado:
+  var T_HIT   = 0.28;   // primeiro golpe: o dado despenca, a tela racha
+  var T_A1    = 0.48;   // abalos secundários
+  var T_A2    = 0.63;
+  var T_SW    = 2.05;   // swell grave: as rachaduras passam a brilhar por dentro
+  var T_HIT2  = 3.03;   // segundo golpe: o dado se estilhaça, o eclipse negro surge
+  var T_A3    = 3.43;   // pancada menor: aparece o texto
+  var T_FADE  = 3.90;   // decaimento do áudio
+  var T_END   = 5.85;
+  // impulsos de tremor: [instante, amplitude(px), decaimento/s]
+  var IMP = [[T_HIT, 26, 5], [T_A1, 12, 7], [T_A2, 10, 7], [T_HIT2, 34, 3.6], [T_A3, 10, 7]];
+
+  function $(id) { return document.getElementById(id); }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function ease(p) { return p * p * (3 - 2 * p); }
+  function masterVol() {
+    var m = (typeof window.getMasterVolume === 'function') ? window.getMasterVolume() : 0.35;
+    return clamp(+m || 0, 0, 1);
+  }
+  function anim(el, kf, opt) { try { return el.animate(kf, opt); } catch (e) { return null; } }
+
+  var ov = $('dx-crit'), grade = ov.querySelector('.cf-grade'), vig = ov.querySelector('.cf-vig'),
+      shake = $('cf-shake'), eclipse = ov.querySelector('.cf-eclipse'), svg = $('cf-cracks'),
+      ring = ov.querySelector('.cf-ring'), wrap = ov.querySelector('.cf-die-wrap'),
+      flash = ov.querySelector('.cf-flash'), dcr = ov.querySelector('.cf-dcracks'),
+      cv = $('cf-canvas'), ctx = cv.getContext('2d');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var aud = null;
+  try { aud = new Audio(AUDIO_SRC); aud.preload = 'auto'; } catch (e) { aud = null; }
+
+  var active = false, anchored = false, skipping = false;
+  var clock0 = 0, lastNow = 0, skipT0 = 0, raf = 0;
+  var W = 0, H = 0, DPR = 1, parts = [], ashAcc = 0, embAcc = 0, cracks = { 0: [], 1: [], 2: [] };
+
+  if (aud) {
+    aud.addEventListener('playing', function () {
+      if (active && !anchored && aud.currentTime < 0.6) {
+        clock0 = performance.now() - aud.currentTime * 1000;
+        anchored = true;
+      }
+    });
+  }
+
+  /* ── sprites ── */
+  function mkEmber() {
+    var s = 64, h = s / 2, c = document.createElement('canvas'); c.width = c.height = s;
+    var g = c.getContext('2d'), gr = g.createRadialGradient(h, h, 0, h, h, h);
+    gr.addColorStop(0, 'rgba(255,240,205,1)'); gr.addColorStop(0.22, 'rgba(255,150,60,.85)');
+    gr.addColorStop(0.6, 'rgba(220,40,20,.32)'); gr.addColorStop(1, 'rgba(120,0,0,0)');
+    g.fillStyle = gr; g.fillRect(0, 0, s, s);
+    return c;
+  }
+  function mkAsh() {
+    var s = 40, h = s / 2, c = document.createElement('canvas'); c.width = c.height = s;
+    var g = c.getContext('2d'), n = 5 + ((Math.random() * 3) | 0);
+    g.fillStyle = 'rgb(178,168,158)'; g.beginPath();
+    for (var i = 0; i < n; i++) {
+      var a = (i / n) * 6.283 + rand(-0.3, 0.3), r = rand(7, 17);
+      var x = h + Math.cos(a) * r, y = h + Math.sin(a) * r * 0.7;
+      if (i) g.lineTo(x, y); else g.moveTo(x, y);
+    }
+    g.closePath(); g.fill();
+    return c;
+  }
+  var EMBER = mkEmber(), ASH = [mkAsh(), mkAsh(), mkAsh()];
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  }
+  function dieSize() { return Math.min(Math.min(W, H) * 0.44, 320); }
+
+  /* ── partículas ── */
+  function addP(p) { if (parts.length < 650) parts.push(p); }
+  function spawnAsh() {
+    var u = H / 760;
+    addP({ k: 'ash', s: ASH[(Math.random() * 3) | 0], x: rand(-20, W + 20), y: rand(-24, -4),
+      vx: rand(-14, 14) * u, vy: rand(38, 115) * u, drag: 0, g: 0, size: rand(3, 10),
+      rot: rand(0, 6.28), vr: rand(-2, 2), life: 40, age: 0, ph: rand(0, 6.28), fs: rand(1.2, 3.2), fa: rand(8, 26) * u, a: rand(0.35, 0.85) });
+  }
+  function spawnEmber() {
+    var u = H / 760;
+    addP({ k: 'ember', s: EMBER, x: rand(0, W), y: rand(H * 0.55, H + 10),
+      vx: rand(-16, 16) * u, vy: -rand(28, 115) * u, drag: 0, g: 0, size: rand(5, 14),
+      rot: 0, vr: 0, life: rand(1.8, 3.6), age: 0, ph: rand(0, 6.28), fs: rand(8, 16), fa: rand(6, 18) * u, a: rand(0.6, 1) });
+  }
+  function sparks(n, vMin, vMax, sMin, sMax, lMin, lMax) {
+    var cx = W / 2, cy = H * 0.46, u = Math.min(W, H) / 800;
+    for (var i = 0; i < n; i++) {
+      var a = rand(0, 6.283), sp = rand(vMin, vMax) * u;
+      addP({ k: 'ember', s: EMBER, x: cx + Math.cos(a) * dieSize() * 0.3, y: cy + Math.sin(a) * dieSize() * 0.3,
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, drag: rand(1.6, 2.6), g: 60 * u, size: rand(sMin, sMax) * 2.2,
+        rot: 0, vr: 0, life: rand(lMin, lMax), age: 0, ph: rand(0, 6.28), fs: rand(10, 20), fa: 0, a: rand(0.8, 1) });
+    }
+  }
+  function debris(n) {
+    var cx = W / 2, cy = H * 0.46, u = Math.min(W, H) / 800;
+    for (var i = 0; i < n; i++) {
+      var a = rand(0, 6.283), sp = rand(80, 520) * u;
+      addP({ k: 'ash', s: ASH[(Math.random() * 3) | 0], x: cx + Math.cos(a) * dieSize() * 0.3, y: cy + Math.sin(a) * dieSize() * 0.3,
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 60 * u, drag: 1.3, g: 150 * u, size: rand(7, 20),
+        rot: rand(0, 6.28), vr: rand(-6, 6), life: rand(2, 3.4), age: 0, ph: rand(0, 6.28), fs: 3, fa: 0, a: rand(0.55, 0.95) });
+    }
+  }
+  function stepParts(dt) {
+    for (var i = parts.length - 1; i >= 0; i--) {
+      var p = parts[i];
+      p.age += dt;
+      if (p.age >= p.life || p.y > H + 40 || p.y < -80) { parts.splice(i, 1); continue; }
+      var k = Math.exp(-p.drag * dt);
+      p.vx *= k; p.vy = p.vy * k + p.g * dt;
+      p.x += (p.vx + Math.sin(p.age * p.fs + p.ph) * p.fa) * dt;
+      p.y += p.vy * dt; p.rot += p.vr * dt;
+    }
+  }
+  function drawPass(kind) {
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i]; if (p.k !== kind) continue;
+      var env = Math.min(p.age / 0.12, 1) * Math.min(1, (p.life - p.age) / (p.life * 0.4));
+      var al = p.a * env * (kind === 'ember' ? 0.6 + 0.4 * Math.sin(p.ph + p.age * p.fs) : 1);
+      if (al < 0.01) continue;
+      var sz = p.size * DPR, sc = sz / p.s.width, cs = Math.cos(p.rot) * sc, sn = Math.sin(p.rot) * sc;
+      ctx.globalAlpha = clamp(al, 0, 1);
+      ctx.setTransform(cs, sn, -sn, cs, p.x * DPR, p.y * DPR);
+      ctx.drawImage(p.s, -p.s.width / 2, -p.s.height / 2);
+    }
+  }
+  function drawParts() {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.globalCompositeOperation = 'source-over'; drawPass('ash');
+    ctx.globalCompositeOperation = 'lighter'; drawPass('ember');
+    ctx.globalAlpha = 1; ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over';
+  }
+
+  /* ── rachaduras na tela (geradas na hora, no tamanho da janela) ── */
+  function addCrack(pts, level) {
+    var d = 'M' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1), len = 0;
+    for (var i = 1; i < pts.length; i++) {
+      d += ' L' + pts[i][0].toFixed(1) + ' ' + pts[i][1].toFixed(1);
+      len += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    }
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('stroke-width', level === 0 ? 2.6 : level === 1 ? 1.8 : 1.2);
+    path.style.strokeDasharray = len.toFixed(1);
+    path.style.strokeDashoffset = len.toFixed(1);
+    path.dataset.len = len;
+    svg.firstChild.appendChild(path);
+    cracks[level].push(path);
+  }
+  function walk(x, y, ang, level) {
+    var pts = [[x, y]], steps = level === 0 ? 44 : level === 1 ? 4 + ((Math.random() * 6) | 0) : 2 + ((Math.random() * 4) | 0);
+    var base = level === 0 ? 50 : 26, a = ang;
+    for (var s = 0; s < steps; s++) {
+      a += rand(-0.38, 0.38);
+      var l = base * rand(0.7, 1.3);
+      x += Math.cos(a) * l; y += Math.sin(a) * l;
+      pts.push([x, y]);
+      if (level < 2 && Math.random() < (level === 0 ? 0.3 : 0.2)) walk(x, y, a + (Math.random() < 0.5 ? -1 : 1) * rand(0.5, 1.05), level + 1);
+      if (x < -60 || x > W + 60 || y < -60 || y > H + 60) break;
+    }
+    addCrack(pts, level);
+  }
+  function buildCracks() {
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.innerHTML = '<g></g>';
+    cracks = { 0: [], 1: [], 2: [] };
+    var cx = W / 2, cy = H * 0.46, S = dieSize(), n = 8, b = rand(0, 6.28);
+    for (var i = 0; i < n; i++) {
+      var a = b + i * (6.283 / n) + rand(-0.28, 0.28);
+      walk(cx + Math.cos(a) * S * 0.42, cy + Math.sin(a) * S * 0.42, a, 0);
+    }
+    void svg.getBoundingClientRect();
+  }
+  function reveal(level, dur) {
+    cracks[level].forEach(function (p) {
+      p.style.transitionDuration = dur + 's, 1s';
+      p.style.transitionDelay = rand(0, 0.12).toFixed(2) + 's, 0s';
+      p.style.transitionTimingFunction = 'cubic-bezier(.1,.8,.2,1), ease';
+      p.style.strokeDashoffset = '0';
+    });
+  }
+
+  /* ── estilhaços do dado: cada face voa pra um lado ── */
+  function prepShards() {
+    var gs = ov.querySelectorAll('.cf-shard');
+    for (var i = 0; i < gs.length; i++) {
+      var pts = gs[i].querySelector('polygon').getAttribute('points').trim().split(/\s+/).map(function (s) { return s.split(',').map(Number); });
+      var cx = (pts[0][0] + pts[1][0] + pts[2][0]) / 3, cy = (pts[0][1] + pts[1][1] + pts[2][1]) / 3;
+      var dx = cx - 100, dy = cy - 100, len = Math.hypot(dx, dy);
+      if (len < 8) { dx = rand(-1, 1); dy = rand(0.2, 1); len = Math.hypot(dx, dy); }
+      var dist = rand(190, 430);
+      gs[i].style.setProperty('--tx', (dx / len * dist).toFixed(0) + 'px');
+      gs[i].style.setProperty('--ty', (dy / len * dist + rand(70, 170)).toFixed(0) + 'px');
+      gs[i].style.setProperty('--rot', rand(-160, 160).toFixed(0) + 'deg');
+    }
+  }
+
+  /* ── eventos sincronizados com o áudio ── */
+  function onHit() {
+    reveal(0, 0.5); dcr.classList.add('on');
+    anim(flash, [{ opacity: 0.8 }, { opacity: 0 }], { duration: 520, easing: 'ease-out' });
+    anim(ring, [{ opacity: 1, transform: 'scale(.4)' }, { opacity: 0, transform: 'scale(3.4)' }], { duration: 1100, easing: 'cubic-bezier(.15,.7,.3,1)' });
+    sparks(90, 200, 900, 2, 6, 0.5, 1.1); debris(26);
+  }
+  function onA1() { reveal(1, 0.55); anim(flash, [{ opacity: 0.35 }, { opacity: 0 }], { duration: 380 }); sparks(30, 120, 500, 2, 5, 0.4, 0.9); }
+  function onA2() { reveal(2, 0.6); anim(flash, [{ opacity: 0.25 }, { opacity: 0 }], { duration: 320 }); sparks(24, 100, 420, 2, 5, 0.4, 0.9); }
+  function onSwell() { ov.classList.add('swell'); }
+  function onShatter() {
+    ov.classList.add('shatter');
+    anim(flash, [{ opacity: 0.72 }, { opacity: 0 }], { duration: 780, easing: 'cubic-bezier(.1,.7,.3,1)' });
+    anim(ring, [{ opacity: 1, transform: 'scale(.3)' }, { opacity: 0, transform: 'scale(4)' }], { duration: 1400, easing: 'cubic-bezier(.15,.7,.3,1)' });
+    anim(eclipse, [{ opacity: 0, transform: 'scale(.25)', offset: 0 }, { opacity: 1, offset: 0.18 }, { opacity: 1, transform: 'scale(1)', offset: 1 }],
+      { duration: 2600, easing: 'cubic-bezier(.15,.7,.25,1)', fill: 'forwards' });
+    sparks(130, 160, 820, 3, 8, 0.9, 2.0); debris(50);
+  }
+  function onA3() { anim(flash, [{ opacity: 0.3 }, { opacity: 0 }], { duration: 380 }); sparks(40, 100, 480, 2, 6, 0.6, 1.4); }
+  var EV = [{ t: T_HIT, fn: onHit }, { t: T_A1, fn: onA1 }, { t: T_A2, fn: onA2 }, { t: T_SW, fn: onSwell }, { t: T_HIT2, fn: onShatter }, { t: T_A3, fn: onA3 }];
+
+  function shakeAmp(t) {
+    var a = 0;
+    for (var i = 0; i < IMP.length; i++) if (t >= IMP[i][0]) a += IMP[i][1] * Math.exp(-(t - IMP[i][0]) * IMP[i][2]);
+    if (t > 0.8 && t < T_HIT2) a += 1.2 + 4.5 * clamp((t - T_SW) / (T_HIT2 - T_SW), 0, 1);   // rumor, e tremor crescente no swell
+    return a * clamp(Math.min(W, H) / 760, 0.6, 1.2) * (reduce ? 0.25 : 1);
+  }
+
+  function frame() {
+    if (!active) return;
+    var now = performance.now();
+    var dt = Math.min(0.05, (now - lastNow) / 1000); lastNow = now;
+    var t = (now - clock0) / 1000;
+    var skipP = skipping ? clamp((now - skipT0) / 380, 0, 1) : 0;
+
+    if (aud) { try { aud.volume = clamp(masterVol() * (1 - skipP), 0, 1); } catch (e) {} }
+
+    // a cena entra junto com a "descida" do áudio, já no limite do golpe
+    var pIn = clamp(t / T_HIT, 0, 1);
+    grade.style.opacity = ease(pIn).toFixed(3);
+    var vr = t < T_HIT ? 140 - 30 * pIn : 110 - 30 * clamp((t - T_HIT) / (T_HIT2 - T_HIT), 0, 1) - 8 * clamp((t - T_HIT2) / 1.0, 0, 1);
+    vig.style.setProperty('--vr', vr.toFixed(1) + '%');
+    vig.style.opacity = (clamp(pIn * 1.2, 0, 1) * (0.86 + 0.14 * Math.sin(t * 2.4))).toFixed(3);
+
+    // o dado despenca até o golpe e depois afunda devagar
+    var sc, rot = 0, op = 1;
+    if (t < T_HIT) { sc = 1 + 2.2 * Math.pow(1 - pIn, 2.2); rot = -(1 - pIn) * 14; op = clamp(pIn * 3, 0, 1); }
+    else sc = 1 + 0.07 * clamp((t - T_HIT) / (T_HIT2 - T_HIT), 0, 1) - 0.08 * Math.exp(-(t - T_HIT) * 9);
+    wrap.style.opacity = op.toFixed(3);
+    wrap.style.transform = 'scale(' + sc.toFixed(4) + ') rotate(' + rot.toFixed(2) + 'deg)';
+
+    for (var i = 0; i < EV.length; i++) if (!EV[i].done && t >= EV[i].t) { EV[i].done = true; EV[i].fn(); }
+
+    var amp = shakeAmp(t);
+    shake.style.transform = amp > 0.2
+      ? 'translate(' + (amp * (Math.random() * 2 - 1)).toFixed(1) + 'px,' + (amp * (Math.random() * 2 - 1)).toFixed(1) + 'px) rotate(' + (amp * 0.03 * (Math.random() * 2 - 1)).toFixed(3) + 'deg)'
+      : '';
+
+    // cinzas caindo e brasas subindo, rareando com o decaimento do som
+    if (t >= T_HIT) {
+      var f = 1 - ease(clamp((t - T_FADE) / 1.4, 0, 1));
+      ashAcc += dt * 30 * f; embAcc += dt * 16 * f;
+      while (ashAcc >= 1) { spawnAsh(); ashAcc -= 1; }
+      while (embAcc >= 1) { spawnEmber(); embAcc -= 1; }
+    }
+
+    var o = 1 - ease(clamp((t - T_FADE) / (T_END - T_FADE), 0, 1));
+    if (skipping) o = Math.min(o, 1 - skipP);
+    ov.style.opacity = o.toFixed(3);
+
+    stepParts(dt); drawParts();
+
+    if (t >= T_END || (skipping && skipP >= 1)) { end(); return; }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function start() {
+    if (active) return;
+    active = true; anchored = false; skipping = false; parts.length = 0; ashAcc = embAcc = 0;
+    EV.forEach(function (e) { e.done = false; });
+    ov.classList.remove('swell', 'shatter'); dcr.classList.remove('on');
+    [eclipse, ring, flash].forEach(function (e) { if (e.getAnimations) e.getAnimations().forEach(function (a) { a.cancel(); }); });
+    ov.style.opacity = '1';
+    grade.style.opacity = '0'; vig.style.opacity = '0'; vig.style.setProperty('--vr', '140%');
+    wrap.style.opacity = '0'; shake.style.transform = '';
+    ov.classList.add('on');
+    resize(); buildCracks(); prepShards();
+    clock0 = lastNow = performance.now();
+    if (aud) {
+      try {
+        aud.pause(); aud.currentTime = 0; aud.volume = masterVol();
+        var pl = aud.play(); if (pl && pl.catch) pl.catch(function () {});
+      } catch (e) {}
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function end() {
+    active = false; cancelAnimationFrame(raf);
+    ov.classList.remove('on', 'swell', 'shatter'); dcr.classList.remove('on');
+    [eclipse, ring, flash].forEach(function (e) { if (e.getAnimations) e.getAnimations().forEach(function (a) { a.cancel(); }); });
+    ov.style.opacity = ''; shake.style.transform = '';
+    svg.innerHTML = ''; parts.length = 0;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
+    if (aud) { try { aud.pause(); aud.currentTime = 0; } catch (e) {} }
+  }
+
+  function skip() { if (active && !skipping) { skipping = true; skipT0 = performance.now(); } }
+  ov.addEventListener('click', skip);
+  window.addEventListener('resize', function () { if (active) resize(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') skip(); });
+
+  window.dxCritFail = start;
+  window.dxCritActive = function () { return active; };
 })();
 </script>
 
