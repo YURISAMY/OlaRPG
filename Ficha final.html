@@ -2477,7 +2477,7 @@
 .dx-drawer {
   --dx-rgb: 201,146,26;
   --dx-lite: #f3c358;
-  --dx-w: min(236px, 86vw);
+  --dx-w: min(332px, 92vw);
   position: fixed;
   top: var(--dx-top, 64px);
   right: 0;
@@ -2536,9 +2536,10 @@
   color: var(--dx-lite);
   margin: 0 0 9px 2px;
 }
-.dx-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.dx-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
 .dx-die-btn {
-  width: 49px;
+  width: auto;
+  min-width: 0;
   padding: 5px 0 4px;
   display: flex;
   flex-direction: column;
@@ -2833,6 +2834,105 @@
 }
 #dx-crit .cf-dcracks path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 0.3s ease-out, stroke 0.6s, stroke-width 0.6s; }
 #dx-crit .cf-dcracks.on path { stroke-dashoffset: 0; }
+
+/* ── MESA: feed, status, avisos e banner com o nome ── */
+.dx-panel { max-height: calc(100vh - var(--dx-top, 64px) - 14px); overflow-y: auto; scrollbar-width: thin; }
+.dx-handle { position: relative; }
+.dx-handle.has-new::after {
+  content: ''; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 50%;
+  background: #f3c358; box-shadow: 0 0 8px #f3c358;
+}
+.dx-feed-title { margin: 10px 2px 4px; font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 0.08em; color: rgba(245, 234, 214, 0.55); }
+.dx-feed { max-height: 132px; overflow-y: auto; display: flex; flex-direction: column; gap: 1px; scrollbar-width: thin; }
+.dx-row { display: flex; justify-content: space-between; gap: 8px; padding: 2px 4px; border-radius: 4px; font-family: 'Share Tech Mono', monospace; font-size: 12px; color: rgba(245, 234, 214, 0.7); }
+.dx-row:nth-child(odd) { background: rgba(255, 255, 255, 0.03); }
+.dx-row .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dx-row .rv { flex: none; color: var(--dx-lite); }
+.dx-row.mine .nm { color: rgba(245, 234, 214, 0.92); }
+.dx-row.crit .rv { color: #ffe9a8; text-shadow: 0 0 8px rgba(255, 190, 70, 0.7); }
+.dx-row.fail .rv { color: #e26a6a; }
+.dx-row.hid { opacity: 0.55; font-style: italic; }
+.dx-share { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(var(--dx-rgb), 0.2); }
+.dx-share-txt { min-width: 0; font-family: 'Share Tech Mono', monospace; font-size: 11.5px; line-height: 1.3; color: rgba(245, 234, 214, 0.5); }
+.dx-share-txt.on { color: #7ee0a0; }
+.dx-share-txt.hid { color: #e2a36a; }
+.dx-hide-btn {
+  flex: none; padding: 3px 9px; cursor: pointer; border-radius: 12px;
+  font-family: 'Share Tech Mono', monospace; font-size: 11.5px; color: var(--dx-lite);
+  background: rgba(var(--dx-rgb), 0.1); border: 1px solid rgba(var(--dx-rgb), 0.45);
+}
+.dx-hide-btn[aria-pressed="true"] { background: rgba(226, 163, 106, 0.18); border-color: rgba(226, 163, 106, 0.7); color: #f0b987; }
+.dx-toasts {
+  --dx-rgb: 201,146,26; --dx-lite: #f3c358;
+  position: fixed; left: 12px; bottom: 12px; z-index: 1090; display: flex; flex-direction: column; gap: 6px;
+  pointer-events: none; max-width: min(320px, 80vw);
+}
+.dx-toast {
+  padding: 7px 12px; border-radius: 9px; background: rgba(10, 11, 16, 0.94);
+  border: 1px solid rgba(var(--dx-rgb), 0.45); color: rgba(245, 234, 214, 0.92);
+  font-family: 'Crimson Pro', serif; font-size: 15px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  animation: dxToastIn 0.3s ease-out; transition: opacity 0.4s, transform 0.4s;
+}
+.dx-toast.out { opacity: 0; transform: translateX(-12px); }
+.dx-toast b { color: var(--dx-lite); }
+@keyframes dxToastIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+
+#dx-nat20 .dx-who, #dx-crit .cf-who { position: absolute; left: 0; right: 0; top: 8vh; padding: 0 18px; text-align: center; pointer-events: none; opacity: 0; overflow-wrap: anywhere; }
+#dx-nat20 .dx-who b, #dx-crit .cf-who b { display: block; font-family: 'Cinzel', 'Cinzel Decorative', serif; font-weight: 900; font-size: clamp(22px, 5.4vmin, 44px); letter-spacing: 0.14em; line-height: 1.15; }
+#dx-nat20 .dx-who span, #dx-crit .cf-who span { display: block; margin-top: 5px; font-family: 'Crimson Pro', serif; font-style: italic; font-weight: 600; font-size: clamp(15px, 2.9vmin, 23px); letter-spacing: 0.08em; }
+#dx-nat20 .dx-who b { color: #ffeab8; text-shadow: 0 0 14px rgba(255, 190, 70, 0.95), 0 0 40px rgba(255, 160, 30, 0.6); }
+#dx-nat20 .dx-who span { color: rgba(255, 226, 160, 0.92); }
+#dx-crit .cf-who b { color: #eadfd2; text-shadow: 0 0 12px rgba(255, 40, 30, 0.9), 0 0 36px rgba(160, 0, 0, 0.8), 0 2px 0 #2a0204; }
+#dx-crit .cf-who span { color: rgba(255, 170, 150, 0.92); }
+#dx-nat20.hit .dx-who { animation: dxWho 1.2s cubic-bezier(0.2, 0.9, 0.25, 1) 0.12s both; }
+#dx-crit.hit .cf-who { animation: dxWho 1s ease-out both; }
+@keyframes dxWho { from { opacity: 0; transform: translateY(-16px) scale(1.14); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+/* ── MÚLTIPLOS DADOS, ATRIBUTO E BÔNUS ── */
+.dx-ctrl { display: flex; gap: 10px; margin-bottom: 8px; }
+.dx-field { flex: 1; min-width: 0; display: flex; align-items: center; gap: 4px; }
+.dx-fl { flex: none; margin-right: 2px; font-family: 'Share Tech Mono', monospace; font-size: 11.5px; color: rgba(245, 234, 214, 0.55); }
+.dx-step {
+  flex: none; width: 24px; height: 26px; padding: 0; cursor: pointer; border-radius: 6px;
+  border: 1px solid rgba(var(--dx-rgb), 0.35); background: rgba(var(--dx-rgb), 0.08); color: var(--dx-lite);
+  font-family: 'Share Tech Mono', monospace; font-size: 15px; line-height: 1;
+}
+.dx-step:hover { background: rgba(var(--dx-rgb), 0.22); }
+.dx-step:active { transform: scale(0.94); }
+.dx-num {
+  flex: 1; min-width: 0; width: 100%; height: 26px; text-align: center; border-radius: 6px;
+  background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(var(--dx-rgb), 0.3); color: #f5ead6;
+  font-family: 'Share Tech Mono', monospace; font-size: 14px; -moz-appearance: textfield; appearance: textfield;
+}
+.dx-num::-webkit-inner-spin-button, .dx-num::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.dx-num:focus { outline: 1px solid var(--dx-lite); }
+.dx-attrs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 8px; }
+.dx-attr {
+  display: flex; align-items: baseline; justify-content: center; gap: 6px; padding: 4px 0; cursor: pointer; border-radius: 7px;
+  color: var(--dx-lite); background: rgba(var(--dx-rgb), 0.06); border: 1px solid rgba(var(--dx-rgb), 0.22);
+  font-family: 'Share Tech Mono', monospace; font-size: 12px; transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.dx-attr b { font-weight: 600; letter-spacing: 0.04em; }
+.dx-attr i { font-style: normal; color: rgba(245, 234, 214, 0.65); }
+.dx-attr:hover { background: rgba(var(--dx-rgb), 0.16); }
+.dx-attr[aria-pressed="true"] { background: rgba(var(--dx-rgb), 0.3); border-color: var(--dx-lite); box-shadow: 0 0 10px rgba(var(--dx-rgb), 0.35); color: #fff3d1; }
+.dx-attr[aria-pressed="true"] i { color: #fff3d1; }
+.dx-attr:focus-visible { outline: 2px solid var(--dx-lite); outline-offset: 2px; }
+.dx-res-dice { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; margin-top: 4px; max-width: 100%; }
+.dx-dv {
+  min-width: 22px; padding: 1px 4px; text-align: center; border-radius: 5px;
+  font-family: 'Share Tech Mono', monospace; font-size: 12.5px; color: rgba(245, 234, 214, 0.85);
+  background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(var(--dx-rgb), 0.25);
+}
+.dx-dv.max { color: #ffe9a8; border-color: rgba(243, 195, 88, 0.7); }
+.dx-dv.min { color: #e26a6a; border-color: rgba(216, 58, 58, 0.55); }
+.dx-result.rolling .dx-res-dice { opacity: 0.65; }
+.dx-feed { max-height: 176px; }
+.dx-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; column-gap: 8px; align-items: baseline; padding: 3px 4px; }
+.dx-row .fm { color: rgba(245, 234, 214, 0.5); white-space: nowrap; }
+.dx-row .tot { min-width: 3.2ch; text-align: right; font-weight: 600; color: var(--dx-lite); }
+.dx-row .bd { grid-column: 1 / -1; font-size: 11px; line-height: 1.35; color: rgba(245, 234, 214, 0.42); overflow-wrap: anywhere; }
+.dx-row.crit .tot { color: #ffe9a8; text-shadow: 0 0 8px rgba(255, 190, 70, 0.7); }
+.dx-row.fail .tot { color: #e26a6a; }
 </style>
 </head>
 <body>
@@ -4190,6 +4290,7 @@ function rollDeathSave() {
 
 function deathResolve(roll) {
   const ds = deathState();
+  if (window.dxPublishRoll) window.dxPublishRoll(20, roll, 'Teste de morte');
   const res = document.getElementById('death-result');
   let msg, cls;
   if (roll === 20) {
@@ -5851,6 +5952,7 @@ function rolarIniciativa() {
   const base = (baseRaw !== '' && baseRaw !== null) ? (parseInt(baseRaw) || 0) : desMod;
   const roll = Math.floor(Math.random() * 20) + 1;
   const total = roll + base;
+  if (window.dxPublishRoll) window.dxPublishRoll(20, roll, 'Iniciativa');
   state.battleInitiative = total;
   state.battleInitiativeRoll = roll;
   state.battleInitiativeBase = base;
@@ -7601,8 +7703,17 @@ if (document.readyState === 'loading') {
   </div>
 </div>
 
-
+<script>window.DX_ADAPTER = {
+  canHide: false,   // jogadores sempre compartilham; só o Mestre (bestiário) pode ocultar
+  code: function () { try { return (state.sessionCode || '').trim().toUpperCase(); } catch (e) { return ''; } },
+  online: function () { try { return !!(state.sessionCode && syncRef); } catch (e) { return false; } },
+  db: function () { try { return syncGetDb(); } catch (e) { return null; } },
+  attrMod: function (k) { try { var el = document.getElementById('attr-' + k); return Math.floor(((parseInt(el && el.value, 10) || 10) - 10) / 2); } catch (e) { return 0; } },
+  name: function () { try { var el = document.getElementById('char-name'); return ((el && el.value) || '').trim() || 'Personagem'; } catch (e) { return 'Personagem'; } }
+};
+</script>
 <!-- ══════════════ GAVETA DE DADOS + 20 NATURAL ══════════════ -->
+<div class="dx-toasts" id="dx-toasts" aria-live="polite"></div>
 <div class="dx-drawer" id="dx-drawer">
   <button type="button" class="dx-handle" id="dx-handle" aria-expanded="false" aria-controls="dx-panel" title="Abrir/fechar dados">
     <svg width="20" height="20" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><polygon points="20,3 35,11.5 35,28.5 20,37 5,28.5 5,11.5"/><polygon points="20,12 28,26 12,26" stroke-width="1.6" opacity=".8"/></svg>
@@ -7610,12 +7721,20 @@ if (document.readyState === 'loading') {
   </button>
   <div class="dx-panel" id="dx-panel">
     <p class="dx-title">Dados</p>
+    <div class="dx-ctrl">
+      <div class="dx-field"><span class="dx-fl">Qtd</span><button type="button" class="dx-step" id="dx-qty-dec" aria-label="Menos um dado">−</button><input class="dx-num" id="dx-qty" type="number" min="1" max="20" value="1" inputmode="numeric" aria-label="Quantidade de dados"><button type="button" class="dx-step" id="dx-qty-inc" aria-label="Mais um dado">+</button></div>
+      <div class="dx-field"><span class="dx-fl">Bônus</span><button type="button" class="dx-step" id="dx-flat-dec" aria-label="Diminuir bônus">−</button><input class="dx-num" id="dx-flat" type="number" min="-99" max="99" value="0" inputmode="numeric" aria-label="Bônus fixo somado ao total"><button type="button" class="dx-step" id="dx-flat-inc" aria-label="Aumentar bônus">+</button></div>
+    </div>
+    <div class="dx-attrs" id="dx-attrs" role="group" aria-label="Somar o modificador de um atributo"></div>
     <div class="dx-grid" id="dx-grid"></div>
     <div class="dx-result" id="dx-result" aria-live="polite">
-      <span class="dx-res-lab" id="dx-res-lab">escolha um dado</span>
+      <span class="dx-res-lab" id="dx-res-lab">clique num dado para rolar</span>
       <span class="dx-res-num" id="dx-res-num">–</span>
+      <span class="dx-res-dice" id="dx-res-dice"></span>
     </div>
-    <div class="dx-history" id="dx-history"></div>
+    <div class="dx-feed-title" id="dx-feed-title">Últimas rolagens</div>
+    <div class="dx-feed" id="dx-feed"></div>
+    <div class="dx-share"><span class="dx-share-txt" id="dx-share-txt"></span><button type="button" class="dx-hide-btn" id="dx-hide" style="display:none" title="Quando oculto, a mesa não vê suas rolagens nem as animações"></button></div>
   </div>
 </div>
 
@@ -7658,6 +7777,7 @@ if (document.readyState === 'loading') {
     </div>
     <div class="dx-cap">20 natural</div>
   </div>
+  <div class="dx-who"><b></b><span></span></div>
   <canvas id="dx-canvas"></canvas>
   <div class="dx-flash"></div>
 </div>
@@ -7695,8 +7815,8 @@ if (document.readyState === 'loading') {
 
   /* ── GAVETA ─────────────────────────────────────────────── */
   var drawer = $('dx-drawer'), handle = $('dx-handle'), grid = $('dx-grid');
-  var resBox = $('dx-result'), resNum = $('dx-res-num'), resLab = $('dx-res-lab'), histEl = $('dx-history');
-  var history = [], busy = false;
+  var resBox = $('dx-result'), resNum = $('dx-res-num'), resLab = $('dx-res-lab');
+  var busy = false;
 
   var ICONS = {
     4:   '<polygon points="20,6 35,33 5,33"/>',
@@ -7714,13 +7834,14 @@ if (document.readyState === 'loading') {
     b.className = 'dx-die-btn' + (n === 20 ? ' dx-d20' : '');
     b.setAttribute('aria-label', 'Rolar d' + n);
     b.title = 'Rolar d' + n;
-    b.innerHTML = '<svg width="30" height="30" viewBox="0 0 40 40" fill="rgba(255,255,255,.05)" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">' + ICONS[n] + '</svg><span>d' + n + '</span>';
+    b.innerHTML = '<svg width="26" height="26" viewBox="0 0 40 40" fill="rgba(255,255,255,.05)" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">' + ICONS[n] + '</svg><span>d' + n + '</span>';
     b.addEventListener('click', function () { roll(n, b); });
     grid.appendChild(b);
   });
 
   function setOpen(open) {
     drawer.classList.toggle('open', open);
+    if (open) { handle.classList.remove('has-new'); renderAttrs(); }
     handle.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
   handle.addEventListener('click', function () { setOpen(!drawer.classList.contains('open')); });
@@ -7734,38 +7855,265 @@ if (document.readyState === 'loading') {
   window.addEventListener('resize', placeDrawer);
   window.addEventListener('load', placeDrawer);
 
-  function renderHistory() {
-    histEl.innerHTML = '';
-    history.forEach(function (h) {
-      var s = document.createElement('span');
-      s.className = 'dx-chip' + (h.crit ? ' crit' : '');
-      s.textContent = 'd' + h.n + ': ' + h.v;
-      histEl.appendChild(s);
+  /* ── MESA: rolagens compartilhadas pelo Firebase ─────────── */
+  var AD = window.DX_ADAPTER || {};
+  var ME = Math.random().toString(36).slice(2, 10);          // identifica esta aba (pra não repetir a própria cena)
+  var ATTRS = [['for', 'FOR'], ['des', 'DES'], ['con', 'CON'], ['int', 'INT'], ['car', 'CAR'], ['sab', 'SAB']];
+  var ATTR_LABEL = {}; ATTRS.forEach(function (a) { ATTR_LABEL[a[0]] = a[1]; });
+  var feed = [], seen = {}, rollsQ = null, rollsCode = '', offRef = null, srvOff = 0, ready = false, warned = false;
+  var selAttr = '', hidden = false;
+  try { hidden = localStorage.getItem('dx_hide_rolls') === '1'; } catch (e) {}
+  if (!AD.canHide) hidden = false;
+  var feedEl = $('dx-feed'), feedTitle = $('dx-feed-title'), shareTxt = $('dx-share-txt'), hideBtn = $('dx-hide'), toastEl = $('dx-toasts');
+  var qtyEl = $('dx-qty'), flatEl = $('dx-flat'), attrsEl = $('dx-attrs'), resDice = $('dx-res-dice');
+
+  function toInt(v, lo, hi, d) { var n = parseInt(v, 10); if (isNaN(n)) n = d; return clamp(n, lo, hi); }
+  function sgn(n) { return (n < 0 ? '−' : '+') + Math.abs(n); }
+  function sum(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return s; }
+  function clean(s) { return String(s == null ? '' : s).replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 30); }
+  function myName() { try { return clean(AD.name ? AD.name() : '') || 'Você'; } catch (e) { return 'Você'; } }
+  function online() { try { return !!(AD.online && AD.online() && AD.code && AD.code()); } catch (e) { return false; } }
+  function critBusy() { return !!(window.dxCritActive && window.dxCritActive()); }
+
+  // uma rolagem: die (lados), dice (valores), mod (atributo), flat (bônus), attr (qual atributo), total
+  function mk(die, dice, mod, flat, attr, label) {
+    return { die: die, dice: dice, mod: mod, flat: flat, attr: attr || '', label: label || '', total: sum(dice) + mod + flat };
+  }
+  function norm(v) {                                          // valida o que veio da mesa; o total é sempre recalculado aqui
+    if (!v || typeof v !== 'object' || typeof v.name !== 'string' || DICE.indexOf(v.die) < 0) return null;
+    var dice = Array.isArray(v.dice) ? v.dice : (typeof v.value === 'number' ? [v.value] : null);
+    if (!dice || dice.length < 1 || dice.length > 20) return null;
+    for (var i = 0; i < dice.length; i++) {
+      var d = dice[i];
+      if (typeof d !== 'number' || d % 1 !== 0 || d < 1 || d > v.die) return null;
+    }
+    var mod = (typeof v.mod === 'number' && v.mod % 1 === 0) ? clamp(v.mod, -30, 30) : 0;
+    var flat = (typeof v.flat === 'number' && v.flat % 1 === 0) ? clamp(v.flat, -999, 999) : 0;
+    var attr = (typeof v.attr === 'string' && Object.prototype.hasOwnProperty.call(ATTR_LABEL, v.attr)) ? v.attr : '';
+    var e = mk(v.die, dice.slice(), mod, flat, attr, clean(v.label));
+    e.name = clean(v.name) || 'Jogador';
+    return e;
+  }
+  function isNat(e) { return e.die === 20 && e.dice.length === 1 && e.dice[0] === 20; }
+  function isFail(e) { return e.die === 20 && e.dice.length === 1 && e.dice[0] === 1; }
+  function formula(e) {                                       // ex.: "4d6 +2 FOR +3"
+    var s = (e.dice.length > 1 ? e.dice.length : '') + 'd' + e.die;
+    if (e.attr) s += ' ' + sgn(e.mod) + ' ' + ATTR_LABEL[e.attr]; else if (e.mod) s += ' ' + sgn(e.mod);
+    if (e.flat) s += ' ' + sgn(e.flat);
+    return s;
+  }
+  function breakdown(e) {                                     // ex.: "3 + 5 + 2 + 6 + 2 FOR + 3"
+    if (e.dice.length === 1 && !e.attr && !e.mod && !e.flat) return '';
+    var s = e.dice.join(' + ');
+    if (e.attr || e.mod) s += ' ' + (e.mod < 0 ? '−' : '+') + ' ' + Math.abs(e.mod) + (e.attr ? ' ' + ATTR_LABEL[e.attr] : '');
+    if (e.flat) s += ' ' + (e.flat < 0 ? '−' : '+') + ' ' + Math.abs(e.flat);
+    return s;
+  }
+
+  function renderFeed() {
+    feedEl.innerHTML = '';
+    feed.forEach(function (e) {
+      var row = document.createElement('div');
+      row.className = 'dx-row' + (e.mine ? ' mine' : '') + (isNat(e) ? ' crit' : '') + (isFail(e) ? ' fail' : '') + (e.hidden ? ' hid' : '');
+      var nm = document.createElement('span'); nm.className = 'nm';
+      nm.textContent = (e.mine ? 'Você' : e.name) + (e.label ? ' · ' + e.label : '') + (e.hidden ? ' (oculta)' : '');
+      var fm = document.createElement('span'); fm.className = 'fm'; fm.textContent = formula(e);
+      var tot = document.createElement('span'); tot.className = 'tot'; tot.textContent = '= ' + e.total;
+      row.appendChild(nm); row.appendChild(fm); row.appendChild(tot);
+      var bd = breakdown(e);
+      if (bd) { var b = document.createElement('span'); b.className = 'bd'; b.textContent = bd; row.appendChild(b); }
+      feedEl.appendChild(row);
+    });
+  }
+  function addFeed(e) { feed.unshift(e); if (feed.length > 25) feed.pop(); renderFeed(); }
+
+  function toast(e, custom) {
+    var t = document.createElement('div');
+    t.className = 'dx-toast';
+    if (custom) { t.textContent = custom; }
+    else {
+      var b = document.createElement('b'); b.textContent = e.name;
+      t.appendChild(b);
+      t.appendChild(document.createTextNode(' rolou ' + formula(e) + ' → ' + e.total + (e.label ? ' (' + e.label + ')' : '')));
+    }
+    toastEl.appendChild(t);
+    while (toastEl.children.length > 3) toastEl.removeChild(toastEl.firstChild);
+    setTimeout(function () { t.classList.add('out'); setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 420); }, 4500);
+  }
+
+  function updateShare() {
+    var on = online(), h = !!(AD.canHide && hidden);
+    shareTxt.textContent = on ? ('mesa ' + AD.code() + (h ? ' · rolagens ocultas' : ' · visível para todos')) : 'sem mesa · só você vê';
+    shareTxt.className = 'dx-share-txt' + (on ? (h ? ' hid' : ' on') : '');
+    feedTitle.textContent = on ? 'Rolagens da mesa' : 'Últimas rolagens';
+    hideBtn.style.display = AD.canHide ? '' : 'none';
+    hideBtn.textContent = hidden ? '🙈 Oculto' : '👁 Visível';
+    hideBtn.setAttribute('aria-pressed', hidden ? 'true' : 'false');
+  }
+  hideBtn.addEventListener('click', function () {
+    hidden = !hidden;
+    try { localStorage.setItem('dx_hide_rolls', hidden ? '1' : '0'); } catch (e) {}
+    updateShare();
+  });
+
+  /* ── quantidade, bônus fixo e atributo ── */
+  function bump(el, d, lo, hi, def) { el.value = clamp(toInt(el.value, lo, hi, def) + d, lo, hi); }
+  $('dx-qty-dec').addEventListener('click', function () { bump(qtyEl, -1, 1, 20, 1); });
+  $('dx-qty-inc').addEventListener('click', function () { bump(qtyEl, 1, 1, 20, 1); });
+  $('dx-flat-dec').addEventListener('click', function () { bump(flatEl, -1, -99, 99, 0); });
+  $('dx-flat-inc').addEventListener('click', function () { bump(flatEl, 1, -99, 99, 0); });
+  qtyEl.addEventListener('change', function () { qtyEl.value = toInt(qtyEl.value, 1, 20, 1); });
+  flatEl.addEventListener('change', function () { flatEl.value = toInt(flatEl.value, -99, 99, 0); });
+
+  var attrBtns = {};
+  function attrMod(k) { try { return parseInt(AD.attrMod(k), 10) || 0; } catch (e) { return 0; } }
+  if (AD.attrMod) {
+    ATTRS.forEach(function (a) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'dx-attr'; b.setAttribute('aria-pressed', 'false');
+      b.title = 'Somar o modificador de ' + a[1] + ' da ficha (clique de novo para desmarcar)';
+      b.innerHTML = '<b>' + a[1] + '</b><i></i>';
+      b.addEventListener('click', function () { selAttr = (selAttr === a[0]) ? '' : a[0]; renderAttrs(); });
+      attrsEl.appendChild(b); attrBtns[a[0]] = b;
+    });
+  } else { attrsEl.style.display = 'none'; }   // o bestiário não tem ficha de personagem
+
+  function renderAttrs() {
+    if (!AD.attrMod) return;
+    ATTRS.forEach(function (a) {
+      var b = attrBtns[a[0]];
+      b.querySelector('i').textContent = sgn(attrMod(a[0]));
+      b.setAttribute('aria-pressed', selAttr === a[0] ? 'true' : 'false');
+    });
+  }
+  renderAttrs();
+
+  /* ── mesa (Firebase) ── */
+  function attach(db, code) {
+    detach();
+    rollsCode = code; ready = false; seen = {};
+    try {
+      offRef = db.ref('.info/serverTimeOffset');
+      offRef.on('value', function (s) { srvOff = +s.val() || 0; });
+      var q = rollsQ = db.ref('sessions/' + code + '/rolls').limitToLast(30);
+      q.on('child_added', function (s) { onRemote(s, q); }, function (err) { console.error('Rolagens da mesa:', err); });
+      q.once('value', function () { if (rollsQ === q) ready = true; });   // o histórico existente chega antes deste evento
+    } catch (e) { console.error('Rolagens da mesa:', e); }
+  }
+  function detach() {
+    try { if (rollsQ) rollsQ.off(); if (offRef) offRef.off(); } catch (e) {}
+    rollsQ = null; offRef = null; rollsCode = ''; ready = false;
+  }
+
+  function onRemote(snap, q) {
+    if (q !== rollsQ) return;
+    var v = snap.val(), k = snap.key;
+    if (seen[k]) return;
+    var e = norm(v);
+    if (!e) return;
+    seen[k] = 1;
+    if (v.uid === ME) return;                                  // rolagem minha: já entrou no feed e já tocou a cena
+    addFeed(e);
+    if (!ready) return;                                        // histórico de antes de eu entrar: só lista, não anima
+    if (v.ts && (Date.now() + srvOff - v.ts) > 20000) return;  // evento velho (ex.: reconexão): só lista
+    if (isNat(e) || isFail(e)) cinePlay(isNat(e) ? 'nat20' : 'crit', e.name, e.label);
+    else toast(e);
+    if (!drawer.classList.contains('open')) handle.classList.add('has-new');
+  }
+
+  function prune(db, code) {                                   // mantém o histórico da mesa pequeno
+    if (Math.random() > 0.15) return;
+    var ref = db.ref('sessions/' + code + '/rolls');
+    ref.once('value').then(function (s) {
+      var n = s.numChildren(); if (n <= 80) return;
+      var del = n - 50, upd = {};
+      s.forEach(function (c) { if (del > 0) { upd[c.key] = null; del--; } return false; });
+      return ref.update(upd);
+    }).catch(function () {});
+  }
+
+  // Registra uma rolagem: entra no feed, vai pra mesa (se conectado e não oculta) e toca a cena local se for 20/1 natural.
+  function publish(r) {
+    var name = myName(), secret = !!(AD.canHide && hidden);
+    var e = mk(r.die, r.dice, r.mod | 0, r.flat | 0, r.attr, clean(r.label));
+    e.name = name; e.mine = true; e.hidden = secret;
+    addFeed(e);
+    if (!secret && online()) {
+      try {
+        var db = AD.db(), code = AD.code();
+        var payload = { uid: ME, name: name, die: e.die, dice: e.dice, mod: e.mod, flat: e.flat, total: e.total, ts: firebase.database.ServerValue.TIMESTAMP };
+        if (e.dice.length === 1) payload.value = e.dice[0];     // compatível com páginas antigas
+        if (e.attr) payload.attr = e.attr;
+        if (e.label) payload.label = e.label;
+        db.ref('sessions/' + code + '/rolls').push(payload).then(function () { prune(db, code); }).catch(function (err) {
+          console.error('Não consegui enviar a rolagem pra mesa:', err);
+          if (!warned) { warned = true; toast(null, 'Não consegui enviar a rolagem pra mesa (confira as regras do Firebase).'); }
+        });
+      } catch (err) { console.error('Não consegui enviar a rolagem pra mesa:', err); }
+    }
+    if (isNat(e)) setTimeout(function () { cinePlay('nat20', name, e.label); }, 380);
+    else if (isFail(e)) setTimeout(function () { cinePlay('crit', name, e.label); }, 380);
+  }
+
+  function tick() {
+    if (online()) {
+      var db = null; try { db = AD.db(); } catch (e) {}
+      var code = AD.code();
+      if (db && code !== rollsCode) attach(db, code);
+    } else if (rollsQ) detach();
+    updateShare();
+    if (drawer.classList.contains('open')) renderAttrs();     // acompanha mudanças nos atributos da ficha
+  }
+  setInterval(tick, 1000); tick();
+
+  // fila de cenas: se duas chegarem juntas, tocam uma depois da outra
+  var cineQ = [];
+  function cinePlay(kind, name, label) {
+    cineQ.push({ k: kind, n: name, l: label });
+    if (cineQ.length > 4) cineQ.shift();
+    cinePump();
+  }
+  function cinePump() {
+    if (natActive || critBusy() || !cineQ.length) return;
+    var c = cineQ.shift(), o = { name: c.n, label: c.l };
+    if (c.k === 'nat20') nat20(o); else if (window.dxCritFail) window.dxCritFail(o);
+  }
+  window.dxCineDone = function () { setTimeout(cinePump, 400); };
+
+  /* ── rolagem ── */
+  function showDice(vals, sides, final) {
+    resDice.innerHTML = '';
+    vals.forEach(function (v) {
+      var c = document.createElement('span');
+      c.className = 'dx-dv' + ((final && sides === 20) ? (v === 20 ? ' max' : (v === 1 ? ' min' : '')) : '');
+      c.textContent = v;
+      resDice.appendChild(c);
     });
   }
 
   function roll(sides, btn) {
-    if (busy || natActive || (window.dxCritActive && window.dxCritActive())) return;
+    if (busy || natActive || critBusy()) return;
     busy = true;
-    var final = rnd(sides);
-    var isNat = (sides === 20 && final === 20);
-    var isFail = (sides === 20 && final === 1);
-    resLab.textContent = 'd' + sides;
+    var n = toInt(qtyEl.value, 1, 20, 1), flat = toInt(flatEl.value, -99, 99, 0);
+    qtyEl.value = n; flatEl.value = flat;
+    var attr = (selAttr && AD.attrMod) ? selAttr : '', mod = attr ? attrMod(attr) : 0;
+    var dice = []; for (var i = 0; i < n; i++) dice.push(rnd(sides));
+    var res = mk(sides, dice, mod, flat, attr, '');
+    resLab.textContent = formula(res);
     resBox.className = 'dx-result rolling';
     btn.classList.remove('rolling'); void btn.offsetWidth; btn.classList.add('rolling');
     var ticks = 0, TOTAL = 11;
     var timer = setInterval(function () {
-      resNum.textContent = rnd(sides);
+      var tmp = []; for (var k = 0; k < n; k++) tmp.push(rnd(sides));
+      showDice(tmp, sides, false);
+      resNum.textContent = sum(tmp) + mod + flat;
       if (++ticks >= TOTAL) {
         clearInterval(timer);
-        resNum.textContent = final;
-        resBox.className = 'dx-result' + (isNat ? ' crit' : (sides === 20 && final === 1 ? ' fail' : ''));
-        history.unshift({ n: sides, v: final, crit: isNat });
-        if (history.length > 8) history.pop();
-        renderHistory();
+        showDice(dice, sides, true);
+        resNum.textContent = res.total;
+        resBox.className = 'dx-result' + (isNat(res) ? ' crit' : (isFail(res) ? ' fail' : ''));
         busy = false;
-        if (isNat) setTimeout(nat20, 380);
-        else if (isFail && window.dxCritFail) setTimeout(window.dxCritFail, 380);
+        publish({ die: sides, dice: dice, mod: mod, flat: flat, attr: attr, label: '' });
       }
     }, 55);
   }
@@ -7947,8 +8295,16 @@ if (document.readyState === 'loading') {
     raf = requestAnimationFrame(frame);
   }
 
-  function nat20() {
+  function setWho(o) {
+    var w = ov.querySelector('.dx-who'), nm = o && o.name ? clean(o.name) : '';
+    w.style.display = nm ? '' : 'none';
+    w.querySelector('b').textContent = nm;
+    w.querySelector('span').textContent = 'tirou 20 natural' + (o && o.label ? ' · ' + clean(o.label) : '');
+  }
+
+  function nat20(opts) {
     if (natActive) return;
+    setWho(opts);
     natActive = true; anchored = false; skipping = false; hitDone = false; p2Done = false;
     parts.length = 0; spawnAcc = 0; moteAcc = 0;
     ov.classList.remove('hit', 'p2');
@@ -7974,6 +8330,7 @@ if (document.readyState === 'loading') {
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
     parts.length = 0;
     if (aud) { try { aud.pause(); aud.currentTime = 0; } catch (e) {} }
+    if (window.dxCineDone) window.dxCineDone();
   }
 
   function skipNat20() {
@@ -7990,6 +8347,12 @@ if (document.readyState === 'loading') {
   // disponível para outros botões da página (ex.: teste de morte, iniciativa)
   window.dxRoll = function (sides) { var b = grid.querySelector('.dx-die-btn:nth-child(' + (DICE.indexOf(sides) + 1) + ')'); if (b) roll(sides, b); };
   window.dxNat20 = nat20;
+  // outros botões da página (iniciativa, teste de morte) usam isto: um dado só, sem modificadores
+  window.dxPublishRoll = function (die, value, label) {
+    die = +die; value = +value;
+    if (DICE.indexOf(die) < 0 || !(value >= 1 && value <= die)) return;
+    publish({ die: die, dice: [value], mod: 0, flat: 0, attr: '', label: label });
+  };
 })();
 </script>
 
@@ -8035,6 +8398,7 @@ if (document.readyState === 'loading') {
       <div class="cf-cap"><span>Falha crítica</span></div>
     </div>
   </div>
+  <div class="cf-who"><b></b><span></span></div>
   <canvas id="cf-canvas"></canvas>
   <div class="cf-flash"></div>
 </div>
@@ -8249,7 +8613,7 @@ if (document.readyState === 'loading') {
 
   /* ── eventos sincronizados com o áudio ── */
   function onHit() {
-    reveal(0, 0.5); dcr.classList.add('on');
+    ov.classList.add('hit'); reveal(0, 0.5); dcr.classList.add('on');
     anim(flash, [{ opacity: 0.8 }, { opacity: 0 }], { duration: 520, easing: 'ease-out' });
     anim(ring, [{ opacity: 1, transform: 'scale(.4)' }, { opacity: 0, transform: 'scale(3.4)' }], { duration: 1100, easing: 'cubic-bezier(.15,.7,.3,1)' });
     sparks(90, 200, 900, 2, 6, 0.5, 1.1); debris(26);
@@ -8323,11 +8687,15 @@ if (document.readyState === 'loading') {
     raf = requestAnimationFrame(frame);
   }
 
-  function start() {
+  function start(opts) {
     if (active) return;
+    var w = ov.querySelector('.cf-who'), nm = opts && opts.name ? String(opts.name).replace(/[\u0000-\u001f]/g, '').slice(0, 30) : '';
+    w.style.display = nm ? '' : 'none';
+    w.querySelector('b').textContent = nm;
+    w.querySelector('span').textContent = 'falhou criticamente · 1 natural' + (opts && opts.label ? ' · ' + String(opts.label).replace(/[\u0000-\u001f]/g, '').slice(0, 30) : '');
     active = true; anchored = false; skipping = false; parts.length = 0; ashAcc = embAcc = 0;
     EV.forEach(function (e) { e.done = false; });
-    ov.classList.remove('swell', 'shatter'); dcr.classList.remove('on');
+    ov.classList.remove('swell', 'shatter', 'hit'); dcr.classList.remove('on');
     [eclipse, ring, flash].forEach(function (e) { if (e.getAnimations) e.getAnimations().forEach(function (a) { a.cancel(); }); });
     ov.style.opacity = '1';
     grade.style.opacity = '0'; vig.style.opacity = '0'; vig.style.setProperty('--vr', '140%');
@@ -8346,12 +8714,13 @@ if (document.readyState === 'loading') {
 
   function end() {
     active = false; cancelAnimationFrame(raf);
-    ov.classList.remove('on', 'swell', 'shatter'); dcr.classList.remove('on');
+    ov.classList.remove('on', 'swell', 'shatter', 'hit'); dcr.classList.remove('on');
     [eclipse, ring, flash].forEach(function (e) { if (e.getAnimations) e.getAnimations().forEach(function (a) { a.cancel(); }); });
     ov.style.opacity = ''; shake.style.transform = '';
     svg.innerHTML = ''; parts.length = 0;
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height);
     if (aud) { try { aud.pause(); aud.currentTime = 0; } catch (e) {} }
+    if (window.dxCineDone) window.dxCineDone();
   }
 
   function skip() { if (active && !skipping) { skipping = true; skipT0 = performance.now(); } }
