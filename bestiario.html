@@ -2125,6 +2125,396 @@
       }
     }
 
+
+    /* ── 20 NATURAL: VERSÃO "NINGUÉM É PÁREO" ── */
+    #dx-nat20 .dx-shake {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 46%;
+      will-change: transform;
+    }
+
+    #dx-nat20 .dx-rays {
+      background: repeating-conic-gradient(from 0deg, rgba(255, 224, 140, 0.36) 0deg 2.8deg, rgba(255, 224, 140, 0) 2.8deg 12deg);
+      -webkit-mask-image: radial-gradient(circle, #000 0, rgba(0, 0, 0, 0.65) 16%, transparent 46%);
+      mask-image: radial-gradient(circle, #000 0, rgba(0, 0, 0, 0.65) 16%, transparent 46%);
+    }
+
+    #dx-nat20 .dx-charge {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: calc(var(--S) * 1.1);
+      height: calc(var(--S) * 1.1);
+      margin: calc(var(--S) * -0.55) 0 0 calc(var(--S) * -0.55);
+      border-radius: 50%;
+      background: radial-gradient(circle, #fffbe8 0, rgba(255, 214, 120, 0.85) 18%, rgba(255, 170, 50, 0.28) 45%, rgba(255, 150, 30, 0) 70%);
+      mix-blend-mode: screen;
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    #dx-nat20 .dx-beam {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: calc(var(--S) * 1.15);
+      margin-left: calc(var(--S) * -0.575);
+      background: linear-gradient(90deg, rgba(255, 220, 130, 0) 0, rgba(255, 236, 170, 0.55) 30%, rgba(255, 252, 235, 0.95) 50%, rgba(255, 236, 170, 0.55) 70%, rgba(255, 220, 130, 0) 100%);
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 72%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0, #000 22%, #000 72%, transparent 100%);
+      mix-blend-mode: screen;
+      opacity: 0;
+    }
+
+    #dx-nat20.hit .dx-beam {
+      animation: dxBeam 1.7s cubic-bezier(0.1, 0.7, 0.2, 1) both;
+    }
+
+    #dx-nat20.p2 .dx-beam {
+      animation: dxBeam2 1.5s cubic-bezier(0.1, 0.7, 0.2, 1) both;
+    }
+
+    #dx-nat20 .dx-flare {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 46%;
+      height: calc(var(--S) * 0.035);
+      margin-top: calc(var(--S) * -0.0175);
+      background: linear-gradient(90deg, rgba(255, 230, 160, 0) 0, rgba(255, 240, 190, 0.95) 50%, rgba(255, 230, 160, 0) 100%);
+      box-shadow: 0 0 30px 6px rgba(255, 200, 90, 0.45);
+      mix-blend-mode: screen;
+      opacity: 0;
+    }
+
+    #dx-nat20.hit .dx-flare {
+      animation: dxFlareIn 0.6s cubic-bezier(0.1, 0.8, 0.2, 1) both, dxFlareBreath 3s ease-in-out 0.6s infinite;
+    }
+
+    #dx-nat20 .dx-speed {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: 150vmax;
+      height: 150vmax;
+      margin: -75vmax 0 0 -75vmax;
+      background: repeating-conic-gradient(from 3deg, rgba(255, 240, 200, 0.9) 0 0.6deg, transparent 0.6deg 3.1deg, rgba(255, 226, 150, 0.65) 3.1deg 3.4deg, transparent 3.4deg 7.3deg, rgba(255, 240, 200, 0.8) 7.3deg 7.55deg, transparent 7.55deg 11.9deg);
+      -webkit-mask-image: radial-gradient(circle, transparent 0, transparent 9%, #000 18%, rgba(0, 0, 0, 0.4) 40%, transparent 62%);
+      mask-image: radial-gradient(circle, transparent 0, transparent 9%, #000 18%, rgba(0, 0, 0, 0.4) 40%, transparent 62%);
+      opacity: 0;
+    }
+
+    #dx-nat20.hit .dx-speed {
+      animation: dxSpeed 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) both;
+    }
+
+    #dx-nat20.p2 .dx-speed {
+      animation: dxSpeed2 0.9s cubic-bezier(0.1, 0.8, 0.2, 1) both;
+    }
+
+    #dx-nat20 .dx-shock {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      width: var(--S);
+      height: var(--S);
+      margin: calc(var(--S) / -2) 0 0 calc(var(--S) / -2);
+      border-radius: 50%;
+      border: 4px solid rgba(255, 240, 190, 0.95);
+      box-shadow: 0 0 30px rgba(255, 200, 80, 0.9), inset 0 0 30px rgba(255, 200, 80, 0.6);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    #dx-nat20 .dx-flash {
+      background: radial-gradient(circle at 50% 46%, #fffef5 0, #fff3c4 35%, rgba(255, 214, 120, 0.75) 75%, rgba(255, 200, 80, 0.35) 100%);
+    }
+
+    #dx-nat20 .dx-title {
+      position: absolute;
+      left: -60%;
+      right: -60%;
+      top: calc(100% + 4px);
+      text-align: center;
+      white-space: nowrap;
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-weight: 900;
+      font-size: clamp(38px, 11vmin, 96px);
+      line-height: 1.05;
+      letter-spacing: 0.1em;
+      padding-left: 0.1em;
+      background: linear-gradient(180deg, #fffef2 0%, #ffe9a8 38%, #f3c358 62%, #b7790f 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 14px rgba(255, 190, 70, 0.95)) drop-shadow(0 3px 0 #5a3a05) drop-shadow(0 0 44px rgba(255, 160, 30, 0.7));
+      opacity: 0;
+    }
+
+    #dx-nat20.hit .dx-title {
+      animation: dxTitle 1s cubic-bezier(0.2, 1.3, 0.3, 1) 0.04s both;
+    }
+
+    #dx-nat20.p2 .dx-title {
+      animation: dxTitle2 0.8s ease-out both;
+    }
+
+    #dx-nat20 .dx-cap {
+      top: calc(100% + clamp(54px, 13.8vmin, 116px));
+      font-size: clamp(16px, 3.6vmin, 28px);
+    }
+
+    #dx-nat20 .dx-tag {
+      position: absolute;
+      left: -60%;
+      right: -60%;
+      top: calc(100% + clamp(54px, 13.8vmin, 116px) + clamp(32px, 6.4vmin, 50px));
+      text-align: center;
+      white-space: nowrap;
+      font-family: 'Crimson Pro', serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: clamp(16px, 3.4vmin, 26px);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #fff3cf;
+      text-shadow: 0 0 12px rgba(255, 190, 70, 0.95), 0 0 30px rgba(255, 160, 30, 0.6);
+      opacity: 0;
+    }
+
+    #dx-nat20.p2 .dx-tag {
+      animation: dxTag 1.3s ease-out both;
+    }
+
+    #dx-nat20.hit .dx-die {
+      animation: dxFloat 3.6s ease-in-out 1.05s infinite, dxDieGlow 1.5s ease-out both;
+    }
+
+    @keyframes dxDieIn {
+      0% {
+        opacity: 0;
+        transform: scale(3.6) rotateZ(-14deg);
+      }
+
+      14% {
+        opacity: 1;
+      }
+
+      38% {
+        transform: scale(0.86) rotateZ(3deg);
+      }
+
+      56% {
+        transform: scale(1.1) rotateZ(-1.5deg);
+      }
+
+      76% {
+        transform: scale(0.97) rotateZ(0.5deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotateZ(0);
+      }
+    }
+
+    @keyframes dxDieGlow {
+      0% {
+        filter: brightness(3.2) drop-shadow(0 0 50px #fff) drop-shadow(0 0 120px rgba(255, 190, 60, 1));
+      }
+
+      100% {
+        filter: brightness(1) drop-shadow(0 0 20px rgba(255, 200, 80, 0.85)) drop-shadow(0 0 56px rgba(255, 165, 40, 0.55));
+      }
+    }
+
+    @keyframes dxFlash {
+      0% {
+        opacity: 1;
+      }
+
+      14% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes dxFlash2 {
+      0% {
+        opacity: 0.75;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes dxBeam {
+      0% {
+        opacity: 1;
+        transform: scaleX(0.15);
+      }
+
+      16% {
+        opacity: 1;
+        transform: scaleX(1.25);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scaleX(0.35);
+      }
+    }
+
+    @keyframes dxBeam2 {
+      0% {
+        opacity: 0.85;
+        transform: scaleX(0.2);
+      }
+
+      18% {
+        opacity: 0.85;
+        transform: scaleX(1.2);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scaleX(0.35);
+      }
+    }
+
+    @keyframes dxFlareIn {
+      0% {
+        opacity: 1;
+        transform: scaleX(0);
+      }
+
+      40% {
+        transform: scaleX(1.1);
+      }
+
+      100% {
+        opacity: 0.7;
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes dxFlareBreath {
+
+      0%,
+      100% {
+        opacity: 0.5;
+        transform: scaleX(0.9);
+      }
+
+      50% {
+        opacity: 0.85;
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes dxSpeed {
+      0% {
+        opacity: 1;
+        transform: scale(0.35) rotate(0);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.5) rotate(6deg);
+      }
+    }
+
+    @keyframes dxSpeed2 {
+      0% {
+        opacity: 0.7;
+        transform: scale(0.4) rotate(0);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.4) rotate(-5deg);
+      }
+    }
+
+    @keyframes dxTitle {
+      0% {
+        opacity: 0;
+        transform: scale(3.4) translateY(-20px);
+      }
+
+      30% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes dxTitle2 {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      25% {
+        opacity: 1;
+        transform: scale(1.14);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes dxTag {
+      0% {
+        opacity: 0;
+        letter-spacing: 0.7em;
+      }
+
+      30% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 1;
+        letter-spacing: 0.3em;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      #dx-nat20 .dx-flare,
+      #dx-nat20 .dx-speed {
+        animation: none !important;
+      }
+    }
+
+    /* ── RAIOS AZUIS NA SEGUNDA ONDA ── */
+    #dx-nat20 .dx-bglow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 46%, rgba(190, 225, 255, 0.85) 0, rgba(70, 140, 255, 0.5) 30%, rgba(30, 80, 255, 0) 70%);
+      mix-blend-mode: screen;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #dx-nat20 .dx-shock.blue {
+      border-color: rgba(150, 200, 255, 0.95);
+      box-shadow: 0 0 30px rgba(70, 140, 255, 0.95), inset 0 0 30px rgba(70, 140, 255, 0.65);
+    }
+
     /* ── CENA DA FALHA CRÍTICA ── */
     #dx-crit {
       --S: min(44vmin, 320px);
@@ -8598,13 +8988,13 @@
         feedEl.innerHTML = '';
         feed.forEach(function (e) {
           var row = document.createElement('div');
-          row.className = 'dx-row' + (e.mine ? ' mine' : '') + (isNat(e) ? ' crit' : '') + (isFail(e) ? ' fail' : '') + (e.hidden ? ' hid' : '');
+          row.className = 'dx-row' + (e.mine ? ' mine' : '') + (!e.spoil && isNat(e) ? ' crit' : '') + (!e.spoil && isFail(e) ? ' fail' : '') + (e.hidden ? ' hid' : '');
           var nm = document.createElement('span'); nm.className = 'nm';
           nm.textContent = (e.mine ? 'Você' : e.name) + (e.label ? ' · ' + e.label : '') + (e.hidden ? ' (oculta)' : '');
           var fm = document.createElement('span'); fm.className = 'fm'; fm.textContent = formula(e);
-          var tot = document.createElement('span'); tot.className = 'tot'; tot.textContent = '= ' + e.total;
+          var tot = document.createElement('span'); tot.className = 'tot'; tot.textContent = '= ' + (e.spoil ? '?' : e.total);
           row.appendChild(nm); row.appendChild(fm); row.appendChild(tot);
-          var bd = breakdown(e);
+          var bd = e.spoil ? '' : breakdown(e);
           if (bd) { var b = document.createElement('span'); b.className = 'bd'; b.textContent = bd; row.appendChild(b); }
           feedEl.appendChild(row);
         });
@@ -8700,7 +9090,7 @@
         addFeed(e);
         if (!ready) return;                                        // histórico de antes de eu entrar: só lista, não anima
         if (v.ts && (Date.now() + srvOff - v.ts) > 20000) return;  // evento velho (ex.: reconexão): só lista
-        if (isNat(e) || isFail(e)) cinePlay(isNat(e) ? 'nat20' : 'crit', e.name, e.label);
+        if (isNat(e) || isFail(e)) { e.spoil = true; renderFeed(); cinePlay(isNat(e) ? 'nat20' : 'crit', e.name, e.label, e); }
         else toast(e);
         if (!drawer.classList.contains('open')) handle.classList.add('has-new');
       }
@@ -8721,6 +9111,7 @@
         var name = myName(), secret = !!(AD.canHide && hidden);
         var e = mk(r.die, r.dice, r.mod | 0, r.flat | 0, r.attr, clean(r.label));
         e.name = name; e.mine = true; e.hidden = secret;
+        if (isNat(e) || isFail(e)) { e.spoil = true; if (pendingDrawer) { drawerEntry = e; pendingDrawer = false; } }
         addFeed(e);
         if (!secret && online()) {
           try {
@@ -8735,8 +9126,8 @@
             });
           } catch (err) { console.error('Não consegui enviar a rolagem pra mesa:', err); }
         }
-        if (isNat(e)) setTimeout(function () { cinePlay('nat20', name, e.label); }, 380);
-        else if (isFail(e)) setTimeout(function () { cinePlay('crit', name, e.label); }, 380);
+        if (isNat(e)) setTimeout(function () { cinePlay('nat20', name, e.label, e); }, 380);
+        else if (isFail(e)) setTimeout(function () { cinePlay('crit', name, e.label, e); }, 380);
       }
 
       function tick() {
@@ -8751,18 +9142,115 @@
       setInterval(tick, 1000); tick();
 
       // fila de cenas: se duas chegarem juntas, tocam uma depois da outra
+      /* ── PRELÚDIO: batimentos curtos + escurecer de fora pra dentro, antes do 20 / do 1 ── */
+      var preDark = false, preBusy = false, preEl = null, preVig = null, preFlash = null, preBlack = null;
+      var preT0 = 0, preRaf = 0, preBeats = [], preCb = null, preFade = 400, preAC = null, preGain = null;
+      var PRE_FADE_AT = 1900, PRE_FADE_MS = 1000;       // o escurecimento começa no último batimento
+      function preBuild() {
+        if (preEl) return;
+        var st = document.createElement('style');
+        st.textContent = '#dx-pre{position:fixed;inset:0;z-index:10060;display:none;overflow:hidden;cursor:pointer;-webkit-tap-highlight-color:transparent}' +
+          '#dx-pre .pre-vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 28%,rgba(150,0,12,.55) 68%,rgba(60,0,4,.92) 100%);opacity:0;will-change:transform,opacity}' +
+          '#dx-pre .pre-flash{position:absolute;inset:0;background:rgb(200,20,30);mix-blend-mode:multiply;opacity:0}' +
+          '#dx-pre .pre-black{position:absolute;inset:0;--r:140%;background:radial-gradient(circle farthest-corner at 50% 50%,rgba(0,0,0,0) calc(var(--r) - 35%),#000 var(--r))}';
+        document.head.appendChild(st);
+        preEl = document.createElement('div'); preEl.id = 'dx-pre'; preEl.setAttribute('aria-hidden', 'true');
+        preEl.innerHTML = '<div class="pre-vig"></div><div class="pre-flash"></div><div class="pre-black"></div>';
+        document.body.appendChild(preEl);
+        preVig = preEl.querySelector('.pre-vig'); preFlash = preEl.querySelector('.pre-flash'); preBlack = preEl.querySelector('.pre-black');
+        preEl.addEventListener('click', function () { if (preBusy && preCb) preFinish(true); });
+      }
+      function preSound() {                              // mesmo coração sintetizado do efeito "Coração"
+        try {
+          var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+          if (!preAC) preAC = new AC();
+          if (preAC.state === 'suspended') preAC.resume();
+          preGain = preAC.createGain(); preGain.gain.value = 1; preGain.connect(preAC.destination);
+          var master = masterVol(), base = preAC.currentTime + 0.05;
+          preBeats.forEach(function (b) {
+            var when = base + b.t / 1000;
+            [{ type: 'sine', f0: 70, f1: 38, g: 1 }, { type: 'triangle', f0: 140, f1: 70, g: 0.4 }].forEach(function (v) {
+              var osc = preAC.createOscillator(), gain = preAC.createGain();
+              osc.type = v.type;
+              osc.frequency.setValueAtTime(v.f0 * (b.a < 1 ? 0.9 : 1), when);
+              osc.frequency.exponentialRampToValueAtTime(v.f1, when + 0.16);
+              var vol = Math.max(0.0002, Math.min(1, 1.2 * master * b.a * v.g));
+              gain.gain.setValueAtTime(0.0001, when);
+              gain.gain.exponentialRampToValueAtTime(vol, when + 0.012);
+              gain.gain.exponentialRampToValueAtTime(0.0001, when + 0.22);
+              osc.connect(gain); gain.connect(preGain);
+              osc.start(when); osc.stop(when + 0.25);
+            });
+          });
+        } catch (e) { }
+      }
+      function preLoop(now) {
+        if (!preBusy || !preCb) return;
+        var e = now - preT0, p = 0;
+        for (var i = 0; i < preBeats.length; i++) {
+          var d = e - preBeats[i].t;
+          if (d < 0 || d > 600) continue;
+          var v = preBeats[i].a * (d < 60 ? d / 60 : Math.exp(-(d - 60) / 130));
+          if (v > p) p = v;
+        }
+        var fp = clamp((e - PRE_FADE_AT) / PRE_FADE_MS, 0, 1);
+        preVig.style.opacity = (0.4 + 0.6 * p).toFixed(3);
+        preVig.style.transform = 'scale(' + (1.15 - 0.15 * p).toFixed(3) + ')';
+        preFlash.style.opacity = (0.26 * p).toFixed(3);
+        preBlack.style.setProperty('--r', (140 * (1 - Math.pow(fp, 1.35))).toFixed(2) + '%');
+        if (e >= PRE_FADE_AT + PRE_FADE_MS) { preFinish(false); return; }
+        preRaf = requestAnimationFrame(preLoop);
+      }
+      function preFinish(skipped) {
+        cancelAnimationFrame(preRaf);
+        if (skipped && preGain) { try { preGain.gain.setValueAtTime(0, preAC.currentTime); } catch (e) { } }
+        preBlack.style.setProperty('--r', '0%');            // tela toda escura: a cena começa por baixo
+        var cb = preCb; preCb = null;
+        try { cb(); } catch (e) { console.error(e); }
+        preBusy = false;
+        preEl.style.pointerEvents = 'none';
+        var done = function () { preEl.style.display = 'none'; preEl.style.opacity = ''; preEl.style.pointerEvents = ''; };
+        if (preEl.animate) { var a = preEl.animate([{ opacity: 1 }, { opacity: 0 }], { duration: preFade, easing: 'linear', fill: 'forwards' }); a.onfinish = function () { a.cancel(); done(); }; }
+        else done();
+      }
+      function preludio(cb, fadeMs) {
+        preBuild();
+        preBusy = true; preCb = cb; preFade = fadeMs;
+        preBeats = [];
+        var t = 150, periods = [820, 700, 580];            // três batimentos, acelerando
+        periods.forEach(function (per) { preBeats.push({ t: t, a: 1 }); preBeats.push({ t: t + per * 0.3, a: 0.65 }); t += per; });
+        preEl.style.display = 'block'; preEl.style.opacity = '1'; preEl.style.pointerEvents = '';
+        preVig.style.opacity = '0.4'; preFlash.style.opacity = '0'; preBlack.style.setProperty('--r', '140%');
+        preT0 = performance.now();
+        preSound();
+        preRaf = requestAnimationFrame(preLoop);
+      }
+
+      var curEntry = null, drawerEntry = null, pendingDrawer = false;
+      function reveal(e) {                                   // devolve o número escondido quando a cena termina
+        if (!e || !e.spoil) return;
+        e.spoil = false; renderFeed();
+        if (drawerEntry === e) {
+          drawerEntry = null;
+          showDice(e.dice, e.die, true);
+          resNum.textContent = e.total;
+          resBox.className = 'dx-result' + (isNat(e) ? ' crit' : (isFail(e) ? ' fail' : ''));
+        }
+      }
       var cineQ = [];
-      function cinePlay(kind, name, label) {
-        cineQ.push({ k: kind, n: name, l: label });
-        if (cineQ.length > 4) cineQ.shift();
+      function cinePlay(kind, name, label, entry) {
+        cineQ.push({ k: kind, n: name, l: label, e: entry });
+        if (cineQ.length > 4) reveal(cineQ.shift().e);
         cinePump();
       }
       function cinePump() {
-        if (natActive || critBusy() || !cineQ.length) return;
+        if (natActive || critBusy() || preBusy || !cineQ.length) return;
         var c = cineQ.shift(), o = { name: c.n, label: c.l };
-        if (c.k === 'nat20') nat20(o); else if (window.dxCritFail) window.dxCritFail(o);
+        curEntry = c.e;
+        preDark = (c.k === 'nat20');
+        preludio(function () { if (c.k === 'nat20') nat20(o); else if (window.dxCritFail) window.dxCritFail(o); }, c.k === 'nat20' ? 450 : 320);
       }
-      window.dxCineDone = function () { setTimeout(cinePump, 400); };
+      window.dxCineDone = function () { preDark = false; reveal(curEntry); curEntry = null; setTimeout(cinePump, 400); };
 
       /* ── rolagem ── */
       function showDice(vals, sides, final) {
@@ -8776,7 +9264,7 @@
       }
 
       function roll(sides, btn) {
-        if (busy || natActive || critBusy()) return;
+        if (busy || natActive || critBusy() || preBusy) return;
         busy = true;
         var n = toInt(qtyEl.value, 1, 20, 1), flat = toInt(flatEl.value, -99, 99, 0);
         qtyEl.value = n; flatEl.value = flat;
@@ -8793,9 +9281,8 @@
           resNum.textContent = sum(tmp) + mod + flat;
           if (++ticks >= TOTAL) {
             clearInterval(timer);
-            showDice(dice, sides, true);
-            resNum.textContent = res.total;
-            resBox.className = 'dx-result' + (isNat(res) ? ' crit' : (isFail(res) ? ' fail' : ''));
+            if (isNat(res) || isFail(res)) { showDice(['?'], sides, false); resNum.textContent = '?'; resBox.className = 'dx-result'; pendingDrawer = true; }
+            else { showDice(dice, sides, true); resNum.textContent = res.total; resBox.className = 'dx-result'; }
             busy = false;
             publish({ die: sides, dice: dice, mod: mod, flat: flat, attr: attr, label: '' });
           }
@@ -8925,6 +9412,137 @@
 
       function ease(p) { return p * p * (3 - 2 * p); }
 
+      /* ── camadas extras da cena (criadas aqui, sem mexer no HTML) ── */
+      var reduceN = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var stageEl = ov.querySelector('.dx-stage');
+      var shk = document.createElement('div'); shk.className = 'dx-shake';
+      while (ov.firstChild) shk.appendChild(ov.firstChild);
+      ov.appendChild(shk);
+      function mkLayer(cls) { var d = document.createElement('div'); d.className = cls; shk.insertBefore(d, stageEl); return d; }
+      var elCharge = mkLayer('dx-charge'); mkLayer('dx-bglow'); mkLayer('dx-beam'); mkLayer('dx-flare'); mkLayer('dx-speed');
+      var elTitle = document.createElement('div'); elTitle.className = 'dx-title'; elTitle.textContent = 'CRÍTICO!';
+      var elTag = document.createElement('div'); elTag.className = 'dx-tag'; elTag.textContent = 'Ninguém é páreo';
+      stageEl.appendChild(elTitle); stageEl.appendChild(elTag);
+      var sparkArr = [], hitStop = 0;
+
+      function shock(endScale, dur, bw, op, cls) {
+        if (!natActive || !shk.animate) return;
+        var d = document.createElement('div'); d.className = 'dx-shock' + (cls ? ' ' + cls : ''); d.style.borderWidth = bw + 'px';
+        shk.insertBefore(d, stageEl);
+        var a = d.animate([{ opacity: op, transform: 'scale(0.2)' }, { opacity: 0, transform: 'scale(' + endScale + ')' }],
+          { duration: dur * 1000, easing: 'cubic-bezier(.1,.75,.25,1)' });
+        a.onfinish = function () { if (d.parentNode) d.parentNode.removeChild(d); };
+      }
+      function sparkBurst(n, vMin, vMax, lMin, lMax) {
+        var cx = W / 2, cy = H * 0.46, u = Math.min(W, H) / 800;
+        for (var i = 0; i < n && sparkArr.length < 400; i++) {
+          var a = rand(0, 6.283), sp = rand(vMin, vMax) * u;
+          sparkArr.push({
+            x: cx + Math.cos(a) * 20 * u, y: cy + Math.sin(a) * 20 * u, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+            age: 0, life: rand(lMin, lMax), w: rand(1.5, 3.6), u: u
+          });
+        }
+      }
+      function stepSparks(dt) {
+        for (var i = sparkArr.length - 1; i >= 0; i--) {
+          var p = sparkArr[i]; p.age += dt;
+          if (p.age >= p.life) { sparkArr.splice(i, 1); continue; }
+          var k = Math.exp(-2.4 * dt);
+          p.vx *= k; p.vy = p.vy * k + 380 * p.u * dt;
+          p.x += p.vx * dt; p.y += p.vy * dt;
+        }
+      }
+      function drawSparks() {
+        ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round';
+        for (var i = 0; i < sparkArr.length; i++) {
+          var p = sparkArr[i], f = 1 - p.age / p.life;
+          ctx.globalAlpha = clamp(f * 1.4, 0, 1);
+          ctx.strokeStyle = f > 0.55 ? 'rgb(255,246,214)' : 'rgb(255,200,90)';
+          ctx.lineWidth = p.w * DPR * (0.4 + f);
+          ctx.beginPath(); ctx.moveTo(p.x * DPR, p.y * DPR);
+          ctx.lineTo((p.x - p.vx * 0.05) * DPR, (p.y - p.vy * 0.05) * DPR); ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+      }
+      var boltsArr = [], boltFor = 0, boltAcc = 0;
+      function makeBolts() {
+        var cx = W / 2, cy = H * 0.46, S = dieSize(), n = 10, off = rand(0, 6.283);
+        boltsArr = [];
+        function bolt(x, y, ang, len, segs, jit, branch) {
+          var pts = [[x, y]], step = len / segs;
+          for (var i = 0; i < segs; i++) {
+            ang += rand(-0.22, 0.22);
+            x += Math.cos(ang) * step + (-Math.sin(ang)) * rand(-1, 1) * jit;
+            y += Math.sin(ang) * step + (Math.cos(ang)) * rand(-1, 1) * jit;
+            pts.push([x, y]);
+            if (branch && i > 1 && i < segs - 1 && Math.random() < 0.28) {
+              bolt(x, y, ang + (Math.random() < 0.5 ? -1 : 1) * rand(0.45, 0.9), len * rand(0.25, 0.45), 5, jit * 0.7, false);
+            }
+          }
+          boltsArr.push({ pts: pts, w: branch ? 1 : 0.55 });
+        }
+        for (var i = 0; i < n; i++) {
+          var a = off + i * (6.283 / n) + rand(-0.25, 0.25);
+          bolt(cx + Math.cos(a) * S * 0.5, cy + Math.sin(a) * S * 0.5, a, S * rand(0.9, 1.9), 9, S * 0.06, true);
+        }
+        if (shk.animate) shk.querySelector('.dx-bglow').animate([{ opacity: 0.55 }, { opacity: 0 }], { duration: 140, easing: 'ease-out' });
+      }
+      function startBolts() { boltFor = 1.0; boltAcc = 0; }
+      function tickBolts(dt) {
+        if (boltFor <= 0) return;
+        boltFor -= dt; boltAcc -= dt;
+        if (boltFor <= 0) { boltsArr.length = 0; return; }
+        if (boltAcc <= 0) { makeBolts(); boltAcc = rand(0.07, 0.13); }
+      }
+      function drawBolts() {
+        if (!boltsArr.length) return;
+        var fade = clamp(boltFor / 0.3, 0, 1) * rand(0.75, 1);
+        ctx.globalCompositeOperation = 'lighter'; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        [[14, 'rgba(40,110,255,0.22)'], [6, 'rgba(90,170,255,0.5)'], [2.2, 'rgba(225,240,255,1)']].forEach(function (L) {
+          ctx.strokeStyle = L[1]; ctx.globalAlpha = fade;
+          for (var i = 0; i < boltsArr.length; i++) {
+            var b = boltsArr[i];
+            ctx.lineWidth = L[0] * b.w * DPR;
+            ctx.beginPath();
+            for (var j = 0; j < b.pts.length; j++) ctx[j ? 'lineTo' : 'moveTo'](b.pts[j][0] * DPR, b.pts[j][1] * DPR);
+            ctx.stroke();
+          }
+        });
+        ctx.globalAlpha = 1;
+      }
+      function fxReset() {
+        sparkArr.length = 0; hitStop = 0; boltsArr.length = 0; boltFor = 0;
+        shk.style.transform = ''; elCharge.style.opacity = '0';
+        var s = shk.querySelectorAll('.dx-shock');
+        for (var i = 0; i < s.length; i++) s[i].parentNode.removeChild(s[i]);
+      }
+
+      /* ── o golpe e a segunda onda ── */
+      function onHit() {
+        elCharge.style.opacity = '0';
+        ov.classList.add('hit');
+        hitStop = 0.11;
+        burst(240, 200, 980, 8, 30, 1.8, 3.6);
+        sparkBurst(170, 260, 1150, 0.6, 1.5);
+        shock(4.2, 1.1, 6, 1);
+        setTimeout(function () { if (natActive) { burst(110, 100, 520, 6, 20, 1.5, 2.8); shock(6.5, 1.5, 3, 0.8); } }, 110);
+        setTimeout(function () { if (natActive) shock(9, 1.9, 2, 0.6); }, 240);
+      }
+      function onP2() {
+        ov.classList.add('p2');
+        burst(120, 120, 680, 6, 22, 1.4, 2.6);
+        sparkBurst(110, 200, 850, 0.5, 1.2);
+        shock(5, 1.2, 5, 0.9); shock(6.5, 1.4, 3, 0.9, 'blue'); startBolts();
+        setTimeout(function () { if (natActive) shock(8, 1.6, 2, 0.6); }, 130);
+      }
+      function shakeAmp(t) {
+        var a = 0;
+        if (t > 0.5 && t < T_HIT) a += 0.4 + 6 * Math.pow(clamp((t - 0.5) / (T_HIT - 0.5), 0, 1), 2.2);   // rumor crescendo
+        if (t >= T_HIT) a += 0.9 + 30 * Math.exp(-(t - T_HIT) * 4.2);
+        if (t >= T_P2) a += 16 * Math.exp(-(t - T_P2) * 4.5);
+        return a * clamp(Math.min(W, H) / 760, 0.6, 1.2) * (reduceN ? 0.25 : 1);
+      }
+
       function frame() {
         if (!natActive) return;
         var now = performance.now();
@@ -8933,47 +9551,54 @@
         var skipP = 0;
         if (skipping) skipP = clamp((now - skipT0) / 380, 0, 1);
 
-        // volume acompanha o controle geral (e a saída rápida, se o jogador tocar pra pular)
         if (aud) { try { aud.volume = clamp(masterVol() * (1 - skipP), 0, 1); } catch (e) { } }
 
         // 1) escurece de fora pra dentro, crescendo junto com o áudio
         var pr = clamp(t / (T_HIT - 0.08), 0, 1);
-        dark.style.setProperty('--r', (R0 * (1 - Math.pow(pr, 1.35))).toFixed(2) + '%');
+        dark.style.setProperty('--r', (preDark ? 0 : R0 * (1 - Math.pow(pr, 1.35))).toFixed(2) + '%');
 
-        // 2) grãos de luz convergindo antes do golpe
-        if (t > 0.7 && t < T_HIT - 0.1) {
-          moteAcc += dt * (6 + 34 * clamp((t - 0.7) / (T_HIT - 0.8), 0, 1));
+        // 2) carga: um núcleo de luz cresce no centro e grãos convergem até o golpe
+        if (!hitDone) {
+          var cp = clamp((t - 0.5) / (T_HIT - 0.5), 0, 1);
+          elCharge.style.opacity = (Math.pow(cp, 2) * (0.85 + 0.15 * Math.sin(t * 38))).toFixed(3);
+          elCharge.style.transform = 'scale(' + (0.2 + 1.1 * cp).toFixed(3) + ')';
+        }
+        if (t > 0.6 && t < T_HIT - 0.1) {
+          moteAcc += dt * (8 + 60 * clamp((t - 0.6) / (T_HIT - 0.7), 0, 1));
           while (moteAcc >= 1) { mote(t); moteAcc -= 1; }
         }
 
-        // 3) o golpe: dado + clarão + chuva de estrelas
-        if (!hitDone && t >= T_HIT) {
-          hitDone = true;
-          ov.classList.add('hit');
-          burst(150, 160, 760, 8, 26, 1.6, 3.2);
-          setTimeout(function () { if (natActive) burst(80, 80, 420, 6, 18, 1.4, 2.6); }, 140);
-        }
+        // 3) o golpe
+        if (!hitDone && t >= T_HIT) { hitDone = true; onHit(); }
 
         // 4) brilho contínuo enquanto o som sustenta
         if (hitDone && t < T_FADE - 0.4) {
-          spawnAcc += dt * 46;
+          spawnAcc += dt * 64;
           while (spawnAcc >= 1) { ambient(); spawnAcc -= 1; }
         }
 
         // 5) segunda onda do áudio
-        if (!p2Done && t >= T_P2) {
-          p2Done = true;
-          ov.classList.add('p2');
-          burst(70, 100, 520, 6, 20, 1.3, 2.4);
-        }
+        if (!p2Done && t >= T_P2) { p2Done = true; onP2(); }
 
-        // 6) decaimento: a cena inteira some junto com o som
+        // 6) câmera: aproxima devagar na carga, "soca" no golpe e treme
+        var amp = shakeAmp(t), z = 1.02;
+        if (t < T_HIT) z += 0.035 * pr;
+        else z += 0.035 + 0.085 * Math.exp(-(t - T_HIT) * 5.5) - 0.035 * clamp((t - T_HIT) / 1.5, 0, 1);
+        if (t >= T_P2) z += 0.05 * Math.exp(-(t - T_P2) * 5);
+        shk.style.transform = 'translate(' + (amp * (Math.random() * 2 - 1)).toFixed(1) + 'px,' + (amp * (Math.random() * 2 - 1)).toFixed(1) + 'px) rotate(' +
+          (amp * 0.03 * (Math.random() * 2 - 1)).toFixed(3) + 'deg) scale(' + z.toFixed(4) + ')';
+
+        // 7) decaimento: a cena inteira some junto com o som
         var o = 1 - ease(clamp((t - T_FADE) / (T_END - T_FADE), 0, 1));
         if (skipping) o = Math.min(o, 1 - skipP);
         ov.style.opacity = o.toFixed(3);
 
-        stepParts(dt);
-        drawParts();
+        // micro "hit-stop": partículas quase congelam por um instante no impacto
+        tickBolts(dt);
+        var pdt = dt;
+        if (hitStop > 0) { hitStop -= dt; pdt = dt * 0.1; }
+        stepParts(pdt); stepSparks(pdt);
+        drawParts(); drawSparks(); drawBolts();
 
         if (t >= T_END || (skipping && skipP >= 1)) { endNat20(); return; }
         raf = requestAnimationFrame(frame);
@@ -8990,10 +9615,10 @@
         if (natActive) return;
         setWho(opts);
         natActive = true; anchored = false; skipping = false; hitDone = false; p2Done = false;
-        parts.length = 0; spawnAcc = 0; moteAcc = 0;
+        parts.length = 0; spawnAcc = 0; moteAcc = 0; fxReset();
         ov.classList.remove('hit', 'p2');
         ov.style.opacity = '1';
-        dark.style.setProperty('--r', R0 + '%');
+        dark.style.setProperty('--r', (preDark ? 0 : R0) + '%');
         ov.classList.add('on');
         resize();
         clock0 = lastNow = performance.now();
@@ -9007,7 +9632,7 @@
       }
 
       function endNat20() {
-        natActive = false;
+        natActive = false; fxReset();
         cancelAnimationFrame(raf);
         ov.classList.remove('on', 'hit', 'p2');
         ov.style.opacity = '';
