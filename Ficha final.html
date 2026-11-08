@@ -8924,19 +8924,43 @@
       syncConnect();
     }
 
-    function desconectarSessao() {
+    // manterNoServidor=true → só corta a conexão local (usado quando o Mestre já removeu a ficha da mesa)
+    function desconectarSessao(manterNoServidor) {
+      const code = (state.sessionCode || '').trim().toUpperCase();
+      const meuId = state.syncId;
+
+      // cancela qualquer envio pendente, pra nada recriar a ficha na mesa depois de sair
+      if (syncPushTimer) { clearTimeout(syncPushTimer); syncPushTimer = null; }
+      _pushPendente = false;
+
+      // para de escutar ANTES de apagar, assim a própria remoção não dispara o aviso de "expulso"
       if (syncRef) { syncRef.off(); syncRef = null; }
       if (turnRef) { turnRef.off(); turnRef = null; }
       if (turnOrderRef) { turnOrderRef.off(); turnOrderRef = null; }
       if (rosterRef) { rosterRef.off(); rosterRef = null; }
       if (broadcastEffectRef) { broadcastEffectRef.off(); broadcastEffectRef = null; }
+
+      // tira a ficha da mesa no servidor (é isso que faltava: o nó ficava salvo e o Mestre continuava vendo)
+      if (manterNoServidor !== true && code && meuId) {
+        const db = syncGetDb();
+        if (db) db.ref('sessions/' + code + '/players/' + meuId).remove()
+          .catch(e => console.error('Erro ao sair da mesa:', e));
+      }
+
       state.sessionCode = '';
+      state.syncDirty = false;
       save();
       syncSetStatus('offline', 'desconectado');
       document.getElementById('turn-status-bar').style.display = 'none';
       document.getElementById('turn-banner').style.display = 'none';
       document.getElementById('turn-order-mini').style.display = 'none';
       document.getElementById('party-roster').style.display = 'none';
+    }
+
+    // O Mestre apagou esta ficha da mesa: desconecta localmente e avisa
+    function syncFoiExpulso() {
+      desconectarSessao(true);
+      syncShowToast('🚪 O Mestre removeu você da mesa.', 'dano');
     }
 
     let turnRef = null;
@@ -8957,12 +8981,18 @@
       if (syncRef) syncRef.off();
       syncRef = db.ref('sessions/' + code + '/players/' + state.syncId);
       let primeiraLeitura = true;
+      let jaExistiuNaMesa = false; // vira true quando a ficha aparece no servidor; depois disso, sumir = expulsão
 
       // Escuta alterações vindas do Mestre (dano, cura, ajustes, sussurros)
       syncRef.on('value', (snapshot) => {
         const data = snapshot.val();
         const primeira = primeiraLeitura; primeiraLeitura = false;
-        if (!data) return; // ainda não existe — o push inicial abaixo vai criar
+        if (!data) {
+          // Antes de existir: o push inicial abaixo vai criar. Depois de existir: o Mestre removeu.
+          if (jaExistiuNaMesa) syncFoiExpulso();
+          return;
+        }
+        jaExistiuNaMesa = true;
         // Se a ficha tinha alterações que não chegaram ao servidor (ex.: fechou a página antes do envio),
         // vale o que está na ficha — não o dado antigo que ainda está no servidor.
         const manterLocal = primeira && !!state.syncDirty;

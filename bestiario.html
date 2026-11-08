@@ -1474,6 +1474,40 @@
       box-shadow: 0 0 10px rgba(201, 146, 26, 0.15);
     }
 
+    .turn-order-kick {
+      background: transparent;
+      border: none;
+      color: rgba(245, 234, 214, 0.35);
+      font-size: 12px;
+      line-height: 1;
+      padding: 2px 4px;
+      margin-left: 2px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .turn-order-kick:hover {
+      color: #ff8a8a;
+      background: rgba(201, 64, 64, 0.2);
+    }
+
+    .battle-player-kick-btn {
+      background: rgba(201, 64, 64, 0.12);
+      border: 1px solid rgba(201, 64, 64, 0.4);
+      color: #ff8a8a;
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      padding: 5px 10px;
+      border-radius: 3px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .battle-player-kick-btn:hover {
+      background: rgba(201, 64, 64, 0.28);
+    }
+
     .turn-order-pos {
       font-family: 'Share Tech Mono', monospace;
       font-size: 10px;
@@ -6344,6 +6378,114 @@
       </div>
       <!-- ★ fim CRIATURA ÚNICA ★ -->
 
+      <!-- ★ CRIATURA ÚNICA — DRAGÃO OSSÁRIO CARMESIM ★ -->
+      <div class="base-card medium criatura-card" data-cat="monstruosidade"
+        style="overflow: visible; border-color: rgba(201, 146, 26, 0.35); position: relative;">
+        <div
+          style="position:absolute;top:-1px;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#c9921a,#e8b84b,#c9921a,transparent);">
+        </div>
+        <div
+          style="position:absolute;top:8px;right:10px;font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.12em;color:var(--gold-dim);border:1px solid rgba(201,146,26,0.2);padding:2px 7px;border-radius:2px;">
+          ★ CRIATURA ÚNICA</div>
+
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">Dragão Ossário Carmesim</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Monstruosidade
+          Grande — Dragonoide · Boss</p>
+
+        <p
+          style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:6px;line-height:1.6;font-style:italic;border-left:2px solid rgba(201,146,26,0.3);padding-left:10px;">
+          "Ele não ataca ninguém. Ele colhe. Cada pilastra em que ele pousa floresce em vermelho."<br><span
+            style="font-size:10px;color:rgba(245,234,214,0.35);">— Gladiador veterano, único sobrevivente da arena</span></p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-top:10px;margin-bottom:12px;line-height:1.5;">
+          Dragão de ossos nus e músculo exposto, coroado por uma crista de folhas rubras que nunca murcham. Vive nos
+          capitéis do Coliseu, de onde observa a arena como quem escolhe a próxima flor. Ágil demais para o seu
+          tamanho, só desce ao chão quando não sobra mais nenhum lugar alto onde se esconder.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 110</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec:
+            8🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +6</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟠 Difícil</span>
+        </div>
+
+        <div class="skill-base-row"
+          style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span
+            style="font-family:&#39;Share Tech Mono&#39;; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR:
+            +4 | DES: +6 | CON: +3 | INT: +0 | CAR: +1 | SAB: +3</span>
+        </div>
+
+        <p
+          style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:&#39;Share Tech Mono&#39;,monospace;letter-spacing:0.08em;">
+          HABILIDADES</p>
+
+        <div class="skill-base-row">
+          <span class="skname">⚪ Acrobata do Coliseu</span><span class="skcost" style="color:rgba(245,234,214,0.3);">Passiva</span>
+          <div class="skdesc">Ignora terreno difícil e desníveis. Enquanto <b>Empoleirado</b> (sobre uma pilastra), só pode ser alvo de ataques corpo a corpo de quem estiver na mesma pilastra e tem +2 de CA contra ataques à distância (cobertura do capitel).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Costelas Abertas</span><span class="skcost" style="color:rgba(245,234,214,0.3);">Passiva</span>
+          <div class="skdesc">Enquanto <b>No Chão</b> ou Derrubado, o tórax fica exposto: todo ataque que o acerta causa +1d6 de dano (ponto fraco) e ele não pode usar Esquiva de Osso.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Salto de Pilastra - Rápida</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Pula até 12 blocos para outra pilastra intacta (ou para o chão), sem provocar reações. Ao pousar numa pilastra fica Empoleirado. Criaturas a 2 blocos da base: DES 13 ou 1d6 contundente de estilhaços (metade se passar). 1x por turno. Nunca pousa 2 turnos seguidos na mesma pilastra.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mira de Sangue - Rápida</span><span class="skcost">2🟡</span>
+          <div class="skdesc">Só Empoleirado. Uma pétala rubra gruda em 1 alvo à vista, que fica Marcado até o fim do próximo turno do Dragão. É o aviso do Mergulho Carmesim.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mergulho Carmesim - Padrão</span><span class="skcost">8🟡 · TR 2</span>
+          <div class="skdesc">Só Empoleirado, contra alvo Marcado a até 14 blocos. Despenca em linha reta: 3d8+3 perfurante. Alvo e criaturas a 1 bloco: DES 14 ou Derrubado. <b>Se uma pilastra intacta (que não seja a dele) estiver na linha</b>, o Dragão se choca nela: a pilastra desaba (2d6 contundente em 2 blocos), ele sofre 2d10, fica Derrubado e No Chão até o início do próximo turno, e ninguém leva o mergulho.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Garra de Espinhos - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">Alcance 2 blocos. 1d10+4 cortante. Acerto: Sangramento (2 HP/turno por 2 turnos, não acumula).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Carmesim - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Alcance 4 blocos (pescoço sinuoso). 2d8+4 perfurante. Se o alvo estiver Sangrando: +1d6 de dano e o Dragão recupera 6 HP.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Chuva de Pétalas - Padrão</span><span class="skcost">6🟡 · TR 1</span>
+          <div class="skdesc">Só Empoleirado. Pétalas-lâmina caem num círculo de 3 blocos de raio, centro a até 12 blocos: 2d6+3 cortante, DES 13 para metade. Falhou: Lento por 1 turno. O chão fica coberto de pétalas por 1 rodada (terreno difícil).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Esquiva de Osso - Reação</span><span class="skcost">3🟡</span>
+          <div class="skdesc">Quando for alvo de ataque, depois da rolagem: +3 de CA contra aquele ataque. Se o ataque errar, move 2 blocos sem provocar. 1x por rodada. Não funciona Derrubado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Desmoronar o Coliseu - Padrão</span><span class="skcost">10🟡</span>
+          <div class="skdesc">Só abaixo de 40 HP. 1x por combate. O Dragão despenca no centro da arena (No Chão) e despedaça todas as pilastras restantes: cada uma desaba em 3 blocos ao redor, 3d6 contundente, DES 14 para metade. Onde havia pilastra vira escombro (terreno difícil). Dispara a Fúria Desfolhada.</div>
+        </div>
+        <div style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
+          <p style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">MECÂNICA DA ARENA — PILASTRAS</p>
+          <p style="font-size:11px;color:rgba(245,234,214,0.5);line-height:1.6;margin:0;">
+          <span style="color:rgba(245,234,214,0.75);">Montagem:</span> 6 a 8 pilastras, 6 blocos de altura, topo 2×2 (cabem 2 criaturas). Cada uma: CA 10, HP 30, RD 2.<br>
+          <span style="color:rgba(245,234,214,0.75);">Subir:</span> Ação Rápida + Atletismo ou Acrobacia 13. Quem sobe fica na mesma pilastra do Dragão e pode ser atacado normalmente (queda: 1d6).<br>
+          <span style="color:rgba(245,234,214,0.75);">Derrubar:</span> destruir a pilastra com o Dragão em cima o faz cair: 2d10 contundente, Derrubado, No Chão e sem Reação até o próximo turno. Ele não pode mais pousar ali.<br>
+          <span style="color:rgba(245,234,214,0.75);">Isca:</span> quem está Marcado pode se posicionar atrás de uma pilastra para o Mergulho se espatifar nela.<br>
+          <span style="color:rgba(245,234,214,0.75);">Tensão:</span> cada pilastra a menos é um esconderijo a menos.
+          </p>
+        </div>
+        <div style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
+          <p style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">FASES DE COMBATE</p>
+          <p style="font-size:11px;color:rgba(245,234,214,0.5);line-height:1.6;margin:0;">
+          <span style="color:rgba(245,234,214,0.75);">HP 110–75:</span> Caça nas Alturas — quase sempre Empoleirado. Salto + Mira de Sangue, depois Mergulho. Chuva de Pétalas para forçar o grupo a se mexer. Desce só para Mordida em alvo isolado.<br>
+          <span style="color:rgba(245,234,214,0.75);">HP 74–40:</span> Colheita — desce para Garra e Mordida em quem estiver Sangrando e volta para o alto. Alterna pilastras a cada turno.<br>
+          <span style="color:rgba(245,234,214,0.75);">HP abaixo de 40:</span> Fúria Desfolhada — usa Desmoronar o Coliseu. Depois disso fica No Chão para sempre, Rec 10🟡, Garra 2x por turno, e Mira de Sangue e Mergulho Carmesim não exigem mais Empoleirado (viram investida em linha de 10 blocos). Chuva de Pétalas fica indisponível.
+          </p>
+        </div>
+
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+      <!-- ★ fim CRIATURA ÚNICA ★ -->
+
       <div class="base-card medium criatura-card" data-cat="construto" style="overflow: visible;">
         <div class="base-card-title" style="color:#7aa0d0; margin-bottom:4px;">Golem de Cristal</div>
         <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Médio — Refrator de
@@ -8211,7 +8353,10 @@
         html += '<div class="battle-player">';
         html += '<div class="battle-monster-header">';
         html += '<div><div class="battle-player-name">' + (p.name || 'Jogador') + '</div></div>';
+        html += '<div style="display:flex;align-items:center;gap:8px;">';
         html += '<span class="roll-init-btn-m" style="cursor:default;" title="Iniciativa rolada pelo jogador">🎲 ' + initLabel + '</span>';
+        html += '<button class="battle-player-kick-btn" title="Remove este jogador da mesa" onclick="expulsarJogador(\'' + id + '\')">🚪 Expulsar</button>';
+        html += '</div>';
         html += '</div>';
 
         html += '<div class="battle-stats">';
@@ -8297,6 +8442,8 @@
         html += '<span class="turn-order-pos">' + (i + 1) + '</span>';
         html += '<span class="turn-order-name">' + (isActive ? '🎯 ' : '') + c.name + '</span>';
         html += '<span class="turn-order-val">' + c.value + '</span>';
+        const kickTitle = c.type === 'player' ? 'Expulsar jogador da mesa' : 'Remover monstro da batalha';
+        html += '<button class="turn-order-kick" title="' + kickTitle + '" onclick="retirarDaOrdem(\'' + c.type + '\',\'' + c.refId + '\')">✕</button>';
         html += '</div>';
       });
       html += '</div>';
@@ -8500,6 +8647,53 @@
         round: roundNumber,
         ts: Date.now()
       }).catch(e => console.error('Erro ao atualizar turno:', e));
+    }
+
+    /* ── EXPULSAR / RETIRAR DA ORDEM ── */
+    // Se quem sai é o combatente da vez, passa o turno pro próximo antes de removê-lo
+    function ajustarTurnoAoRemover(key) {
+      if (currentTurnKey !== key) return;
+      const lista = getSortedCombatants();
+      const idx = lista.findIndex(c => c.key === key);
+      const restante = lista.filter(c => c.key !== key);
+      if (restante.length === 0) {
+        currentTurnKey = null;
+        salvarEstadoTurno();
+        pushTurnToFirebase(null);
+        return;
+      }
+      let prox = idx;
+      if (prox >= restante.length) { prox = 0; roundNumber++; }
+      currentTurnKey = restante[prox].key;
+      salvarEstadoTurno();
+      pushTurnToFirebase(restante[prox]);
+    }
+
+    // Apaga a ficha do jogador da mesa no Firebase; a Ficha dele percebe e desconecta sozinha
+    function expulsarJogador(id) {
+      if (!playersRef) return;
+      const p = sessionPlayers[id];
+      const nome = (p && p.name) || 'Jogador';
+      if (!confirm('Expulsar "' + nome + '" da mesa?\n\nEle será desconectado e sairá da ordem de turno.')) return;
+      ajustarTurnoAoRemover('player:' + id);
+      playersRef.child(id).remove().then(() => {
+        addBattleLog('🚪', '<span class="log-skill-name">' + nome + '</span> foi expulso da mesa.');
+      }).catch(e => {
+        console.error('Erro ao expulsar jogador:', e);
+        alert('Não consegui expulsar o jogador. Verifique a conexão.');
+      });
+    }
+
+    // ✕ na ordem de turno: jogador → expulsa da mesa; monstro → tira da batalha
+    function retirarDaOrdem(tipo, id) {
+      if (tipo === 'player') { expulsarJogador(id); return; }
+      const m = battleMonsters.find(x => x.id === id);
+      if (!m) return;
+      const nome = m.displayName || m.name;
+      if (!confirm('Retirar "' + nome + '" da batalha?')) return;
+      ajustarTurnoAoRemover('monster:' + id);
+      removeFromBattle(id);
+      addBattleLog('🚪', '<span class="log-skill-name">' + nome + '</span> saiu da batalha.');
     }
 
     function avancarTurno() {
