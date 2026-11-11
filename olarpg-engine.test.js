@@ -98,9 +98,15 @@ t('composeDano: arma + dados do mec', () => {
 t('composeDano: só dados e fixo do mec (sem arma)', () => {
   const r = E.composeDano({ dano: { dados: '3d6', fixo: 2 } }, null); assert.ok(r.ok); assert.strictEqual(r.expr, '3d6'); assert.strictEqual(r.extra, 2);
 });
-t('composeDano: golpes/multiplicador e arma sem dano caem no manual', () => {
+t('composeDano: multiplicador >= 1 multiplica dados da arma e flat', () => {
+  const r = E.composeDano({ dano: { arma: true, multiplicador: 2 } }, { dano: '1d8', extra: 3 });
+  assert.ok(r.ok);
+  assert.strictEqual(r.expr, '2d8');
+  assert.strictEqual(r.extra, 3);
+});
+t('composeDano: golpes/multiplicador fracionado e arma sem dano caem no manual', () => {
   assert.strictEqual(E.composeDano({ dano: { dados: '1d6', golpes: 2 } }, null).ok, false);
-  assert.strictEqual(E.composeDano({ dano: { arma: true, multiplicador: 2 } }, { dano: '1d8' }).ok, false);
+  assert.strictEqual(E.composeDano({ dano: { arma: true, multiplicador: 0.5 } }, { dano: '1d8' }).ok, false);
   assert.strictEqual(E.composeDano({ dano: { arma: true } }, { dano: '' }).ok, false);
 });
 

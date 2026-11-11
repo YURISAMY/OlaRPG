@@ -224,11 +224,15 @@
   function composeDano(mec, arma) {
     var d = mec && mec.dano;
     if (!d) return { ok: false, motivo: 'sem dano' };
-    if (d.golpes || d.multiplicador || d.por || d.so_se_falhar) return { ok: false, motivo: 'esse formato de dano ainda é manual' };
+    if (d.golpes || d.por || d.so_se_falhar || (d.multiplicador && d.multiplicador < 1)) return { ok: false, motivo: 'esse formato de dano ainda é manual' };
     var parts = [], extra = 0;
     if (d.arma) {
       if (!arma || !arma.dano || !String(arma.dano).trim()) return { ok: false, motivo: 'defina o dano da arma' };
-      parts.push(arma.dano); extra += arma.extra || 0;
+      var mult = (typeof d.multiplicador === 'number' && d.multiplicador >= 1) ? d.multiplicador : 1;
+      var wParsed = parseExpr(arma.dano);
+      var wTerms = wParsed.terms.map(function (t) { return (t.n * mult) + 'd' + t.s; });
+      if (wTerms.length) parts.push(wTerms.join('+'));
+      extra += (arma.extra || 0) + (wParsed.flat * mult);
     }
     if (d.dados) parts.push(d.dados);
     if (typeof d.fixo === 'number') extra += d.fixo;

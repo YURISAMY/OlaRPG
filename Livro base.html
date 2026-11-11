@@ -4902,6 +4902,7 @@
             <div class="skdesc">
               Ataque que causa o dobro do dano da arma.
             </div>
+            <script type="application/json" class="mec">{"v":1,"id":"guerreiro-golpe-brutal","revisado":true,"origem":"classe","acao":"padrao","recurso":"st","custo":5,"alvos":[{"papel":"inimigo","qtd":1}],"resolucao":{"tipo":"ataque","atributo":"arma"},"dano":{"arma":true,"multiplicador":2},"automacao":"total"}</script>
           </div>
         </div>
         <div class="base-card wide">
@@ -15097,10 +15098,9 @@
           </div>
           <div class="spell-card-body">
             <div class="spell-desc">
-              Salta até 4 blocos ignorando obstáculos baixos e inimigos. Pode atacar ao pousar
-              causando +1d4 de dano de impacto.
+              Salta até 4 blocos ignorando obstáculos baixos e inimigos. Causa 1d4 de dano de impacto em área no local do impacto.
             </div>
-            <script type="application/json" class="mec">{"v":1,"id":"salto-tatico","revisado":true,"origem":"magia-livro","acao":"padrao","recurso":"st","custo":2,"alvos":[{"papel":"si"}],"resolucao":{"tipo":"nenhuma"},"efeitos":[{"quando":"sempre","em":"conjurador","tipo":"efeito_livre","texto":"Salta até 4 blocos ignorando obstáculos baixos e inimigos"},{"quando":"condicional","em":"alvo","tipo":"dano_condicional","dano":"1d4","tipo_dano":"impacto","texto":"Se atacar ao pousar"}],"usa_arma":true,"automacao": "total"}</script>
+            <script type="application/json" class="mec">{"v":1,"id":"salto-tatico","revisado":true,"origem":"magia-livro","acao":"padrao","recurso":"st","custo":2,"alvos":[{"papel":"inimigo","qtd":"marcar","area":{"forma":"raio","tamanho":1}}],"resolucao":{"tipo":"save","save":"des","cd":"fisica","passou":"metade"},"dano":{"dados":"1d4","tipo":"impacto"},"efeitos":[{"quando":"sempre","em":"conjurador","tipo":"efeito_livre","texto":"Salta até 4 blocos ignorando obstáculos baixos e inimigos"}],"automacao":"total"}</script>
           </div>
         </div>
         <div class="spell-card tecnica geral" data-scope="geral" data-type="tecnica">

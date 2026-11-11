@@ -176,6 +176,25 @@ testCase('Ataque', '1.9 Ataque em área / alvos adjacentes (Lâmina Elemental) c
   assert.strictEqual(alvosAdjacentes[1].hp, 13, 'Leão 2 deve receber 12 de dano de Raio');
 });
 
+testCase('Ataque', '1.10 Golpe Brutal (ataque com arma dobrando dados da arma)', () => {
+  // Carrega catálogo se necessário
+  if (!global.window || !global.window.OLARPG_MEC_CATALOG) {
+    global.window = global.window || {};
+    require('./olarpg-catalog.js');
+  }
+  const mec = global.window.OLARPG_MEC_CATALOG['golpe brutal'];
+  assert.ok(mec, 'Golpe Brutal deve estar presente no catálogo');
+  assert.strictEqual(mec.resolucao.tipo, 'ataque');
+  assert.strictEqual(mec.resolucao.atributo, 'arma');
+  assert.strictEqual(mec.dano.multiplicador, 2);
+
+  const armaEquipada = { dano: '1d10', extra: 4 };
+  const comp = E.composeDano(mec, armaEquipada);
+  assert.strictEqual(comp.ok, true);
+  assert.strictEqual(comp.expr, '2d10', 'Dano da arma de 1d10 dobrado vira 2d10');
+  assert.strictEqual(comp.extra, 4, 'Bônus extra somado corretamente');
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. MAGIAS E HABILIDADES COM SALVAGUARDA (SAVE / RESISTÊNCIA EM ÁREA)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -279,6 +298,38 @@ testCase('Save', '2.6 Acerto Automático e Distribuição Livre de Mísseis Mág
 
   assert.strictEqual(monstro1.hp, 11, 'Leão 1 deve sofrer 9 de dano automático (20 - 9 = 11)');
   assert.strictEqual(monstro2.hp, 11, 'Leão 2 deve sofrer 4 de dano automático (15 - 4 = 11)');
+});
+
+testCase('Save', '2.7 Salto Tático (skill em área no ponto de impacto com 1d4 de dano e save de DES)', () => {
+  if (!global.window || !global.window.OLARPG_MEC_CATALOG) {
+    global.window = global.window || {};
+    require('./olarpg-catalog.js');
+  }
+  const mec = global.window.OLARPG_MEC_CATALOG['salto tatico'];
+  assert.ok(mec, 'Salto Tático deve estar no catálogo');
+  assert.strictEqual(mec.recurso, 'st');
+  assert.strictEqual(mec.custo, 2);
+  assert.strictEqual(mec.resolucao.tipo, 'save');
+  assert.strictEqual(mec.resolucao.save, 'des');
+  assert.strictEqual(mec.resolucao.cd, 'fisica');
+  assert.strictEqual(mec.dano.dados, '1d4');
+  assert.strictEqual(mec.dano.tipo, 'impacto');
+  assert.ok(mec.alvos[0].area, 'Deve ser uma habilidade em área');
+
+  // Resolução contra 2 monstros na área de impacto
+  const cdFisica = 14;
+  const m1 = { name: 'Goblin 1', hp: 8, saveDes: +1 }; // rolou 8 + 1 = 9 (falha)
+  const m2 = { name: 'Goblin 2', hp: 8, saveDes: +4 }; // rolou 12 + 4 = 16 (passou)
+
+  const danoRolado = 4; // 1d4 rolou 4
+  const dano1 = E.applySave(danoRolado, false, 'metade'); // falha -> 4
+  const dano2 = E.applySave(danoRolado, true, 'metade');  // passou -> floor(4/2) = 2
+
+  m1.hp -= dano1;
+  m2.hp -= dano2;
+
+  assert.strictEqual(m1.hp, 4, 'Goblin 1 falhou no teste e tomou 4 de dano');
+  assert.strictEqual(m2.hp, 6, 'Goblin 2 passou no teste e tomou 2 de dano (metade)');
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
