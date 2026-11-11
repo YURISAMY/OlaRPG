@@ -4035,7 +4035,7 @@
       padding: 24px 0;
       font-style: italic;
     }
-  
+
     /* ══════════════ GAVETA ESQUERDA: HISTÓRICO DE SKILLS E TESTES ══════════════ */
     .lx-drawer {
       --lx-w: min(340px, 92vw);
@@ -4051,9 +4051,11 @@
       transition: transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
       pointer-events: none;
     }
+
     .lx-drawer.open {
       transform: translateX(0);
     }
+
     .lx-panel {
       flex: 1;
       display: flex;
@@ -4068,6 +4070,7 @@
       overflow: hidden;
       pointer-events: auto;
     }
+
     /* Alças na lateral esquerda da tela */
     .lx-handles-container {
       position: absolute;
@@ -4078,6 +4081,7 @@
       gap: 8px;
       pointer-events: auto;
     }
+
     .lx-handle {
       background: #181420;
       border: 1px solid rgba(201, 146, 26, 0.4);
@@ -4091,28 +4095,32 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      box-shadow: 4px 4px 12px rgba(0,0,0,0.45);
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.45);
       transition: all 0.2s ease;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.5px;
       user-select: none;
     }
+
     .lx-handle:hover {
       background: #251f33;
       border-color: #f3c358;
       color: #fff;
       box-shadow: 4px 4px 16px rgba(243, 195, 88, 0.3);
     }
+
     .lx-handle.active {
       background: rgba(201, 146, 26, 0.22);
       border-color: #f3c358;
       color: #ffd978;
     }
+
     .lx-handle-icon {
       font-size: 16px;
       line-height: 1;
     }
+
     .lx-handle-text {
       writing-mode: vertical-rl;
       text-orientation: mixed;
@@ -4132,14 +4140,16 @@
       justify-content: space-between;
       gap: 8px;
     }
+
     .lx-tabs {
       display: flex;
       gap: 4px;
       background: rgba(12, 10, 16, 0.6);
       padding: 3px;
       border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
+
     .lx-tab-btn {
       background: transparent;
       border: none;
@@ -4154,17 +4164,20 @@
       gap: 5px;
       transition: all 0.15s;
     }
+
     .lx-tab-btn:hover {
       color: #e2d9f3;
     }
+
     .lx-tab-btn.active {
       background: rgba(201, 146, 26, 0.28);
       color: #ffd978;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     }
+
     .lx-close-btn {
       background: transparent;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       color: #8c829e;
       border-radius: 4px;
       width: 24px;
@@ -4176,10 +4189,11 @@
       justify-content: center;
       transition: all 0.15s;
     }
+
     .lx-close-btn:hover {
       color: #fff;
       border-color: rgba(201, 146, 26, 0.4);
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.05);
     }
 
     /* Listas de conteúdo com scroll suave */
@@ -4191,13 +4205,16 @@
       flex-direction: column;
       gap: 8px;
     }
+
     .lx-body::-webkit-scrollbar {
       width: 5px;
     }
+
     .lx-body::-webkit-scrollbar-thumb {
       background: rgba(201, 146, 26, 0.25);
       border-radius: 3px;
     }
+
     .lx-empty-msg {
       text-align: center;
       color: #7d728e;
@@ -4218,16 +4235,19 @@
       gap: 5px;
       animation: lxSlideIn 0.2s ease-out;
     }
+
     .lx-card-skill.is-monster {
       border-left-color: #f78888;
       border-color: rgba(247, 136, 136, 0.25);
     }
+
     .lx-card-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 6px;
     }
+
     .lx-badge {
       font-size: 10px;
       font-weight: 700;
@@ -4236,26 +4256,31 @@
       text-transform: uppercase;
       letter-spacing: 0.4px;
     }
+
     .lx-badge-player {
       background: rgba(142, 92, 230, 0.25);
       color: #c9adff;
       border: 1px solid rgba(142, 92, 230, 0.4);
     }
+
     .lx-badge-monster {
       background: rgba(230, 92, 92, 0.25);
       color: #ffadad;
       border: 1px solid rgba(230, 92, 92, 0.4);
     }
+
     .lx-time {
       font-size: 10px;
       color: #6d627e;
     }
+
     .lx-skill-name {
       font-size: 13px;
       font-weight: 700;
       color: #ffd978;
       letter-spacing: 0.3px;
     }
+
     .lx-skill-desc {
       font-size: 11.5px;
       color: #c5bcd2;
@@ -4279,12 +4304,15 @@
       color: #dfd8ea;
       animation: lxSlideIn 0.2s ease-out;
     }
+
     .lx-card-combat.combat-success {
       border-left-color: #55c77e;
     }
+
     .lx-card-combat.combat-fail {
       border-left-color: #e85555;
     }
+
     .lx-combat-title {
       font-weight: 600;
       color: #ffd978;
@@ -4292,12 +4320,15 @@
       align-items: center;
       gap: 5px;
     }
+
     .lx-combat-line {
       color: #dfd8ea;
     }
+
     .lx-combat-line strong {
       color: #fff;
     }
+
     .lx-combat-sub {
       font-size: 11px;
       color: #a89bbd;
@@ -4305,8 +4336,15 @@
     }
 
     @keyframes lxSlideIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
 
@@ -4318,14 +4356,16 @@
       border-radius: 8px;
       padding: 10px 12px;
       backdrop-filter: blur(6px);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
     }
+
     .buffs-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 8px;
     }
+
     .buffs-title {
       font-size: 11px;
       font-weight: 700;
@@ -4336,6 +4376,7 @@
       align-items: center;
       gap: 5px;
     }
+
     .buffs-count {
       font-size: 10px;
       font-weight: 700;
@@ -4345,11 +4386,13 @@
       border-radius: 10px;
       border: 1px solid rgba(201, 146, 26, 0.4);
     }
+
     .buffs-list {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
+
     .buffs-empty {
       font-size: 11px;
       color: #7d728e;
@@ -4357,6 +4400,7 @@
       text-align: center;
       padding: 8px 0;
     }
+
     .buff-chip {
       background: rgba(28, 22, 38, 0.85);
       border: 1px solid rgba(138, 102, 219, 0.3);
@@ -4371,20 +4415,35 @@
       line-height: 1.3;
       transition: all 0.15s ease;
     }
+
     .buff-chip:hover {
       background: rgba(35, 28, 48, 0.95);
       border-color: rgba(201, 146, 26, 0.4);
     }
-    .buff-chip.buff_dado { border-left-color: #ffd978; }
-    .buff-chip.bonus { border-left-color: #55c77e; }
-    .buff-chip.hp_temp { border-left-color: #55a8e8; }
-    .buff-chip.status { border-left-color: #e85555; }
+
+    .buff-chip.buff_dado {
+      border-left-color: #ffd978;
+    }
+
+    .buff-chip.bonus {
+      border-left-color: #55c77e;
+    }
+
+    .buff-chip.hp_temp {
+      border-left-color: #55a8e8;
+    }
+
+    .buff-chip.status {
+      border-left-color: #e85555;
+    }
+
     .buff-chip-info {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
+
     .buff-chip-badge {
       font-size: 9px;
       font-weight: 700;
@@ -4392,13 +4451,16 @@
       letter-spacing: 0.4px;
       color: #ffd978;
     }
+
     .buff-chip-text {
       color: #e2d9f3;
     }
+
     .buff-chip-dur {
       font-size: 9.5px;
       color: #9c8fb0;
     }
+
     .buff-chip-del {
       background: transparent;
       border: none;
@@ -4408,12 +4470,12 @@
       padding: 2px 4px;
       border-radius: 3px;
     }
+
     .buff-chip-del:hover {
       color: #ffadad;
       background: rgba(230, 92, 92, 0.2);
     }
-
-</style>
+  </style>
 
   <!-- Firebase (sincronização em tempo real com o Mestre) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -6061,39 +6123,212 @@
       color: #e26a6a;
     }
   </style>
-<style>
-.wpn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.wpn-grid .full{grid-column:1/-1}
-.wpn-grid .field{margin:0}
-.wpn-grid select,.wpn-grid input[type=text],.wpn-grid input[type=number]{width:100%;box-sizing:border-box}
-.wpn-grid select{background:rgba(0,0,0,.28);border:1px solid var(--border-gold);color:inherit;padding:7px 8px;border-radius:3px;font:inherit}
-.wpn-check{display:flex;align-items:center;gap:8px;font-size:13px;opacity:.85;cursor:pointer}
-.wpn-preview{font-size:12px;letter-spacing:.03em;color:var(--gold-light);opacity:.85;margin:2px 0 12px;text-align:center}
-#wpn-atk-btn.wpn-armed{animation:wpnPulse .8s infinite alternate;border-color:#e0605a;color:#ffb3ad}
-.turn-order-mini-item.targetable{cursor:pointer;border-color:#e0605a;background:rgba(224,96,90,.14);color:#ffd2cf;animation:wpnPulse .9s infinite alternate;font-family:inherit}
-.turn-order-mini-item.targetable:hover{background:rgba(224,96,90,.3)}
-.turn-order-mini-title.armed{color:#ff9d96}
-@keyframes wpnPulse{from{box-shadow:0 0 0 rgba(224,96,90,0)}to{box-shadow:0 0 14px rgba(224,96,90,.65)}}
-</style>
-<style>
-#wpn-fab{position:fixed;top:calc(var(--dx-top,64px) + 66px);right:0;z-index:1090;display:flex;flex-direction:row-reverse;align-items:flex-start;gap:6px;pointer-events:none}
-#wpn-fab>*{pointer-events:auto}
-#wpn-fab-btn{width:34px;height:56px;padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;color:#ffb3ad;font-size:19px;line-height:1;
-  background:rgba(10,11,16,.92);border:1px solid rgba(224,96,90,.55);border-right:none;border-radius:10px 0 0 10px;box-shadow:-4px 4px 18px rgba(0,0,0,.55)}
-#wpn-fab-btn span{font:700 7px/1 'Cinzel',serif;letter-spacing:.08em}
-#wpn-fab-btn.wpn-armed{animation:wpnPulse .8s infinite alternate;background:rgba(80,20,18,.95)}
-#wpn-fab-targets{display:none;max-height:60vh;overflow:auto;min-width:150px;max-width:62vw;padding:8px;background:rgba(10,11,16,.96);border:1px solid rgba(224,96,90,.55);border-radius:8px;box-shadow:-4px 4px 18px rgba(0,0,0,.55)}
-#wpn-fab-targets .wpn-fab-title{font:700 10px 'Cinzel',serif;letter-spacing:.1em;color:#ff9d96;margin-bottom:6px;text-align:center}
-#wpn-fab-targets button{display:block;width:100%;margin-top:5px;padding:7px 10px;cursor:pointer;text-align:left;color:#ffd2cf;background:rgba(224,96,90,.14);border:1px solid #e0605a;border-radius:4px;font:inherit;font-size:13px}
-#wpn-fab-targets button:hover{background:rgba(224,96,90,.32)}
-#wpn-fab{transition:right .38s cubic-bezier(.22,.9,.3,1)}
-body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
-@media (max-width:640px){body:has(.dx-drawer.open) #wpn-fab{display:none}}
-#wpn-fab-targets .wpn-fab-weapon{font-size:11px;opacity:.75;text-align:center;margin-bottom:2px}
-#wpn-fab-targets .wpn-fab-empty{font-size:12px;opacity:.7;padding:6px 2px}
-.dx-drawer{pointer-events:none}
-.dx-drawer>.dx-handle,.dx-drawer>.dx-panel{pointer-events:auto}
-</style>
+  <style>
+    .wpn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px
+    }
+
+    .wpn-grid .full {
+      grid-column: 1/-1
+    }
+
+    .wpn-grid .field {
+      margin: 0
+    }
+
+    .wpn-grid select,
+    .wpn-grid input[type=text],
+    .wpn-grid input[type=number] {
+      width: 100%;
+      box-sizing: border-box
+    }
+
+    .wpn-grid select {
+      background: rgba(0, 0, 0, .28);
+      border: 1px solid var(--border-gold);
+      color: inherit;
+      padding: 7px 8px;
+      border-radius: 3px;
+      font: inherit
+    }
+
+    .wpn-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      opacity: .85;
+      cursor: pointer
+    }
+
+    .wpn-preview {
+      font-size: 12px;
+      letter-spacing: .03em;
+      color: var(--gold-light);
+      opacity: .85;
+      margin: 2px 0 12px;
+      text-align: center
+    }
+
+    #wpn-atk-btn.wpn-armed {
+      animation: wpnPulse .8s infinite alternate;
+      border-color: #e0605a;
+      color: #ffb3ad
+    }
+
+    .turn-order-mini-item.targetable {
+      cursor: pointer;
+      border-color: #e0605a;
+      background: rgba(224, 96, 90, .14);
+      color: #ffd2cf;
+      animation: wpnPulse .9s infinite alternate;
+      font-family: inherit
+    }
+
+    .turn-order-mini-item.targetable:hover {
+      background: rgba(224, 96, 90, .3)
+    }
+
+    .turn-order-mini-title.armed {
+      color: #ff9d96
+    }
+
+    @keyframes wpnPulse {
+      from {
+        box-shadow: 0 0 0 rgba(224, 96, 90, 0)
+      }
+
+      to {
+        box-shadow: 0 0 14px rgba(224, 96, 90, .65)
+      }
+    }
+  </style>
+  <style>
+    #wpn-fab {
+      position: fixed;
+      top: calc(var(--dx-top, 64px) + 66px);
+      right: 0;
+      z-index: 1090;
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: flex-start;
+      gap: 6px;
+      pointer-events: none
+    }
+
+    #wpn-fab>* {
+      pointer-events: auto
+    }
+
+    #wpn-fab-btn {
+      width: 34px;
+      height: 56px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
+      color: #ffb3ad;
+      font-size: 19px;
+      line-height: 1;
+      background: rgba(10, 11, 16, .92);
+      border: 1px solid rgba(224, 96, 90, .55);
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+      box-shadow: -4px 4px 18px rgba(0, 0, 0, .55)
+    }
+
+    #wpn-fab-btn span {
+      font: 700 7px/1 'Cinzel', serif;
+      letter-spacing: .08em
+    }
+
+    #wpn-fab-btn.wpn-armed {
+      animation: wpnPulse .8s infinite alternate;
+      background: rgba(80, 20, 18, .95)
+    }
+
+    #wpn-fab-targets {
+      display: none;
+      max-height: 60vh;
+      overflow: auto;
+      min-width: 150px;
+      max-width: 62vw;
+      padding: 8px;
+      background: rgba(10, 11, 16, .96);
+      border: 1px solid rgba(224, 96, 90, .55);
+      border-radius: 8px;
+      box-shadow: -4px 4px 18px rgba(0, 0, 0, .55)
+    }
+
+    #wpn-fab-targets .wpn-fab-title {
+      font: 700 10px 'Cinzel', serif;
+      letter-spacing: .1em;
+      color: #ff9d96;
+      margin-bottom: 6px;
+      text-align: center
+    }
+
+    #wpn-fab-targets button {
+      display: block;
+      width: 100%;
+      margin-top: 5px;
+      padding: 7px 10px;
+      cursor: pointer;
+      text-align: left;
+      color: #ffd2cf;
+      background: rgba(224, 96, 90, .14);
+      border: 1px solid #e0605a;
+      border-radius: 4px;
+      font: inherit;
+      font-size: 13px
+    }
+
+    #wpn-fab-targets button:hover {
+      background: rgba(224, 96, 90, .32)
+    }
+
+    #wpn-fab {
+      transition: right .38s cubic-bezier(.22, .9, .3, 1)
+    }
+
+    body:has(.dx-drawer.open) #wpn-fab {
+      right: min(332px, 92vw)
+    }
+
+    @media (max-width:640px) {
+      body:has(.dx-drawer.open) #wpn-fab {
+        display: none
+      }
+    }
+
+    #wpn-fab-targets .wpn-fab-weapon {
+      font-size: 11px;
+      opacity: .75;
+      text-align: center;
+      margin-bottom: 2px
+    }
+
+    #wpn-fab-targets .wpn-fab-empty {
+      font-size: 12px;
+      opacity: .7;
+      padding: 6px 2px
+    }
+
+    .dx-drawer {
+      pointer-events: none
+    }
+
+    .dx-drawer>.dx-handle,
+    .dx-drawer>.dx-panel {
+      pointer-events: auto
+    }
+  </style>
 </head>
 
 <body>
@@ -6210,7 +6445,10 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
     <span id="turn-active-label">—</span>
   </div>
   <div class="turn-banner" id="turn-banner">🎯 SUA VEZ DE JOGAR!</div>
-  <div id="wpn-fab"><div id="wpn-fab-targets"></div><button type="button" id="wpn-fab-btn" onclick="wpnFabToggle()" title="Atacar (atalho)">⚔<span>ATACAR</span></button></div>
+  <div id="wpn-fab">
+    <div id="wpn-fab-targets"></div><button type="button" id="wpn-fab-btn" onclick="wpnFabToggle()"
+      title="Atacar (atalho)">⚔<span>ATACAR</span></button>
+  </div>
   <div class="turn-order-mini" id="turn-order-mini"></div>
   <div class="party-roster" id="party-roster"></div>
 
@@ -6715,16 +6953,36 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       <div class="panel" id="panel-arma">
         <div class="panel-title">⚔ Arma Equipada</div>
         <div class="wpn-grid">
-          <div class="field full"><label>Arma</label><input type="text" id="wpn-name" placeholder="Ex.: Espada longa" oninput="wpnChanged()"></div>
-          <div class="field"><label>Dano</label><input type="text" id="wpn-dano" placeholder="1d8" oninput="wpnChanged()"></div>
+          <div class="field full"><label>Arma</label><input type="text" id="wpn-name" placeholder="Ex.: Espada longa"
+              oninput="wpnChanged()"></div>
+          <div class="field"><label>Dano</label><input type="text" id="wpn-dano" placeholder="1d8"
+              oninput="wpnChanged()"></div>
           <div class="field"><label>Modificação da arma</label>
-            <select id="wpn-mod" onchange="wpnChanged()"><option value="0">Comum (+0)</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option></select></div>
+            <select id="wpn-mod" onchange="wpnChanged()">
+              <option value="0">Comum (+0)</option>
+              <option value="1">+1</option>
+              <option value="2">+2</option>
+              <option value="3">+3</option>
+            </select>
+          </div>
           <div class="field"><label>Atributo de ataque</label>
-            <select id="wpn-attr" onchange="wpnChanged()"><option value="for">Força</option><option value="des">Destreza</option><option value="con">Constituição</option><option value="int">Inteligência</option><option value="sab">Sabedoria</option><option value="car">Carisma</option></select></div>
-          <div class="field"><label>Skill atrelada</label><input type="text" id="wpn-skill" placeholder="(opcional)" oninput="wpnChanged()"></div>
-          <div class="field"><label>Bônus extra de ataque</label><input type="number" id="wpn-batk" value="0" oninput="wpnChanged()"></div>
-          <div class="field"><label>Bônus extra de dano</label><input type="number" id="wpn-bdano" value="0" oninput="wpnChanged()"></div>
-          <label class="wpn-check full"><input type="checkbox" id="wpn-addattr" checked onchange="wpnChanged()"> Somar o modificador do atributo ao dano</label>
+            <select id="wpn-attr" onchange="wpnChanged()">
+              <option value="for">Força</option>
+              <option value="des">Destreza</option>
+              <option value="con">Constituição</option>
+              <option value="int">Inteligência</option>
+              <option value="sab">Sabedoria</option>
+              <option value="car">Carisma</option>
+            </select>
+          </div>
+          <div class="field"><label>Skill atrelada</label><input type="text" id="wpn-skill" placeholder="(opcional)"
+              oninput="wpnChanged()"></div>
+          <div class="field"><label>Bônus extra de ataque</label><input type="number" id="wpn-batk" value="0"
+              oninput="wpnChanged()"></div>
+          <div class="field"><label>Bônus extra de dano</label><input type="number" id="wpn-bdano" value="0"
+              oninput="wpnChanged()"></div>
+          <label class="wpn-check full"><input type="checkbox" id="wpn-addattr" checked onchange="wpnChanged()"> Somar o
+            modificador do atributo ao dano</label>
         </div>
         <div class="wpn-preview" id="wpn-preview"></div>
         <button class="rec-btn" id="wpn-atk-btn" onclick="wpnAtacar()">⚔ ATACAR</button>
@@ -8717,7 +8975,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       });
     }
 
-    
+
     /* ══════════════ GESTÃO E RENDERIZAÇÃO DE BUFFS ATIVOS ══════════════ */
     function renderBuffs() {
       const listEl = document.getElementById('buffs-list');
@@ -8733,12 +8991,12 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       listEl.innerHTML = buffs.map((b, idx) => {
         const badge = b.tipo === 'buff_dado' ? `+${b.valor}D DANO`
           : b.tipo === 'bonus' ? `+${b.valor} BÔNUS`
-          : b.tipo === 'hp_temp' ? `+${b.valor} HP TEMP`
-          : b.tipo === 'status' ? 'STATUS'
-          : b.tipo === 'vantagem' ? 'VANTAGEM' : 'BUFF';
+            : b.tipo === 'hp_temp' ? `+${b.valor} HP TEMP`
+              : b.tipo === 'status' ? 'STATUS'
+                : b.tipo === 'vantagem' ? 'VANTAGEM' : 'BUFF';
         const durStr = b.persistente ? 'Persistente'
           : b.consome ? `Consome em: ${b.consome.replace('_', ' ')}`
-          : (b.restante != null) ? `${b.restante} rodada${b.restante > 1 ? 's' : ''}` : '';
+            : (b.restante != null) ? `${b.restante} rodada${b.restante > 1 ? 's' : ''}` : '';
         return `
           <div class="buff-chip ${b.tipo}">
             <div class="buff-chip-info">
@@ -8814,8 +9072,10 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
     function _wv(id) { const e = document.getElementById(id); return e ? e.value : ''; }
     function wpnRead() {
       const c = document.getElementById('wpn-addattr');
-      return { name: _wv('wpn-name'), dano: _wv('wpn-dano'), mod: parseInt(_wv('wpn-mod')) || 0, attr: _wv('wpn-attr') || 'for',
-        skill: _wv('wpn-skill'), bAtk: parseInt(_wv('wpn-batk')) || 0, bDano: parseInt(_wv('wpn-bdano')) || 0, addAttr: c ? c.checked : true };
+      return {
+        name: _wv('wpn-name'), dano: _wv('wpn-dano'), mod: parseInt(_wv('wpn-mod')) || 0, attr: _wv('wpn-attr') || 'for',
+        skill: _wv('wpn-skill'), bAtk: parseInt(_wv('wpn-batk')) || 0, bDano: parseInt(_wv('wpn-bdano')) || 0, addAttr: c ? c.checked : true
+      };
     }
     function wpnApply(w) {
       w = w || {};
@@ -8840,7 +9100,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
               const mod = window.OlaEngine.applyModifiers(base, { delta: delta });
               danoTxt = window.OlaEngine.fmt(mod) + ' (buff ' + _sg(delta) + 'd)';
             }
-          } catch (_) {}
+          } catch (_) { }
         }
       }
       el.textContent = 'Ataque: d20 ' + _sg(bonus) + '  ·  Dano: ' + danoTxt + (flat ? ' ' + _sg(flat) : '');
@@ -8895,8 +9155,10 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       wpnPending = { nonce: nonce, d20: o.d20, groups: o.dm.groups, flat: o.dm.flat, consumidos: o.dm.consumidos || [], label: (o.d20 === 20 ? 'Dano crítico · ' : 'Dano · ') + o.nome };
       const send = () => {
         if (!syncRef) return;
-        syncRef.child('atk').set({ nonce: nonce, targetId: o.id, targetName: o.alvo, d20: o.d20, total: o.d20 + o.bonus, dmg: o.dm.total, dmgText: o.dm.text,
-          weapon: o.nome, skill: o.skill || '', ts: Date.now() }).catch(e => console.error('Erro ao enviar ataque:', e));
+        syncRef.child('atk').set({
+          nonce: nonce, targetId: o.id, targetName: o.alvo, d20: o.d20, total: o.d20 + o.bonus, dmg: o.dm.total, dmgText: o.dm.text,
+          weapon: o.nome, skill: o.skill || '', ts: Date.now()
+        }).catch(e => console.error('Erro ao enviar ataque:', e));
       };
       const label = 'Ataque · ' + o.nome;
       if (window.dxAttackRoll) window.dxAttackRoll(o.d20, label, o.bonus, send);
@@ -8921,7 +9183,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       const found = window.OLARPG_MEC_CATALOG[norm] || window.OLARPG_MEC_CATALOG[noAcc];
       if (found) {
         item.mec = JSON.parse(JSON.stringify(found));
-        try { save(); } catch (_) {}
+        try { save(); } catch (_) { }
       }
       return item.mec;
     }
@@ -9021,7 +9283,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       const elemAction = opts.elemento ? ' [' + opts.elemento + ']' : '';
       syncLogAction(cp.cat === 'magias' ? 'magia' : 'skill', item.name + elemAction, item.custo, item.desc);
       playSkillAudio(c.recurso, costReal);
-      
+
       const saltos = a.mec.dano && a.mec.dano.saltos;
       alvos.forEach((tgt, idx) => {
         setTimeout(() => {
@@ -9051,7 +9313,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       }
       return { mec: m, dano: dano };
     }
-    
+
     function _mecAutomatico(item) {
       const E = window.OlaEngine, m = item && item.mec;
       if (!E || !m || !m.resolucao || m.resolucao.tipo !== 'automatico') return null;
@@ -9141,7 +9403,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       if (!state.buffs) state.buffs = [];
       const efsMsgs = [];
       (m.efeitos || []).forEach(ef => {
-        const aplicavel = ['buff_dado','debuff_dado','bonus','vantagem','desvantagem','hp_temp','regen','status'].includes(ef.tipo);
+        const aplicavel = ['buff_dado', 'debuff_dado', 'bonus', 'vantagem', 'desvantagem', 'hp_temp', 'regen', 'status'].includes(ef.tipo);
         if (aplicavel && ef.em === 'conjurador') {
           E.addBuff(state.buffs, { tipo: ef.tipo, valor: ef.valor || 0, duracao: ef.duracao || null, texto: ef.texto || '', consome: ef.consome || null, chave: ef.tipo + ':' + (ef.texto || '') });
         }
@@ -9151,7 +9413,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
             const hpEl = document.getElementById('hp-cur');
             if (hpEl) { hpEl.value = Math.max(0, parseFloat(hpEl.value) - r.total); updateBar('hp'); }
             efsMsgs.push('Dano próprio: ' + r.total + ' de vida');
-          } catch(_) { efsMsgs.push('Dano próprio: ' + ef.dano + ' (rolar manualmente)'); }
+          } catch (_) { efsMsgs.push('Dano próprio: ' + ef.dano + ' (rolar manualmente)'); }
         } else if (ef.tipo === 'efeito_livre') {
           efsMsgs.push('⚠ Aplicar: ' + (ef.texto || 'efeito especial'));
         } else if (ef.texto) {
@@ -9219,7 +9481,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       .cm-actions .cm-ok:disabled{opacity:.4;cursor:not-allowed}`;
     // Janela central de uso de magia/técnica. ctx = { tipo: 'ataque', a } ou { tipo: 'save', s }.
     // O bloco #cast-extra é o espaço reservado pros ajustes que vêm depois (mana extra, escolha de elemento).
-    
+
     function formatarDescricao(texto) {
       if (!texto) return '';
       return String(texto)
@@ -9244,7 +9506,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
         const isLuta = mec.resolucao.atributo === 'luta';
         const bonus = (mec.resolucao.atributo === 'arma' ? getModValue(w.attr) + w.mod + w.bAtk
           : isLuta ? Math.max(getModValue('for'), getModValue('des')) + getProfBonus(state.level || 1)
-          : Math.max(getModValue('int'), getModValue('sab'), getModValue('car')) + getProfBonus(state.level || 1)) + buffBonus('bonus_acerto');
+            : Math.max(getModValue('int'), getModValue('sab'), getModValue('car')) + getProfBonus(state.level || 1)) + buffBonus('bonus_acerto');
         const numG = (info.dano && info.dano.golpes) || 1;
         const gTexto = numG > 1 ? '<b>' + numG + ' ataques sucessivos</b> · ' : '';
         regra = gTexto + '<b>Ataque ' + (mec.resolucao.atributo === 'arma' ? 'com a arma' : isLuta ? 'corpo a corpo (luta)' : 'mágico') + '</b> · d20 ' + _sg(bonus) + ' contra a CA do alvo. 20 natural dobra os dados.';
@@ -9528,7 +9790,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
                 let danoTotal = 0;
                 const exprDardo = (optEscalaEscolhida && optEscalaEscolhida.dano) ? optEscalaEscolhida.dano : ((mec.dano && mec.dano.dados) ? (mec.dano.dados + (mec.dano.fixo ? '+' + mec.dano.fixo : '')) : '1d4+1');
                 for (let d = 0; d < qtd; d++) {
-                  try { danoTotal += E.roll(E.parseExpr(exprDardo)).total; } catch(_) { danoTotal += 3; }
+                  try { danoTotal += E.roll(E.parseExpr(exprDardo)).total; } catch (_) { danoTotal += 3; }
                 }
                 alvosDardos.push({ id: mon.id, name: mon.name, dmg: danoTotal, dardos: qtd });
               }
@@ -9573,8 +9835,8 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
         }
       };
     }
-    
-    
+
+
     function castConfirmarSuporte(cat, i, sup, alvo) {
       const E = window.OlaEngine, item = state[cat] && state[cat][i];
       if (!item) return;
@@ -9596,7 +9858,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
         if (!state.buffs) state.buffs = [];
         const efsMsgs = [];
         (m.efeitos || []).forEach(ef => {
-          const aplicavel = ['buff_dado','debuff_dado','bonus','vantagem','desvantagem','hp_temp','regen','status'].includes(ef.tipo);
+          const aplicavel = ['buff_dado', 'debuff_dado', 'bonus', 'vantagem', 'desvantagem', 'hp_temp', 'regen', 'status'].includes(ef.tipo);
           if (aplicavel) {
             E.addBuff(state.buffs, {
               tipo: ef.tipo,
@@ -9643,7 +9905,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
             target: alvo.name,
             ts: Date.now()
           });
-        } catch(_) {}
+        } catch (_) { }
       }
     }
 
@@ -9699,8 +9961,10 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       const nonce = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
       const efs = (m.efeitos || []).filter(e => ['alvo', 'zona', 'todos'].includes(e.em)).map(e => ({ quando: e.quando, tipo: e.tipo, texto: e.texto || '', valor: e.valor || 0, duracao: e.duracao || 0 }));
       castPending = { nonce: nonce, groups: dm ? dm.groups : [], flat: dm ? dm.flat : 0, label: 'Dano · ' + nomeSkill };
-      syncRef.child('cast').set({ nonce: nonce, nome: nomeSkill, save: m.resolucao.save, cd: cd, regra: m.resolucao.passou || 'nada', dmg: dm ? dm.total : 0, dmgText: dm ? dm.text : '',
-        tipo: elemFinal, targets: alvos, efeitos: efs, ts: Date.now() }).catch(err => console.error('Erro ao enviar conjuração:', err));
+      syncRef.child('cast').set({
+        nonce: nonce, nome: nomeSkill, save: m.resolucao.save, cd: cd, regra: m.resolucao.passou || 'nada', dmg: dm ? dm.total : 0, dmgText: dm ? dm.text : '',
+        tipo: elemFinal, targets: alvos, efeitos: efs, ts: Date.now()
+      }).catch(err => console.error('Erro ao enviar conjuração:', err));
       const meus = (m.efeitos || []).filter(e => ['conjurador', 'aliado'].includes(e.em) && e.texto);
       if (meus.length) wpnToast('Aplique em você/aliado (manual): ' + meus.map(e => e.texto).join('; '));
       if (m.requisito) wpnToast('Requisito da habilidade: ' + m.requisito + '.');
@@ -11724,7 +11988,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
         desc: desc || '',
         ts: Date.now()
       }).catch(e => console.error('Erro ao enviar ação:', e));
-      try { lxPublishSkill(nome, desc); } catch(_) {}
+      try { lxPublishSkill(nome, desc); } catch (_) { }
     }
 
     function syncPushState(immediate) {
@@ -11852,7 +12116,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
           desc: desc || '',
           ts: Date.now()
         });
-      } catch(e) { console.warn('Erro ao publicar skill no feed:', e); }
+      } catch (e) { console.warn('Erro ao publicar skill no feed:', e); }
     }
 
     // Adiciona cartão na aba de Skills (sem detalhes de custo de stamina/foco)
@@ -12371,15 +12635,17 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
   </script>
   <!-- ══════════════ GAVETA DE DADOS + 20 NATURAL ══════════════ -->
   <div class="dx-toasts" id="dx-toasts" aria-live="polite"></div>
-  
+
   <!-- ══════════════ GAVETA ESQUERDA: SKILLS E TESTES ══════════════ -->
   <div class="lx-drawer" id="lx-drawer">
     <div class="lx-handles-container">
-      <button type="button" class="lx-handle" id="lx-handle-skills" onclick="lxToggle('skills')" title="Abrir Histórico de Habilidades / Magias">
+      <button type="button" class="lx-handle" id="lx-handle-skills" onclick="lxToggle('skills')"
+        title="Abrir Histórico de Habilidades / Magias">
         <span class="lx-handle-icon">📜</span>
         <span class="lx-handle-text">Skills</span>
       </button>
-      <button type="button" class="lx-handle" id="lx-handle-combat" onclick="lxToggle('combat')" title="Abrir Histórico de Testes / Combate">
+      <button type="button" class="lx-handle" id="lx-handle-combat" onclick="lxToggle('combat')"
+        title="Abrir Histórico de Testes / Combate">
         <span class="lx-handle-icon">⚔️</span>
         <span class="lx-handle-text">Testes</span>
       </button>
