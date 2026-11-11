@@ -4419,6 +4419,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <script src="olarpg-engine.js"></script>
+  <script src="olarpg-catalog.js"></script>
   <style>
     /* ══════════════ GAVETA DE DADOS + 20 NATURAL ══════════════ */
     .dx-drawer {
@@ -8913,6 +8914,32 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
 
     // ─── MAGIAS E TÉCNICAS COM MEC (ataque contra CA) ───
     // Atributo de ataque: 'conjuracao' = maior mod entre INT/SAB/CAR + proficiência  (ASSUMIDO: mesmo critério da CD; ajuste aqui se o ataque mágico não leva proficiência)
+    function enrichSpell(item) {
+      if (!item || item.mec || !item.name || !window.OLARPG_MEC_CATALOG) return item && item.mec;
+      const norm = item.name.trim().toLowerCase();
+      const noAcc = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      const found = window.OLARPG_MEC_CATALOG[norm] || window.OLARPG_MEC_CATALOG[noAcc];
+      if (found) {
+        item.mec = JSON.parse(JSON.stringify(found));
+        try { save(); } catch (_) {}
+      }
+      return item.mec;
+    }
+
+    function enrichSpellsWithCatalog() {
+      if (!window.OLARPG_MEC_CATALOG || !state) return;
+      ['magias', 'tecnicas'].forEach(cat => {
+        (state[cat] || []).forEach(it => {
+          if (!it.mec && it.name) {
+            const norm = it.name.trim().toLowerCase();
+            const noAcc = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const found = window.OLARPG_MEC_CATALOG[norm] || window.OLARPG_MEC_CATALOG[noAcc];
+            if (found) it.mec = JSON.parse(JSON.stringify(found));
+          }
+        });
+      });
+    }
+
     function _mecAtaque(item) {
       const E = window.OlaEngine, m = item && item.mec;
       if (!E || !m || !m.resolucao || m.resolucao.tipo !== 'ataque') return null;
@@ -8931,10 +8958,19 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
     }
     function conjurarComMec(cat, i) {
       const item = state[cat] && state[cat][i];
+      if (!item) return false;
+      if (!item.mec) enrichSpell(item);
       const a = _mecAtaque(item);
       if (!a) { const sv = conjurarSave(cat, i); if (sv) return sv; const aut = conjurarAutomatico(cat, i); if (aut) return aut; return conjurarNenhuma(cat, i); }  // ataque → save → suporte/buff
       if (a.erro) { wpnToast('Ataque manual: ' + a.erro + '.'); return false; }
-      if (!state.sessionCode || !syncRef || !(lastTurnOrderData || []).some(c => c.type === 'monster' && c.id)) return false;   // fora de combate: só gasta o recurso
+      if (!state.sessionCode || !syncRef) {
+        wpnToast('⚠️ Conecte-se a uma sessão na mesa para conjurar em combate.');
+        return true;
+      }
+      if (!(lastTurnOrderData || []).some(c => c.type === 'monster' && c.id)) {
+        wpnToast('⚠️ Nenhum monstro em combate na Ordem de Turno.');
+        return true;
+      }
       const c = _custoDe(item, cat);
       if (c.cost == null) return false;
       if (getCurAndMaxByResource(c.recurso).cur < c.cost || getCurAndMaxByResource('st').cur < c.foTax) { wpnToast('Recurso insuficiente pra ' + item.name + '.'); return true; }
@@ -9032,9 +9068,18 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
 
     function conjurarAutomatico(cat, i) {
       const item = state[cat] && state[cat][i];
+      if (!item) return null;
+      if (!item.mec) enrichSpell(item);
       const aut = _mecAutomatico(item);
       if (!aut) return null;
-      if (!state.sessionCode || !syncRef || !(lastTurnOrderData || []).some(c => c.type === 'monster' && c.id)) return false;
+      if (!state.sessionCode || !syncRef) {
+        wpnToast('⚠️ Conecte-se a uma sessão na mesa para conjurar em combate.');
+        return true;
+      }
+      if (!(lastTurnOrderData || []).some(c => c.type === 'monster' && c.id)) {
+        wpnToast('⚠️ Nenhum monstro em combate na Ordem de Turno.');
+        return true;
+      }
       const c = _custoDe(item, cat);
       if (c.cost == null) return false;
       if (getCurAndMaxByResource(c.recurso).cur < c.cost || getCurAndMaxByResource('st').cur < c.foTax) {
@@ -9046,10 +9091,20 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
     }
 
     function conjurarSave(cat, i) {
-      const item = state[cat] && state[cat][i], s = _mecSave(item);
+      const item = state[cat] && state[cat][i];
+      if (!item) return false;
+      if (!item.mec) enrichSpell(item);
+      const s = _mecSave(item);
       if (!s) return false;
       if (s.erro) { wpnToast('Resolução manual: ' + s.erro + '.'); return false; }
-      if (!state.sessionCode || !syncRef || !(lastTurnOrderData || []).some(c => c.type === 'monster' && c.id)) return false;   // fora de combate: só gasta o recurso
+      if (!state.sessionCode || !syncRef) {
+        wpnToast('⚠️ Conecte-se a uma sessão na mesa para conjurar em combate.');
+        return true;
+      }
+      if (!(lastTurnOrderData || []).some(c => c.type === 'monster' && c.id)) {
+        wpnToast('⚠️ Nenhum monstro em combate na Ordem de Turno.');
+        return true;
+      }
       const c = _custoDe(item, cat);
       if (c.cost == null) return false;
       if (getCurAndMaxByResource(c.recurso).cur < c.cost || getCurAndMaxByResource('st').cur < c.foTax) { wpnToast('Recurso insuficiente pra ' + item.name + '.'); return true; }
@@ -9698,6 +9753,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && (wpnArmed || wpnFabOpen)) { wpnFabOpen = false; wpnDisarm(); } });
 
     function applyState() {
+      enrichSpellsWithCatalog();
       wpnApply(state.weapon);
       const codeInput = document.getElementById('session-code-input');
       if (codeInput) codeInput.value = state.sessionCode || '';
