@@ -13103,6 +13103,87 @@
             </div>
           </div>
         </div>
+        <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+          <div class="spell-card-top">
+            <div class="spell-name-row">
+              <span class="spell-name">
+                Círculo de Cura
+              </span>
+              <span class="spell-cost-badge">
+                6🔵
+              </span>
+            </div>
+            <div class="spell-tags">
+              <span class="spell-tag escola">
+                Cura
+              </span>
+              <span class="spell-tag tipo-magica">
+                Magia Geral
+              </span>
+              <span class="spell-tag limitada">
+                mín 6🔵 / máx 8🔵
+              </span>
+            </div>
+          </div>
+          <div class="spell-card-body">
+            <div class="spell-desc">
+              Um pulso de luz curativa em área de 3x3 blocos ao redor de um ponto em até 4 blocos. Todos os aliados na área recuperam 2d6 HP. A cada 2🔵 extra gastos, a cura aumenta em 1d6 (máx 8🔵, cura de 3d6).
+            </div>
+            <script type="application/json" class="mec">{"v":1,"id":"circulo-de-cura","revisado":false,"acao":"padrao","recurso":"fo","custo":{"min":6,"max":8},"alvos":[{"papel":"aliado","qtd":"marcar","alcance":4,"area":{"forma":"quadrado","tamanho":3}}],"resolucao":{"tipo":"nenhuma"},"cura":{"dados":"2d6"},"escala":{"passo":2,"a_partir_de":6,"ganha":{"cura":"1d6"}}}</script>
+          </div>
+        </div>
+        <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+          <div class="spell-card-top">
+            <div class="spell-name-row">
+              <span class="spell-name">
+                Pulso Vital
+              </span>
+              <span class="spell-cost-badge">
+                3🔵
+              </span>
+            </div>
+            <div class="spell-tags">
+              <span class="spell-tag escola">
+                Cura
+              </span>
+              <span class="spell-tag tipo-magica">
+                Magia Geral rápida
+              </span>
+            </div>
+          </div>
+          <div class="spell-card-body">
+            <div class="spell-desc">
+              Ação rápida. Restaura 1d6+1 HP em um aliado em até 4 blocos.
+            </div>
+            <script type="application/json" class="mec">{"v":1,"id":"pulso-vital","revisado":false,"acao":"rapida","recurso":"fo","custo":3,"alvos":[{"papel":"aliado","qtd":1,"alcance":4}],"resolucao":{"tipo":"nenhuma"},"cura":{"dados":"1d6","fixo":1}}</script>
+          </div>
+        </div>
+        <div class="spell-card magica geral" data-scope="geral" data-type="magica">
+          <div class="spell-card-top">
+            <div class="spell-name-row">
+              <span class="spell-name">
+                Vigor Renovado
+              </span>
+              <span class="spell-cost-badge">
+                3🔵
+              </span>
+            </div>
+            <div class="spell-tags">
+              <span class="spell-tag escola">
+                Cura
+              </span>
+              <span class="spell-tag tipo-magica">
+                Magia Geral
+              </span>
+            </div>
+          </div>
+          <div class="spell-card-body">
+            <div class="spell-desc">
+              Um aliado em até 4 blocos recupera 1d4+1🟡.
+            </div>
+            <script type="application/json" class="mec">{"v":1,"id":"vigor-renovado","revisado":false,"acao":"padrao","recurso":"fo","custo":3,"alvos":[{"papel":"aliado","qtd":1,"alcance":4}],"resolucao":{"tipo":"nenhuma"},"cura":{"dados":"1d4","fixo":1,"em":"st"}}</script>
+          </div>
+        </div>
       </div>
       <!-- ── MAGIAS EXCLUSIVAS ── -->
       <div class="spell-section-header magica">
