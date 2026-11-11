@@ -9269,6 +9269,8 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       }
       if (!listaElementos.length && (
         (mec.dano && /elemental/i.test(mec.dano.tipo || '')) ||
+        /elemental/i.test(item.name || '') ||
+        (mec.id && /elemental/i.test(mec.id)) ||
         /dano elemental|sofre .* elemental|cisco elemental|onda elemental|energia elemental|explosão de singularidade|ao elemento/i.test(item.desc || '')
       )) {
         listaElementos = ['Fogo', 'Água', 'Terra', 'Trovão', 'Raio', 'Luz', 'Escuridão'];
@@ -9679,6 +9681,7 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
     function castConfirmar(cat, i, s, alvos, optEscala) {
       const E = window.OlaEngine, item = state[cat] && state[cat][i];
       if (!item || !alvos.length || !syncRef) return;
+      const m = s.mec, cd = _cdDe(m);
       const c = _custoDe(item, cat);
       const costReal = (optEscala && optEscala.custoEscolhido != null) ? optEscala.custoEscolhido : c.cost;
       const foTaxReal = (optEscala && optEscala.foTax != null) ? optEscala.foTax : c.foTax;
@@ -9690,7 +9693,6 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       const nomeSkill = item.name + (elemFinal ? ' (' + elemFinal + ')' : '');
       syncLogAction(cat === 'magias' ? 'magia' : 'skill', nomeSkill, item.custo, item.desc);
       playSkillAudio(c.recurso, costReal);
-      const m = s.mec, cd = _cdDe(m);
       const exprDanoFinal = (optEscala && optEscala.exprDano) ? optEscala.exprDano : (s.dano && s.dano.expr);
       const dm = exprDanoFinal ? wpnCalcDano(exprDanoFinal, s.dano ? s.dano.extra : 0, false, c.recurso === 'fo' ? 'magia' : 'ataque') : null;
       if (dm && dm.consumidos && dm.consumidos.length) { E.removeBuffs(state.buffs || [], dm.consumidos); save(); renderBuffs(); }
