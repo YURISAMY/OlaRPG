@@ -9770,6 +9770,8 @@
       });
 
       ok.onclick = () => {
+        if (ok.disabled) return;
+        ok.disabled = true;
         const escOpt = {
           custoEscolhido: optEscalaEscolhida ? optEscalaEscolhida.gasto : null,
           exprDano: optEscalaEscolhida ? optEscalaEscolhida.dano : null,
@@ -10876,7 +10878,7 @@
       skillFeedRef = db.ref('sessions/' + code + '/skillFeed').limitToLast(40);
       skillFeedRef.on('child_added', (snapshot) => {
         const item = snapshot.val();
-        if (item) lxAddSkillEntry(item);
+        if (item) lxAddSkillEntry(item, snapshot.key);
       });
 
       // Escuta histórico de testes e combate
@@ -10884,7 +10886,7 @@
       combatFeedRef = db.ref('sessions/' + code + '/combatFeed').limitToLast(40);
       combatFeedRef.on('child_added', (snapshot) => {
         const item = snapshot.val();
-        if (item) lxAddCombatEntry(item);
+        if (item) lxAddCombatEntry(item, snapshot.key);
       });
 
       syncSetStatus('online', '🟢 sincronizado: ' + code);
@@ -12119,8 +12121,26 @@
       } catch (e) { console.warn('Erro ao publicar skill no feed:', e); }
     }
 
+    const lxSeenSkillKeys = new Set();
+    const lxRecentSkillSignatures = new Map();
+
     // Adiciona cartão na aba de Skills (sem detalhes de custo de stamina/foco)
-    function lxAddSkillEntry(item) {
+    function lxAddSkillEntry(item, key) {
+      if (key && lxSeenSkillKeys.has(key)) return;
+      if (key) lxSeenSkillKeys.add(key);
+
+      if (item && item.sender && item.skillName) {
+        const sig = [item.sender, item.skillName, item.desc || ''].join('|');
+        const now = item.ts || Date.now();
+        const lastTs = lxRecentSkillSignatures.get(sig);
+        if (lastTs && Math.abs(now - lastTs) < 1500) return;
+        lxRecentSkillSignatures.set(sig, now);
+        if (lxRecentSkillSignatures.size > 80) {
+          const first = lxRecentSkillSignatures.keys().next().value;
+          lxRecentSkillSignatures.delete(first);
+        }
+      }
+
       const container = document.getElementById('lx-body-skills');
       if (!container) return;
       const emptyMsg = document.getElementById('lx-empty-skills');
@@ -12145,8 +12165,35 @@
       container.scrollTop = container.scrollHeight;
     }
 
+    const lxSeenCombatKeys = new Set();
+    const lxSeenCombatNonces = new Set();
+    const lxRecentCombatSignatures = new Map();
+
     // Adiciona cartão na aba de Testes & Combate (narrativo, sem d20/mod/CD)
-    function lxAddCombatEntry(item) {
+    function lxAddCombatEntry(item, key) {
+      if (key && lxSeenCombatKeys.has(key)) return;
+      if (key) lxSeenCombatKeys.add(key);
+
+      if (item && item.nonce) {
+        if (lxSeenCombatNonces.has(item.nonce)) return;
+        lxSeenCombatNonces.add(item.nonce);
+      }
+
+      // Deduplicação heurística para evitar logs repetidos de ataques/magias
+      if (item && item.actor && item.skillName) {
+        const sig = [item.type, item.actor, item.skillName, item.target || '', item.dmg != null ? item.dmg : ''].join('|');
+        const now = item.ts || Date.now();
+        const lastTs = lxRecentCombatSignatures.get(sig);
+        if (lastTs && Math.abs(now - lastTs) < 3000) {
+          return; // ignora duplicata que chegou em menos de 3s
+        }
+        lxRecentCombatSignatures.set(sig, now);
+        if (lxRecentCombatSignatures.size > 80) {
+          const first = lxRecentCombatSignatures.keys().next().value;
+          lxRecentCombatSignatures.delete(first);
+        }
+      }
+
       const container = document.getElementById('lx-body-combat');
       if (!container) return;
       const emptyMsg = document.getElementById('lx-empty-combat');

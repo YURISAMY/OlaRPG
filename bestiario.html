@@ -8175,41 +8175,59 @@
         if (p.castResult && p.castResult.nonce === c.nonce) return;
         _castBusy[c.nonce] = 1;
         if (!c.ts || Date.now() - c.ts > 600000) return;
-        const nome = p.name || 'Jogador', chave = String(c.save || '').toUpperCase(), cd = parseInt(c.cd) || 0, dano = Math.max(0, parseInt(c.dmg) || 0);
-        const results = [];
-        (c.targets || []).slice(0, 30).forEach(t => {
-          const m = battleMonsters.find(x => x.id === t.id);
-          if (!m) { results.push({ target: String(t.name || '?'), invalid: true }); return; }
-          const alvo = m.displayName || m.name;
-          if (c.regra === 'automatico') {
-            const danoAlvo = Math.max(0, (t.dmg != null ? parseInt(t.dmg) : dano) || 0);
-            m.hp = Math.max(0, m.hp - danoAlvo);
-            const dardosInfo = t.dardos ? ' (' + t.dardos + ' ' + (t.dardos > 1 ? 'mísseis' : 'míssil') + ')' : '';
-            addBattleLog(nome, 'atingiu <span class="log-skill-name">' + _esc(c.nome) + '</span> em ' + _esc(alvo) + dardosInfo + ' — <b>acerto automático</b>: ' + danoAlvo + ' de dano · HP ' + m.hp + '/' + m.maxHp);
-            results.push({ target: alvo, total: null, passou: false, dmg: danoAlvo, killed: danoAlvo > 0 && m.hp === 0, efs: [] });
-            return;
-          }
-          const mod = (m.attributes && m.attributes[chave]) || 0;
-          const r = E.resolveSaveAlvo({ mod: mod, cd: cd, dano: dano, regra: c.regra });
-          m.hp = Math.max(0, m.hp - r.dano);
-          const efs = E.efeitosAlvo(c.efeitos, r.passou).map(f => (f.texto || f.tipo) + (f.duracao ? ' (' + f.duracao + ' turno' + (f.duracao > 1 ? 's' : '') + ')' : ''));
-          addBattleLog(nome, 'conjurou <span class="log-skill-name">' + _esc(c.nome) + '</span> em ' + _esc(alvo) + ' — ' + _esc(chave) + ' ' + r.d20 + (mod >= 0 ? '+' : '') + mod + ' = <b>' + r.total + '</b> vs CD ' + cd + ': ' +
-            (r.passou ? 'passou' : '<b>falhou</b>') + (dano ? ' · ' + r.dano + ' de dano ' + (c.tipo ? '(' + _esc(c.tipo) + ') ' : '') + '· HP ' + m.hp + '/' + m.maxHp : '') +
-            (efs.length ? ' · <i>' + efs.map(_esc).join('; ') + '</i>' : ''));
-          results.push({ target: alvo, total: r.total, passou: r.passou, dmg: r.dano, killed: r.dano > 0 && m.hp === 0, efs: efs });
-        });
-        saveBattleState(); renderBattle();
-        playersRef.child(id).child('castResult').set({ nonce: c.nonce, skillName: c.nome, results: results });
-        if (syncDb && currentSessionCode) {
-          const cRef = syncDb.ref('sessions/' + currentSessionCode + '/combatFeed');
-          cRef.push({
-            type: 'save_batch',
-            actor: nome,
-            skillName: c.nome,
-            results: results,
-            ts: Date.now()
+
+        const executarConjuracao = () => {
+          const nome = p.name || 'Jogador', chave = String(c.save || '').toUpperCase(), cd = parseInt(c.cd) || 0, dano = Math.max(0, parseInt(c.dmg) || 0);
+          const results = [];
+          (c.targets || []).slice(0, 30).forEach(t => {
+            const m = battleMonsters.find(x => x.id === t.id);
+            if (!m) { results.push({ target: String(t.name || '?'), invalid: true }); return; }
+            const alvo = m.displayName || m.name;
+            if (c.regra === 'automatico') {
+              const danoAlvo = Math.max(0, (t.dmg != null ? parseInt(t.dmg) : dano) || 0);
+              m.hp = Math.max(0, m.hp - danoAlvo);
+              const dardosInfo = t.dardos ? ' (' + t.dardos + ' ' + (t.dardos > 1 ? 'mísseis' : 'míssil') + ')' : '';
+              addBattleLog(nome, 'atingiu <span class="log-skill-name">' + _esc(c.nome) + '</span> em ' + _esc(alvo) + dardosInfo + ' — <b>acerto automático</b>: ' + danoAlvo + ' de dano · HP ' + m.hp + '/' + m.maxHp);
+              results.push({ target: alvo, total: null, passou: false, dmg: danoAlvo, killed: danoAlvo > 0 && m.hp === 0, efs: [] });
+              return;
+            }
+            const mod = (m.attributes && m.attributes[chave]) || 0;
+            const r = E.resolveSaveAlvo({ mod: mod, cd: cd, dano: dano, regra: c.regra });
+            m.hp = Math.max(0, m.hp - r.dano);
+            const efs = E.efeitosAlvo(c.efeitos, r.passou).map(f => (f.texto || f.tipo) + (f.duracao ? ' (' + f.duracao + ' turno' + (f.duracao > 1 ? 's' : '') + ')' : ''));
+            addBattleLog(nome, 'conjurou <span class="log-skill-name">' + _esc(c.nome) + '</span> em ' + _esc(alvo) + ' — ' + _esc(chave) + ' ' + r.d20 + (mod >= 0 ? '+' : '') + mod + ' = <b>' + r.total + '</b> vs CD ' + cd + ': ' +
+              (r.passou ? 'passou' : '<b>falhou</b>') + (dano ? ' · ' + r.dano + ' de dano ' + (c.tipo ? '(' + _esc(c.tipo) + ') ' : '') + '· HP ' + m.hp + '/' + m.maxHp : '') +
+              (efs.length ? ' · <i>' + efs.map(_esc).join('; ') + '</i>' : ''));
+            results.push({ target: alvo, total: r.total, passou: r.passou, dmg: r.dano, killed: r.dano > 0 && m.hp === 0, efs: efs });
           });
-          pruneLog(cRef, 40);
+          saveBattleState(); renderBattle();
+          playersRef.child(id).child('castResult').set({ nonce: c.nonce, skillName: c.nome, results: results });
+          if (syncDb && currentSessionCode) {
+            const cRef = syncDb.ref('sessions/' + currentSessionCode + '/combatFeed');
+            cRef.push({
+              type: 'save_batch',
+              nonce: c.nonce,
+              actor: nome,
+              skillName: c.nome,
+              results: results,
+              ts: Date.now()
+            });
+            pruneLog(cRef, 40);
+          }
+        };
+
+        if (syncDb && currentSessionCode) {
+          const claimRef = syncDb.ref('sessions/' + currentSessionCode + '/claimedActions/' + c.nonce);
+          claimRef.transaction(curr => {
+            if (curr) return; // já processado por outra aba/instância do Bestiário
+            return Date.now();
+          }, (err, committed) => {
+            if (err || !committed) return; // outra aba reivindicou
+            executarConjuracao();
+            pruneLog(syncDb.ref('sessions/' + currentSessionCode + '/claimedActions'), 60);
+          });
+        } else {
+          executarConjuracao();
         }
       });
     }
@@ -8222,32 +8240,50 @@
         if (p.atkResult && p.atkResult.nonce === a.nonce) return;       // já resolvido
         _atkBusy[a.nonce] = 1;
         if (!a.ts || Date.now() - a.ts > 600000) return;                 // ataque velho: ignora
-        const m = battleMonsters.find(x => x.id === a.targetId);
-        const nome = p.name || 'Jogador';
-        if (!m) { playersRef.child(id).child('atkResult').set({ nonce: a.nonce, invalid: true, target: String(a.targetName || '?') }); return; }
-        const ca = m.ca || 0, d20 = parseInt(a.d20) || 0, total = parseInt(a.total) || 0;
-        const hit = d20 === 20 || (d20 !== 1 && total >= ca);
-        const dmg = hit ? Math.max(0, parseInt(a.dmg) || 0) : 0;
-        if (hit) m.hp = Math.max(0, m.hp - dmg);
-        saveBattleState(); renderBattle();
-        const alvo = m.displayName || m.name;
-        addBattleLog(nome, 'atacou <span class="log-skill-name">' + _esc(alvo) + '</span> com ' + _esc(a.weapon) + (a.skill ? ' (' + _esc(a.skill) + ')' : '') +
-          ' — d20 ' + d20 + ' = <b>' + total + '</b> vs CA ' + ca + ': ' +
-          (hit ? '<b>ACERTOU</b> · ' + dmg + ' de dano ' + (a.dmgText ? '(' + _esc(a.dmgText) + ') ' : '') + '· HP ' + m.hp + '/' + m.maxHp : 'errou'));
-        playersRef.child(id).child('atkResult').set({ nonce: a.nonce, hit: hit, dmg: dmg, target: alvo, killed: hit && m.hp === 0 });
+
+        const executarAtaque = () => {
+          const m = battleMonsters.find(x => x.id === a.targetId);
+          const nome = p.name || 'Jogador';
+          if (!m) { playersRef.child(id).child('atkResult').set({ nonce: a.nonce, invalid: true, target: String(a.targetName || '?') }); return; }
+          const ca = m.ca || 0, d20 = parseInt(a.d20) || 0, total = parseInt(a.total) || 0;
+          const hit = d20 === 20 || (d20 !== 1 && total >= ca);
+          const dmg = hit ? Math.max(0, parseInt(a.dmg) || 0) : 0;
+          if (hit) m.hp = Math.max(0, m.hp - dmg);
+          saveBattleState(); renderBattle();
+          const alvo = m.displayName || m.name;
+          addBattleLog(nome, 'atacou <span class="log-skill-name">' + _esc(alvo) + '</span> com ' + _esc(a.weapon) + (a.skill ? ' (' + _esc(a.skill) + ')' : '') +
+            ' — d20 ' + d20 + ' = <b>' + total + '</b> vs CA ' + ca + ': ' +
+            (hit ? '<b>ACERTOU</b> · ' + dmg + ' de dano ' + (a.dmgText ? '(' + _esc(a.dmgText) + ') ' : '') + '· HP ' + m.hp + '/' + m.maxHp : 'errou'));
+          playersRef.child(id).child('atkResult').set({ nonce: a.nonce, hit: hit, dmg: dmg, target: alvo, killed: hit && m.hp === 0 });
+          if (syncDb && currentSessionCode) {
+            const cRef = syncDb.ref('sessions/' + currentSessionCode + '/combatFeed');
+            cRef.push({
+              type: 'attack',
+              nonce: a.nonce,
+              actor: nome,
+              skillName: a.weapon + (a.skill ? ' (' + a.skill + ')' : ''),
+              target: alvo,
+              hit: hit,
+              dmg: dmg,
+              killed: hit && m.hp === 0,
+              ts: Date.now()
+            });
+            pruneLog(cRef, 40);
+          }
+        };
+
         if (syncDb && currentSessionCode) {
-          const cRef = syncDb.ref('sessions/' + currentSessionCode + '/combatFeed');
-          cRef.push({
-            type: 'attack',
-            actor: nome,
-            skillName: a.weapon + (a.skill ? ' (' + a.skill + ')' : ''),
-            target: alvo,
-            hit: hit,
-            dmg: dmg,
-            killed: hit && m.hp === 0,
-            ts: Date.now()
+          const claimRef = syncDb.ref('sessions/' + currentSessionCode + '/claimedActions/' + a.nonce);
+          claimRef.transaction(curr => {
+            if (curr) return; // já processado por outra aba/instância do Bestiário
+            return Date.now();
+          }, (err, committed) => {
+            if (err || !committed) return; // outra aba reivindicou
+            executarAtaque();
+            pruneLog(syncDb.ref('sessions/' + currentSessionCode + '/claimedActions'), 60);
           });
-          pruneLog(cRef, 40);
+        } else {
+          executarAtaque();
         }
       });
     }
