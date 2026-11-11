@@ -16,7 +16,7 @@ while ((match = scriptRegex.exec(html)) !== null) {
     const data = JSON.parse(jsonStr);
     const preHtml = html.slice(Math.max(0, scriptIndex - 1200), scriptIndex);
     let name = null;
-    const nameRegex = /class=["'](?:spell-name|skname)["'][^>]*>([\s\S]*?)<\/(?:span|div|h3|h4)>/gi;
+    const nameRegex = /class=["'](?:spell-name|skname|skill-name)["'][^>]*>([\s\S]*?)<\/(?:span|div|h3|h4)>/gi;
     let nm, lastMatch;
     while ((nm = nameRegex.exec(preHtml)) !== null) {
       lastMatch = nm[1];
@@ -33,6 +33,19 @@ while ((match = scriptRegex.exec(html)) !== null) {
       catalog[norm] = data;
       if (noAcc !== norm) catalog[noAcc] = data;
       count++;
+    }
+    if (data.id) {
+      const idName = data.id.replace(/-/g, ' ').toLowerCase().trim();
+      const idNoAcc = idName.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      catalog[idName] = data;
+      if (idNoAcc !== idName) catalog[idNoAcc] = data;
+      const parts = idName.split(' ');
+      if (parts.length > 1) {
+        const withoutPrefix = parts.slice(1).join(' ');
+        catalog[withoutPrefix] = data;
+        const wpNoAcc = withoutPrefix.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (wpNoAcc !== withoutPrefix) catalog[wpNoAcc] = data;
+      }
     }
   } catch (e) {
     console.error('Error parsing JSON:', e.message);

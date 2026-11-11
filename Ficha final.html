@@ -8999,10 +8999,11 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
       else bonus = Math.max(getModValue('int'), getModValue('sab'), getModValue('car')) + getProfBonus(state.level || 1);
       bonus += buffBonus('bonus_acerto');
       const exprDano = opts.exprDano || a.dano.expr;
-      const dm = wpnCalcDano(exprDano, a.dano.extra, d20 === 20, c.recurso === 'fo' ? 'magia' : 'ataque');
+      const dm = a.dano.semDano ? { total: 0, flat: 0, groups: [], text: '0', consumidos: [], expr: '0' } : wpnCalcDano(exprDano, a.dano.extra, d20 === 20, c.recurso === 'fo' ? 'magia' : 'ataque');
       const elemNome = opts.elemento || (a.mec.elemento && typeof a.mec.elemento === 'string' ? a.mec.elemento : '');
-      const labelDano = (elemNome ? 'Dano (' + elemNome + ') · ' : 'Dano · ') + item.name;
-      wpnDisparar({ id: id, alvo: name, d20: d20, bonus: bonus, nome: item.name + (elemNome ? ' (' + elemNome + ')' : ''), skill: '', dm: dm, label: labelDano, tipo: elemNome });
+      const sufixoGolpe = opts.totalGolpes ? ' (' + opts.golpeIdx + '/' + opts.totalGolpes + ')' : '';
+      const labelDano = (elemNome ? 'Dano (' + elemNome + ') · ' : 'Dano · ') + item.name + sufixoGolpe;
+      wpnDisparar({ id: id, alvo: name, d20: d20, bonus: bonus, nome: item.name + (elemNome ? ' (' + elemNome + ')' : '') + sufixoGolpe, skill: '', dm: dm, label: labelDano, tipo: elemNome });
       if (a.dano.alt && a.dano.alt.condicao) wpnToast('Atenção: ' + a.dano.alt.condicao + ' → ' + (a.dano.alt.efeito || 'efeito alternativo') + ' (manual).');
     }
 
@@ -9244,7 +9245,9 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
         const bonus = (mec.resolucao.atributo === 'arma' ? getModValue(w.attr) + w.mod + w.bAtk
           : isLuta ? Math.max(getModValue('for'), getModValue('des')) + getProfBonus(state.level || 1)
           : Math.max(getModValue('int'), getModValue('sab'), getModValue('car')) + getProfBonus(state.level || 1)) + buffBonus('bonus_acerto');
-        regra = '<b>Ataque ' + (mec.resolucao.atributo === 'arma' ? 'com a arma' : isLuta ? 'corpo a corpo (luta)' : 'mágico') + '</b> · d20 ' + _sg(bonus) + ' contra a CA do alvo. 20 natural dobra os dados.';
+        const numG = (info.dano && info.dano.golpes) || 1;
+        const gTexto = numG > 1 ? '<b>' + numG + ' ataques sucessivos</b> · ' : '';
+        regra = gTexto + '<b>Ataque ' + (mec.resolucao.atributo === 'arma' ? 'com a arma' : isLuta ? 'corpo a corpo (luta)' : 'mágico') + '</b> · d20 ' + _sg(bonus) + ' contra a CA do alvo. 20 natural dobra os dados.';
       } else if (isSup) {
         regra = '<b>Habilidade de Suporte / Buff</b> · Escolha o aliado alvo que receberá os efeitos.';
       } else if (isAut) {
@@ -9278,8 +9281,11 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
         const base = E.parseExpr(d.expr), delta = E.temDados(base) ? E.diceDelta(state.buffs || [], kind) : 0;
         const fin = E.fmt(E.applyModifiers(base, { delta: delta })) + (d.extra ? (d.extra > 0 ? '+' : '−') + Math.abs(d.extra) : '');
         const elemTxt = elementoEscolhido ? ' (<b id="cm-dyn-elem">' + esc(elementoEscolhido) + '</b>)' : (d.tipo ? ' ' + esc(d.tipo) : '');
-        regra += '<br>Dano: <b>' + esc(fin) + '</b>' + elemTxt + (delta ? ' <i>(buff de dado ' + _sg(delta) + ')</i>' : '');
-      } else if (isAtk) regra += '<br>Sem dano definido.';
+        const golpePrefixo = (d.golpes && d.golpes > 1) ? 'Dano por golpe: ' : 'Dano: ';
+        regra += '<br>' + golpePrefixo + '<b>' + esc(fin) + '</b>' + elemTxt + (delta ? ' <i>(buff de dado ' + _sg(delta) + ')</i>' : '');
+      } else if (isAtk) {
+        regra += (d && d.semDano) ? '<br><i>Não causa dano (aplica efeito de controle no acerto).</i>' : '<br>Sem dano definido.';
+      }
       // alvos
       const q = mec.alvos && mec.alvos[0] && mec.alvos[0].qtd;
       const isAreaAtk = isAtk && (
@@ -9546,7 +9552,16 @@ body:has(.dx-drawer.open) #wpn-fab{right:min(332px,92vw)}
           return;
         }
         if (isAtk) {
-          if (alvos.length > 1) {
+          const numGolpes = (info.dano && info.dano.golpes) || 1;
+          if (numGolpes > 1 && alvos.length === 1) {
+            const tgt = alvos[0];
+            for (let g = 0; g < numGolpes; g++) {
+              setTimeout(() => {
+                const d20 = 1 + Math.floor(Math.random() * 20);
+                wpnConjurarAlvo({ cat: cat, i: i }, tgt.id, tgt.name, d20, wpnRead(), Object.assign({}, escOpt, { skipCost: g > 0, golpeIdx: g + 1, totalGolpes: numGolpes }));
+              }, g * 350);
+            }
+          } else if (alvos.length > 1) {
             wpnConjurarMulti({ cat: cat, i: i }, alvos, wpnRead(), escOpt);
           } else {
             wpnConjurarAlvo({ cat: cat, i: i }, alvos[0].id, alvos[0].name, 1 + Math.floor(Math.random() * 20), wpnRead(), escOpt);

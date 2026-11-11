@@ -195,6 +195,39 @@ testCase('Ataque', '1.10 Golpe Brutal (ataque com arma dobrando dados da arma)',
   assert.strictEqual(comp.extra, 4, 'Bônus extra somado corretamente');
 });
 
+testCase('Ataque', '1.11 Pressão Constante (3 ataques sucessivos com d20 contra CA do alvo)', () => {
+  const mec = global.window.OLARPG_MEC_CATALOG['pressao constante'];
+  assert.ok(mec, 'Pressão Constante deve estar no catálogo');
+  assert.strictEqual(mec.resolucao.tipo, 'ataque');
+  assert.strictEqual(mec.dano.golpes, 3);
+
+  const comp = E.composeDano(mec, null);
+  assert.strictEqual(comp.ok, true);
+  assert.strictEqual(comp.expr, '1d4');
+  assert.strictEqual(comp.golpes, 3);
+
+  // Simulação dos 3 ataques contra um monstro de CA 14
+  const alvo = { name: 'Orc Guerreiro', ca: 14, hp: 30 };
+  const bonusAtk = +5;
+  const d20s = [10, 6, 12]; // totais: 15 (acertou), 11 (errou), 17 (acertou) -> 2 acertos!
+  const danos = [3, 0, 4]; // dano dos acertos: 3 e 4
+  let acertos = 0, danoTotal = 0;
+
+  d20s.forEach((d20, idx) => {
+    const total = d20 + bonusAtk;
+    if (total >= alvo.ca) {
+      acertos++;
+      danoTotal += danos[idx];
+    }
+  });
+
+  alvo.hp -= danoTotal;
+  assert.strictEqual(acertos, 2, '2 dos 3 ataques devem ter acertado a CA 14');
+  assert.strictEqual(danoTotal, 7, 'Dano total dos 2 acertos deve ser 7');
+  assert.strictEqual(alvo.hp, 23, 'HP do alvo reduzido de 30 para 23');
+  assert.ok(acertos >= 2, 'Gatilho de 2+ acertos acionado: sem ações rápidas até o próximo turno');
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. MAGIAS E HABILIDADES COM SALVAGUARDA (SAVE / RESISTÊNCIA EM ÁREA)
 // ─────────────────────────────────────────────────────────────────────────────

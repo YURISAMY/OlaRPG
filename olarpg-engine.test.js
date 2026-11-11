@@ -104,10 +104,23 @@ t('composeDano: multiplicador >= 1 multiplica dados da arma e flat', () => {
   assert.strictEqual(r.expr, '2d8');
   assert.strictEqual(r.extra, 3);
 });
-t('composeDano: golpes/multiplicador fracionado e arma sem dano caem no manual', () => {
-  assert.strictEqual(E.composeDano({ dano: { dados: '1d6', golpes: 2 } }, null).ok, false);
-  assert.strictEqual(E.composeDano({ dano: { arma: true, multiplicador: 0.5 } }, { dano: '1d8' }).ok, false);
+t('composeDano: suporta golpes múltiplos e multiplicador fracionado 0.5', () => {
+  const rGolpes = E.composeDano({ dano: { dados: '1d4', golpes: 3 } }, null);
+  assert.ok(rGolpes.ok);
+  assert.strictEqual(rGolpes.expr, '1d4');
+  assert.strictEqual(rGolpes.golpes, 3);
+
+  const rMeio = E.composeDano({ dano: { arma: true, multiplicador: 0.5 } }, { dano: '2d6', extra: 4 });
+  assert.ok(rMeio.ok);
+  assert.strictEqual(rMeio.expr, '1d6');
+  assert.strictEqual(rMeio.extra, 4);
+
   assert.strictEqual(E.composeDano({ dano: { arma: true } }, { dano: '' }).ok, false);
+});
+t('composeDano: ataque sem dano (controle/status)', () => {
+  const r = E.composeDano({ resolucao: { tipo: 'ataque' } }, null);
+  assert.ok(r.ok);
+  assert.strictEqual(r.semDano, true);
 });
 
 

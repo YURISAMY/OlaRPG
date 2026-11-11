@@ -223,21 +223,29 @@
    */
   function composeDano(mec, arma) {
     var d = mec && mec.dano;
-    if (!d) return { ok: false, motivo: 'sem dano' };
-    if (d.golpes || d.por || d.so_se_falhar || (d.multiplicador && d.multiplicador < 1)) return { ok: false, motivo: 'esse formato de dano ainda é manual' };
+    if (!d) {
+      if (mec && mec.resolucao && mec.resolucao.tipo === 'ataque') {
+        return { ok: true, expr: '', extra: 0, semDano: true, tipo: null, alt: null, golpes: 1 };
+      }
+      return { ok: false, motivo: 'sem dano' };
+    }
+    if (d.por || d.so_se_falhar || (d.multiplicador && d.multiplicador < 0.5)) return { ok: false, motivo: 'esse formato de dano ainda é manual' };
     var parts = [], extra = 0;
     if (d.arma) {
       if (!arma || !arma.dano || !String(arma.dano).trim()) return { ok: false, motivo: 'defina o dano da arma' };
-      var mult = (typeof d.multiplicador === 'number' && d.multiplicador >= 1) ? d.multiplicador : 1;
+      var mult = (typeof d.multiplicador === 'number' && d.multiplicador > 0) ? d.multiplicador : 1;
       var wParsed = parseExpr(arma.dano);
-      var wTerms = wParsed.terms.map(function (t) { return (t.n * mult) + 'd' + t.s; });
+      var wTerms = wParsed.terms.map(function (t) {
+        var num = mult < 1 ? Math.max(1, Math.floor(t.n * mult)) : Math.round(t.n * mult);
+        return num + 'd' + t.s;
+      });
       if (wTerms.length) parts.push(wTerms.join('+'));
-      extra += (arma.extra || 0) + (wParsed.flat * mult);
+      extra += Math.round((arma.extra || 0) * (d.multiplica_extra ? mult : 1)) + Math.round(wParsed.flat * mult);
     }
     if (d.dados) parts.push(d.dados);
     if (typeof d.fixo === 'number') extra += d.fixo;
     var expr = fmt(parseExpr(parts.join('+')));
-    return { ok: true, expr: expr === '0' ? '' : expr, extra: extra, tipo: d.tipo || null, alt: d.alt || null };
+    return { ok: true, expr: expr === '0' ? '' : expr, extra: extra, tipo: d.tipo || null, alt: d.alt || null, golpes: d.golpes || d.ataques || null };
   }
 
   /* ───────── Validador do mec ───────── */
