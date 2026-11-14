@@ -8081,6 +8081,22 @@
         });
         html += '</div></div>';
 
+        // Efeitos ativos no monstro (DoT / Status)
+        if (m.effects && m.effects.length > 0) {
+          html += '<div class="battle-effects-row" style="display:flex;flex-wrap:wrap;gap:5px;margin:8px 0;padding:6px;background:rgba(0,0,0,0.3);border-radius:4px;border:1px solid rgba(255,255,255,0.08);">';
+          m.effects.forEach((ef, efIdx) => {
+            const isDot = ef.tipo === 'dot' || ef.tipo === 'dano_por_turno' || /sangr|venen|fogo|queim|corros|praga|hemorr/i.test(ef.texto || '');
+            const badgeBg = isDot ? 'rgba(231,76,60,0.25)' : 'rgba(155,89,182,0.25)';
+            const borderCol = isDot ? '#e74c3c' : '#9b59b6';
+            const durText = ef.duracao != null ? ' (' + ef.duracao + 't)' : '';
+            html += '<span class="battle-effect-chip" style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:12px;background:' + badgeBg + ';border:1px solid ' + borderCol + ';font-size:11px;color:#f5ead6;">' +
+              '<span>' + (isDot ? '🩸 ' : '✨ ') + _esc(ef.texto || ef.tipo) + durText + '</span>' +
+              '<button type="button" style="background:none;border:none;color:#ff7675;cursor:pointer;padding:0 2px;font-size:11px;" onclick="removerEfeitoMonstro(\'' + m.id + '\', ' + efIdx + ')" title="Remover efeito">✕</button>' +
+              '</span>';
+          });
+          html += '</div>';
+        }
+
         if (m.skills.length > 0) {
           html += '<div class="battle-skills-title">HABILIDADES & AÇÕES (' + m.skills.length + ')</div>';
           html += '<div class="battle-skills-grid">';
@@ -8135,6 +8151,14 @@
       if (!m) return;
       const maxKey = 'max' + stat.charAt(0).toUpperCase() + stat.slice(1);
       m[stat] = Math.max(0, Math.min(m[maxKey], parseInt(val) || 0));
+      saveBattleState();
+      renderBattle();
+    }
+
+    function removerEfeitoMonstro(monId, efIdx) {
+      const m = battleMonsters.find(x => x.id === monId);
+      if (!m || !m.effects) return;
+      m.effects.splice(efIdx, 1);
       saveBattleState();
       renderBattle();
     }
@@ -8194,7 +8218,19 @@
             const mod = (m.attributes && m.attributes[chave]) || 0;
             const r = E.resolveSaveAlvo({ mod: mod, cd: cd, dano: dano, regra: c.regra });
             m.hp = Math.max(0, m.hp - r.dano);
-            const efs = E.efeitosAlvo(c.efeitos, r.passou).map(f => (f.texto || f.tipo) + (f.duracao ? ' (' + f.duracao + ' turno' + (f.duracao > 1 ? 's' : '') + ')' : ''));
+            const rawEfs = E.efeitosAlvo(c.efeitos, r.passou);
+            if (rawEfs && rawEfs.length) {
+              if (!m.effects) m.effects = [];
+              rawEfs.forEach(f => {
+                m.effects.push({
+                  tipo: f.tipo,
+                  valor: f.valor || 0,
+                  duracao: f.duracao != null ? f.duracao : 1,
+                  texto: f.texto || f.tipo
+                });
+              });
+            }
+            const efs = rawEfs.map(f => (f.texto || f.tipo) + (f.duracao ? ' (' + f.duracao + ' turno' + (f.duracao > 1 ? 's' : '') + ')' : ''));
             addBattleLog(nome, 'conjurou <span class="log-skill-name">' + _esc(c.nome) + '</span> em ' + _esc(alvo) + ' — ' + _esc(chave) + ' ' + r.d20 + (mod >= 0 ? '+' : '') + mod + ' = <b>' + r.total + '</b> vs CD ' + cd + ': ' +
               (r.passou ? 'passou' : '<b>falhou</b>') + (dano ? ' · ' + r.dano + ' de dano ' + (c.tipo ? '(' + _esc(c.tipo) + ') ' : '') + '· HP ' + m.hp + '/' + m.maxHp : '') +
               (efs.length ? ' · <i>' + efs.map(_esc).join('; ') + '</i>' : ''));
@@ -8204,7 +8240,8 @@
           playersRef.child(id).child('castResult').set({ nonce: c.nonce, skillName: c.nome, results: results });
           if (syncDb && currentSessionCode) {
             const cRef = syncDb.ref('sessions/' + currentSessionCode + '/combatFeed');
-            cRef.push({
+            const feedKey = c.nonce || ('sb_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6));
+            cRef.child(feedKey).set({
               type: 'save_batch',
               nonce: c.nonce,
               actor: nome,
@@ -8257,7 +8294,8 @@
           playersRef.child(id).child('atkResult').set({ nonce: a.nonce, hit: hit, dmg: dmg, target: alvo, killed: hit && m.hp === 0 });
           if (syncDb && currentSessionCode) {
             const cRef = syncDb.ref('sessions/' + currentSessionCode + '/combatFeed');
-            cRef.push({
+            const feedKey = a.nonce || ('atk_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6));
+            cRef.child(feedKey).set({
               type: 'attack',
               nonce: a.nonce,
               actor: nome,
@@ -8554,6 +8592,15 @@
         html += '<button class="battle-player-heal-btn" onclick="aplicarCuraJogador(\'' + id + '\')">✚ Curar</button>';
         html += '</div>';
 
+        html += '<div class="battle-player-buff-row" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;align-items:center;">';
+        html += '<span style="font-size:11px;color:var(--gold-dim);margin-right:2px;">✨ Buff/Debuff:</span>';
+        html += '<button class="fx-btn" onclick="aplicarBuffJogador(\'' + id + '\', \'debuff_dado\', 1, \'−1d Ataque\', \'proximo_ataque\')">−1d Atk</button>';
+        html += '<button class="fx-btn" onclick="aplicarBuffJogador(\'' + id + '\', \'buff_dado\', 1, \'+1d Ataque\', \'proximo_ataque\')">+1d Atk</button>';
+        html += '<button class="fx-btn" onclick="aplicarBuffJogador(\'' + id + '\', \'desvantagem\', 1, \'Desvantagem\', \'proximo_teste\')">Desvantagem</button>';
+        html += '<button class="fx-btn" onclick="aplicarBuffJogador(\'' + id + '\', \'vantagem\', 1, \'Vantagem\', \'proximo_teste\')">Vantagem</button>';
+        html += '<button class="fx-btn" onclick="promptStatusJogador(\'' + id + '\')">Status...</button>';
+        html += '</div>';
+
         html += '<div class="battle-player-whisper-row">';
         html += '<input type="text" id="sussurro-' + id + '" placeholder="Mensagem privada só pra este jogador..." onkeydown="if(event.key===\'Enter\') enviarSussurro(\'' + id + '\')">';
         html += '<button class="battle-player-whisper-btn" onclick="enviarSussurro(\'' + id + '\')">🤫 Sussurrar</button>';
@@ -8703,7 +8750,8 @@
       addBattleLog(atacante || '⚔️', 'causou ' + qtd + ' de dano em <span class="log-skill-name">' + (p.name || 'Jogador') + '</span> (' + novoHp + '/' + (p.hpMax || 0) + ' HP)' + (golpePesado ? ' 🩸 <strong>golpe pesado</strong>' : ''));
       if (syncDb && currentSessionCode) {
         const cRef = syncDb.ref('sessions/' + currentSessionCode + '/combatFeed');
-        cRef.push({
+        const feedKey = 'dm_' + ts + '_' + id;
+        cRef.child(feedKey).set({
           type: 'direct_damage',
           actor: atacante || 'Mestre',
           target: p.name || 'Jogador',
@@ -8727,6 +8775,31 @@
         lastEvent: { stat: 'hp', amount: qtd, source: null, ts: Date.now() }
       });
       addBattleLog('✚', 'curou ' + qtd + ' HP de <span class="log-skill-name">' + (p.name || 'Jogador') + '</span> (' + novoHp + '/' + (p.hpMax || 0) + ' HP)');
+    }
+
+    function aplicarBuffJogador(id, tipo, valor, texto, consome, duracao) {
+      if (!playersRef) return;
+      const p = sessionPlayers[id];
+      const pNome = (p && p.name) || 'Jogador';
+      playersRef.child(id).child('incomingBuff').set({
+        tipo: tipo,
+        valor: valor || 0,
+        texto: texto || '',
+        consome: consome || null,
+        duracao: duracao || null,
+        origem: 'Mestre',
+        skillName: texto || 'Efeito do Mestre',
+        ts: Date.now()
+      });
+      addBattleLog('⚡ Mestre', 'aplicou <strong>' + _esc(texto) + '</strong> em <span class="log-skill-name">' + _esc(pNome) + '</span>');
+    }
+
+    function promptStatusJogador(id) {
+      const p = sessionPlayers[id];
+      const nome = prompt('Nome do status para ' + ((p && p.name) || 'o jogador') + ' (ex: Abalado, Sangrando, Lento, Preso):', 'Abalado');
+      if (!nome) return;
+      const dur = parseInt(prompt('Duração em turnos (padrão 1):', '1')) || 1;
+      aplicarBuffJogador(id, 'status', 0, nome, null, dur);
     }
 
     function enviarSussurro(id) {
@@ -8907,6 +8980,43 @@
         const mm = battleMonsters.find(x => x.id === next.refId);
         if (mm) {
           const parts = recuperarRecursosMonstro(mm);
+          // Processa DoTs e expiração de status/efeitos
+          if (mm.effects && mm.effects.length) {
+            let danoDotTotal = 0;
+            const nomesDot = [];
+            for (let eIdx = mm.effects.length - 1; eIdx >= 0; eIdx--) {
+              const ef = mm.effects[eIdx];
+              let dotVal = 0;
+              if (ef.tipo === 'dano_por_turno' || ef.tipo === 'dot') {
+                dotVal = ef.valor || 2;
+              } else if (/corros/i.test(ef.texto || '')) {
+                dotVal = ef.valor || 3;
+              } else if (/hemorr|sangr/i.test(ef.texto || '')) {
+                dotVal = ef.valor || 2;
+              } else if (/praga/i.test(ef.texto || '')) {
+                dotVal = ef.valor || 2;
+              } else if (/queim|fogo/i.test(ef.texto || '')) {
+                dotVal = ef.valor || 2;
+              } else if (/venen/i.test(ef.texto || '')) {
+                dotVal = ef.valor || 2;
+              }
+              if (dotVal > 0) {
+                danoDotTotal += dotVal;
+                nomesDot.push((ef.texto || ef.tipo) + ' (-' + dotVal + ' HP)');
+              }
+              if (ef.duracao != null) {
+                ef.duracao--;
+                if (ef.duracao <= 0) {
+                  addBattleLog('⏳ Efeito expirou', (mm.displayName || mm.name) + ': ' + _esc(ef.texto || ef.tipo));
+                  mm.effects.splice(eIdx, 1);
+                }
+              }
+            }
+            if (danoDotTotal > 0) {
+              mm.hp = Math.max(0, mm.hp - danoDotTotal);
+              addBattleLog('🩸 Dano por Turno', (mm.displayName || mm.name) + ' sofreu ' + danoDotTotal + ' de dano por [' + nomesDot.join(', ') + '] · HP ' + mm.hp + '/' + mm.maxHp + (mm.hp === 0 ? ' 💀' : ''));
+            }
+          }
           saveBattleState(); renderBattle();
           if (parts.length) addBattleLog('🔄 Turno', (mm.displayName || mm.name) + ': ' + parts.join(' / '));
         }

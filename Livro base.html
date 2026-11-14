@@ -4210,6 +4210,28 @@
       margin-left: auto;
     }
 
+    .tactical-filter-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(201, 146, 26, 0.25);
+      color: var(--gold-light);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tactical-filter-pill:hover {
+      background: rgba(201, 146, 26, 0.18);
+      border-color: var(--gold);
+    }
+    .tactical-filter-pill.active {
+      background: rgba(201, 146, 26, 0.35);
+      border-color: var(--gold);
+      box-shadow: 0 0 10px rgba(201, 146, 26, 0.3);
+      font-weight: bold;
+    }
+
     /* Notificação Toast Flutuante no Livro */
     .livro-toast {
       position: fixed;
@@ -11523,6 +11545,16 @@
           placeholder="Consultar feitiço, técnica marcial, escola ou efeito..." oninput="searchSpells(this.value)">
         <span class="spell-count-badge" id="spell-count-badge">Todas visíveis</span>
       </div>
+    </div>
+
+    <!-- FILTROS TÁTICOS (Alvo Único, Área, Dano, Cura/Suporte, Defesa) -->
+    <div class="spell-tactical-filters" id="spell-tactical-filters" style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px;justify-content:center;">
+      <button type="button" class="tactical-filter-pill active" data-tfilter="all" onclick="filterTactical('all', this)">✦ Todos</button>
+      <button type="button" class="tactical-filter-pill" data-tfilter="alvo_unico" onclick="filterTactical('alvo_unico', this)">🎯 Alvo Único</button>
+      <button type="button" class="tactical-filter-pill" data-tfilter="area" onclick="filterTactical('area', this)">💥 Área</button>
+      <button type="button" class="tactical-filter-pill" data-tfilter="dano" onclick="filterTactical('dano', this)">⚔️ Dano</button>
+      <button type="button" class="tactical-filter-pill" data-tfilter="cura_suporte" onclick="filterTactical('cura_suporte', this)">✚ Cura/Suporte</button>
+      <button type="button" class="tactical-filter-pill" data-tfilter="defesa" onclick="filterTactical('defesa', this)">🛡️ Defesa</button>
     </div>
 
 
@@ -20760,6 +20792,7 @@
     style="text-align:center;font-size:12px;color:rgba(245,234,214,0.3);font-family:'Share Tech Mono',monospace;margin:40px 0 20px;">
     Livro do Jogador — Sistema Homebrew de Mesa
   </p>
+  <script src="olarpg-catalog.js"></script>
   <script>
     // ════════════ ESTADO E SISTEMA DE ÁUDIO IMERSIVO ════════════
     let currentSpellFilter = 'all';
@@ -21389,6 +21422,15 @@
       }, 2200);
     }
 
+    let currentTacticalFilter = 'all';
+    function filterTactical(filter, btn) {
+      currentTacticalFilter = filter;
+      document.querySelectorAll('.tactical-filter-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      playSpellSelectSound();
+      updateSpellVisibility();
+    }
+
     function updateSpellVisibility() {
       if (!isMasterDetailInitialized && document.querySelectorAll('#tab-feiticos .spell-card').length) {
         initSpellMasterDetail();
@@ -21431,7 +21473,28 @@
 
         let matchesQuery = !query || spell.searchText.includes(query);
 
-        const show = matchesCategory && matchesQuery;
+        let matchesTactical = true;
+        if (currentTacticalFilter === 'alvo_unico') {
+          matchesTactical = (spell.mec && spell.mec.alvos && spell.mec.alvos[0] && spell.mec.alvos[0].qtd === 1 && !spell.mec.alvos[0].area) ||
+            (!spell.descHtml.toLowerCase().includes('área') && !spell.descHtml.toLowerCase().includes('cone') && !spell.descHtml.toLowerCase().includes('raio') && !spell.descHtml.toLowerCase().includes('linha'));
+        } else if (currentTacticalFilter === 'area') {
+          matchesTactical = (spell.mec && spell.mec.alvos && spell.mec.alvos[0] && (spell.mec.alvos[0].area || spell.mec.alvos[0].qtd === 'marcar' || spell.mec.alvos[0].qtd > 1)) ||
+            /área|cone|esfera|raio|linha|adjacente/i.test(spell.descHtml || '') ||
+            spell.tags.some(t => /área|cone|raio/i.test(t));
+        } else if (currentTacticalFilter === 'dano') {
+          matchesTactical = (spell.mec && spell.mec.dano && (spell.mec.dano.dados || spell.mec.dano.arma)) ||
+            /dano|causa \d+d\d+|acerto/i.test(spell.descHtml || '') ||
+            spell.tags.some(t => /dano|destruição/i.test(t));
+        } else if (currentTacticalFilter === 'cura_suporte') {
+          matchesTactical = (spell.mec && (spell.mec.cura || (spell.mec.efeitos && spell.mec.efeitos.some(e => ['aliado', 'conjurador'].includes(e.em))))) ||
+            /cura|recupera|buff|bônus|aliado|regeneração/i.test(spell.descHtml || '') ||
+            spell.tags.some(t => /cura|restauração|suporte|bênção/i.test(t));
+        } else if (currentTacticalFilter === 'defesa') {
+          matchesTactical = /redução|escudo|defesa|ca|bloqueio|proteção|absorve/i.test(spell.descHtml || '') ||
+            spell.tags.some(t => /defesa|proteção|abjuração/i.test(t));
+        }
+
+        const show = matchesCategory && matchesQuery && matchesTactical;
         if (spell.cardElement) {
           spell.cardElement.classList.toggle('hidden', !show);
         }
@@ -22042,7 +22105,191 @@
       }
     }
 
+    function sendClassSkillToSheet(btn) {
+      const row = btn.closest('.skill-base-row');
+      if (!row) return;
+      const sknameEl = row.querySelector('.skname');
+      const skcostEl = row.querySelector('.skcost');
+      const skdescEl = row.querySelector('.skdesc');
+      const scriptMec = row.querySelector('script.mec');
+
+      const name = (sknameEl ? sknameEl.textContent : '').replace(/[⚪⚫⭐]/g, '').trim();
+      const custoStr = (skcostEl ? skcostEl.textContent : '').trim();
+      const desc = (skdescEl ? skdescEl.textContent : '').trim();
+
+      let tipo = 'padrao';
+      const cLow = custoStr.toLowerCase();
+      if (cLow.includes('rápida') || cLow.includes('rapida')) tipo = 'rapida';
+      else if (cLow.includes('assinatura')) tipo = 'assinatura';
+      else if (cLow.includes('passiva')) tipo = 'passiva';
+
+      let recurso = 'st';
+      if (custoStr.includes('🔵')) recurso = 'fo';
+      else if (custoStr.includes('🟡')) recurso = 'st';
+
+      const custoMatch = custoStr.match(/^(\d+[🔵🟡]?)/);
+      const custo = custoMatch ? custoMatch[1] : (custoStr.split('—')[0] || '').trim();
+
+      let mec = null;
+      let mecId = null;
+      if (scriptMec) {
+        try {
+          mec = JSON.parse(scriptMec.textContent.trim());
+          if (mec && mec.id) mecId = mec.id;
+        } catch (_) {}
+      }
+      if (!mec && window.OLARPG_MEC_CATALOG) {
+        const norm = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        mec = window.OLARPG_MEC_CATALOG[norm] || null;
+        if (mec && mec.id) mecId = mec.id;
+      }
+
+      const archetypeSection = row.closest('.archetype-section');
+      const classeNome = archetypeSection ? (archetypeSection.querySelector('h2')?.textContent || '').trim() : '';
+
+      const skillPayload = {
+        name: name,
+        tipo: tipo,
+        custo: custo || '',
+        recurso: recurso,
+        desc: desc,
+        origem: classeNome,
+        mec: mec,
+        mecId: mecId
+      };
+
+      try {
+        const channel = new BroadcastChannel('olarpg_channel');
+        channel.postMessage({ type: 'ADD_SPELL', spell: skillPayload, ts: Date.now() });
+        channel.close();
+      } catch (e) { console.warn(e); }
+
+      try {
+        const queueKey = 'olarpg_pending_spells';
+        const queue = JSON.parse(localStorage.getItem(queueKey) || '[]');
+        if (!queue.some(s => s.name === skillPayload.name)) {
+          queue.push(skillPayload);
+          localStorage.setItem(queueKey, JSON.stringify(queue));
+        }
+        localStorage.setItem('olarpg_spell_trigger', JSON.stringify({ spell: skillPayload, ts: Date.now() }));
+      } catch (e) { console.warn(e); }
+
+      if (typeof playMagicCast === 'function') playMagicCast();
+
+      btn.classList.add('success');
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '✓ Na Ficha!';
+      showLivroToast(`✨ <b>${name}</b> enviada para a Ficha!`);
+      setTimeout(() => {
+        btn.classList.remove('success');
+        btn.innerHTML = originalHtml;
+      }, 2000);
+    }
+
+    function sendPassiveToSheet(btn) {
+      const pill = btn.closest('.passive-pill');
+      if (!pill) return;
+      const pnameEl = pill.querySelector('.pname');
+      const pdescEl = pill.querySelector('.pdesc');
+      const scriptMec = pill.querySelector('script.mec');
+
+      const name = (pnameEl ? pnameEl.textContent : '').trim();
+      const desc = (pdescEl ? pdescEl.textContent : '').trim();
+
+      let mec = null;
+      let mecId = null;
+      if (scriptMec) {
+        try {
+          mec = JSON.parse(scriptMec.textContent.trim());
+          if (mec && mec.id) mecId = mec.id;
+        } catch (_) {}
+      }
+      if (!mec && window.OLARPG_MEC_CATALOG) {
+        const norm = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        mec = window.OLARPG_MEC_CATALOG[norm] || null;
+        if (mec && mec.id) mecId = mec.id;
+      }
+
+      const archetypeSection = pill.closest('.archetype-section');
+      const classeNome = archetypeSection ? (archetypeSection.querySelector('h2')?.textContent || '').trim() : '';
+
+      const passivePayload = {
+        name: name,
+        tipo: 'passiva',
+        custo: '',
+        recurso: '',
+        desc: desc,
+        origem: classeNome,
+        mec: mec,
+        mecId: mecId
+      };
+
+      try {
+        const channel = new BroadcastChannel('olarpg_channel');
+        channel.postMessage({ type: 'ADD_SPELL', spell: passivePayload, ts: Date.now() });
+        channel.close();
+      } catch (e) { console.warn(e); }
+
+      try {
+        const queueKey = 'olarpg_pending_spells';
+        const queue = JSON.parse(localStorage.getItem(queueKey) || '[]');
+        if (!queue.some(s => s.name === passivePayload.name)) {
+          queue.push(passivePayload);
+          localStorage.setItem(queueKey, JSON.stringify(queue));
+        }
+        localStorage.setItem('olarpg_spell_trigger', JSON.stringify({ spell: passivePayload, ts: Date.now() }));
+      } catch (e) { console.warn(e); }
+
+      if (typeof playMagicCast === 'function') playMagicCast();
+
+      btn.classList.add('success');
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '✓ Na Ficha!';
+      showLivroToast(`✨ Passiva <b>${name}</b> enviada para a Ficha!`);
+      setTimeout(() => {
+        btn.classList.remove('success');
+        btn.innerHTML = originalHtml;
+      }, 2000);
+    }
+
+    function initClassSkillButtons() {
+      // 1. Linhas de Habilidade Base
+      document.querySelectorAll('.skill-base-row').forEach(row => {
+        if (row.querySelector('.btn-ficha')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'spell-row-btn btn-ficha';
+        btn.style.cssText = 'margin-left:auto;padding:3px 8px;font-size:10px;height:22px;align-self:flex-start;';
+        btn.title = 'Adicionar à Ficha';
+        btn.innerHTML = '+ FICHA';
+        btn.onclick = function(e) { e.stopPropagation(); sendClassSkillToSheet(this); };
+        const skcost = row.querySelector('.skcost');
+        if (skcost) {
+          skcost.style.display = 'inline-flex';
+          skcost.style.alignItems = 'center';
+          skcost.style.gap = '8px';
+          skcost.appendChild(btn);
+        } else {
+          row.appendChild(btn);
+        }
+      });
+
+      // 2. Passivas de Classe
+      document.querySelectorAll('.passive-pill').forEach(pill => {
+        if (pill.querySelector('.btn-ficha')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'spell-row-btn btn-ficha';
+        btn.style.cssText = 'margin-top:6px;width:100%;padding:3px 6px;font-size:10px;text-align:center;';
+        btn.title = 'Adicionar à Ficha';
+        btn.innerHTML = '+ FICHA';
+        btn.onclick = function(e) { e.stopPropagation(); sendPassiveToSheet(this); };
+        pill.appendChild(btn);
+      });
+    }
+
     function initSpellCardActions() {
+      initClassSkillButtons();
       const cards = document.querySelectorAll('.spell-card');
       cards.forEach(card => {
         if (card.querySelector('.spell-actions')) return;

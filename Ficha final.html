@@ -6490,10 +6490,16 @@
             <input type="number" id="char-ca" placeholder="10" oninput="save()">
           </div>
           <div class="field">
-            <label>CD <span style="font-size:9px;color:var(--gold-dim);letter-spacing:0.05em;"
+            <label>CD Mágica <span style="font-size:9px;color:var(--gold-dim);letter-spacing:0.05em;"
                 title="8 + prof + maior mod entre INT/CAR/SAB">auto</span></label>
             <input type="number" id="char-cd" readonly style="cursor:default;opacity:0.85;background:rgba(0,0,0,0.25);"
               title="8 + bônus de proficiência + maior mod entre INT/CAR/SAB">
+          </div>
+          <div class="field">
+            <label>CD Física <span style="font-size:9px;color:var(--gold-dim);letter-spacing:0.05em;"
+                title="8 + prof + maior mod entre FOR/DES">auto</span></label>
+            <input type="number" id="char-cd-fisica" readonly style="cursor:default;opacity:0.85;background:rgba(0,0,0,0.25);"
+              title="8 + bônus de proficiência + maior mod entre FOR/DES">
           </div>
           <div class="field">
             <label>Arquétipo</label>
@@ -6638,6 +6644,21 @@
         </button>
         <div class="rec-preview" id="rec-preview">+<span id="rec-preview-st">4</span> 🟡 &nbsp;·&nbsp; +<span
             id="rec-preview-fo">5</span> 🔵</div>
+
+        <!-- FRAGMENTOS ELEMENTAIS (Elementalista / Mestre dos Elementos) -->
+        <div class="fragmentos-block" style="margin:12px 0;background:rgba(0,0,0,0.3);padding:10px 14px;border-radius:6px;border:1px solid rgba(160,160,232,0.25);">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <span style="font-family:'Cinzel',serif;font-size:12px;color:#a0a0e8;font-weight:600;">🌀 Fragmentos Elementais</span>
+              <span style="font-size:10px;color:rgba(245,234,214,0.4);" title="Reduzem em 1🔵 o custo de magias do mesmo elemento (máx 5)">−1🔵 custo por fragmento (máx 5)</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button type="button" class="rec-btn" style="padding:2px 10px;min-width:28px;font-size:15px;margin:0;" onclick="alterarFragmentos(-1)">−</button>
+              <span id="fragmentos-val" style="font-family:'Share Tech Mono',monospace;font-size:17px;font-weight:bold;color:#a0a0e8;min-width:20px;text-align:center;">0</span>
+              <button type="button" class="rec-btn" style="padding:2px 10px;min-width:28px;font-size:15px;margin:0;" onclick="alterarFragmentos(1)">+</button>
+            </div>
+          </div>
+        </div>
 
         <!-- CURAR -->
         <div class="heal-box" id="heal-box">
@@ -7615,6 +7636,76 @@
       resourceFx('st', newSt - stCur, _pct(stCur, stMax), _pct(newSt, stMax));
       resourceFx('fo', newFo - foCur, _pct(foCur, foMax), _pct(newFo, foMax));
 
+      // ─── 1. TICK DE BUFFS & EXPIRAÇÃO ───
+      if (window.OlaEngine && state.buffs && state.buffs.length) {
+        const expirados = window.OlaEngine.tickTurn(state.buffs);
+        if (expirados && expirados.length) {
+          expirados.forEach(b => {
+            const nomeEfeito = b.texto || b.skillName || b.chave || 'Efeito';
+            wpnToast('⏳ Efeito expirou: ' + nomeEfeito + '!');
+          });
+          renderBuffs();
+        }
+      }
+
+      // ─── 2. REGENERAÇÃO DE HP POR TURNO ───
+      const buffsRegen = (state.buffs || []).filter(b => b.tipo === 'regen');
+      if (buffsRegen.length) {
+        const totRegen = buffsRegen.reduce((acc, b) => acc + (b.valor || 1), 0);
+        const hpCur = parseFloat(document.getElementById('hp-cur').value) || 0;
+        const hpMax = parseFloat(document.getElementById('hp-max').value) || 0;
+        if (hpCur < hpMax && totRegen > 0) {
+          const newHp = Math.min(hpMax, hpCur + totRegen);
+          document.getElementById('hp-cur').value = newHp;
+          updateBar('hp');
+          resourceFx('hp', newHp - hpCur, _pct(hpCur, hpMax), _pct(newHp, hpMax));
+          wpnToast('💚 Regeneração: +' + (newHp - hpCur) + ' HP neste turno!');
+        }
+      }
+
+      // ─── 3. DANO POR TURNO (DoT) ───
+      const buffsDot = (state.buffs || []).filter(b => b.tipo === 'dano_por_turno' || b.tipo === 'dot');
+      if (buffsDot.length) {
+        const totDot = buffsDot.reduce((acc, b) => acc + (b.valor || 0), 0);
+        const hpCur = parseFloat(document.getElementById('hp-cur').value) || 0;
+        if (totDot > 0) {
+          const newHp = Math.max(0, hpCur - totDot);
+          document.getElementById('hp-cur').value = newHp;
+          updateBar('hp');
+          wpnToast('🩸 Dano por turno: -' + totDot + ' HP!');
+        }
+      }
+
+      // ─── 4. MANUTENÇÃO DE HABILIDADES (Canção de Guerra, Guardiões, Máscara, Está Vivoooo) ───
+      if (state.buffs && state.buffs.length) {
+        for (let i = state.buffs.length - 1; i >= 0; i--) {
+          const b = state.buffs[i];
+          if (b.manutencao && b.manutencao.custo) {
+            const cMan = b.manutencao.custo;
+            const cFo = cMan.fo || 0, cSt = cMan.st || 0;
+            const curSt = parseFloat(document.getElementById('st-cur').value) || 0;
+            const curFo = parseFloat(document.getElementById('fo-cur').value) || 0;
+            const podePagar = curSt >= cSt && curFo >= cFo;
+            const custoTxt = (cFo ? cFo + '🔵 ' : '') + (cSt ? cSt + '🟡' : '');
+            const msg = (b.manutencao.pergunta || ('Manter ' + (b.texto || 'habilidade') + '?')) + ' (Custo: ' + custoTxt + ')';
+
+            if (podePagar && confirm(msg)) {
+              if (cSt > 0) spendResource('st', cSt);
+              if (cFo > 0) spendResource('fo', cFo);
+              wpnToast('✨ Manutenção paga: ' + (b.texto || b.skillName || 'Habilidade') + ' continua ativa!');
+            } else {
+              state.buffs.splice(i, 1);
+              wpnToast('⚠️ ' + (b.texto || b.skillName || 'Habilidade') + ' encerrada por falta de manutenção.');
+              renderBuffs();
+            }
+          }
+        }
+      }
+
+      // ─── 5. RESET DE LIMITES DE USO POR TURNO ───
+      if (!state.skillUses) state.skillUses = { turno: {}, combate: {}, sessao: {} };
+      state.skillUses.turno = {};
+
       // flash animation
       const btn = document.getElementById('rec-btn');
       btn.classList.remove('rec-btn-flash');
@@ -7973,7 +8064,22 @@
       const profBonus = getProfBonus(state.level || 1);
       const maiorMod = Math.max(getModValue('int'), getModValue('car'), getModValue('sab'));
       const cd = 8 + profBonus + maiorMod;
-      document.getElementById('char-cd').value = cd;
+      const elCd = document.getElementById('char-cd');
+      if (elCd) elCd.value = cd;
+
+      const maiorModFis = Math.max(getModValue('for'), getModValue('des'));
+      const cdFis = 8 + profBonus + maiorModFis;
+      const elCdFis = document.getElementById('char-cd-fisica');
+      if (elCdFis) elCdFis.value = cdFis;
+    }
+
+    function alterarFragmentos(delta) {
+      state.fragmentos = Math.max(0, Math.min(5, (state.fragmentos || 0) + delta));
+      const el = document.getElementById('fragmentos-val');
+      if (el) el.textContent = state.fragmentos;
+      save();
+      syncPushState(true);
+      wpnToast('🌀 Fragmentos Elementais: ' + state.fragmentos + '/5');
     }
 
     function getMaxPericias() {
@@ -8342,8 +8448,26 @@
         const recurso = item.recurso || (listKey === 'magias' ? 'fo' : (item.custo && item.custo.includes('🔵') ? 'fo' : 'st'));
         const resIcon = resIconMap[recurso] || (recurso === 'st' ? '🟡' : '🔵');
 
+        enrichSpell(item);
+        const m = item.mec;
+        let limitReached = false;
+        let limitReason = '';
+        if (m && m.uso && m.uso.limite) {
+          const lim = m.uso.limite;
+          const maxV = m.uso.vezes || 1;
+          const usesObj = (state.skillUses && state.skillUses[lim]) || {};
+          const keyUso = m.id || item.name;
+          const currentUso = usesObj[keyUso] || 0;
+          if (currentUso >= maxV) {
+            limitReached = true;
+            limitReason = `Limite atingido (${currentUso}/${maxV} por ${lim})`;
+          }
+        }
+
         let useBtn = '';
-        if (item.custo && recurso && tipo !== 'passiva') {
+        if (limitReached) {
+          useBtn = `<button class="list-use-btn insufficient" disabled title="${limitReason}">Usado</button>`;
+        } else if (item.custo && recurso && tipo !== 'passiva') {
           const cost = parseCost(item.custo, resIcon);
           const { cur } = getCurAndMaxByResource(recurso);
           const foTax = recurso === 'fo' ? Math.ceil(cost / 3) : 0;
@@ -8411,6 +8535,19 @@
       renderTecnicas();
     }
 
+    function registrarUsoSkill(item) {
+      if (!item) return;
+      const m = item.mec;
+      if (!m || !m.uso || !m.uso.limite) return;
+      const lim = m.uso.limite; // 'turno' | 'combate' | 'sessao'
+      if (!state.skillUses) state.skillUses = { turno: {}, combate: {}, sessao: {} };
+      if (!state.skillUses[lim]) state.skillUses[lim] = {};
+      const keyUso = m.id || item.name;
+      state.skillUses[lim][keyUso] = (state.skillUses[lim][keyUso] || 0) + 1;
+      save();
+      refreshUseButtons();
+    }
+
     // ─── AÇÕES DE PASSIVAS ───
     function addPassiva() {
       const name = document.getElementById('new-passiva-name').value.trim();
@@ -8454,6 +8591,7 @@
         refreshUseButtons();
         syncPushState(true);
         syncLogAction('passiva', item.name, item.custo, item.desc);
+        registrarUsoSkill(item);
         playSkillAudio(item.recurso, cost);
       }
     }
@@ -8573,6 +8711,7 @@
         refreshUseButtons();
         syncPushState(true);
         syncLogAction('magia', item.name, item.custo, item.desc);
+        registrarUsoSkill(item);
         playSkillAudio(recurso, cost);
       }
     }
@@ -8623,6 +8762,7 @@
         refreshUseButtons();
         syncPushState(true);
         syncLogAction('skill', item.name, item.custo, item.desc);
+        registrarUsoSkill(item);
         playSkillAudio(recurso, cost);
       }
     }
@@ -8996,7 +9136,7 @@
                 : b.tipo === 'vantagem' ? 'VANTAGEM' : 'BUFF';
         const durStr = b.persistente ? 'Persistente'
           : b.consome ? `Consome em: ${b.consome.replace('_', ' ')}`
-            : (b.restante != null) ? `${b.restante} rodada${b.restante > 1 ? 's' : ''}` : '';
+            : (b.restante != null) ? `${b.restante} turno${b.restante > 1 ? 's' : ''}` : '';
         return `
           <div class="buff-chip ${b.tipo}">
             <div class="buff-chip-info">
@@ -9137,14 +9277,24 @@
     function buffBonus(chave) {
       return (state.buffs || []).filter(b => b.tipo === 'bonus' && b.chave === chave).reduce((a, b) => a + (b.valor || 0), 0);
     }
-    // Dano pelo motor (buffs de dado, crítico, teto de 3). Sem motor carregado, cai na rolagem antiga.
+    // Dano pelo motor (buffs de dado, crítico, teto de 3, multiplicador_dano). Sem motor carregado, cai na rolagem antiga.
     function wpnCalcDano(expr, extra, crit, kind) {
       const E = window.OlaEngine;
       if (E) {
         if (!Array.isArray(state.buffs)) state.buffs = [];
+        const multBuff = state.buffs.find(b => b.tipo === 'multiplicador_dano' && (b.consome === 'proxima_magia' ? kind === 'magia' : true));
         const d = E.damageRoll({ expr: expr, crit: crit, flat: extra, buffs: state.buffs, kind: kind });
         const neg = E.parseExpr(expr).terms.some(t => t.sign < 0);
-        return { total: d.total, flat: d.flat, groups: neg ? [] : d.groups, text: d.text, consumidos: d.consumidos, expr: d.expr };
+        let tot = d.total;
+        let txt = d.text;
+        const consumidos = (d.consumidos || []).slice();
+        if (multBuff) {
+          const mult = multBuff.valor || 2;
+          tot = tot * mult;
+          txt = `(${txt}) × ${mult}`;
+          consumidos.push(multBuff.id);
+        }
+        return { total: tot, flat: d.flat, groups: neg ? [] : d.groups, text: txt, consumidos: consumidos, expr: d.expr };
       }
       const dm = wpnRollDamage(expr, crit ? 2 : 1);
       return { total: Math.max(0, dm.total + extra), flat: dm.flat + extra, groups: dm.neg ? [] : dm.groups, text: dm.text, consumidos: [], expr: expr };
@@ -9177,12 +9327,29 @@
     // ─── MAGIAS E TÉCNICAS COM MEC (ataque contra CA) ───
     // Atributo de ataque: 'conjuracao' = maior mod entre INT/SAB/CAR + proficiência  (ASSUMIDO: mesmo critério da CD; ajuste aqui se o ataque mágico não leva proficiência)
     function enrichSpell(item) {
-      if (!item || item.mec || !item.name || !window.OLARPG_MEC_CATALOG) return item && item.mec;
-      const norm = item.name.trim().toLowerCase();
-      const noAcc = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      const found = window.OLARPG_MEC_CATALOG[norm] || window.OLARPG_MEC_CATALOG[noAcc];
+      if (!item || item.mec || !window.OLARPG_MEC_CATALOG) return item && item.mec;
+      const cat = window.OLARPG_MEC_CATALOG;
+      let found = null;
+      if (item.mecId && cat[item.mecId]) {
+        found = cat[item.mecId];
+      }
+      if (!found && item.id && cat[item.id]) {
+        found = cat[item.id];
+      }
+      if (!found && item.name) {
+        const norm = item.name.trim().toLowerCase();
+        const noAcc = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if (item.origem) {
+          const origNorm = item.origem.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-');
+          found = cat[origNorm + ':' + norm] || cat[origNorm + ':' + noAcc];
+        }
+        if (!found) {
+          found = cat[norm] || cat[noAcc];
+        }
+      }
       if (found) {
         item.mec = JSON.parse(JSON.stringify(found));
+        if (!item.mecId && found.id) item.mecId = found.id;
         try { save(); } catch (_) { }
       }
       return item.mec;
@@ -9190,13 +9357,26 @@
 
     function enrichSpellsWithCatalog() {
       if (!window.OLARPG_MEC_CATALOG || !state) return;
-      ['magias', 'tecnicas'].forEach(cat => {
-        (state[cat] || []).forEach(it => {
-          if (!it.mec && it.name) {
-            const norm = it.name.trim().toLowerCase();
-            const noAcc = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            const found = window.OLARPG_MEC_CATALOG[norm] || window.OLARPG_MEC_CATALOG[noAcc];
-            if (found) it.mec = JSON.parse(JSON.stringify(found));
+      const cat = window.OLARPG_MEC_CATALOG;
+      ['magias', 'tecnicas', 'passivas'].forEach(cName => {
+        (state[cName] || []).forEach(it => {
+          if (!it.mec) {
+            let found = null;
+            if (it.mecId && cat[it.mecId]) found = cat[it.mecId];
+            if (!found && it.id && cat[it.id]) found = cat[it.id];
+            if (!found && it.name) {
+              const norm = it.name.trim().toLowerCase();
+              const noAcc = norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+              if (it.origem) {
+                const origNorm = it.origem.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-');
+                found = cat[origNorm + ':' + norm] || cat[origNorm + ':' + noAcc];
+              }
+              if (!found) found = cat[norm] || cat[noAcc];
+            }
+            if (found) {
+              it.mec = JSON.parse(JSON.stringify(found));
+              if (!it.mecId && found.id) it.mecId = found.id;
+            }
           }
         });
       });
@@ -9253,6 +9433,7 @@
         refreshUseButtons(); syncPushState(true);
         const elemAction = opts.elemento ? ' [' + opts.elemento + ']' : '';
         syncLogAction(cp.cat === 'magias' ? 'magia' : 'skill', item.name + elemAction, item.custo, item.desc);
+        registrarUsoSkill(item);
         playSkillAudio(c.recurso, costReal);
       }
       let bonus;
@@ -9282,6 +9463,7 @@
       refreshUseButtons(); syncPushState(true);
       const elemAction = opts.elemento ? ' [' + opts.elemento + ']' : '';
       syncLogAction(cp.cat === 'magias' ? 'magia' : 'skill', item.name + elemAction, item.custo, item.desc);
+      registrarUsoSkill(item);
       playSkillAudio(c.recurso, costReal);
 
       const saltos = a.mec.dano && a.mec.dano.saltos;
@@ -9607,8 +9789,21 @@
         }
         if (niveisEscala.length) optEscalaEscolhida = niveisEscala[0];
       }
-      // Cálculo de opções (se houver)
-      const listaOpcoes = (mec.opcoes && mec.opcoes.lista) ? mec.opcoes.lista : [];
+      // Cálculo de opções (se houver) com filtro de requisito/desbloqueio
+      const temRequisito = (reqId) => {
+        if (!reqId) return true;
+        const allPlayerSkills = [
+          ...(state.magias || []),
+          ...(state.tecnicas || []),
+          ...(state.passivas || [])
+        ];
+        return allPlayerSkills.some(s => {
+          const sId = (s.mec && s.mec.id) || s.mecId || s.id || '';
+          const sName = (s.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-');
+          return sId === reqId || sName === reqId || sId.includes(reqId) || reqId.includes(sId);
+        });
+      };
+      const listaOpcoes = ((mec.opcoes && mec.opcoes.lista) ? mec.opcoes.lista : []).filter(op => temRequisito(op.requer));
       let opcaoEscolhida = listaOpcoes.length ? listaOpcoes[0] : null;
       const opcoesHtml = listaOpcoes.length > 1 ? '<div class="cm-sec">Escolha da Opção / Modo</div><div class="cm-opcoes-box">' +
         listaOpcoes.map((op, oidx) => '<button type="button" class="cm-opcao-btn' + (oidx === 0 ? ' active' : '') + '" data-oidx="' + oidx + '">' + esc(op.nome || op.id) + '</button>').join('') + '</div>' : '';
@@ -9619,6 +9814,31 @@
       const elementosHtml = listaElementos.length > 1 ? '<div class="cm-sec">Escolha do Elemento</div><div class="cm-elementos-box">' +
         listaElementos.map((el, elIdx) => '<button type="button" class="cm-elem-btn' + (elIdx === 0 ? ' active' : '') + '" data-elem="' + esc(el) + '">' + esc(el) + '</button>').join('') + '</div>' : '';
 
+      // Perguntas interativas (ex: flecha-de-gelo, bomba-saltitante, kaboom)
+      const listaPerguntas = Array.isArray(mec.perguntas) ? mec.perguntas : [];
+      let perguntasHtml = '';
+      if (listaPerguntas.length) {
+        perguntasHtml = '<div class="cm-sec">Opções Especiais</div><div class="cm-perguntas-box" style="background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:4px;border:1px solid var(--border);margin:8px 0;">';
+        listaPerguntas.forEach(p => {
+          if (p.tipo === 'sim_nao') {
+            perguntasHtml += '<label class="cm-pergunta-label" style="display:flex;align-items:center;gap:8px;margin:6px 0;cursor:pointer;">' +
+              '<input type="checkbox" class="cm-pergunta-input" data-pid="' + esc(p.id) + '" data-ptipo="sim_nao">' +
+              '<span style="font-size:12px;color:var(--gold-light);">' + esc(p.texto) + '</span></label>';
+          } else if (p.tipo === 'numero') {
+            const minV = p.min != null ? p.min : 0;
+            const maxV = p.max != null ? p.max : 10;
+            perguntasHtml += '<div class="cm-pergunta-num" style="display:flex;align-items:center;justify-content:space-between;margin:6px 0;">' +
+              '<span style="font-size:12px;color:var(--gold-light);">' + esc(p.texto) + '</span>' +
+              '<div style="display:flex;align-items:center;gap:6px;">' +
+              '<button type="button" class="rec-btn cm-pnum-dec" data-pid="' + esc(p.id) + '" style="padding:1px 8px;font-size:14px;min-width:24px;">−</button>' +
+              '<span class="cm-pnum-val" data-pid="' + esc(p.id) + '" data-min="' + minV + '" data-max="' + maxV + '" style="font-family:\'Share Tech Mono\',monospace;font-size:14px;color:var(--gold);min-width:20px;text-align:center;">' + minV + '</span>' +
+              '<button type="button" class="rec-btn cm-pnum-inc" data-pid="' + esc(p.id) + '" style="padding:1px 8px;font-size:14px;min-width:24px;">+</button>' +
+              '</div></div>';
+          }
+        });
+        perguntasHtml += '</div>';
+      }
+
       bg.innerHTML = '<div class="cm-box" role="dialog" aria-modal="true">' +
         '<div class="cm-head"><div class="cm-title">' + esc(item.name) + '</div><div class="cm-cost" id="cm-dyn-cost">' + c.cost + ' ' + icone + (c.foTax ? ' +' + c.foTax + '🟡' : '') + '</div><button type="button" class="cm-x" title="Fechar">×</button></div>' +
         '<div class="cm-tags">' + tags.map(t => '<span class="cm-tag">' + esc(t) + '</span>').join('') + '</div>' +
@@ -9626,6 +9846,7 @@
         opcoesHtml +
         escalaHtml +
         elementosHtml +
+        perguntasHtml +
         '<div class="cm-sec">Como resolve</div><div class="cm-rule" id="cm-dyn-rule">' + regra + '</div>' +
         '<div id="cast-extra"></div>' +
         '<div class="cm-sec">' + (max === 1 ? 'Alvo' : 'Alvos') + (max > 1 && max < 99 ? ' (até ' + max + ')' : '') + '</div>' + alvosHtml +
@@ -9769,15 +9990,87 @@
         });
       });
 
+      // Interação das perguntas
+      const lerRespostasPerguntas = () => {
+        const resp = {};
+        bg.querySelectorAll('.cm-pergunta-input').forEach(inp => {
+          resp[inp.dataset.pid] = inp.checked;
+        });
+        bg.querySelectorAll('.cm-pnum-val').forEach(el => {
+          resp[el.dataset.pid] = parseInt(el.textContent) || 0;
+        });
+        return resp;
+      };
+
+      const recalcularPorPerguntas = () => {
+        const resp = lerRespostasPerguntas();
+        const dynRule = bg.querySelector('#cm-dyn-rule');
+        if (!dynRule) return;
+        let rTxt = regra;
+        if (mec.id === 'flecha-de-gelo') {
+          if (resp.tem_frio) {
+            rTxt = rTxt.replace(/Dano: <b>.*?<\/b>/, 'Dano: <b>1d8 + 1d6</b> (<b id="cm-dyn-elem">Frio</b>)') + '<br><i>Alvo sofre Lento (1 turno).</i>';
+          }
+        } else if (mec.id === 'bomba-saltitante') {
+          const q = resp.quicadas || 0;
+          rTxt = rTxt.replace(/Dano: <b>.*?<\/b>/, 'Dano: <b>' + (1 + q) + 'd6</b>');
+        } else if (mec.id === 'kaboom') {
+          const obj = Math.max(1, resp.objetos || 1);
+          rTxt = rTxt.replace(/Dano: <b>.*?<\/b>/, 'Dano: <b>' + obj + 'd8</b>');
+        }
+        dynRule.innerHTML = rTxt;
+      };
+
+      bg.querySelectorAll('.cm-pergunta-input').forEach(inp => {
+        inp.addEventListener('change', recalcularPorPerguntas);
+      });
+      bg.querySelectorAll('.cm-pnum-inc').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pid = btn.dataset.pid;
+          const valEl = bg.querySelector('.cm-pnum-val[data-pid="' + pid + '"]');
+          if (valEl) {
+            const cur = parseInt(valEl.textContent) || 0;
+            const maxV = parseInt(valEl.dataset.max) || 99;
+            if (cur < maxV) { valEl.textContent = cur + 1; recalcularPorPerguntas(); }
+          }
+        });
+      });
+      bg.querySelectorAll('.cm-pnum-dec').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pid = btn.dataset.pid;
+          const valEl = bg.querySelector('.cm-pnum-val[data-pid="' + pid + '"]');
+          if (valEl) {
+            const cur = parseInt(valEl.textContent) || 0;
+            const minV = parseInt(valEl.dataset.min) || 0;
+            if (cur > minV) { valEl.textContent = cur - 1; recalcularPorPerguntas(); }
+          }
+        });
+      });
+
       ok.onclick = () => {
         if (ok.disabled) return;
         ok.disabled = true;
+
+        const respPerg = lerRespostasPerguntas();
+        let exprDanoPerg = null;
+        let extraEfeitosPerg = [];
+        if (mec.id === 'flecha-de-gelo' && respPerg.tem_frio) {
+          exprDanoPerg = '1d8+1d6';
+          extraEfeitosPerg.push({ quando: 'acerto', em: 'alvo', tipo: 'status', texto: 'Lento', duracao: 1 });
+        } else if (mec.id === 'bomba-saltitante') {
+          exprDanoPerg = (1 + (respPerg.quicadas || 0)) + 'd6';
+        } else if (mec.id === 'kaboom') {
+          exprDanoPerg = Math.max(1, respPerg.objetos || 1) + 'd8';
+        }
+
         const escOpt = {
           custoEscolhido: optEscalaEscolhida ? optEscalaEscolhida.gasto : null,
-          exprDano: optEscalaEscolhida ? optEscalaEscolhida.dano : null,
+          exprDano: exprDanoPerg || (optEscalaEscolhida ? optEscalaEscolhida.dano : null),
           foTax: optEscalaEscolhida ? optEscalaEscolhida.custoSt : null,
           opcao: opcaoEscolhida,
-          elemento: elementoEscolhido
+          elemento: elementoEscolhido,
+          perguntas: respPerg,
+          extraEfeitos: extraEfeitosPerg
         };
 
         if (isAut) {
@@ -9851,16 +10144,30 @@
       refreshUseButtons(); syncPushState(true);
       playSkillAudio(c.recurso, c.cost);
       syncLogAction(cat === 'magias' ? 'magia' : 'skill', item.name, item.custo, item.desc);
+      registrarUsoSkill(item);
 
       const m = sup.mec;
       const meuNome = (state.char && state.char.name) || 'Você';
+
+      // Tratamento de cura (incluindo percent_max: 50 do Ressurgir e dados de cura)
+      let curaTotal = 0;
+      if (m.cura) {
+        if (m.cura.percent_max) {
+          const hpMax = parseFloat(document.getElementById('hp-max')?.value) || 0;
+          curaTotal = Math.floor(hpMax * (m.cura.percent_max / 100));
+        } else if (m.cura.dados || m.cura.expr) {
+          const exprCura = m.cura.dados || m.cura.expr;
+          try { curaTotal = E.roll(E.parseExpr(exprCura)).total; } catch (_) { curaTotal = 4; }
+        }
+        if (m.cura.fixo) curaTotal += (parseInt(m.cura.fixo) || 0);
+      }
 
       // Se for em você mesmo
       if (alvo.isSelf) {
         if (!state.buffs) state.buffs = [];
         const efsMsgs = [];
         (m.efeitos || []).forEach(ef => {
-          const aplicavel = ['buff_dado', 'debuff_dado', 'bonus', 'vantagem', 'desvantagem', 'hp_temp', 'regen', 'status'].includes(ef.tipo);
+          const aplicavel = ['buff_dado', 'debuff_dado', 'bonus', 'vantagem', 'desvantagem', 'hp_temp', 'regen', 'status', 'dano_por_turno', 'multiplicador_dano'].includes(ef.tipo);
           if (aplicavel) {
             E.addBuff(state.buffs, {
               tipo: ef.tipo,
@@ -9868,11 +10175,23 @@
               duracao: ef.duracao || null,
               texto: ef.texto || (ef.tipo === 'buff_dado' ? '+' + ef.valor + 'd dano' : item.name),
               consome: ef.consome || null,
-              chave: ef.tipo + ':' + (ef.texto || item.name)
+              chave: ef.tipo + ':' + (ef.texto || item.name),
+              manutencao: ef.manutencao || m.manutencao || null
             });
             efsMsgs.push(ef.texto || ef.tipo);
           }
         });
+        if (curaTotal > 0) {
+          const hpCurEl = document.getElementById('hp-cur');
+          const hpMaxEl = document.getElementById('hp-max');
+          const hpCur = parseFloat(hpCurEl?.value) || 0;
+          const hpMax = parseFloat(hpMaxEl?.value) || 0;
+          const novoHp = Math.min(hpMax, hpCur + curaTotal);
+          if (hpCurEl) hpCurEl.value = novoHp;
+          updateBar('hp');
+          resourceFx('hp', novoHp - hpCur, _pct(hpCur, hpMax), _pct(novoHp, hpMax));
+          efsMsgs.push('+' + (novoHp - hpCur) + ' HP');
+        }
         save();
         renderBuffs();
         wpnToast('✨ ' + item.name + ' aplicado em você mesmo' + (efsMsgs.length ? ' (' + efsMsgs.join(' · ') + ')' : '') + '!');
@@ -9892,6 +10211,15 @@
               ts: Date.now()
             });
           });
+          if (curaTotal > 0) {
+            const curaRef = syncGetDb().ref('sessions/' + state.sessionCode + '/players/' + alvo.id + '/incomingCura');
+            curaRef.set({
+              valor: curaTotal,
+              origem: meuNome,
+              skillName: item.name,
+              ts: Date.now()
+            });
+          }
           wpnToast('✨ ' + item.name + ' enviado para ' + alvo.name + '!');
         }
       }
@@ -9900,7 +10228,8 @@
       if (state.sessionCode && syncGetDb()) {
         try {
           const cRef = syncGetDb().ref('sessions/' + state.sessionCode + '/combatFeed');
-          cRef.push({
+          const feedKey = 'sup_' + Date.now() + '_' + (state.syncId || 'p') + '_' + Math.random().toString(36).slice(2, 6);
+          cRef.child(feedKey).set({
             type: 'support_buff',
             actor: meuNome,
             skillName: item.name,
@@ -9924,6 +10253,7 @@
       if (foTaxReal > 0) spendResource('st', foTaxReal);
       refreshUseButtons(); syncPushState(true);
       syncLogAction(cat === 'magias' ? 'magia' : 'skill', item.name, item.custo, item.desc);
+      registrarUsoSkill(item);
       playSkillAudio(c.recurso, costReal);
       const m = aut.mec;
       const nonce = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -9956,12 +10286,16 @@
       const elemFinal = (optEscala && optEscala.elemento) || (s.dano && s.dano.tipo) || (m.elemento && typeof m.elemento === 'string' ? m.elemento : '');
       const nomeSkill = item.name + (elemFinal ? ' (' + elemFinal + ')' : '');
       syncLogAction(cat === 'magias' ? 'magia' : 'skill', nomeSkill, item.custo, item.desc);
+      registrarUsoSkill(item);
       playSkillAudio(c.recurso, costReal);
       const exprDanoFinal = (optEscala && optEscala.exprDano) ? optEscala.exprDano : (s.dano && s.dano.expr);
       const dm = exprDanoFinal ? wpnCalcDano(exprDanoFinal, s.dano ? s.dano.extra : 0, false, c.recurso === 'fo' ? 'magia' : 'ataque') : null;
       if (dm && dm.consumidos && dm.consumidos.length) { E.removeBuffs(state.buffs || [], dm.consumidos); save(); renderBuffs(); }
       const nonce = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
       const efs = (m.efeitos || []).filter(e => ['alvo', 'zona', 'todos'].includes(e.em)).map(e => ({ quando: e.quando, tipo: e.tipo, texto: e.texto || '', valor: e.valor || 0, duracao: e.duracao || 0 }));
+      if (optEscala && optEscala.extraEfeitos && optEscala.extraEfeitos.length) {
+        efs.push(...optEscala.extraEfeitos);
+      }
       castPending = { nonce: nonce, groups: dm ? dm.groups : [], flat: dm ? dm.flat : 0, label: 'Dano · ' + nomeSkill };
       syncRef.child('cast').set({
         nonce: nonce, nome: nomeSkill, save: m.resolucao.save, cd: cd, regra: m.resolucao.passou || 'nada', dmg: dm ? dm.total : 0, dmgText: dm ? dm.text : '',
@@ -10664,6 +10998,7 @@
       if (skillFeedRef) { skillFeedRef.off(); skillFeedRef = null; }
       if (combatFeedRef) { combatFeedRef.off(); combatFeedRef = null; }
       if (incomingBuffRef) { incomingBuffRef.off(); incomingBuffRef = null; }
+      if (incomingCuraRef) { incomingCuraRef.off(); incomingCuraRef = null; }
 
       // tira a ficha da mesa no servidor (é isso que faltava: o nó ficava salvo e o Mestre continuava vendo)
       if (manterNoServidor !== true && code && meuId) {
@@ -10690,7 +11025,7 @@
 
     let turnRef = null;
     let turnOrderRef = null;
-    let rosterRef = null, incomingBuffRef = null, lastIncomingBuffTs = 0, lastRosterPlayers = {};
+    let rosterRef = null, incomingBuffRef = null, incomingCuraRef = null, lastIncomingBuffTs = 0, lastIncomingCuraTs = 0, lastRosterPlayers = {};
     let currentActiveTurnName = null;
     let _turnFirst = true, _turnTsSeen = null;
 
@@ -10855,6 +11190,29 @@
             save();
             renderBuffs();
             wpnToast('✨ Você recebeu ' + (buff.skillName || 'um buff') + ' de ' + (buff.origem || 'um aliado') + '!');
+          }
+        }
+      });
+
+      // Escuta cura direta enviada por aliados
+      if (incomingCuraRef) incomingCuraRef.off();
+      incomingCuraRef = syncRef.child('incomingCura');
+      incomingCuraRef.on('value', (snapshot) => {
+        const cVal = snapshot.val();
+        if (cVal && cVal.ts && cVal.ts !== lastIncomingCuraTs) {
+          lastIncomingCuraTs = cVal.ts;
+          const hpCurEl = document.getElementById('hp-cur');
+          const hpMaxEl = document.getElementById('hp-max');
+          const hpCur = parseFloat(hpCurEl?.value) || 0;
+          const hpMax = parseFloat(hpMaxEl?.value) || 0;
+          const qtd = cVal.valor || 0;
+          if (qtd > 0 && hpCur < hpMax) {
+            const novoHp = Math.min(hpMax, hpCur + qtd);
+            if (hpCurEl) hpCurEl.value = novoHp;
+            updateBar('hp');
+            resourceFx('hp', novoHp - hpCur, _pct(hpCur, hpMax), _pct(novoHp, hpMax));
+            save();
+            wpnToast('💚 Você foi curado em +' + (novoHp - hpCur) + ' HP por ' + (cVal.origem || 'um aliado') + ' (' + (cVal.skillName || 'Cura') + ')!');
           }
         }
       });
@@ -12329,6 +12687,7 @@
       if (skillFeedRef) { skillFeedRef.off(); skillFeedRef = null; }
       if (combatFeedRef) { combatFeedRef.off(); combatFeedRef = null; }
       if (incomingBuffRef) { incomingBuffRef.off(); incomingBuffRef = null; }
+      if (incomingCuraRef) { incomingCuraRef.off(); incomingCuraRef = null; }
       document.getElementById('turn-status-bar').style.display = 'none';
       document.getElementById('turn-banner').style.display = 'none';
       document.getElementById('turn-order-mini').style.display = 'none';
