@@ -10342,7 +10342,6 @@
           s = x.target + ' ' + (x.passou ? 'passou' : 'falhou') + ' no teste';
           if (x.dmg) s += ' e tomou ' + x.dmg + ' de dano';
         }
-        if (x.killed) s += ' 💀';
         if (x.efs && x.efs.length) s += ' (' + (x.passou ? 'negou ' : 'sofre ') + x.efs.join(', ') + ')';
         return s;
       });
@@ -10375,7 +10374,7 @@
           refreshUseButtons();
           syncPushState(true);
         }
-        msg = (p.d20 === 20 ? '💥 CRÍTICO! ' : '🎯 Acertou ') + r.target + ' — ' + r.dmg + ' de dano' + (r.killed ? ' · derrotado 💀' + (p.recuperaStOnKill ? ' (+' + p.recuperaStOnKill + '🟡)' : '') : '') + '.';
+        msg = (p.d20 === 20 ? '💥 CRÍTICO! ' : '🎯 Acertou ') + r.target + ' — ' + r.dmg + ' de dano' + (r.killed && p.recuperaStOnKill ? ' (+2🟡)' : '') + '.';
       }
       else {
         if (p.consumidos && p.consumidos.length && window.OlaEngine) {
@@ -12599,7 +12598,6 @@
           const icon = r.passou ? '🛡️' : '💥';
           let s = `${icon} <strong>${_lxEscape(r.target)}</strong> ${r.passou ? 'passou no teste' : 'falhou no teste'}`;
           if (r.dmg) s += ` e tomou ${r.dmg} de dano`;
-          if (r.killed) s += ` 💀`;
           if (r.efs && r.efs.length) s += `<div class="lx-combat-sub">${r.passou ? 'Negou' : 'Sofre'}: ${_lxEscape(r.efs.join(', '))}</div>`;
           return `<div class="lx-combat-line">${s}</div>`;
         }).join('');
@@ -12616,7 +12614,7 @@
         card.classList.add(item.hit ? 'combat-success' : 'combat-fail');
         let txt = '';
         if (item.hit) {
-          txt = `<strong>${_lxEscape(item.actor)}</strong> acertou <strong>${_lxEscape(item.target)}</strong> com ${_lxEscape(item.skillName)} causando ${item.dmg || 0} de dano${item.killed ? ' 💀' : ''}.`;
+          txt = `<strong>${_lxEscape(item.actor)}</strong> acertou <strong>${_lxEscape(item.target)}</strong> com ${_lxEscape(item.skillName)} causando ${item.dmg || 0} de dano.`;
         } else {
           txt = `<strong>${_lxEscape(item.actor)}</strong> atacou <strong>${_lxEscape(item.target)}</strong> com ${_lxEscape(item.skillName)}, mas errou.`;
         }

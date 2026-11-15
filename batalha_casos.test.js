@@ -604,7 +604,6 @@ testCase('Logs', '5.1 Log do Jogador (Ficha): puramente narrativo, sem vazar d20
   // Formato da Ficha do Jogador:
   let msgJogador = eventoCombate.target + ' ' + (eventoCombate.passou ? 'passou' : 'falhou') + ' no teste';
   if (eventoCombate.dmg) msgJogador += ' e tomou ' + eventoCombate.dmg + ' de dano';
-  if (eventoCombate.killed) msgJogador += ' 💀';
 
   assert.strictEqual(msgJogador, 'Leão 1 passou no teste e tomou 8 de dano');
   assert.ok(!msgJogador.includes('17'), 'Mensagem do jogador NÃO pode conter a rolagem 17');
