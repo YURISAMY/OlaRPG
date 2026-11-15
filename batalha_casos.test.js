@@ -264,6 +264,21 @@ testCase('Ataque', '1.12 Golpe nas Costas (arma + 2 dados extras do mesmo tipo, 
   assert.strictEqual(playerSt, 6, 'Recupera 2 de Stamina ao abater o inimigo com Golpe nas Costas');
 });
 
+testCase('Ataque', '1.13 Magia Relâmpago (Destruição, ataque de conjuração com 2d8 de dano base)', () => {
+  const mec = global.window.OLARPG_MEC_CATALOG['relampago'];
+  assert.ok(mec, 'Magia Relâmpago deve existir no catálogo');
+  assert.strictEqual(mec.id, 'relampago');
+  assert.strictEqual(mec.recurso, 'fo');
+  assert.strictEqual(mec.custo, 4);
+  assert.strictEqual(mec.resolucao.tipo, 'ataque');
+  assert.strictEqual(mec.resolucao.atributo, 'conjuracao');
+  assert.strictEqual(mec.dano.dados, '2d8', 'Relâmpago deve causar 2d8 e não 1d4');
+
+  const comp = E.composeDano(mec, null);
+  assert.strictEqual(comp.ok, true);
+  assert.strictEqual(comp.expr, '2d8', 'Expressão de dano do Relâmpago é 2d8');
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. MAGIAS E HABILIDADES COM SALVAGUARDA (SAVE / RESISTÊNCIA EM ÁREA)
 // ─────────────────────────────────────────────────────────────────────────────

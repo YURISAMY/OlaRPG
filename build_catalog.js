@@ -30,13 +30,11 @@ while ((match = scriptRegex.exec(html)) !== null) {
     }
     const norm = name ? name.toLowerCase().trim() : '';
     const noAcc = norm ? norm.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : '';
+    const baseKey = noAcc || norm;
 
-    parsedItems.push({ data, name, norm, noAcc, id: data.id });
-    if (norm) {
-      nameOccurrences[norm] = (nameOccurrences[norm] || 0) + 1;
-      if (noAcc && noAcc !== norm) {
-        nameOccurrences[noAcc] = (nameOccurrences[noAcc] || 0) + 1;
-      }
+    parsedItems.push({ data, name, norm, noAcc, baseKey, id: data.id });
+    if (baseKey) {
+      nameOccurrences[baseKey] = (nameOccurrences[baseKey] || 0) + 1;
     }
   } catch (e) {
     console.error('Error parsing JSON:', e.message);
@@ -48,7 +46,7 @@ let count = 0;
 const ambiguous = {};
 
 parsedItems.forEach(item => {
-  const { data, id, norm, noAcc } = item;
+  const { data, id, norm, noAcc, baseKey } = item;
   count++;
 
   // 1. Sempre indexa pelo ID único e imutável
@@ -67,13 +65,13 @@ parsedItems.forEach(item => {
   }
 
   // 3. Para busca por nome: só mapeia o nome simples global se NÃO houver colisão de nomes
-  if (norm) {
-    if (nameOccurrences[norm] === 1) {
-      catalog[norm] = data;
-      if (noAcc) catalog[noAcc] = data;
+  if (baseKey) {
+    if (nameOccurrences[baseKey] === 1) {
+      catalog[baseKey] = data;
+      if (norm && norm !== baseKey) catalog[norm] = data;
     } else {
-      if (!ambiguous[norm]) ambiguous[norm] = [];
-      ambiguous[norm].push(id);
+      if (!ambiguous[baseKey]) ambiguous[baseKey] = [];
+      ambiguous[baseKey].push(id);
     }
   }
 });
@@ -83,6 +81,19 @@ if (catalog['astuto-golpe-nas-costas']) {
   catalog['ladino:golpe nas costas'] = gnc;
   catalog['ladino-golpe-nas-costas'] = gnc;
   catalog['golpe-nas-costas'] = gnc;
+}
+
+// A magia geral de Destruição 'Relâmpago' (4🔵, 2d8) é a magia canônica global
+if (catalog['relampago']) {
+  const rel = catalog['relampago'];
+  catalog['relampago'] = rel;
+  catalog['relâmpago'] = rel;
+}
+if (catalog['lamina-veloz-relampago']) {
+  const tec = catalog['lamina-veloz-relampago'];
+  catalog['relampago-2'] = tec;
+  catalog['lamina-veloz:relampago'] = tec;
+  catalog['lamina-veloz:relâmpago'] = tec;
 }
 
 catalog['_ambiguous'] = ambiguous;

@@ -9327,7 +9327,15 @@
     // ─── MAGIAS E TÉCNICAS COM MEC (ataque contra CA) ───
     // Atributo de ataque: 'conjuracao' = maior mod entre INT/SAB/CAR + proficiência  (ASSUMIDO: mesmo critério da CD; ajuste aqui se o ataque mágico não leva proficiência)
     function enrichSpell(item) {
-      if (!item || item.mec || !window.OLARPG_MEC_CATALOG) return item && item.mec;
+      if (!item || !window.OLARPG_MEC_CATALOG) return item && item.mec;
+      if (item.mec && item.name && item.name.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === 'relampago') {
+        const isFoco = item.recurso === 'fo' || (item.custo && item.custo.includes('🔵'));
+        if (isFoco && (item.mec.id === 'relampago-2' || (item.mec.dano && item.mec.dano.dados === '1d4'))) {
+          item.mec = null;
+          item.mecId = null;
+        }
+      }
+      if (item.mec) return item.mec;
       const cat = window.OLARPG_MEC_CATALOG;
       let found = null;
       if (item.mecId && cat[item.mecId]) {
@@ -9360,6 +9368,13 @@
       const cat = window.OLARPG_MEC_CATALOG;
       ['magias', 'tecnicas', 'passivas'].forEach(cName => {
         (state[cName] || []).forEach(it => {
+          if (it.mec && it.name && it.name.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '') === 'relampago') {
+            const isFoco = it.recurso === 'fo' || cName === 'magias' || (it.custo && it.custo.includes('🔵'));
+            if (isFoco && (it.mec.id === 'relampago-2' || (it.mec.dano && it.mec.dano.dados === '1d4'))) {
+              it.mec = null;
+              it.mecId = null;
+            }
+          }
           if (!it.mec) {
             let found = null;
             if (it.mecId && cat[it.mecId]) found = cat[it.mecId];
