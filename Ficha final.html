@@ -9302,7 +9302,7 @@
     // Envia o ataque pro Bestiário (que confere a CA e tira o HP). Serve pra arma e pra magia.
     function wpnDisparar(o) {
       const nonce = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-      wpnPending = { nonce: nonce, d20: o.d20, groups: o.dm.groups, flat: o.dm.flat, consumidos: o.dm.consumidos || [], label: (o.d20 === 20 ? 'Dano crítico · ' : 'Dano · ') + o.nome };
+      wpnPending = { nonce: nonce, d20: o.d20, groups: o.dm.groups, flat: o.dm.flat, consumidos: o.dm.consumidos || [], label: (o.d20 === 20 ? 'Dano crítico · ' : 'Dano · ') + o.nome, recuperaStOnKill: o.recuperaStOnKill || 0 };
       const send = () => {
         if (!syncRef) return;
         syncRef.child('atk').set({
@@ -9388,7 +9388,8 @@
       if (!['arma', 'conjuracao', 'luta'].includes(m.resolucao.atributo)) return null;
       // m.opcoes e alvos múltiplos/área agora têm suporte interativo na janela modal
       const w = wpnRead();
-      const dano = E.composeDano(m, { dano: w.dano, extra: w.mod + (w.addAttr ? getModValue(w.attr) : 0) + w.bDano });
+      const profVal = typeof getProfBonus === 'function' ? getProfBonus(state.level || 1) : 2;
+      const dano = E.composeDano(m, { dano: w.dano, extra: w.mod + (w.addAttr ? getModValue(w.attr) : 0) + w.bDano, prof: profVal });
       if (!dano.ok) return { erro: dano.motivo };
       return { mec: m, dano: dano };
     }
@@ -9404,7 +9405,14 @@
       if (!item.mec) enrichSpell(item);
       const a = _mecAtaque(item);
       if (!a) { const sv = conjurarSave(cat, i); if (sv) return sv; const aut = conjurarAutomatico(cat, i); if (aut) return aut; return conjurarNenhuma(cat, i); }  // ataque → save → suporte/buff
-      if (a.erro) { wpnToast('Ataque manual: ' + a.erro + '.'); return false; }
+      if (a.erro) {
+        if (a.erro === 'defina o dano da arma') {
+          wpnToast('⚠️ Defina o dano da arma na seção de Ataque para usar ' + item.name + '.');
+          return true;
+        }
+        wpnToast('Ataque manual: ' + a.erro + '.');
+        return false;
+      }
       if (!state.sessionCode || !syncRef) {
         wpnToast('⚠️ Conecte-se a uma sessão na mesa para conjurar em combate.');
         return true;
@@ -9446,7 +9454,8 @@
       const elemNome = opts.elemento || (a.mec.elemento && typeof a.mec.elemento === 'string' ? a.mec.elemento : '');
       const sufixoGolpe = opts.totalGolpes ? ' (' + opts.golpeIdx + '/' + opts.totalGolpes + ')' : '';
       const labelDano = (elemNome ? 'Dano (' + elemNome + ') · ' : 'Dano · ') + item.name + sufixoGolpe;
-      wpnDisparar({ id: id, alvo: name, d20: d20, bonus: bonus, nome: item.name + (elemNome ? ' (' + elemNome + ')' : '') + sufixoGolpe, skill: '', dm: dm, label: labelDano, tipo: elemNome });
+      const recuperaStOnKill = (a.mec && a.mec.se_matar_recupera_st) || 0;
+      wpnDisparar({ id: id, alvo: name, d20: d20, bonus: bonus, nome: item.name + (elemNome ? ' (' + elemNome + ')' : '') + sufixoGolpe, skill: '', dm: dm, label: labelDano, tipo: elemNome, recuperaStOnKill: recuperaStOnKill });
       if (a.dano.alt && a.dano.alt.condicao) wpnToast('Atenção: ' + a.dano.alt.condicao + ' → ' + (a.dano.alt.efeito || 'efeito alternativo') + ' (manual).');
     }
 
@@ -10346,7 +10355,12 @@
           save();
           renderBuffs();
         }
-        msg = (p.d20 === 20 ? '💥 CRÍTICO! ' : '🎯 Acertou ') + r.target + ' — ' + r.dmg + ' de dano' + (r.killed ? ' · derrotado 💀' : '') + '.';
+        if (r.killed && p.recuperaStOnKill) {
+          spendResource('st', -p.recuperaStOnKill);
+          refreshUseButtons();
+          syncPushState(true);
+        }
+        msg = (p.d20 === 20 ? '💥 CRÍTICO! ' : '🎯 Acertou ') + r.target + ' — ' + r.dmg + ' de dano' + (r.killed ? ' · derrotado 💀' + (p.recuperaStOnKill ? ' (+' + p.recuperaStOnKill + '🟡)' : '') : '') + '.';
       }
       else {
         if (p.consumidos && p.consumidos.length && window.OlaEngine) {

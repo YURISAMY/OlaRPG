@@ -5149,6 +5149,7 @@
               Só pode ser usado se estiver atrás ou no flanco do inimigo. Causa dano da arma + 2 dados
               extras do mesmo tipo. Se matar, recupera 2🟡. Aumenta para + 1 dado junto com os aumentos de proeficiencia
             </div>
+            <script type="application/json" class="mec">{"v":1,"id":"astuto-golpe-nas-costas","revisado":true,"origem":"classe","acao":"padrao","recurso":"st","custo":4,"alvos":[{"papel":"inimigo","qtd":1}],"resolucao":{"tipo":"ataque","atributo":"arma"},"dano":{"arma":true,"dados_extras_arma":2,"escala_prof":true},"se_matar_recupera_st":2,"requisito":"Estar atrás ou no flanco do inimigo","manual":"Só pode ser usado se estiver atrás ou no flanco do inimigo. Se matar, recupera 2🟡.","automacao":"total"}</script>
           </div>
         </div>
         <div class="base-card wide">
@@ -5248,6 +5249,7 @@
             <div class="skdesc">
               Cura 1d6 de um aliado a até 6 blocos de distância. Uma vez por turno.
             </div>
+            <script type="application/json" class="mec">{"v":1,"id":"semblante-ajudinha","revisado":true,"origem":"classe","acao":"rapida","recurso":"fo","custo":2,"uso":{"limite":"turno","vezes":1},"alvos":[{"papel":"aliado","qtd":1,"alcance":6}],"resolucao":{"tipo":"nenhuma"},"cura":{"dados":"1d6"},"automacao":"total"}</script>
           </div>
           <div class="skill-base-row">
             <span class="skname">
@@ -5259,6 +5261,7 @@
             <div class="skdesc">
               Seu próximo golpe, reduz a armadura do alvo em 2 CA. (não acumula)
             </div>
+            <script type="application/json" class="mec">{"v":1,"id":"semblante-romper-malha","revisado":true,"origem":"classe","acao":"padrao","recurso":"st","custo":1,"alvos":[{"papel":"inimigo","qtd":1}],"resolucao":{"tipo":"ataque","atributo":"arma"},"dano":{"arma":true},"efeitos":[{"quando":"acerto","em":"alvo","tipo":"status","texto":"-2 CA (Romper Malha)","duracao":1}],"usa_arma":true,"automacao":"total"}</script>
           </div>
         </div>
         <div class="base-card wide">

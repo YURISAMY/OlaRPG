@@ -78,6 +78,13 @@ parsedItems.forEach(item => {
   }
 });
 
+if (catalog['astuto-golpe-nas-costas']) {
+  const gnc = catalog['astuto-golpe-nas-costas'];
+  catalog['ladino:golpe nas costas'] = gnc;
+  catalog['ladino-golpe-nas-costas'] = gnc;
+  catalog['golpe-nas-costas'] = gnc;
+}
+
 catalog['_ambiguous'] = ambiguous;
 
 const outContent = 'window.OLARPG_MEC_CATALOG = ' + JSON.stringify(catalog) + ';\n';

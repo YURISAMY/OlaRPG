@@ -234,9 +234,15 @@
     if (d.arma) {
       if (!arma || !arma.dano || !String(arma.dano).trim()) return { ok: false, motivo: 'defina o dano da arma' };
       var mult = (typeof d.multiplicador === 'number' && d.multiplicador > 0) ? d.multiplicador : 1;
+      var extraDice = (typeof d.dados_extras_arma === 'number' && d.dados_extras_arma > 0) ? d.dados_extras_arma : 0;
+      if (d.escala_prof && arma.prof) {
+        var profBonus = Math.max(0, (Number(arma.prof) || 2) - 2);
+        extraDice += profBonus;
+      }
       var wParsed = parseExpr(arma.dano);
       var wTerms = wParsed.terms.map(function (t) {
         var num = mult < 1 ? Math.max(1, Math.floor(t.n * mult)) : Math.round(t.n * mult);
+        num += extraDice;
         return num + 'd' + t.s;
       });
       if (wTerms.length) parts.push(wTerms.join('+'));
@@ -250,7 +256,7 @@
 
   /* ───────── Validador do mec ───────── */
   var V = {
-    top: 'v id nome revisado origem acao recurso custo dano cura alvos resolucao efeitos escala opcoes uso requisito preparo usa_arma automacao manual duvidas elemento distribuicao perguntas manutencao nivel_minimo duracao'.split(' '),
+    top: 'v id nome revisado origem acao recurso custo dano cura alvos resolucao efeitos escala opcoes uso requisito preparo usa_arma automacao manual duvidas elemento distribuicao perguntas manutencao nivel_minimo duracao se_matar_recupera_st on_kill'.split(' '),
     acao: 'padrao rapida assinatura gratuita reacao passiva'.split(' '), recurso: 'fo st misto'.split(' '),
     papel: 'inimigo aliado si qualquer si_ou_aliado zona'.split(' '), forma: 'quadrado raio linha cone'.split(' '),
     res: 'nenhuma ataque save automatico'.split(' '), passou: 'metade anula nada'.split(' '), attr: 'for des con int sab car'.split(' '),

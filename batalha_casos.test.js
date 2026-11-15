@@ -228,6 +228,42 @@ testCase('Ataque', '1.11 Pressão Constante (3 ataques sucessivos com d20 contra
   assert.ok(acertos >= 2, 'Gatilho de 2+ acertos acionado: sem ações rápidas até o próximo turno');
 });
 
+testCase('Ataque', '1.12 Golpe nas Costas (arma + 2 dados extras do mesmo tipo, escala por proficiência e recuperação de ST ao matar)', () => {
+  const mec = global.window.OLARPG_MEC_CATALOG['golpe nas costas'];
+  assert.ok(mec, 'Golpe nas Costas deve estar no catálogo');
+  assert.strictEqual(mec.resolucao.tipo, 'ataque');
+  assert.strictEqual(mec.resolucao.atributo, 'arma');
+  assert.strictEqual(mec.se_matar_recupera_st, 2);
+
+  // 1. Dano base com arma 1d6 (adaga / espada curta) e proficiência 2 (nível 1)
+  const arma1 = { dano: '1d6', extra: 3, prof: 2 };
+  const comp1 = E.composeDano(mec, arma1);
+  assert.strictEqual(comp1.ok, true);
+  assert.strictEqual(comp1.expr, '3d6', '1d6 da arma + 2d6 extras = 3d6');
+  assert.strictEqual(comp1.extra, 3);
+
+  // 2. Dano com arma 1d8 (rapieira) e proficiência escalada para 4 (+2 dados adicionais)
+  const arma2 = { dano: '1d8', extra: 4, prof: 4 };
+  const comp2 = E.composeDano(mec, arma2);
+  assert.strictEqual(comp2.ok, true);
+  assert.strictEqual(comp2.expr, '5d8', '1d8 + 2d8 base + 2d8 prof = 5d8');
+
+  // 3. Simulação de abate e recuperação de 2 de Stamina
+  let playerSt = 4;
+  const alvo = { name: 'Goblin Emboscador', ca: 11, hp: 8 };
+  const d20 = 15;
+  const hit = d20 >= alvo.ca;
+  assert.strictEqual(hit, true);
+  const dmg = 12; // mata o goblin
+  alvo.hp = Math.max(0, alvo.hp - dmg);
+  const killed = alvo.hp === 0;
+  assert.strictEqual(killed, true);
+  if (killed && mec.se_matar_recupera_st) {
+    playerSt += mec.se_matar_recupera_st;
+  }
+  assert.strictEqual(playerSt, 6, 'Recupera 2 de Stamina ao abater o inimigo com Golpe nas Costas');
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 2. MAGIAS E HABILIDADES COM SALVAGUARDA (SAVE / RESISTÊNCIA EM ÁREA)
 // ─────────────────────────────────────────────────────────────────────────────
