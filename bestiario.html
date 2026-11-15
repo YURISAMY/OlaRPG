@@ -3271,10 +3271,22 @@
       color: #e26a6a;
     }
   </style>
-<style>
-.battle-edit{width:52px;background:rgba(0,0,0,.35);border:1px solid rgba(201,146,26,.45);color:inherit;border-radius:3px;padding:1px 4px;font:inherit;text-align:center}
-.battle-edit:focus{outline:1px solid var(--gold,#c9921a)}
-</style>
+  <style>
+    .battle-edit {
+      width: 52px;
+      background: rgba(0, 0, 0, .35);
+      border: 1px solid rgba(201, 146, 26, .45);
+      color: inherit;
+      border-radius: 3px;
+      padding: 1px 4px;
+      font: inherit;
+      text-align: center
+    }
+
+    .battle-edit:focus {
+      outline: 1px solid var(--gold, #c9921a)
+    }
+  </style>
 </head>
 
 <body>
@@ -5985,7 +5997,125 @@
         <button class="add-battle-btn">Adicionar ➕</button>
       </div>
 
+      <div class="base-card medium criatura-card" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">SOLDADO DA IGREJA</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio — Soldado de Infantaria</p>
 
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Soldado raso da Igreja do Sol. Armado de espada e escudo, treinado para capturar hereges vivos.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 25</span>
+          <span class="stat-pill st">🟡 ST: 10</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 4🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 13 | Atq: +3</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🟢 Fácil</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:'Share Tech Mono'; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +2 | DES: +1 | CON: +1 | INT: +0 | CAR: +0 | SAB: +0</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:'Share Tech Mono',monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Golpe de Espada - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">1d8+2 cortante.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Ordem de Captura - Padrão</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Teste de FOR contra FOR. Se o alvo falhar, fica Agarrado.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Fé da Igreja - Passiva</span><span class="skcost">Passiva</span>
+          <div class="skdesc">+1 de CA enquanto houver um aliado adjacente.</div>
+        </div>
+
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="humanoide" style="overflow: visible;">
+        <div class="base-card-title" style="color:#c9921a; margin-bottom:4px;">CAPITÃO DA GUARDA</div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Humanoide Médio — Oficial da Igreja do Sol</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Oficial que comanda a patrulha. Disciplinado e brutal, usa a fé da Igreja para manter a tropa em formação.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 45</span>
+          <span class="stat-pill st">🟡 ST: 12</span>
+          <span class="stat-pill fo">🔵 FO: 0</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 5🟡 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 15 | Atq: +5</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">🔵 Médio</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:'Share Tech Mono'; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +3 | DES: +1 | CON: +2 | INT: +1 | CAR: +2 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:'Share Tech Mono',monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Golpe Solar - Padrão</span><span class="skcost">4🟡</span>
+          <div class="skdesc">2d6+3 radiante.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Brado de Convocação - Rápida</span><span class="skcost">5🟡</span>
+          <div class="skdesc">Aliados em até 6 blocos ganham +2 no próximo ataque.</div>
+        </div>
+
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
+
+      <div class="base-card medium criatura-card" data-cat="sobrenatural" style="overflow: visible; border-color:#d4b060;">
+        <div class="base-card-title" style="color:#c040c0; margin-bottom:4px;">VHAREK, O LOBO DO COMPASSO <span style="font-size:10px;color:#d4b060;letter-spacing:0.08em;">★ CRIATURA ÚNICA</span></div>
+        <p style="font-size:12px;color:rgba(245,234,214,0.45);margin-bottom:12px;font-style:italic;">Sobrenatural Grande — Criatura do Vazio (Boss Marcial)</p>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:12px;line-height:1.5;">Lobo gigante do vazio, com quatro braços humanos longos saindo das costelas, uma boca vertical em volta da runa no peito e olhos que piscam em sequência, como quem marca compasso.</p>
+
+        <div class="stat-row">
+          <span class="stat-pill hp">❤️ HP: 195</span>
+          <span class="stat-pill st">🟡 ST: 18</span>
+          <span class="stat-pill fo">🔵 FO: 8</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.15);color:rgba(245,234,214,0.6);">🔄 Rec: 7🟡 / 4🔵 por turno</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">CA: 16 | Atq: +9</span>
+          <span class="stat-pill rec" style="border-color:rgba(255,255,255,0.2);">⚫ Lendário</span>
+        </div>
+
+        <div class="skill-base-row" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.08); padding:6px 12px; margin-bottom:6px;">
+          <span style="font-family:'Share Tech Mono'; font-size:10px; color:rgba(245,234,214,0.5); letter-spacing:0.05em;">FOR: +5 | DES: +4 | CON: +4 | INT: -2 | CAR: +0 | SAB: +1</span>
+        </div>
+
+        <p style="font-size:11px;color:rgba(245,234,214,0.4);margin-top:16px;margin-bottom:8px;font-family:'Share Tech Mono',monospace;letter-spacing:0.08em;">HABILIDADES</p>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Mordida Compassada - Padrão</span><span class="skcost">3🟡</span>
+          <div class="skdesc">2d8+9 perfurante. Se acertar no próprio turno, entra em Ritmo (veja Reativo).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Investida das Raízes - Padrão</span><span class="skcost">6🟡</span>
+          <div class="skdesc">TR 1. Avança até 6 blocos em linha e causa 3d8+9 a quem estiver no caminho (DES CD 16 pela metade; se falhar, fica Caído).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Uivo do Vazio - Padrão</span><span class="skcost">5🔵</span>
+          <div class="skdesc">TR 2. Cone de 4 blocos. SAB CD 16 ou Assustado por 1 turno (desvantagem em ataques contra ele).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ ÉPICO: Frenesi do Compasso - Padrão</span><span class="skcost">12🟡</span>
+          <div class="skdesc">TR 3. Duas Mordidas em alvos diferentes. Entra em Ritmo mesmo que erre as duas.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Reativo (Ritmo) - Passiva</span><span class="skcost">Passiva</span>
+          <div class="skdesc">Se acertar um ataque no próprio turno, entra em Ritmo. Enquanto em Ritmo, toda vez que um jogador atacar, faz um ataque reativo gratuito (2d6+8) no alvo mais próximo. Se acertar, o Ritmo continua. Se errar, o Ritmo acaba. Se um jogador passar a vez sem atacar, o Ritmo também acaba. Calma Vulnerável: ao perder o Ritmo, fica Exposto até o fim do próximo turno (CA -2).</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Elo do Vazio - Passiva</span><span class="skcost">Passiva</span>
+          <div class="skdesc">Sempre que uma criatura a até 6 blocos de uma criatura do vazio receber cura, PV temporário ou buff, toda criatura do vazio a até 6 blocos dela recebe o mesmo efeito.</div>
+        </div>
+        <div class="skill-base-row">
+          <span class="skname">⚪ Fragmento no Peito - Passiva</span><span class="skcost">Passiva</span>
+          <div class="skdesc">A runa pulsa visível no peito. Quando está Exposto, um acerto crítico nela causa +1d8 de dano.</div>
+        </div>
+
+        <button class="add-battle-btn">Adicionar ➕</button>
+      </div>
 
       <div class="base-card medium criatura-card" data-cat="monstruosidade" style="overflow: visible;">
         <div class="base-card-title" style="color:#a03030; margin-bottom:4px;">DRACO DE FOGO</div>
@@ -6400,7 +6530,8 @@
         <p
           style="font-size:11px;color:rgba(245,234,214,0.6);margin-bottom:6px;line-height:1.6;font-style:italic;border-left:2px solid rgba(201,146,26,0.3);padding-left:10px;">
           "Ele não ataca ninguém. Ele colhe. Cada pilastra em que ele pousa floresce em vermelho."<br><span
-            style="font-size:10px;color:rgba(245,234,214,0.35);">— Gladiador veterano, único sobrevivente da arena</span></p>
+            style="font-size:10px;color:rgba(245,234,214,0.35);">— Gladiador veterano, único sobrevivente da
+            arena</span></p>
 
         <p style="font-size:11px;color:rgba(245,234,214,0.6);margin-top:10px;margin-bottom:12px;line-height:1.5;">
           Dragão de ossos nus e músculo exposto, coroado por uma crista de folhas rubras que nunca murcham. Vive nos
@@ -6429,61 +6560,96 @@
           HABILIDADES</p>
 
         <div class="skill-base-row">
-          <span class="skname">⚪ Acrobata do Coliseu</span><span class="skcost" style="color:rgba(245,234,214,0.3);">Passiva</span>
-          <div class="skdesc">Ignora terreno difícil e desníveis. Enquanto <b>Empoleirado</b> (sobre uma pilastra), só pode ser alvo de ataques corpo a corpo de quem estiver na mesma pilastra e tem +2 de CA contra ataques à distância (cobertura do capitel).</div>
+          <span class="skname">⚪ Acrobata do Coliseu</span><span class="skcost"
+            style="color:rgba(245,234,214,0.3);">Passiva</span>
+          <div class="skdesc">Ignora terreno difícil e desníveis. Enquanto <b>Empoleirado</b> (sobre uma pilastra), só
+            pode ser alvo de ataques corpo a corpo de quem estiver na mesma pilastra e tem +2 de CA contra ataques à
+            distância (cobertura do capitel).</div>
         </div>
         <div class="skill-base-row">
-          <span class="skname">⚪ Costelas Abertas</span><span class="skcost" style="color:rgba(245,234,214,0.3);">Passiva</span>
-          <div class="skdesc">Enquanto <b>No Chão</b> ou Derrubado, o tórax fica exposto: todo ataque que o acerta causa +1d6 de dano (ponto fraco) e ele não pode usar Esquiva de Osso.</div>
+          <span class="skname">⚪ Costelas Abertas</span><span class="skcost"
+            style="color:rgba(245,234,214,0.3);">Passiva</span>
+          <div class="skdesc">Enquanto <b>No Chão</b> ou Derrubado, o tórax fica exposto: todo ataque que o acerta causa
+            +1d6 de dano (ponto fraco) e ele não pode usar Esquiva de Osso.</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Salto de Pilastra - Rápida</span><span class="skcost">3🟡</span>
-          <div class="skdesc">Pula até 12 blocos para outra pilastra intacta (ou para o chão), sem provocar reações. Ao pousar numa pilastra fica Empoleirado. Criaturas a 2 blocos da base: DES 13 ou 1d6 contundente de estilhaços (metade se passar). 1x por turno. Nunca pousa 2 turnos seguidos na mesma pilastra.</div>
+          <div class="skdesc">Pula até 12 blocos para outra pilastra intacta (ou para o chão), sem provocar reações. Ao
+            pousar numa pilastra fica Empoleirado. Criaturas a 2 blocos da base: DES 13 ou 1d6 contundente de estilhaços
+            (metade se passar). 1x por turno. Nunca pousa 2 turnos seguidos na mesma pilastra.</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Mira de Sangue - Rápida</span><span class="skcost">2🟡</span>
-          <div class="skdesc">Só Empoleirado. Uma pétala rubra gruda em 1 alvo à vista, que fica Marcado até o fim do próximo turno do Dragão. É o aviso do Mergulho Carmesim.</div>
+          <div class="skdesc">Só Empoleirado. Uma pétala rubra gruda em 1 alvo à vista, que fica Marcado até o fim do
+            próximo turno do Dragão. É o aviso do Mergulho Carmesim.</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Mergulho Carmesim - Padrão</span><span class="skcost">8🟡 · TR 2</span>
-          <div class="skdesc">Só Empoleirado, contra alvo Marcado a até 14 blocos. Despenca em linha reta: 3d8+3 perfurante. Alvo e criaturas a 1 bloco: DES 14 ou Derrubado. <b>Se uma pilastra intacta (que não seja a dele) estiver na linha</b>, o Dragão se choca nela: a pilastra desaba (2d6 contundente em 2 blocos), ele sofre 2d10, fica Derrubado e No Chão até o início do próximo turno, e ninguém leva o mergulho.</div>
+          <div class="skdesc">Só Empoleirado, contra alvo Marcado a até 14 blocos. Despenca em linha reta: 3d8+3
+            perfurante. Alvo e criaturas a 1 bloco: DES 14 ou Derrubado. <b>Se uma pilastra intacta (que não seja a
+              dele) estiver na linha</b>, o Dragão se choca nela: a pilastra desaba (2d6 contundente em 2 blocos), ele
+            sofre 2d10, fica Derrubado e No Chão até o início do próximo turno, e ninguém leva o mergulho.</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Garra de Espinhos - Padrão</span><span class="skcost">4🟡</span>
-          <div class="skdesc">Alcance 2 blocos. 1d10+4 cortante. Acerto: Sangramento (2 HP/turno por 2 turnos, não acumula).</div>
+          <div class="skdesc">Alcance 2 blocos. 1d10+4 cortante. Acerto: Sangramento (2 HP/turno por 2 turnos, não
+            acumula).</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Mordida Carmesim - Padrão</span><span class="skcost">5🟡</span>
-          <div class="skdesc">Alcance 4 blocos (pescoço sinuoso). 2d8+4 perfurante. Se o alvo estiver Sangrando: +1d6 de dano e o Dragão recupera 6 HP.</div>
+          <div class="skdesc">Alcance 4 blocos (pescoço sinuoso). 2d8+4 perfurante. Se o alvo estiver Sangrando: +1d6 de
+            dano e o Dragão recupera 6 HP.</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Chuva de Pétalas - Padrão</span><span class="skcost">6🟡 · TR 1</span>
-          <div class="skdesc">Só Empoleirado. Pétalas-lâmina caem num círculo de 3 blocos de raio, centro a até 12 blocos: 2d6+3 cortante, DES 13 para metade. Falhou: Lento por 1 turno. O chão fica coberto de pétalas por 1 rodada (terreno difícil).</div>
+          <div class="skdesc">Só Empoleirado. Pétalas-lâmina caem num círculo de 3 blocos de raio, centro a até 12
+            blocos: 2d6+3 cortante, DES 13 para metade. Falhou: Lento por 1 turno. O chão fica coberto de pétalas por 1
+            rodada (terreno difícil).</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Esquiva de Osso - Reação</span><span class="skcost">3🟡</span>
-          <div class="skdesc">Quando for alvo de ataque, depois da rolagem: +3 de CA contra aquele ataque. Se o ataque errar, move 2 blocos sem provocar. 1x por rodada. Não funciona Derrubado.</div>
+          <div class="skdesc">Quando for alvo de ataque, depois da rolagem: +3 de CA contra aquele ataque. Se o ataque
+            errar, move 2 blocos sem provocar. 1x por rodada. Não funciona Derrubado.</div>
         </div>
         <div class="skill-base-row">
           <span class="skname">⚪ Desmoronar o Coliseu - Padrão</span><span class="skcost">10🟡</span>
-          <div class="skdesc">Só abaixo de 40 HP. 1x por combate. O Dragão despenca no centro da arena (No Chão) e despedaça todas as pilastras restantes: cada uma desaba em 3 blocos ao redor, 3d6 contundente, DES 14 para metade. Onde havia pilastra vira escombro (terreno difícil). Dispara a Fúria Desfolhada.</div>
+          <div class="skdesc">Só abaixo de 40 HP. 1x por combate. O Dragão despenca no centro da arena (No Chão) e
+            despedaça todas as pilastras restantes: cada uma desaba em 3 blocos ao redor, 3d6 contundente, DES 14 para
+            metade. Onde havia pilastra vira escombro (terreno difícil). Dispara a Fúria Desfolhada.</div>
         </div>
-        <div style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
-          <p style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">MECÂNICA DA ARENA — PILASTRAS</p>
+        <div
+          style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
+          <p
+            style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">
+            MECÂNICA DA ARENA — PILASTRAS</p>
           <p style="font-size:11px;color:rgba(245,234,214,0.5);line-height:1.6;margin:0;">
-          <span style="color:rgba(245,234,214,0.75);">Montagem:</span> 6 a 8 pilastras, 6 blocos de altura, topo 2×2 (cabem 2 criaturas). Cada uma: CA 10, HP 30, RD 2.<br>
-          <span style="color:rgba(245,234,214,0.75);">Subir:</span> Ação Rápida + Atletismo ou Acrobacia 13. Quem sobe fica na mesma pilastra do Dragão e pode ser atacado normalmente (queda: 1d6).<br>
-          <span style="color:rgba(245,234,214,0.75);">Derrubar:</span> destruir a pilastra com o Dragão em cima o faz cair: 2d10 contundente, Derrubado, No Chão e sem Reação até o próximo turno. Ele não pode mais pousar ali.<br>
-          <span style="color:rgba(245,234,214,0.75);">Isca:</span> quem está Marcado pode se posicionar atrás de uma pilastra para o Mergulho se espatifar nela.<br>
-          <span style="color:rgba(245,234,214,0.75);">Tensão:</span> cada pilastra a menos é um esconderijo a menos.
+            <span style="color:rgba(245,234,214,0.75);">Montagem:</span> 6 a 8 pilastras, 6 blocos de altura, topo 2×2
+            (cabem 2 criaturas). Cada uma: CA 10, HP 30, RD 2.<br>
+            <span style="color:rgba(245,234,214,0.75);">Subir:</span> Ação Rápida + Atletismo ou Acrobacia 13. Quem sobe
+            fica na mesma pilastra do Dragão e pode ser atacado normalmente (queda: 1d6).<br>
+            <span style="color:rgba(245,234,214,0.75);">Derrubar:</span> destruir a pilastra com o Dragão em cima o faz
+            cair: 2d10 contundente, Derrubado, No Chão e sem Reação até o próximo turno. Ele não pode mais pousar
+            ali.<br>
+            <span style="color:rgba(245,234,214,0.75);">Isca:</span> quem está Marcado pode se posicionar atrás de uma
+            pilastra para o Mergulho se espatifar nela.<br>
+            <span style="color:rgba(245,234,214,0.75);">Tensão:</span> cada pilastra a menos é um esconderijo a menos.
           </p>
         </div>
-        <div style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
-          <p style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">FASES DE COMBATE</p>
+        <div
+          style="margin-top:14px;padding:8px 12px;background:rgba(201,146,26,0.05);border:1px solid rgba(201,146,26,0.12);border-radius:3px;">
+          <p
+            style="font-family:&#39;Share Tech Mono&#39;,monospace;font-size:9px;letter-spacing:0.08em;color:rgba(201,146,26,0.5);margin-bottom:6px;">
+            FASES DE COMBATE</p>
           <p style="font-size:11px;color:rgba(245,234,214,0.5);line-height:1.6;margin:0;">
-          <span style="color:rgba(245,234,214,0.75);">HP 110–75:</span> Caça nas Alturas — quase sempre Empoleirado. Salto + Mira de Sangue, depois Mergulho. Chuva de Pétalas para forçar o grupo a se mexer. Desce só para Mordida em alvo isolado.<br>
-          <span style="color:rgba(245,234,214,0.75);">HP 74–40:</span> Colheita — desce para Garra e Mordida em quem estiver Sangrando e volta para o alto. Alterna pilastras a cada turno.<br>
-          <span style="color:rgba(245,234,214,0.75);">HP abaixo de 40:</span> Fúria Desfolhada — usa Desmoronar o Coliseu. Depois disso fica No Chão para sempre, Rec 10🟡, Garra 2x por turno, e Mira de Sangue e Mergulho Carmesim não exigem mais Empoleirado (viram investida em linha de 10 blocos). Chuva de Pétalas fica indisponível.
+            <span style="color:rgba(245,234,214,0.75);">HP 110–75:</span> Caça nas Alturas — quase sempre Empoleirado.
+            Salto + Mira de Sangue, depois Mergulho. Chuva de Pétalas para forçar o grupo a se mexer. Desce só para
+            Mordida em alvo isolado.<br>
+            <span style="color:rgba(245,234,214,0.75);">HP 74–40:</span> Colheita — desce para Garra e Mordida em quem
+            estiver Sangrando e volta para o alto. Alterna pilastras a cada turno.<br>
+            <span style="color:rgba(245,234,214,0.75);">HP abaixo de 40:</span> Fúria Desfolhada — usa Desmoronar o
+            Coliseu. Depois disso fica No Chão para sempre, Rec 10🟡, Garra 2x por turno, e Mira de Sangue e Mergulho
+            Carmesim não exigem mais Empoleirado (viram investida em linha de 10 blocos). Chuva de Pétalas fica
+            indisponível.
           </p>
         </div>
 
@@ -7845,7 +8011,7 @@
       const subtitleEl = titleEl ? titleEl.nextElementSibling : null;
       const statRow = parent.querySelector('.stat-row');
 
-      const name = titleEl ? titleEl.textContent.trim() : 'Monstro';
+      const name = titleEl ? titleEl.textContent.replace(/★\s*CRIATURA\s*ÚNICA/gi, '').replace(/★\s*CRIATURA\s*&#218;NICA/gi, '').trim() : 'Monstro';
       const instance = getNextMonsterInstance(name);
       const displayName = name + ' ' + instance;
       const subtitle = subtitleEl ? subtitleEl.textContent : '';
@@ -8185,7 +8351,7 @@
         let del = n - maxKeep, upd = {};
         s.forEach(c => { if (del > 0) { upd[c.key] = null; del--; } return false; });
         return ref.update(upd);
-      }).catch(() => {});
+      }).catch(() => { });
     }
 
     /* ── CONJURAÇÕES COM TESTE DE RESISTÊNCIA (o dano é rolado uma vez na Ficha; aqui cada alvo rola o seu save) ── */
@@ -10168,7 +10334,7 @@
       var ALT_SRC = 'sons/nat20_inevitavel.mp3';
       var ALT_T = { A: 0.38, B: 0.64, HIT: 1.25, BOOM: 3.875, FADE: 4.95, END: 5.7 };
       var ALT_STEP = 0.025;
-      var ALT_ENV = [2,0,0,0,0,0,1,1,2,4,5,9,17,19,24,40,49,82,76,68,75,99,93,61,58,54,64,79,88,89,59,66,87,59,75,63,47,79,81,51,72,64,70,65,64,60,51,66,38,48,46,75,91,88,63,86,70,85,57,62,65,46,68,72,59,57,77,63,42,51,55,57,57,56,59,62,61,62,63,68,69,72,67,67,58,61,52,43,50,54,43,33,34,43,53,52,38,35,36,42,40,36,39,31,43,71,41,43,31,28,40,39,33,41,31,35,38,41,37,32,33,38,46,56,50,47,41,38,29,29,31,34,32,37,45,54,42,34,32,32,29,31,38,30,28,28,34,52,44,50,37,34,32,28,22,34,59,51,45,46,43,39,37,25,25,26,23,25,22,18,18,16,15,14,13,11,8,7,8,9,7,6,5,4,5,4,5,4,4,3,3,2,2,2,2,2,2,2,1,1,1,1,0,0,0,0,0,1];
+      var ALT_ENV = [2, 0, 0, 0, 0, 0, 1, 1, 2, 4, 5, 9, 17, 19, 24, 40, 49, 82, 76, 68, 75, 99, 93, 61, 58, 54, 64, 79, 88, 89, 59, 66, 87, 59, 75, 63, 47, 79, 81, 51, 72, 64, 70, 65, 64, 60, 51, 66, 38, 48, 46, 75, 91, 88, 63, 86, 70, 85, 57, 62, 65, 46, 68, 72, 59, 57, 77, 63, 42, 51, 55, 57, 57, 56, 59, 62, 61, 62, 63, 68, 69, 72, 67, 67, 58, 61, 52, 43, 50, 54, 43, 33, 34, 43, 53, 52, 38, 35, 36, 42, 40, 36, 39, 31, 43, 71, 41, 43, 31, 28, 40, 39, 33, 41, 31, 35, 38, 41, 37, 32, 33, 38, 46, 56, 50, 47, 41, 38, 29, 29, 31, 34, 32, 37, 45, 54, 42, 34, 32, 32, 29, 31, 38, 30, 28, 28, 34, 52, 44, 50, 37, 34, 32, 28, 22, 34, 59, 51, 45, 46, 43, 39, 37, 25, 25, 26, 23, 25, 22, 18, 18, 16, 15, 14, 13, 11, 8, 7, 8, 9, 7, 6, 5, 4, 5, 4, 5, 4, 4, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1];
       var altEl = null, altCv = null, altCtx = null, altAud = null, altRef = {}, altSprite = null;
       var altOn = false, altSkipping = false, altSkipT0 = 0, altRaf = 0, altClock0 = 0, altLast = 0, altAnchored = false;
       var ivW = 0, ivH = 0, ivDPR = 1, ivD = 600, ivHide = 0, ivCy = 0, ivHor = 0;
@@ -10259,8 +10425,10 @@
           '<div class="iv-text"><div class="iv-title">INEVITÁVEL</div><div class="iv-tag">o inimigo não tem chance</div></div>';
         document.body.appendChild(altEl);
         var q = function (s) { return altEl.querySelector(s); };
-        altRef = { world: q('.iv-world'), hglow: q('.iv-hglow'), rays: q('.iv-rays'), die: q('.iv-die'), corona: q('.iv-corona'), num: q('.iv-num'),
-          ground: q('.iv-ground'), rim: q('.iv-rim'), foes: q('.iv-foes'), flash: q('.iv-flash'), bt: q('.iv-bar.t'), bb: q('.iv-bar.b'), who: q('.iv-who') };
+        altRef = {
+          world: q('.iv-world'), hglow: q('.iv-hglow'), rays: q('.iv-rays'), die: q('.iv-die'), corona: q('.iv-corona'), num: q('.iv-num'),
+          ground: q('.iv-ground'), rim: q('.iv-rim'), foes: q('.iv-foes'), flash: q('.iv-flash'), bt: q('.iv-bar.t'), bb: q('.iv-bar.b'), who: q('.iv-who')
+        };
         altCv = q('.iv-cv'); altCtx = altCv.getContext('2d');
         var s = 64, h = 32, c = document.createElement('canvas'); c.width = c.height = s;
         var g = c.getContext('2d'), gr = g.createRadialGradient(h, h, 0, h, h, h);
@@ -10291,8 +10459,10 @@
         var n = clamp(Math.round(window.innerWidth / 95), 8, 18);
         for (var i = 0; i < n; i++) {
           var row = Math.random() < 0.42 ? 0 : 1;
-          var f = { fx: (i + 0.5) / n + rand(-0.32, 0.32) / n, row: row, s: (row ? 0.078 : 0.056) * rand(0.85, 1.18), flip: Math.random() < 0.5 ? -1 : 1,
-            ph: rand(0, 6.28), dead: false, burst: false, delay: 0, vx: 0, vy: 0, vr: 0, h: 0, x: 0, y: 0 };
+          var f = {
+            fx: (i + 0.5) / n + rand(-0.32, 0.32) / n, row: row, s: (row ? 0.078 : 0.056) * rand(0.85, 1.18), flip: Math.random() < 0.5 ? -1 : 1,
+            ph: rand(0, 6.28), dead: false, burst: false, delay: 0, vx: 0, vy: 0, vr: 0, h: 0, x: 0, y: 0
+          };
           var el = document.createElement('div'); el.className = 'iv-foe' + (row ? '' : ' back');
           el.innerHTML = '<svg viewBox="0 0 40 60" aria-hidden="true"><use href="#iv-e' + ((Math.random() * 4) | 0) + '"/></svg>';
           altRef.foes.appendChild(el); f.el = el; altFoes.push(f);
